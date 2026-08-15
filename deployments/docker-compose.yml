@@ -1,0 +1,52 @@
+version: '3'
+
+name: plant_store
+
+services:
+  server:
+    image: nginx:1.31
+    container_name: plant_store_server
+    environment:
+      - NGINX_HOST=${NGINX_HOST}
+      - NGINX_PORT=${NGINX_PORT}
+    volumes:
+      - ./nginx:/etc/nginx/templates/
+      - ../src:/var/www/
+    ports:
+      - "${NGINX_PORT}:81"
+    networks:
+      - plant_store_network
+
+  php:
+    build:
+      context: ./php
+      dockerfile: ./Dockerfile
+    container_name: plant_store_php_fpm
+    restart: always
+    working_dir: /var/www/
+    volumes:
+      - ../src:/var/www/
+    ports:
+      - "9030:9000"
+    networks:
+      - plant_store_network
+
+  database:
+    container_name: plant_store_database
+    image: postgres:18.0
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - plant_store_db_data:/var/lib/postgresql
+    networks:
+      - plant_store_network
+
+volumes:
+  plant_store_db_data:
+
+networks:
+  plant_store_network:
