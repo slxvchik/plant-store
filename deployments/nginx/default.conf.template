@@ -7,7 +7,7 @@ gzip_disable        "msie6";
 
 gzip_types
     text/plain
-    application/json;
+    application/json;f
 
 server {
     listen 81;
