@@ -11,6 +11,7 @@ use App\Domain\Product\Exceptions\ProductShipReserveException;
 use App\Domain\Product\Exceptions\ProductSkuSetPriceException;
 use App\Domain\Product\Exceptions\ProductSkuSetQuantityException;
 use App\Domain\Product\Exceptions\ProductSkuSetReservedException;
+use App\Domain\Product\Exceptions\ProductStockNotFoundException;
 use App\Domain\Shared\Exception\FieldRequiredException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
@@ -41,22 +42,11 @@ class ProductSku
             $this->price = $value;
         }
     }
-    private(set) int $quantity {
-        set {
-            if ($value <= 0) {
-                throw new ProductSkuSetQuantityException();
-            }
-            $this->quantity = $value;
-        }
-    }
-    private(set) int $reserved {
-        set {
-            if ($value <= 0) {
-                throw new ProductSkuSetReservedException();
-            }
-            $this->reserved = $value;
-        }
-    }
+    /**
+     * @var Stock[] stocks map
+     * [warehouseId => Stock]
+     */
+    private(set) array $stocks;
     /**
      * @var string|null Seeds | Seedlings | Seedling
      */
@@ -68,22 +58,27 @@ class ProductSku
     private(set) ?int $age;
     private(set) ?DateTimeImmutable $sowingDate;
 
-    private function __construct(Uuid $id, bool $active, string $sku, ?string $description, int $price, int $quantity, int $reserved, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate)
+    /**
+     * @param Stock[] $stocks
+     */
+    private function __construct(Uuid $id, bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate)
     {
         $this->id = $id;
         $this->active = $active;
         $this->sku = $sku;
         $this->description = $description;
         $this->price = $price;
-        $this->quantity = $quantity;
-        $this->reserved = $reserved;
+        $this->stocks = $stocks;
         $this->formFactor = $formFactor;
         $this->size = $size;
         $this->age = $age;
         $this->sowingDate = $sowingDate;
     }
 
-    public static function fromDb(string $id, bool $active, string $sku, ?string $description, int $price, int $quantity, int $reserved, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate): self
+    /**
+     * @param Stock[] $stocks
+     */
+    public static function fromDb(string $id, bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate): self
     {
         $uuid = new Uuid($id);
         return new self(
@@ -92,8 +87,7 @@ class ProductSku
             sku: $sku,
             description: $description,
             price: $price,
-            quantity: $quantity,
-            reserved: $reserved,
+            stocks: $stocks,
             formFactor: $formFactor,
             size: $size,
             age: $age,
@@ -101,7 +95,10 @@ class ProductSku
         );
     }
 
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator,  bool $active, string $sku, ?string $description, int $price, int $quantity, int $reserved, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate): self
+    /**
+     * @param Stock[] $stocks
+     */
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator,  bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate): self
     {
         $uuidValue = $uuidIdentityGenerator->generate();
         $newUuid = new Uuid($uuidValue);
@@ -111,8 +108,7 @@ class ProductSku
             sku: $sku,
             description: $description,
             price: $price,
-            quantity: $quantity,
-            reserved: $reserved,
+            stocks: $stocks,
             formFactor: $formFactor,
             size: $size,
             age: $age,
@@ -120,46 +116,44 @@ class ProductSku
         );
     }
 
-    public function reserve(int $quantity): void
+    public function reserve(string $warehouseId, int $quantity): void
     {
-        $stockQuantity = $this->quantity - $quantity;
-        if ($stockQuantity < 0) {
-            throw new ProductQuantityReserveException();
-        }
-        $this->quantity = $stockQuantity;
-        $this->reserved += $quantity;
+        $stock = $this->getStockByWarehouseId($warehouseId);
+        $this->stocks[$warehouseId] = $stock->reserve($quantity);
     }
 
-    public function cancelReserve(int $quantity): void
+    public function cancelReserve(string $warehouseId, int $quantity): void
     {
-        $reserved = $this->reserved - $quantity;
-        if ($reserved < 0) {
-            throw new ProductQuantityRemoveReserveException();
-        }
-        $this->quantity += $reserved;
-        $this->reserved = $reserved;
+        $stock = $this->getStockByWarehouseId($warehouseId);
+        $this->stocks[$warehouseId] = $stock->cancelReserve($quantity);
     }
 
-    public function ship(int $quantity): void
+    public function ship(string $warehouseId,int $quantity): void
     {
-        $reservedQuantity = $this->reserved - $quantity;
-        if ($reservedQuantity < 0) {
-            throw new ProductShipReserveException();
-        }
-        $this->reserved = $reservedQuantity;
+        $stock = $this->getStockByWarehouseId($warehouseId);
+        $this->stocks[$warehouseId] = $stock->ship($quantity);
     }
 
-    public function refund(int $quantity): void
+    public function refund(string $warehouseId, int $quantity): void
     {
-        $this->quantity += $quantity;
+        $stock = $this->getStockByWarehouseId($warehouseId);
+        $this->stocks[$warehouseId] = $stock->refund($quantity);
     }
 
-    public function fastSell(int $quantity): void
+    public function fastSell(string $warehouseId, int $quantity): void
     {
-        $stockQuantity = $this->quantity - $quantity;
-        if ($stockQuantity < 0) {
-            throw new ProductFastSellQuantityException();
+        $stock = $this->getStockByWarehouseId($warehouseId);
+        $this->stocks[$warehouseId] = $stock->fastSell($quantity);
+    }
+
+    private function getStockByWarehouseId(string $warehouseId): Stock
+    {
+        $stock = $this->stocks[$warehouseId] ?? null;
+
+        if ($stock === null) {
+            throw new ProductStockNotFoundException();
         }
-        $this->quantity = $stockQuantity;
+
+        return $stock;
     }
 }
