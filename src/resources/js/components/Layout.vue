@@ -2,7 +2,7 @@
 import Header from '@/components/Header.vue';
 </script>
 <template>
-    <div class="w-full px-5">
+    <div class="relative min-h-dvh w-full bg-bg-1">
         <Header />
         <slot />
     </div>

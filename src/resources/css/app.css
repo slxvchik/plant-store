@@ -1,11 +1,48 @@
+@font-face {
+    font-family: 'PlayfairDisplay';
+    src: url('../fonts/PlayfairDisplay-VariableFont_wght.ttf') format('truetype-variations'),
+        url('../fonts/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SofiaSans';
+    src: url('../fonts/SofiaSans-VariableFont_wght.ttf') format('truetype-variations'),
+        url('../fonts/SofiaSans-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
 @theme inline {
+    --font-serif: 'PlayfairDisplay', Georgia, serif;
+
     --font-sans:
-        Instrument Sans, ui-sans-serif, system-ui, sans-serif,
-        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-        'Noto Color Emoji';
+        'SofiaSans', ui-sans-serif, sans-serif;
+
+    --color-bg-1: #FFFFFF;
+    --color-bg-2: #F4F7F2;
+    --color-bg-3: #364D3E;
+
+    --color-text-main: #1A2B1E;
+    --color-text-muted: #455A49;
+    --color-text-muted-hover: #546E59;
+
+    --color-accent: #BC855F;
+    --color-accent-hover: #A06D4A;
+
+    --color-btn-dark-bg: #364D3E;
+    --color-btn-dark-bg-hover: #2B3D31;
+    --color-btn-dark-text: #FFFFFF;
+
+    --color-btn-light-bg: #7D9B84;
+    --color-btn-light-bg-hover: #6B8771;
+    --color-btn-light-text: #FFFFFF;
 }
