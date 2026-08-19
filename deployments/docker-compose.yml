@@ -26,6 +26,7 @@ services:
     working_dir: /var/www/
     volumes:
       - ../src:/var/www/
+      - ./php/config/php.ini:/usr/local/etc/php/conf.d/custom.ini
     ports:
       - "9030:9000"
     networks:
