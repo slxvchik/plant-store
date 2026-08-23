@@ -31,9 +31,10 @@
     --color-bg-2: #F4F7F2;
     --color-bg-3: #364D3E;
 
-    --color-text-main: #1A2B1E;
-    --color-text-muted: #455A49;
-    --color-text-muted-hover: #546E59;
+    --color-main: #1A2B1E;
+    --color-muted: #455A49;
+    --color-muted-hover: #546E59;
+    --color-bright: #7AAB50;
 
     --color-accent: #BC855F;
     --color-accent-hover: #A06D4A;
@@ -42,7 +43,7 @@
     --color-btn-dark-bg-hover: #2B3D31;
     --color-btn-dark-text: #FFFFFF;
 
-    --color-btn-light-bg: #7D9B84;
-    --color-btn-light-bg-hover: #6B8771;
+    --color-btn-light-bg: #7AAB50;
+    --color-btn-light-bg-hover: #61883F;
     --color-btn-light-text: #FFFFFF;
 }
