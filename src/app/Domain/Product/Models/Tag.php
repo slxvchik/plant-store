@@ -10,7 +10,7 @@ use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
 class Tag
 {
-    private(set) Uuid $id;
+    private(set) final Uuid $id;
     private(set) string $alias;
     private(set) string $name;
     private(set) bool $active;
