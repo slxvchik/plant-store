@@ -19,7 +19,7 @@ class User
 {
     use Eventable;
 
-    private(set) Uuid $id;
+    private(set) final Uuid $id;
     private string $passwordHash;
     private(set) string $firstName;
     private(set) ?string $lastName;
@@ -38,11 +38,11 @@ class User
     /**
      * @param Role[] $roles
      */
-    private function __construct(Uuid $id, string $passwordHash, string $firstname, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, ?string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt)
+    private function __construct(Uuid $id, string $passwordHash, string $firstName, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, ?string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt)
     {
         $this->id = $id;
         $this->passwordHash = $passwordHash;
-        $this->firstName = $firstname;
+        $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
         $this->emailConfirmToken = $emailConfirmToken;
@@ -54,7 +54,7 @@ class User
         $this->updatedAt = $updatedAt;
     }
 
-    private static function fromDb(Uuid $id, string $passwordHash, string $firstname, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, ?string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt): self
+    public static function fromDb(Uuid $id, string $passwordHash, string $firstname, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, ?string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt): self
     {
         return new self(
             id: $id,
@@ -72,7 +72,7 @@ class User
         );
     }
 
-    private static function createNew(UuidGeneratorInterface $uuidGenerator, string $password, string $firstname, ?string $lastName, string $email): self
+    public static function createNew(UuidGeneratorInterface $uuidGenerator, string $password, string $firstname, ?string $lastName, string $email): self
     {
         $uuidStr = $uuidGenerator->generate();
         $id = new Uuid($uuidStr);

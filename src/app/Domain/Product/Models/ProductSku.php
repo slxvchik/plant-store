@@ -19,7 +19,7 @@ use DateTimeImmutable;
 
 class ProductSku
 {
-    private(set) Uuid $id;
+    private(set) final Uuid $id;
     private(set) bool $active;
     private(set) string $sku {
         set {
