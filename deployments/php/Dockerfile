@@ -14,6 +14,8 @@ RUN docker-php-ext-install \
     bcmath
 
 COPY --from=composer:2.10 /usr/bin/composer /usr/local/bin/composer
+COPY --from=node:24-slim /usr/local/bin /usr/local/bin
+COPY --from=node:24-slim /usr/local/lib /usr/local/lib
 
 WORKDIR /var/www
 
