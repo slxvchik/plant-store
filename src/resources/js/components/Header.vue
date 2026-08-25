@@ -3,13 +3,12 @@
         <div class="mx-auto flex items-center justify-between px-4 py-3">
             <a href="/" class="flex items-center gap-2.5">
                 <LogoIcon class="w-10 h-10" />
-                <span
-                    class="font-serif text-lg tracking-tight text-main sm:text-xl"
-                    >Деулино Сад</span
-                >
+                <p class="relative bottom-0.5 font-serif text-2xl tracking-tight text-main xl:text-3xl">
+                    Деулино Сад
+                </p>
             </a>
             <!-- Главное меню сайта -->
-            <nav class="hidden md:flex" aria-label="Главное меню">
+            <nav class="relative top-0.5 hidden md:flex" aria-label="Главное меню">
                 <ul class="flex items-center gap-6 text-sm font-medium">
                     <li v-for="link in [
                         { href: '/search', text: 'Поиск' },
@@ -17,49 +16,40 @@
                         { href: '/blog', text: 'Блог' },
                         { href: '/about', text: 'О нас' },
                     ]">
-                        <a class="text-muted transition-colors hover:text-muted-hover text-xs md:text-base xl:text-lg"
-                            :href="link.href">{{ link.text }}</a>
+                        <Link :href="link.href" :text="link.text" />
                     </li>
                 </ul>
             </nav>
             <!-- Личный кабинет и корзина -->
-            <nav class="hidden md:flex" aria-label="Пользовательское меню">
+            <nav class="relative top-0.5 hidden md:flex" aria-label="Пользовательское меню">
                 <ul class="flex items-center gap-6 text-sm font-medium">
                     <li>
-                        <a class="h-6 w-6 text-muted transition-colors hover:text-muted-hover" href="/basket">
-                            <BasketIcon />
-                        </a>
+                        <Link href="/basket" class="h-6 w-6">
+                            <template #after-text>
+                                <BasketIcon />
+                            </template>
+                        </Link>
                     </li>
                     <li>
-                        <a class="text-muted transition-colors hover:text-muted-hover text-xs md:text-base xl:text-lg"
-                            href="/profile">Личный
-                            кабинет</a>
+                        <Link href="/profile" text="Личный кабинет" />
                     </li>
                 </ul>
             </nav>
-            <button id="menu-btn" class="rounded-lg p-2 md:hidden" aria-label="Открыть меню">
+            <button id="menu-btn" class="relative top-0.5 rounded-lg p-2 md:hidden" aria-label="Открыть меню">
                 <BurgerMenu />
             </button>
         </div>
         <div id="mobile-menu" class="hidden border-t px-4 py-3 md:hidden">
             <ul class="text-moss-700 flex flex-col gap-3 text-sm font-medium">
-                <li>
-                    <a class="text-muted" href="/search">Поиск</a>
-                </li>
-                <li>
-                    <a class="text-muted" href="/catalog">Каталог</a>
-                </li>
-                <li>
-                    <a class="text-muted" href="/blog">Блог</a>
-                </li>
-                <li>
-                    <a class="text-muted" href="/about">О нас</a>
-                </li>
-                <li>
-                    <a class="text-muted" href="/cart">Корзина</a>
-                </li>
-                <li>
-                    <a class="text-muted" href="/profile">Личный кабинет</a>
+                <li v-for="link in [
+                    { href: '/search', text: 'Поиск' },
+                    { href: '/catalog', text: 'Каталог' },
+                    { href: '/blog', text: 'Блог' },
+                    { href: '/about', text: 'О нас' },
+                    { href: '/cart', text: 'Корзина' },
+                    { href: '/profile', text: 'Личный кабинет' },
+                ]">
+                    <Link :href="link.href" :text="link.text" />
                 </li>
             </ul>
         </div>
@@ -70,6 +60,7 @@
 import LogoIcon from '@/components/icons/LogoIcon.vue';
 import BasketIcon from '@/components/icons/BasketIcon.vue';
 import BurgerMenu from '@/components/icons/BurgerMenu.vue';
+import Link from '@/components/Link.vue';
 </script>
 
 <style scoped></style>

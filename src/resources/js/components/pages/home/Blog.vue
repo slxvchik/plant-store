@@ -3,7 +3,7 @@ import BlogCard from '@/components/BlogCard.vue';
 </script>
 
 <template>
-    <section class="bg-bg-1 px-3 py-8 lg:px-20 lg:py-25">
+    <section class="bg-bg-1 px-3 py-8 md:px-8 md:py-20 xl:px-20 xl:py-25">
         <h2 class="text font-serif font-bold text-accent uppercase">
             Садовый журнал
         </h2>

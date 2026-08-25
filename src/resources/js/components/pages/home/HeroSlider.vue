@@ -15,19 +15,26 @@
 
                 <div class="relative h-full w-full items-center pt-20">
                     <p
-                        class="mb-4 inline-block cursor-default font-serif font-semibold tracking-[0.2em] text-bright uppercase transition-all">
+                        class="mb-4 inline-block cursor-default font-serif font-semibold tracking-[0.2em] text-bright uppercase transition-all line-clamp-1">
                         Наше обещание
                     </p>
                     <h2
-                        class="mb-5 cursor-default font-sans text-4xl leading-[1.1] font-light whitespace-pre-line text-white sm:text-5xl lg:text-6xl">
+                        class="mb-5 cursor-default font-sans text-4xl leading-[1.1] font-light whitespace-pre-line text-white sm:text-5xl lg:text-6xl line-clamp-2">
                         Выращено с заботой, доставлено с любовью
                     </h2>
                     <p
-                        class="mb-8 max-w-sm cursor-default font-sans text-base leading-relaxed text-white/70 sm:text-lg">
+                        class="mb-8 max-w-md cursor-default line-clamp-5 font-sans text-base leading-relaxed text-white/70 min-[420px]:line-clamp-8 sm:text-lg min-[640px]:line-clamp-6 md:max-w-[60%] min-[1270px]:line-clamp-8">
                         Каждое растение выращивается в экосертифицированных
+                        питомникахКаждое растение выращивается в экосертифицированных
+                        питомникахКаждое растение выращивается в экосертифицированных
+                        питомникахКаждое растение выращивается в экосертифицированных
+                        питомникахКаждое растение выращивается в экосертифицированных
+                        питомникахКаждое растение выращивается в экосертифицированных
                         питомниках
                     </p>
-                    <ButtonLink link="/catalog" text="В каталог" />
+                    <div class="min-w-24 w-fit">
+                        <Button href="/catalog" text="В каталог" class="" />
+                    </div>
                 </div>
             </swiper-slide>
         </swiper>
@@ -35,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import ButtonLink from '@/components/ButtonLink.vue';
+import Button from '@/components/Button.vue';
 import { EffectFade, Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 

@@ -1,5 +1,5 @@
 <template>
-    <section class="w-full bg-bg-2 px-3 py-8 lg:px-8 lg:py-20">
+    <section class="w-full bg-bg-2 px-3 py-8 md:px-8 md:py-20 xl:px-20 xl:py-25">
         <h2 class="text font-serif font-bold text-accent uppercase">
             Наша тщательно подобранная теплица
         </h2>

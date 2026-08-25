@@ -1,5 +1,6 @@
 <template>
-    <section class="bg-bg-2 px-3 py-8 lg:px-20 lg:py-25 xl:flex xl:mb-12 xl:flex-row xl:justify-between">
+    <section
+        class="bg-bg-2 px-3 py-8 md:px-8 md:py-20 xl:px-20 xl:py-25 xl:flex xl:mb-12 xl:flex-row xl:justify-between">
         <div
             class="w-full h-45 overflow-hidden rounded-tl-2xl rounded-tr-[64px] rounded-br-2xl rounded-bl-[64px] md:h-80 md:rounded-tl-3xl md:rounded-tr-[100px] md:rounded-br-3xl md:rounded-bl-[100px] xl:h-125 xl:w-[48%] xl:rounded-tl-4xl xl:rounded-tr-[140px] xl:rounded-br-4xl xl:rounded-bl-[140px]">
             <img src="/images/water-lily.png" alt="Лилия" title="Лилия" class="w-full h-full object-cover" />
@@ -16,7 +17,9 @@
                 <Input id="callback_phone" type="text" placeholder="+7 999 999-99-99" label="Телефон" error="test" />
             </div>
             <div class="flex flex-col gap-2.5 xl:flex-row xl:gap-4 xl:items-center">
-                <Button text="Запросить звонок" class="h-11.5" />
+                <div>
+                    <Button text="Запросить звонок" class="h-11.5" />
+                </div>
                 <p class="font-sans text-muted text-xs md:text-base xl:text-lg">Наш специалист перезвонит вам в течении
                     двух рабочих часов</p>
             </div>

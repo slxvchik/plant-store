@@ -6,7 +6,7 @@
                 class="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 src="https://images.unsplash.com/photo-1493552152660-f915ab47ae9d?w=400&amp;h=460&amp;fit=crop&amp;auto=format" />
             <span
-                class="absolute top-3 left-3 cursor-default rounded-full bg-amber-100 px-2.5 py-1 font-sans text-[10px] font-semibold text-amber-800">
+                class="absolute top-3 left-3 cursor-default rounded-xl bg-amber-100 px-2 py-0.5 font-sans text-base text-amber-800">
                 Тег
             </span>
             <FavoriteIcon @click.prevent
@@ -30,7 +30,9 @@
                 <span class="text-xl font-semibold break-all text-main">
                     38 ₽
                 </span>
-                <Button @click.prevent text="В корзину" />
+                <div>
+                    <Button text="В корзину" />
+                </div>
             </div>
         </div>
     </a>

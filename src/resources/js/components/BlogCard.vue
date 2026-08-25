@@ -4,7 +4,7 @@
             src="/images/blog_1.png"
             alt="blog 1"
             title="blog 1"
-            class="h-60 w-full rounded-[20px] object-cover"
+            class="h-60 w-full rounded-xl object-cover"
         />
         <div class="mt-5 flex w-full flex-row">
             <time

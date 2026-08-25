@@ -1,6 +1,6 @@
 <template>
     <component :is="computedType" :href="props.href" v-bind="attrs"
-        class="flex font-sans w-full cursor-pointer items-center justify-center gap-1.5 rounded-full bg-btn-light-bg px-4 py-2 text-base font-medium text-white transition-colors duration-200 hover:bg-btn-light-bg-hover xl:text-lg">
+        class="font-sans text-muted transition-colors cursor-pointer text-base duration-200 hover:text-muted-hover xl:text-lg">
         <slot name="before-text" />
         {{ props.text }}
         <slot name="after-text" />
@@ -24,7 +24,7 @@ interface LinkProps {
 
 type Props = ButtonProps | LinkProps
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 const computedType = computed(() => props.type ?? (props.href ? 'a' : 'button'))
 
