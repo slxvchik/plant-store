@@ -12,6 +12,7 @@ use App\Domain\User\Exception\UserBadPasswordException;
 use App\Domain\User\Exception\UserEmailMismatchException;
 use App\Domain\User\Exception\UserGenerateEmailConfirmTokenException;
 use App\Domain\User\Exception\UserInvalidEmailConfirmTokenException;
+use App\Domain\User\Exception\UserPasswordEmptyException;
 use DateTimeImmutable;
 use Random\RandomException;
 
@@ -19,11 +20,28 @@ class User
 {
     use Eventable;
 
+    private const string PASSWORD_PATTERN = '/(?=.*[A-Za-z])(?=.*\d)(?=.*[*)(!@#$%_^&-])[A-Za-z\d*)(!@#$%_^&-]{8,}/';
+
     private(set) final Uuid $id;
     private string $passwordHash;
-    private(set) string $firstName;
-    private(set) ?string $lastName;
-    private(set) string $email;
+    private(set) string $firstName {
+        set {
+            $this->firstName = trim($value);
+        }
+    }
+    private(set) ?string $lastName {
+        set {
+            $cleanVal = trim($value);
+            if (!empty($cleanVal)) {
+                $this->lastName = $cleanVal;
+            }
+        }
+    }
+    private(set) string $email {
+        set {
+            $this->email = trim($value);
+        }
+    }
     private ?string $emailConfirmToken;
     private(set) bool $emailConfirmed;
     private(set) ?string $phone;
@@ -157,6 +175,14 @@ class User
         $this->updatedAt = new DateTimeImmutable();
     }
 
+    public function isCurrentPassword(string $password): bool
+    {
+        if (trim($password) === '') {
+            throw new UserPasswordEmptyException();
+        }
+        return hash_equals($this->passwordHash, self::getPasswordHash($password));
+    }
+
     /**
      * Min length 8 chars.
      * Min 1 special symbol.
@@ -165,9 +191,15 @@ class User
      */
     private static function generatePasswordHash(string $password): string
     {
-        if (!preg_match('/(?=.*[A-Za-z])(?=.*\d)(?=.*[*)(!@#$%_^&-])[A-Za-z\d*)(!@#$%_^&-]{8,}/', $password)) {
+        $cleanPassword = trim($password);
+        if (!preg_match(self::PASSWORD_PATTERN, $cleanPassword)) {
             throw new UserBadPasswordException();
         }
+        return self::getPasswordHash($cleanPassword);
+    }
+
+    private static function getPasswordHash(string $password): string
+    {
         return password_hash($password, PASSWORD_DEFAULT);
     }
 

@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Models;
 
-use App\Domain\Product\Exceptions\ProductFastSellQuantityException;
-use App\Domain\Product\Exceptions\ProductQuantityRemoveReserveException;
-use App\Domain\Product\Exceptions\ProductQuantityReserveException;
-use App\Domain\Product\Exceptions\ProductShipReserveException;
 use App\Domain\Product\Exceptions\ProductSkuSetPriceException;
-use App\Domain\Product\Exceptions\ProductSkuSetQuantityException;
-use App\Domain\Product\Exceptions\ProductSkuSetReservedException;
 use App\Domain\Product\Exceptions\ProductStockNotFoundException;
 use App\Domain\Shared\Exception\FieldRequiredException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use DateTimeImmutable;
 
-class ProductSku
+class Offer
 {
     private(set) final Uuid $id;
     private(set) bool $active;
@@ -128,7 +122,7 @@ class ProductSku
         $this->stocks[$warehouseId] = $stock->cancelReserve($quantity);
     }
 
-    public function ship(string $warehouseId,int $quantity): void
+    public function ship(string $warehouseId, int $quantity): void
     {
         $stock = $this->getStockByWarehouseId($warehouseId);
         $this->stocks[$warehouseId] = $stock->ship($quantity);
