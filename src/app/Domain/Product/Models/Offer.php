@@ -110,6 +110,31 @@ class Offer
         );
     }
 
+    /**
+     * @param Stock[] $stocks
+     */
+    public function update(
+        bool $active,
+        string $sku,
+        ?string $description,
+        int $price,
+        array $stocks,
+        ?string $formFactor,
+        ?string $size,
+        ?int $age,
+        ?DateTimeImmutable $sowingDate,
+    ): void {
+        $this->active = $active;
+        $this->sku = $sku;
+        $this->description = $description;
+        $this->price = $price;
+        $this->stocks = $stocks;
+        $this->formFactor = $formFactor;
+        $this->size = $size;
+        $this->age = $age;
+        $this->sowingDate = $sowingDate;
+    }
+
     public function reserve(string $warehouseId, int $quantity): void
     {
         $stock = $this->getStockByWarehouseId($warehouseId);

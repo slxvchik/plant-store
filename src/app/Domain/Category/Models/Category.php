@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Product\Models;
+namespace App\Domain\Category\Models;
 
 use App\Domain\Shared\Exception\FieldRequiredException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
-class Tag
+class Category
 {
     private(set) final Uuid $id;
     private(set) string $alias;

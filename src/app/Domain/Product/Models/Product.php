@@ -30,6 +30,10 @@ class Product
     }
     private(set) ?string $description;
     /**
+     * @var Offer[]
+     */
+    private(set) array $offers;
+    /**
      * @var string[] Category ids
      */
     private(set) array $categoryIds;
@@ -93,15 +97,61 @@ class Product
         );
     }
 
-    public function update(string $alias, string $name, bool $active, ?string $description, int $price, int $quantity, $reserved, array $categories, array $tags, array $videoIds, array $imageIds): void
+    /**
+     * @param string[] $categoryIds
+     * @param string[] $tagIds
+     * @param string[] $videoIds
+     * @param string[] $imageIds
+     */
+    public function update(string $alias, string $name, bool $active, ?string $description, array $categoryIds, array $tagIds, array $videoIds, array $imageIds): void
     {
         $this->alias = $alias;
         $this->name = $name;
         $this->active = $active;
         $this->description = $description;
-        $this->categoryIds = $categories;
-        $this->tagIds = $tags;
+        $this->categoryIds = $categoryIds;
+        $this->tagIds = $tagIds;
         $this->videoIds = $videoIds;
         $this->imageIds = $imageIds;
+    }
+
+    /**
+     * @param Offer[] $offers
+     */
+    public function updateOffers(array $offers): void
+    {
+        $newOfferIds = [];
+        foreach ($offers as $newOffer) {
+            $id = $newOffer->id->value;
+
+            if (!$id) {
+                continue;
+            }
+
+            $newOfferIds[] = $id;
+
+            if (!isset($this->offers[$id])) {
+                $this->offers[$id] = $newOffer;
+                continue;
+            }
+
+            $this->offers[$id]->update(
+                active: $newOffer->active,
+                sku: $newOffer->sku,
+                description: $newOffer->description,
+                price: $newOffer->price,
+                stocks: $newOffer->stocks,
+                formFactor: $newOffer->formFactor,
+                size: $newOffer->size,
+                age: $newOffer->age,
+                sowingDate: $newOffer->sowingDate
+            );
+        }
+
+        $idsToDelete = array_diff(array_keys($this->offers), $newOfferIds);
+
+        foreach ($idsToDelete as $idToDelete) {
+            unset($this->offers[$idToDelete]);
+        }
     }
 }

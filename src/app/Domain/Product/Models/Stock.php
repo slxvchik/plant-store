@@ -16,8 +16,8 @@ readonly class Stock
 {
     public function __construct(
         public string $warehouseId,
-        public int    $quantity,
-        public int    $reserved
+        public int $quantity,
+        public int $reserved
     ) {}
 
     public function getAvailableQuantity(): int

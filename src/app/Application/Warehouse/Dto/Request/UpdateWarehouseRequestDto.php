@@ -2,7 +2,7 @@
 
 namespace App\Application\Warehouse\Dto\Request;
 
-readonly class UpdateWarehouseDto
+readonly class UpdateWarehouseRequestDto
 {
     public function __construct(
         public string $address,

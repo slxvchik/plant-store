@@ -8,6 +8,4 @@ use App\Domain\Shared\BaseRepository\BaseRepository;
 /**
  * @extends BaseRepository<Product>
  */
-interface ProductRepository extends BaseRepository
-{
-}
+interface ProductRepository extends BaseRepository {}

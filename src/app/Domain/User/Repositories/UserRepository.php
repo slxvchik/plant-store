@@ -8,6 +8,4 @@ use App\Domain\User\Models\User;
 /**
  * @extends BaseRepository<User>
  */
-interface UserRepository extends BaseRepository
-{
-}
+interface UserRepository extends BaseRepository {}
