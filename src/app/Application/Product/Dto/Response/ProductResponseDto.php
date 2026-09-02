@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\Product\Dto\Response;
 
+use App\Application\Tag\Dto\Response\TagResponseDto;
+use App\Domain\Product\Models\Product;
+
 /**
  * @property OfferResponseDto[] $offers
  * @property CategoryResponseDto[] $categories
@@ -32,4 +35,33 @@ readonly class ProductResponseDto
         public array $videos,
         public array $images
     ) {}
+
+    /**
+     * @param OfferResponseDto[] $offers
+     * @param CategoryResponseDto[] $categories
+     * @param TagResponseDto[] $tags
+     * @param VideoResponseDto[] $videos
+     * @param ImageResponseDto[] $images
+     */
+    public static function fromDomain(
+        Product $product,
+        array $offers,
+        array $categories,
+        array $tags,
+        array $videos,
+        array $images
+    ): self {
+        return new self(
+            id: $product->id->value,
+            active: $product->active,
+            alias: $product->alias,
+            name: $product->name,
+            description: $product->description,
+            offers: $offers,
+            categories: $categories,
+            tags: $tags,
+            videos: $videos,
+            images: $images
+        );
+    }
 }

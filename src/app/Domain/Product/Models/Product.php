@@ -51,7 +51,14 @@ class Product
      */
     private(set) array $imageIds;
 
-    private function __construct(Uuid $id, bool $active, string $alias, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds)
+    /**
+     * @param string[] $categories
+     * @param string[] $tags
+     * @param string[] $videoIds
+     * @param string[] $imageIds
+     * @param Offer[] $offers
+     */
+    private function __construct(Uuid $id, bool $active, string $alias, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers = [])
     {
         $this->id = $id;
         $this->active = $active;
@@ -62,6 +69,7 @@ class Product
         $this->tagIds = $tags;
         $this->videoIds = $videoIds;
         $this->imageIds = $imageIds;
+        $this->offers = $offers;
     }
 
     public static function fromDb(string $id, bool $active, string $alias, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds): self
@@ -80,7 +88,13 @@ class Product
         );
     }
 
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, string $name, int $price, int $quantity, array $categories = [], array $tags = [], array $videoIds = [], array $imageIds = [], ?string $description = null): self
+    /**
+     * @param string[] $categories
+     * @param string[] $tags
+     * @param string[] $videoIds
+     * @param string[] $imageIds
+     */
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, string $name, array $categories = [], array $tags = [], array $videoIds = [], array $imageIds = [], ?string $description = null): self
     {
         $uuidValue = $uuidIdentityGenerator->generate();
         $newUuid = new Uuid($uuidValue);

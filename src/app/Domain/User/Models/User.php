@@ -13,6 +13,7 @@ use App\Domain\User\Exception\UserEmailMismatchException;
 use App\Domain\User\Exception\UserGenerateEmailConfirmTokenException;
 use App\Domain\User\Exception\UserInvalidEmailConfirmTokenException;
 use App\Domain\User\Exception\UserPasswordEmptyException;
+use App\Domain\User\Exception\UserWrongPasswordException;
 use DateTimeImmutable;
 use Random\RandomException;
 
@@ -95,13 +96,15 @@ class User
         $uuidStr = $uuidGenerator->generate();
         $id = new Uuid($uuidStr);
 
+        $confirmToken = self::generateEmailConfirmToken();
+
         $user = new self(
             id: $id,
             passwordHash: self::generatePasswordHash($password),
             firstName: $firstname,
             lastName: $lastName,
             email: $email,
-            emailConfirmToken: null,
+            emailConfirmToken: $confirmToken,
             emailConfirmed: false,
             phone: null,
             imageId: null,
@@ -113,7 +116,7 @@ class User
         $user->recordEvent(new SendConfirmEmailEvent(
             userId: $user->id->value,
             email: $user->email,
-            confirmToken: self::generateEmailConfirmToken()
+            confirmToken: $confirmToken
         ));
 
         return $user;
@@ -151,14 +154,17 @@ class User
 
     public function updateEmail(string $newEmail): void
     {
+        $confirmToken = self::generateEmailConfirmToken();
+
         $this->email = $newEmail;
+        $this->emailConfirmToken = $confirmToken;
         $this->emailConfirmed = false;
         $this->updatedAt = new DateTimeImmutable();
 
         $this->recordEvent(new SendConfirmEmailEvent(
             userId: $this->id->value,
             email: $newEmail,
-            confirmToken: self::generateEmailConfirmToken()
+            confirmToken: $confirmToken
         ));
     }
 
@@ -172,6 +178,16 @@ class User
         }
         $this->emailConfirmed = true;
         $this->emailConfirmToken = null;
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    public function changePassword(string $oldPassword, string $newPassword): void
+    {
+        if (!$this->isCurrentPassword($oldPassword)) {
+            throw new UserWrongPasswordException();
+        }
+
+        $this->passwordHash = self::generatePasswordHash($newPassword);
         $this->updatedAt = new DateTimeImmutable();
     }
 
