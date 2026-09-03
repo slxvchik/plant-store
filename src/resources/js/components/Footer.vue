@@ -26,6 +26,7 @@
                 </div>
             </div>
         </div>
+        <p class="text-gray-300 text-xs">Developed by @slxvchik</p>
         <span class="flex w-full h-px bg-gray-300"></span>
         <div class="flex flex-col items-center mt-6 sm:items-start">
             <p class="mb-2 text-center text-muted text-base sm:text-left xl:text-lg">
@@ -42,7 +43,6 @@
                     </li>
                 </template>
             </ul>
-            <p class="text-gray-300 text-xs">Developed by @slxvchik</p>
         </div>
     </footer>
 </template>
