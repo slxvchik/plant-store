@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Domain\Media\Models;
 
+use App\Domain\Media\Exception\InvalidMimeTypeException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
-class Image extends MediaFile
+class Image extends MediaDB
 {
     private(set) int $width;
     private(set) int $height;
     private(set) ?string $altText;
+    private const ACCEPTABLE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
     private function __construct(
         Uuid $id,
@@ -23,6 +25,10 @@ class Image extends MediaFile
         int $height,
         ?string $altText
     ) {
+        if (in_array($mimeType, self::ACCEPTABLE_TYPES)) {
+            throw new InvalidMimeTypeException($mimeType, self::ACCEPTABLE_TYPES);
+        }
+
         parent::__construct($id, $pathToFile, $originalName, $mimeType, $sizeInBytes);
 
         $this->width = $width;

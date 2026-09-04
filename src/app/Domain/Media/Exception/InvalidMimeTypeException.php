@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Media\Exception;
+namespace App\Domain\Media\Exception;
 
 use App\Domain\Shared\AppException\AppException;
 use App\Domain\Shared\AppException\AppExceptionStatus;

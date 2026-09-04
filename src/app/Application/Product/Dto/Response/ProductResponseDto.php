@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\Product\Dto\Response;
 
+use App\Application\Category\Dto\Response\CategoryResponseDto;
+use App\Application\Media\Dto\Request\VideoResponseDto;
+use App\Application\Media\Dto\Response\ImageResponseDto;
 use App\Application\Tag\Dto\Response\TagResponseDto;
 use App\Domain\Product\Models\Product;
 

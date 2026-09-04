@@ -7,7 +7,7 @@ namespace App\Domain\Media\Models;
 use App\Domain\Shared\Uuid\Uuid;
 use DateTimeImmutable;
 
-abstract class MediaFile
+abstract class MediaDB
 {
     public readonly DateTimeImmutable $createdAt;
 

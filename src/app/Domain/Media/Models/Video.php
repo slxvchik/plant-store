@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace App\Domain\Media\Models;
 
+use App\Domain\Media\Exception\InvalidMimeTypeException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
-class Video extends MediaFile
+class Video extends MediaDB
 {
-    private(set) int $width;
-    private(set) int $height;
+    private(set) ?int $width;
+    private(set) ?int $height;
     private(set) bool $loop;
     private(set) bool $muted;
-    private(set) int $durationSec;
+    private(set) ?int $durationSec;
     private(set) ?string $codec;
     private(set) ?string $thumbnailId;
+    private const ACCEPTABLE_TYPES = ['video/mp4', 'video/webm'];
 
     private function __construct(
         Uuid $id,
@@ -23,14 +25,18 @@ class Video extends MediaFile
         string $originalName,
         string $mimeType,
         int $sizeInBytes,
-        int $width,
-        int $height,
+        ?int $width,
+        ?int $height,
         bool $loop,
         bool $muted,
-        int $durationSec,
+        ?int $durationSec,
         ?string $codec,
         ?string $thumbnailId
     ) {
+        if (in_array($mimeType, self::ACCEPTABLE_TYPES)) {
+            throw new InvalidMimeTypeException($mimeType, self::ACCEPTABLE_TYPES);
+        }
+
         parent::__construct($id, $pathToFile, $originalName, $mimeType, $sizeInBytes);
 
         $this->width = $width;
@@ -48,11 +54,11 @@ class Video extends MediaFile
         string $originalName,
         string $mimeType,
         int $sizeInBytes,
-        int $width,
-        int $height,
+        ?int $width,
+        ?int $height,
         bool $loop,
         bool $muted,
-        int $durationSec,
+        ?int $durationSec,
         ?string $codec,
         ?string $thumbnailId
     ): self {
@@ -78,11 +84,11 @@ class Video extends MediaFile
         string $originalName,
         string $mimeType,
         int $sizeInBytes,
-        int $width,
-        int $height,
+        ?int $width,
+        ?int $height,
         bool $loop,
         bool $muted,
-        int $durationSec,
+        ?int $durationSec,
         ?string $codec,
         ?string $thumbnailId
     ): self {
