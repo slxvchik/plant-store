@@ -11,7 +11,8 @@ readonly class CartLine
 {
     public int $quantity;
     public function __construct(
-        public string $productSkuId,
+        public string $productId,
+        public string $offerId,
         int $quantity
     ) {
         $this->quantity = $quantity > 0 ? $quantity : 1;
@@ -23,7 +24,8 @@ readonly class CartLine
             $quantity = 1;
         }
         return new CartLine(
-            productSkuId: $this->productSkuId,
+            productId: $this->productId,
+            offerId: $this->offerId,
             quantity: $quantity
         );
     }
