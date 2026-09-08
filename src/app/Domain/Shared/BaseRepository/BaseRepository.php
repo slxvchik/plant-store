@@ -22,12 +22,16 @@ interface BaseRepository
     function update(object $entity): void;
     function delete(string $id): void;
     /**
-     * @param string $id
-     * @return T
+     * @param string|int $id
+     * @return T|null
      */
-    function findById(string $id): object;
+    function findById(string|int $id): ?object;
     /**
      * @return Page<T>
      */
-    function findAll(Pageable $pageable): Page;
+    function findPage(Pageable $pageable): Page;
+    /**
+     * @return T[]
+     */
+    function findAll(): array;
 }

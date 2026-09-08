@@ -8,4 +8,4 @@ readonly class CreateWarehouseRequestDto
         public string $address,
         public ?string $phoneNumber
     ) {}
-} 
+}

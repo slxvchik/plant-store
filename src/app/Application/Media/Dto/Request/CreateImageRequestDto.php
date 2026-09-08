@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Media\Dto\Request;
 
-use App\Domain\Media\Models\Media;
+use App\Domain\Media\Model\Media;
 
 readonly class CreateImageRequestDto
 {

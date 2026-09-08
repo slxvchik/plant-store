@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Product\Dto\Response;
 
 use App\Application\Warehouse\Dto\Response\WarehouseResponseDto;
-use App\Domain\Product\Models\Stock;
+use App\Domain\Product\Model\Stock;
 
 readonly class StockResponseDto
 {

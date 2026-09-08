@@ -14,7 +14,7 @@ class AppException extends RuntimeException
      */
     public function __construct(
         public readonly AppExceptionStatus $appExceptionStatus = AppExceptionStatus::INTERNAL_ERROR,
-        public readonly string $errorMessage = 'Произошла неизвестная ошибка, пожалуйста попробуйте позднее.'
+        public readonly string $errorMessage = "Произошла неизвестная ошибка, пожалуйста попробуйте позднее."
     ) {
         parent::__construct(message: $errorMessage);
     }

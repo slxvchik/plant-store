@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Warehouse\Dto\Response;
 
-use App\Domain\Warehouse\Models\Warehouse;
+use App\Domain\Warehouse\Model\Warehouse;
 
 readonly class WarehouseResponseDto
 {

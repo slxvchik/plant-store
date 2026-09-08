@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Product\Dto\Response;
 
-use App\Domain\Product\Models\Offer;
+use App\Domain\Product\Model\Offer;
 use DateTimeImmutable;
 
 /**

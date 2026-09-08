@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Category\Dto\Response;
 
-use App\Domain\Category\Models\Category;
+use App\Domain\Category\Model\Category;
 
 readonly class CategoryResponseDto
 {

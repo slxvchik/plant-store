@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Product\UseCase;
 
-use App\Domain\Product\Models\Product;
+use App\Domain\Product\Model\Product;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 

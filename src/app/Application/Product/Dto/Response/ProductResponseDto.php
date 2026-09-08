@@ -8,7 +8,7 @@ use App\Application\Category\Dto\Response\CategoryResponseDto;
 use App\Application\Media\Dto\Request\VideoResponseDto;
 use App\Application\Media\Dto\Response\ImageResponseDto;
 use App\Application\Tag\Dto\Response\TagResponseDto;
-use App\Domain\Product\Models\Product;
+use App\Domain\Product\Model\Product;
 
 /**
  * @property OfferResponseDto[] $offers

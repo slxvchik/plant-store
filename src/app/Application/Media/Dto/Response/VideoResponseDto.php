@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Media\Dto\Request;
 
-use App\Domain\Media\Models\Video;
+use App\Domain\Media\Model\Video;
 
 readonly class VideoResponseDto
 {

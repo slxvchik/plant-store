@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Tag\Dto\Response;
 
-use App\Domain\Tag\Models\Tag;
+use App\Domain\Tag\Model\Tag;
 
 readonly class TagResponseDto
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User\Dto\Response;
 
-use App\Domain\User\Models\Role;
+use App\Domain\User\Model\Role;
 use DateTimeImmutable;
 
 readonly class GetProfileResponseDto
