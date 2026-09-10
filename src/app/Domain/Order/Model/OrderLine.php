@@ -9,12 +9,14 @@ namespace App\Domain\Order\Model;
  */
 class OrderLine
 {
+    private(set) final string $productId;
     private(set) final string $productOfferId;
     private(set) final int $quantity;
     private(set) final int $unitPriceInKopecks;
 
-    public function __construct(string $productOfferId, int $quantity, int $unitPriceInKopecks)
+    public function __construct(string $productId, string $productOfferId, int $quantity, int $unitPriceInKopecks)
     {
+        $this->productId = $productId;
         $this->productOfferId = $productOfferId;
         $this->quantity = $quantity;
         $this->unitPriceInKopecks = $unitPriceInKopecks;

@@ -2,9 +2,10 @@
 
 namespace App\Domain\Order\Model;
 
-enum OrderStatus
+enum OrderStatus: string
 {
-    case CREATED;
-    case CANCELLED;
-    case COMPLETED;
+    case CREATED = "Новый";
+    case INPROGRESS = "В обработке";
+    case CANCELLED = "Отменён";
+    case COMPLETED = "Завершён";
 }

@@ -45,7 +45,7 @@ class User
     }
     private ?string $emailConfirmToken;
     private(set) bool $emailConfirmed;
-    private(set) ?string $phone;
+    private(set) string $phone;
     private(set) ?string $imageId;
     /**
      * @var Role[]
@@ -57,7 +57,7 @@ class User
     /**
      * @param Role[] $roles
      */
-    private function __construct(Uuid $id, string $passwordHash, string $firstName, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, ?string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt)
+    private function __construct(Uuid $id, string $passwordHash, string $firstName, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt)
     {
         $this->id = $id;
         $this->passwordHash = $passwordHash;
@@ -73,7 +73,7 @@ class User
         $this->updatedAt = $updatedAt;
     }
 
-    public static function fromDb(Uuid $id, string $passwordHash, string $firstname, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, ?string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt): self
+    public static function fromDb(Uuid $id, string $passwordHash, string $firstname, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt): self
     {
         return new self(
             id: $id,
@@ -91,7 +91,7 @@ class User
         );
     }
 
-    public static function createNew(UuidGeneratorInterface $uuidGenerator, string $password, string $firstname, ?string $lastName, string $email): self
+    public static function createNew(UuidGeneratorInterface $uuidGenerator, string $password, string $firstname, ?string $lastName, string $email, string $phone): self
     {
         $uuidStr = $uuidGenerator->generate();
         $id = new Uuid($uuidStr);
@@ -106,7 +106,7 @@ class User
             email: $email,
             emailConfirmToken: $confirmToken,
             emailConfirmed: false,
-            phone: null,
+            phone: $phone,
             imageId: null,
             roles: [Role::USER],
             createdAt: new DateTimeImmutable(),
@@ -128,7 +128,7 @@ class User
      * without requiring confirmations or additional permissions.
      * This method doesn't generate events.
      */
-    public function silentUpdate(?string $password, string $firstname, ?string $lastName, string $email, bool $emailConfirmed, ?string $phone, ?string $imageId, array $roles): void
+    public function silentUpdate(?string $password, string $firstname, ?string $lastName, string $email, bool $emailConfirmed, string $phone, ?string $imageId, array $roles): void
     {
         if ($password !== null) {
             $this->passwordHash = self::generatePasswordHash($password);
@@ -143,7 +143,7 @@ class User
         $this->updatedAt = new DateTimeImmutable();
     }
 
-    public function update(string $firstname, ?string $lastName, ?string $phone, ?string $imageId): void
+    public function update(string $firstname, ?string $lastName, string $phone, ?string $imageId): void
     {
         $this->firstName = $firstname;
         $this->lastName = $lastName;

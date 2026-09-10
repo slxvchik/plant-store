@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Order\UseCase;
+namespace App\Application\Order\CreateOrder;
 
 interface CreateOrderUseCase
 {
