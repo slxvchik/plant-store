@@ -27,6 +27,11 @@ interface BaseRepository
      */
     function findById(string|int $id): ?object;
     /**
+     * @param string[]|int[] $ids
+     * @return T[]
+     */
+    function findByIds(array $ids): array;
+    /**
      * @return Page<T>
      */
     function findPage(Pageable $pageable): Page;

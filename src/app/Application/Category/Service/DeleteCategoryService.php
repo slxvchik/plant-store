@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Category\Service;
 
-use App\Applicaiton\Category\Exception\CategoryNotFoundException;
+use App\Application\Category\Exception\CategoryNotFoundException;
 use App\Application\Category\UseCase\DeleteCategoryUseCase;
 use App\Domain\Category\Repository\CategoryRepository;
 use Override;

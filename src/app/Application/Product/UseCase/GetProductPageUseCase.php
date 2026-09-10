@@ -8,7 +8,7 @@ use App\Domain\Product\Model\Product;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 
-interface GetProductListUseCase
+interface GetProductPageUseCase
 {
     /**
      * @return Page<Product>

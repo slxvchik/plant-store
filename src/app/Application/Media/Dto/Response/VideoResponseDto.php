@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Media\Dto\Request;
+namespace App\Application\Media\Dto\Response;
 
 use App\Domain\Media\Model\Video;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Applicaiton\Category\Service;
+namespace App\Application\Category\Service;
 
-use App\Applicaiton\Category\Exception\CategoryAliasExistsException;
-use App\Applicaiton\Category\Exception\CategoryNotFoundException;
+use App\Application\Category\Exception\CategoryAliasExistsException;
+use App\Application\Category\Exception\CategoryNotFoundException;
 use App\Application\Category\Dto\Request\UpdateCategoryRequestDto;
 use App\Application\Category\UseCase\UpdateCategoryUseCase;
 use App\Domain\Category\Repository\CategoryRepository;

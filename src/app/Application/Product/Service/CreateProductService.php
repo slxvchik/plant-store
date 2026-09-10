@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Application\Product\Service;
 
-use App\Applicaiton\Category\Exception\CategoryNotFoundException;
 use App\Application\Product\Dto\Request\CreateProductRequestDto;
+use App\Application\Product\Dto\Request\SaveOfferRequestDto;
+use App\Application\Product\Dto\Request\SaveStockRequestDto;
+use App\Application\Product\Exception\ProductAliasExistsException;
 use App\Application\Product\UseCase\CreateProductUseCase;
-use App\Application\Tag\Exception\TagNotFoundException;
-use App\Domain\Category\Repository\CategoryRepository;
-use App\Domain\Media\Repository\ImageRepository;
-use App\Domain\Media\Repository\VideoRepository;
 use App\Domain\Product\Model\Product;
+use App\Domain\Product\Model\SaveOffer;
+use App\Domain\Product\Model\Stock;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
-use App\Domain\Tag\Repository\TagRepository;
 use Override;
 
 class CreateProductService implements CreateProductUseCase
@@ -22,31 +21,11 @@ class CreateProductService implements CreateProductUseCase
     public function __construct(
         private final UuidGeneratorInterface $uuidGeneratorInterface,
         private final ProductRepository $productRepository,
-        private final CategoryRepository $categoryRepository,
-        private final TagRepository $tagRepository,
-        private final ImageRepository $imageRepository,
-        private final VideoRepository $videoRepository
     ) {}
 
     #[Override]
     public function execute(CreateProductRequestDto $createProductRequestDto): string
     {
-        foreach ($createProductRequestDto->categoryIds as $categoryId) {
-            $category = $this->categoryRepository->findById($categoryId);
-            if ($category === null) {
-                throw new CategoryNotFoundException($categoryId);
-            }
-        }
-
-        foreach ($createProductRequestDto->tagIds as $tagId) {
-            $tag = $this->tagRepository->findById($tagId);
-            if ($tag === null) {
-                throw new TagNotFoundException($tagId);
-            }
-        }
-
-        // TODO: check images & video
-
         $product = Product::createNew(
             uuidIdentityGenerator: $this->uuidGeneratorInterface,
             active: $createProductRequestDto->active,
@@ -60,10 +39,56 @@ class CreateProductService implements CreateProductUseCase
         );
 
         $existingProduct = $this->productRepository->findByAlias($product->alias);
-        if ($existingProduct !== null && $existingProduct->id->value !== $product->id->value) {
-            // TODO: product alias exception
+        if ($existingProduct !== null) {
+            throw new ProductAliasExistsException($product->alias);
         }
 
+        $newOffers = $this->buildOffers($createProductRequestDto->offers);
+
+        $product->saveOffers($newOffers, $this->uuidGeneratorInterface);
+
         return $this->productRepository->create($product);
+    }
+
+    /**
+     * @param SaveOfferRequestDto[] $saveOfferRequestDtos
+     * @return SaveOffer[]
+     */
+    private function buildOffers(array $saveOfferRequestDtos): array
+    {
+        $newOffers = [];
+        foreach ($saveOfferRequestDtos as $saveOffer) {
+            $stocks = $this->buildStocks($saveOffer->stocks);
+            $newOffers[] = new SaveOffer(
+                id: null,
+                active: $saveOffer->active,
+                sku: $saveOffer->sku,
+                description: $saveOffer->description,
+                price: $saveOffer->price,
+                stocks: $stocks,
+                formFactor: $saveOffer->formFactor,
+                size: $saveOffer->size,
+                age: $saveOffer->age,
+                sowingDate: $saveOffer->sowingDate
+            );
+        }
+        return $newOffers;
+    }
+
+    /**
+     * @param SaveStockRequestDto[] $saveStockRequestDtos
+     * @return Stock[]
+     */
+    private function buildStocks(array $saveStockRequestDtos): array
+    {
+        $stocks = [];
+        foreach ($saveStockRequestDtos as $saveStockRequestDto) {
+            $stocks[] = new Stock(
+                warehouseId: $saveStockRequestDto->warehouseId,
+                quantity: $saveStockRequestDto->quantity,
+                reserved: $saveStockRequestDto->reserved
+            );
+        }
+        return $stocks;
     }
 }

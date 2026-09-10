@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Category\Service;
 
-use App\Applicaiton\Category\Exception\CategoryAliasExistsException;
+use App\Application\Category\Exception\CategoryAliasExistsException;
 use App\Application\Category\Dto\Request\CreateCategoryRequestDto;
 use App\Application\Category\UseCase\CreateCategoryUseCase;
 use App\Domain\Category\Model\Category;

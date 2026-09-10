@@ -10,10 +10,10 @@ namespace App\Domain\Shared\Pagination;
 final readonly class Page
 {
     /**
-     * @param T[] $content
+     * @param T[] $items
      */
     public function __construct(
-        public array $content,
+        public array $items,
         public int $pageNumber,
         public int $pageSize,
         public int $totalPages,
@@ -25,7 +25,7 @@ final readonly class Page
     public static function empty(): self
     {
         return new self(
-            content: [],
+            items: [],
             pageNumber: 0,
             pageSize: 0,
             totalPages: 0,
@@ -36,13 +36,13 @@ final readonly class Page
     }
 
     /**
-     * @param T[] $newContent
+     * @param T[] $newItems
      * @return Page<T>
      */
-    public function changeContent(array $newContent): Page
+    public function changeItems(array $newItems): Page
     {
         return new Page(
-            content: $newContent,
+            items: $newItems,
             pageNumber: $this->pageNumber,
             pageSize: $this->pageSize,
             totalPages: $this->totalPages,

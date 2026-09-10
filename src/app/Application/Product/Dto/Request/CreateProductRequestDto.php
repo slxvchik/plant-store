@@ -13,7 +13,7 @@ readonly class CreateProductRequestDto
      * @param string[] $tagIds
      * @param string[] $videoIds
      * @param string[] $imageIds
-     * @param SaveOfferRequestDto $offers
+     * @param SaveOfferRequestDto[] $offers
      */
     public function __construct(
         public bool $active,

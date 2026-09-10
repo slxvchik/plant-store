@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Applicaiton\Category\Exception;
+namespace App\Application\Category\Exception;
 
 use App\Domain\Shared\AppException\AppException;
 use App\Domain\Shared\AppException\AppExceptionStatus;

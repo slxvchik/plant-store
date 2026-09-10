@@ -11,6 +11,9 @@ use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use DateTimeImmutable;
 
+/**
+ * Aggregate of Product
+ */
 class Offer
 {
     private(set) final Uuid $id;
@@ -55,9 +58,10 @@ class Offer
     /**
      * @param Stock[] $stocks
      */
-    private function __construct(Uuid $id, bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate)
+    public function __construct(string $id, bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate)
     {
-        $this->id = $id;
+        $uuid = new Uuid($id);
+        $this->id = $uuid;
         $this->active = $active;
         $this->sku = $sku;
         $this->description = $description;
@@ -72,32 +76,11 @@ class Offer
     /**
      * @param Stock[] $stocks
      */
-    public static function fromDb(string $id, bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate): self
-    {
-        $uuid = new Uuid($id);
-        return new self(
-            id: $uuid,
-            active: $active,
-            sku: $sku,
-            description: $description,
-            price: $price,
-            stocks: $stocks,
-            formFactor: $formFactor,
-            size: $size,
-            age: $age,
-            sowingDate: $sowingDate
-        );
-    }
-
-    /**
-     * @param Stock[] $stocks
-     */
     public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator,  bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate): self
     {
-        $uuidValue = $uuidIdentityGenerator->generate();
-        $newUuid = new Uuid($uuidValue);
+        $uuid = $uuidIdentityGenerator->generate();
         return new self(
-            id: $newUuid,
+            id: $uuid,
             active: $active,
             sku: $sku,
             description: $description,

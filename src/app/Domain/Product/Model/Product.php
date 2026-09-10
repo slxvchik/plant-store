@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Model;
 
+use App\Domain\Product\Exception\OfferNotFoundException;
 use App\Domain\Shared\Exception\FieldRequiredException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
+use DateTimeImmutable;
 
 class Product
 {
@@ -58,7 +60,7 @@ class Product
      * @param string[] $imageIds
      * @param Offer[] $offers
      */
-    private function __construct(Uuid $id, bool $active, string $alias, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers = [])
+    private function __construct(Uuid $id, bool $active, string $alias, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers)
     {
         $this->id = $id;
         $this->active = $active;
@@ -72,7 +74,7 @@ class Product
         $this->offers = $offers;
     }
 
-    public static function fromDb(string $id, bool $active, string $alias, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds): self
+    public static function fromDb(string $id, bool $active, string $alias, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers): self
     {
         $uuid = new Uuid($id);
         return new self(
@@ -84,7 +86,8 @@ class Product
             categories: $categories,
             tags: $tags,
             videoIds: $videoIds,
-            imageIds: $imageIds
+            imageIds: $imageIds,
+            offers: $offers
         );
     }
 
@@ -94,7 +97,7 @@ class Product
      * @param string[] $videoIds
      * @param string[] $imageIds
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, string $name, array $categories = [], array $tags = [], array $videoIds = [], array $imageIds = [], ?string $description = null): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, string $name, array $categories, array $tags, array $videoIds, array $imageIds, ?string $description): self
     {
         $uuidValue = $uuidIdentityGenerator->generate();
         $newUuid = new Uuid($uuidValue);
@@ -107,7 +110,8 @@ class Product
             categories: $categories,
             tags: $tags,
             videoIds: $videoIds,
-            imageIds: $imageIds
+            imageIds: $imageIds,
+            offers: []
         );
     }
 
@@ -130,35 +134,47 @@ class Product
     }
 
     /**
-     * @param Offer[] $offers
+     * @param SaveOffer[] $saveOffers
      */
-    public function updateOffers(array $offers): void
+    public function saveOffers(array $saveOffers, UuidGeneratorInterface $uuidGeneratorInterface): void
     {
         $newOfferIds = [];
-        foreach ($offers as $newOffer) {
-            $id = $newOffer->id->value;
+        foreach ($saveOffers as $saveOffer) {
+            $id = $saveOffer->id;
 
-            if (!$id) {
+            if ($id === null) {
+                $newOffer = Offer::createNew(
+                    uuidIdentityGenerator: $uuidGeneratorInterface,
+                    active: $saveOffer->active,
+                    sku: $saveOffer->sku,
+                    description: $saveOffer->description,
+                    price: $saveOffer->price,
+                    stocks: $saveOffer->stocks,
+                    formFactor: $saveOffer->formFactor,
+                    size: $saveOffer->size,
+                    age: $saveOffer->age,
+                    sowingDate: $saveOffer->sowingDate
+                );
+                $this->offers[$newOffer->id->value] = $saveOffer;
+                $newOfferIds[] = $newOffer->id->value;
                 continue;
             }
 
-            $newOfferIds[] = $id;
 
             if (!isset($this->offers[$id])) {
-                $this->offers[$id] = $newOffer;
-                continue;
+                throw new OfferNotFoundException();
             }
 
             $this->offers[$id]->update(
-                active: $newOffer->active,
-                sku: $newOffer->sku,
-                description: $newOffer->description,
-                price: $newOffer->price,
-                stocks: $newOffer->stocks,
-                formFactor: $newOffer->formFactor,
-                size: $newOffer->size,
-                age: $newOffer->age,
-                sowingDate: $newOffer->sowingDate
+                active: $saveOffer->active,
+                sku: $saveOffer->sku,
+                description: $saveOffer->description,
+                price: $saveOffer->price,
+                stocks: $saveOffer->stocks,
+                formFactor: $saveOffer->formFactor,
+                size: $saveOffer->size,
+                age: $saveOffer->age,
+                sowingDate: $saveOffer->sowingDate
             );
         }
 

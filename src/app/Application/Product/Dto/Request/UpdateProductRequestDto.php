@@ -13,7 +13,7 @@ readonly class UpdateProductRequestDto
      * @param string[] $tagIds
      * @param string[] $videoIds
      * @param string[] $imageIds
-     * @param SaveOfferRequestDto $offers
+     * @param SaveOfferRequestDto[] $offers
      */
     public function __construct(
         public string $id,
