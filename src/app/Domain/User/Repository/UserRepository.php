@@ -12,6 +12,8 @@ use App\Domain\User\Model\User;
  */
 interface UserRepository extends BaseRepository
 {
+    public function findByPhone(string $phone): User;
+
     public function findByEmail(string $email): User;
 
     public function findByEmailConfirmToken(string $confirmToken): User;

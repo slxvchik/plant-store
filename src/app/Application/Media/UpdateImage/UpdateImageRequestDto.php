@@ -8,6 +8,7 @@ readonly class UpdateImageRequestDto
 {
     public function __construct(
         public string $id,
+        public ?string $titleText,
         public ?string $altText
     ) {}
 }

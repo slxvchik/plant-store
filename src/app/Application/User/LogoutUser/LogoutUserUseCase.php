@@ -6,5 +6,5 @@ namespace App\Application\User\LogoutUser;
 
 interface LogoutUserUseCase
 {
-    public function execute(string $userId): void;
+    public function execute(string $token): void;
 }

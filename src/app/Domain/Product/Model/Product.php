@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Product\Model;
 
 use App\Domain\Product\Exception\OfferNotFoundException;
-use App\Domain\Shared\Exception\FieldRequiredException;
+use App\Domain\Shared\Exception\InternalException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use DateTimeImmutable;
@@ -17,7 +17,7 @@ class Product
     private(set) string $alias {
         set {
             if (empty($value)) {
-                throw new FieldRequiredException("Alias");
+                throw new InternalException("Alias");
             }
             $this->alias = $value;
         }
@@ -25,7 +25,7 @@ class Product
     private(set) string $name {
         set {
             if (empty($value)) {
-                throw new FieldRequiredException("Alias");
+                throw new InternalException("Alias");
             }
             $this->name = $value;
         }

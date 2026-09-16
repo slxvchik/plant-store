@@ -6,7 +6,7 @@ namespace App\Domain\Product\Model;
 
 use App\Domain\Product\Exception\ProductSkuSetPriceException;
 use App\Domain\Product\Exception\ProductStockNotFoundException;
-use App\Domain\Shared\Exception\FieldRequiredException;
+use App\Domain\Shared\Exception\InternalException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use DateTimeImmutable;
@@ -21,7 +21,7 @@ class Offer
     private(set) string $sku {
         set {
             if (empty($value)) {
-                throw new FieldRequiredException("Sku");
+                throw new InternalException("Sku");
             }
             $this->sku = $value;
         }

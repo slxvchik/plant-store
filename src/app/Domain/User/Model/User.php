@@ -73,12 +73,12 @@ class User
         $this->updatedAt = $updatedAt;
     }
 
-    public static function fromDb(Uuid $id, string $passwordHash, string $firstname, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt): self
+    public static function fromDb(Uuid $id, string $passwordHash, string $firstName, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt): self
     {
         return new self(
             id: $id,
             passwordHash: $passwordHash,
-            firstName: $firstname,
+            firstName: $firstName,
             lastName: $lastName,
             email: $email,
             emailConfirmToken: $emailConfirmToken,
@@ -91,7 +91,7 @@ class User
         );
     }
 
-    public static function createNew(UuidGeneratorInterface $uuidGenerator, string $password, string $firstname, ?string $lastName, string $email, string $phone): self
+    public static function createNew(UuidGeneratorInterface $uuidGenerator, string $password, string $firstName, ?string $lastName, string $email, string $phone): self
     {
         $uuidStr = $uuidGenerator->generate();
         $id = new Uuid($uuidStr);
@@ -101,7 +101,7 @@ class User
         $user = new self(
             id: $id,
             passwordHash: self::generatePasswordHash($password),
-            firstName: $firstname,
+            firstName: $firstName,
             lastName: $lastName,
             email: $email,
             emailConfirmToken: $confirmToken,

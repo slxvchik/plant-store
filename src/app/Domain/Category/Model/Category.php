@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Category\Model;
 
-use App\Domain\Shared\Exception\FieldRequiredException;
+use App\Domain\Shared\Exception\InternalException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
@@ -49,10 +49,10 @@ class Category
     public function update(string $alias, string $name, bool $active): void
     {
         if (empty($alias)) {
-            throw new FieldRequiredException("Alias");
+            throw new InternalException("Alias");
         }
         if (empty($name)) {
-            throw new FieldRequiredException("Name");
+            throw new InternalException("Name");
         }
         $this->alias = $alias;
         $this->name = $name;

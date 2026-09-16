@@ -22,7 +22,6 @@ class Video extends MediaDB
     private function __construct(
         Uuid $id,
         string $pathToFile,
-        string $originalName,
         string $mimeType,
         int $sizeInBytes,
         ?int $width,
@@ -37,7 +36,7 @@ class Video extends MediaDB
             throw new InvalidMimeTypeException($mimeType, self::ACCEPTABLE_TYPES);
         }
 
-        parent::__construct($id, $pathToFile, $originalName, $mimeType, $sizeInBytes);
+        parent::__construct($id, $pathToFile, $mimeType, $sizeInBytes);
 
         $this->width = $width;
         $this->height = $height;
@@ -51,7 +50,6 @@ class Video extends MediaDB
     public static function fromDb(
         string $id,
         string $pathToFile,
-        string $originalName,
         string $mimeType,
         int $sizeInBytes,
         ?int $width,
@@ -65,7 +63,6 @@ class Video extends MediaDB
         return new self(
             id: new Uuid($id),
             pathToFile: $pathToFile,
-            originalName: $originalName,
             mimeType: $mimeType,
             sizeInBytes: $sizeInBytes,
             width: $width,
@@ -81,7 +78,6 @@ class Video extends MediaDB
     public static function createNew(
         UuidGeneratorInterface $uuidGeneratorInterface,
         string $pathToFile,
-        string $originalName,
         string $mimeType,
         int $sizeInBytes,
         ?int $width,
@@ -96,7 +92,6 @@ class Video extends MediaDB
         return new self(
             id: new Uuid($uuidStr),
             pathToFile: $pathToFile,
-            originalName: $originalName,
             mimeType: $mimeType,
             sizeInBytes: $sizeInBytes,
             width: $width,

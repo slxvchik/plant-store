@@ -11,7 +11,6 @@ readonly class VideoResponseDto
     public function __construct(
         public string $id,
         public string $pathToFile,
-        public string $originalName,
         public string $mimeType,
         public int $sizeInBytes,
         public ?int $width,
@@ -28,7 +27,6 @@ readonly class VideoResponseDto
         return new self(
             id: $video->id->value,
             pathToFile: $video->pathToFile,
-            originalName: $video->originalName,
             mimeType: $video->mimeType,
             sizeInBytes: $video->sizeInBytes,
             width: $video->width,

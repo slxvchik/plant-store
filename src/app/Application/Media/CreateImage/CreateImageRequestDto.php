@@ -11,9 +11,10 @@ readonly class CreateImageRequestDto
     public Media $media;
     public int $width;
     public int $height;
+    public ?string $titleText;
     public ?string $altText;
 
-    public function __construct(Media $media, ?string $altText)
+    public function __construct(Media $media, ?string $altText, ?string $titleText)
     {
         $this->media = $media;
 
@@ -22,6 +23,7 @@ readonly class CreateImageRequestDto
         $this->width = $imageSize[0];
         $this->height = $imageSize[1];
 
+        $this->titleText = $titleText;
         $this->altText = $altText;
     }
 }
