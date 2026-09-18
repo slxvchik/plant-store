@@ -6,7 +6,7 @@ namespace App\Application\Order\Dto\Response;
 
 use App\Domain\Order\Model\OrderStatus;
 
-readonly class OrderResponseDto
+readonly class GetUserOrderResponseDto
 {
     /**
      * @param OrderLineResponseDto[] $orderLineResponseDto

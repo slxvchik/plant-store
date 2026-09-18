@@ -8,50 +8,83 @@ use App\Domain\Cart\Exception\CartLineNotFoundException;
 
 class Cart
 {
-    private(set) final string $userId;
+    public final string $userId;
     /**
-     * @var CartLine[] Map[$productSkuId] => CartLine;
+     * @var array<string, array<string, CartLine>> Map[$productId][$offerId] => CartLine
      */
-    private(set) array $cartLine;
+    private array $cartLines;
 
     /**
-     * @param CartLine[] $cartLine
+     * @param array<string, array<string, CartLine>> $cartLines Map[$productId][$offerId] => CartLine
      */
-    public function __construct(string $userId, array $cartLine)
+    private function __construct(string $userId, array $cartLines)
     {
         $this->userId = $userId;
-        $this->cartLine = $cartLine;
+        $this->cartLines = $cartLines;
     }
 
-    public function addProduct(string $productSkuId, int $quantity = 1): void
+    public static function createNew(string $userId): self
     {
-        $cartLine = $this->getCartLineByProduct($productSkuId);
+        return new self(
+            userId: $userId,
+            cartLines: []
+        );
+    }
+
+    /**
+     * @param array<string, array<string, CartLine>> $cartLines Map[$productId][$offerId] => CartLine
+     */
+    public static function fromDb(string $userId, array $cartLines): self
+    {
+        return new self(
+            userId: $userId,
+            cartLines: $cartLines
+        );
+    }
+
+    public function addProduct(string $productId, string $offerId, int $quantity = 1): void
+    {
+        $cartLine = $this->getCartLineByProduct($productId, $offerId);
         if ($cartLine === null) {
-            $this->cartLine[$productSkuId] = new CartLine($productSkuId, $quantity);
+            $this->cartLines[$productId][$offerId] = new CartLine($productId, $offerId, $quantity);
         } else {
             $newQuantity = $cartLine->quantity + $quantity;
-            $this->cartLine[$productSkuId] = $cartLine->changeQuantity($newQuantity);
+            $this->cartLines[$productId][$offerId] = $cartLine->changeQuantity($newQuantity);
         }
     }
 
-    public function changeProductQuantity(string $productSkuId, int $quantity = 1): void
+    public function changeProductQuantity(string $productId, string $offerId, int $quantity = 1): void
     {
-        $cartLine = $this->getCartLineByProduct($productSkuId);
+        $cartLine = $this->getCartLineByProduct($productId, $offerId);
         if ($cartLine === null) {
             throw new CartLineNotFoundException();
         }
-        $this->cartLine[$productSkuId] = $cartLine->changeQuantity($quantity);
+        $this->cartLines[$offerId] = $cartLine->changeQuantity($quantity);
     }
 
-    public function removeProduct(string $productSkuId): void
+    public function removeProduct(string $productId, string $offerId): void
     {
-        if (isset($this->cartLine[$productSkuId])) {
-            unset($this->cartLine[$productSkuId]);
+        if (isset($this->cartLines[$productId][$offerId])) {
+            unset($this->cartLines[$productId][$offerId]);
         }
     }
-    
-    private function getCartLineByProduct(string $productSkuId): ?CartLine
+
+    private function getCartLineByProduct(string $productId, string $offerId): ?CartLine
     {
-        return $this->cartLine[$productSkuId] ?? null;
+        return $this->cartLines[$productId][$offerId] ?? null;
+    }
+
+    /**
+     * @return CartLine[]
+     */
+    public function getCartLines(): array
+    {
+        $cartLines = [];
+        foreach ($this->cartLines as $productId => $offerIds) {
+            foreach ($offerIds as $offerId => $cartLine) {
+                $cartLines[] = $cartLine;
+            }
+        }
+        return $cartLines;
     }
 }

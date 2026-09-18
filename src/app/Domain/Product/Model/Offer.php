@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Model;
 
+use App\Domain\Product\Exception\ProductPurchaseQuantityException;
 use App\Domain\Product\Exception\ProductSkuSetPriceException;
 use App\Domain\Product\Exception\ProductStockNotFoundException;
 use App\Domain\Shared\Exception\InternalException;
@@ -140,12 +141,6 @@ class Offer
     {
         $stock = $this->getStockByWarehouseId($warehouseId);
         $this->stocks[$warehouseId] = $stock->refund($quantity);
-    }
-
-    public function fastSell(string $warehouseId, int $quantity): void
-    {
-        $stock = $this->getStockByWarehouseId($warehouseId);
-        $this->stocks[$warehouseId] = $stock->fastSell($quantity);
     }
 
     private function getStockByWarehouseId(string $warehouseId): Stock

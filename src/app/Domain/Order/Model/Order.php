@@ -84,9 +84,14 @@ class Order
         return $totalPrice;
     }
 
+    public function takeInWork(): void
+    {
+        $this->status = OrderStatus::INPROGRESS;
+    }
+
     public function cancel(): void
     {
-        // TODO: cancel order & send products in warehouses back + refund
+        $this->status = OrderStatus::CANCELLED;
     }
 
     public function complete(): void

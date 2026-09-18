@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Model;
 
-use App\Domain\Product\Exception\ProductFastSellQuantityException;
+use App\Domain\Product\Exception\ProductPurchaseQuantityException;
 use App\Domain\Product\Exception\ProductQuantityRemoveReserveException;
 use App\Domain\Product\Exception\ProductQuantityReserveException;
 use App\Domain\Product\Exception\ProductShipReserveException;
@@ -72,19 +72,6 @@ readonly class Stock
         return new self(
             $this->warehouseId,
             $this->quantity + $quantity,
-            $this->reserved
-        );
-    }
-
-    public function fastSell(int $quantity): self
-    {
-        $stockQuantity = $this->quantity - $quantity;
-        if ($stockQuantity < 0) {
-            throw new ProductFastSellQuantityException();
-        }
-        return new self(
-            $this->warehouseId,
-            $stockQuantity,
             $this->reserved
         );
     }

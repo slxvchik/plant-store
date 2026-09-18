@@ -34,7 +34,7 @@ class Product
     /**
      * @var Offer[]
      */
-    private(set) array $offers;
+    private array $offers;
     /**
      * @var string[] Category ids
      */
@@ -183,5 +183,25 @@ class Product
         foreach ($idsToDelete as $idToDelete) {
             unset($this->offers[$idToDelete]);
         }
+    }
+
+    /**
+     * @return Offer[]
+     */
+    public function getOffers(): array
+    {
+        $offers = [];
+        foreach ($this->offers as $offer) {
+            $offers[] = $offer;
+        }
+        return $offers;
+    }
+
+    public function getOffer(string $offerId): Offer
+    {
+        if ($this->offers[$offerId] === null) {
+            throw new OfferNotFoundException();
+        }
+        return $this->offers[$offerId];
     }
 }
