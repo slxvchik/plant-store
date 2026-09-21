@@ -8,7 +8,6 @@ use App\Domain\Product\Exception\OfferNotFoundException;
 use App\Domain\Shared\Exception\InternalException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
-use DateTimeImmutable;
 
 class Product
 {
@@ -203,5 +202,15 @@ class Product
             throw new OfferNotFoundException();
         }
         return $this->offers[$offerId];
+    }
+
+    public function getOfferAvailableQuantity(string $offerId): int
+    {
+        $availableCount = 0;
+        $offer = $this->getOffer($offerId);
+        foreach ($offer->stocks as $stock) {
+            $availableCount += $stock->getAvailableQuantity();
+        }
+        return $availableCount;
     }
 }

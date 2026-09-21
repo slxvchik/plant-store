@@ -32,9 +32,9 @@ final readonly class GetUserOrdersResponseDto
     {
         $orderLines = [];
         foreach ($order->orderLines as $orderLine) {
-            $product = $productsMap[$orderLine->productId];
-            $imageId = $product->imageIds[0];
-            $image = $imageId !== null ? $imagesMap[$imageId] : null;
+            $product = $productsMap[$orderLine->productId] ?? null;
+            $imageId = (!empty($product->imageIds)) ? $product->imageIds[0] : null;
+            $image = $imageId !== null ? ($imagesMap[$imageId] ?? null) : null;
 
             $orderLines[] = new GetUserOrdersOrderLineResponseDto(
                 productId: $orderLine->productId,

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Cart\SaveProduct;
+namespace App\Application\Cart\SaveProduct\Dto;
 
 readonly class SaveProductRequestDto
 {

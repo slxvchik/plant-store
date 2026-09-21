@@ -53,12 +53,12 @@ readonly class GetOrdersService implements GetOrdersUseCase
         $products = $this->productRepository->findByIds(array_keys($productIdsMap));
         // $productsMap[productId] => product
         $productsMap = [];
-        // $imageIdsMap[imageId] => imageUrl
+        // $imageIdsMap[imageId] => bool
         $imageIdsMap = [];
         foreach ($products as $product) {
             $productsMap[$product->id->value] = $product;
-            if ($product->images[0] !== null) {
-                $imageIdsMap[$product->id->value] = $product->images[0]->id;
+            if (!empty($product->imageIds)) {
+                $imageIdsMap[$product->imageIds[0]] = true;
             }
         }
 

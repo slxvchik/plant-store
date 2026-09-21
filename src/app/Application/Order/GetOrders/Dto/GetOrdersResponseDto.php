@@ -25,22 +25,23 @@ final readonly class GetOrdersResponseDto
     ) {}
 
     /**
-     * @param Product[] $productsMap Map[productId] => product
-     * @param Image[] $imagesMap Map[imageId] => image
+     * @param array<string, Product> $productsMap Map[productId] => product
+     * @param array<string, Image> $imagesMap Map[imageId] => image
      */
     public static function fromDomain(Order $order, User $user, array $productsMap, array $imagesMap, string $warehouseAddress): self
     {
         $orderLinesDtos = [];
         foreach ($order->orderLines as $orderLine) {
-            $product = $productsMap[$orderLine->productId];
+            $product = $productsMap[$orderLine->productId] ?? null;
             $offer = $product?->getOffer($orderLine->productOfferId);
-            $imageId = $product?->imageIds[0];
-            $image = $imageId ? ImageResponseDto::fromDomain($imagesMap[$imageId]) : null;
+            $imageId = (!empty($product->imageIds)) ? $product->imageIds[0] : null;
+            $imageModel = $imageId ? ($imagesMap[$imageId] ?? null) : null;
+            $imageDto = $imageModel ? ImageResponseDto::fromDomain($imageModel) : null;
 
             $orderLinesDtos[] = new GetOrdersOrderLineResponseDto(
                 productId: $orderLine->productId,
                 offerId: $orderLine->productOfferId,
-                imageResponseDto: $image,
+                imageResponseDto: $imageDto,
                 productName: $offer?->name ?? 'Товар не найден',
                 quantity: $orderLine->quantity,
                 unitPriceInKopecks: $orderLine->unitPriceInKopecks,
