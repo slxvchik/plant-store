@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Category\GetCategoryPage;
+namespace App\Application\Category\GetCategories;
 
 use App\Domain\Category\Repository\CategoryRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use Override;
 
-class GetCategoryPageService implements GetCategoryPageUserCase
+class GetCategoriesService implements GetCategoriesUserCase
 {
     public function __construct(
         private final CategoryRepository $categoryRepository

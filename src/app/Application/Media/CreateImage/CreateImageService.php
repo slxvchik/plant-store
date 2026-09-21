@@ -13,8 +13,8 @@ use Override;
 readonly class CreateImageService implements CreateImageUseCase
 {
     /**
-     * @param $imageStorageRootPath should be with slash in the end
-     * @param $webUploadImagePath should be with slash in the end
+     * @param string $imageStorageRootPath should be with slash in the end
+     * @param string $webUploadImagePath should be with slash in the end
      */
     public function __construct(
         private UuidGeneratorInterface $uuidGeneratorInterface,
@@ -39,7 +39,7 @@ readonly class CreateImageService implements CreateImageUseCase
 
         $image = Image::createNew(
             uuidGeneratorInterface: $this->uuidGeneratorInterface,
-            pathToFile: $relativePath,
+            webPathToFile: $relativePath,
             mimeType: $createImageRequestDto->media->mimeType,
             sizeInBytes: $createImageRequestDto->media->size,
             width: $createImageRequestDto->width,
@@ -48,7 +48,7 @@ readonly class CreateImageService implements CreateImageUseCase
             altText: $createImageRequestDto->altText
         );
 
-        $absolutePath = $this->imageStorageRootPath . $image->pathToFile;
+        $absolutePath = $this->imageStorageRootPath . $image->webPathToFile;
 
         $directory = dirname($absolutePath);
         if (!is_dir($directory)) {

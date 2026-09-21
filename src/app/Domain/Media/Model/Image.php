@@ -14,15 +14,18 @@ class Image extends MediaDB
     private(set) int $height;
     private(set) ?string $titleText;
     private(set) ?string $altText;
-    private const ACCEPTABLE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+    /**
+     * @var string[]
+     */
+    private const array ACCEPTABLE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
     private function __construct(
-        Uuid $id,
-        string $pathToFile,
-        string $mimeType,
-        int $sizeInBytes,
-        int $width,
-        int $height,
+        Uuid    $id,
+        string  $webPathToFile,
+        string  $mimeType,
+        int     $sizeInBytes,
+        int     $width,
+        int     $height,
         ?string $titleText,
         ?string $altText
     ) {
@@ -30,7 +33,7 @@ class Image extends MediaDB
             throw new InvalidMimeTypeException($mimeType, self::ACCEPTABLE_TYPES);
         }
 
-        parent::__construct($id, $pathToFile, $mimeType, $sizeInBytes);
+        parent::__construct($id, $webPathToFile, $mimeType, $sizeInBytes);
 
         $this->width = $width;
         $this->height = $height;
@@ -40,7 +43,7 @@ class Image extends MediaDB
 
     public static function fromDb(
         string $id,
-        string $pathToFile,
+        string $webPathToFile,
         string $mimeType,
         int $sizeInBytes,
         int $width,
@@ -50,7 +53,7 @@ class Image extends MediaDB
     ): self {
         return new self(
             id: new Uuid($id),
-            pathToFile: $pathToFile,
+            webPathToFile: $webPathToFile,
             mimeType: $mimeType,
             sizeInBytes: $sizeInBytes,
             width: $width,
@@ -62,7 +65,7 @@ class Image extends MediaDB
 
     public static function createNew(
         UuidGeneratorInterface $uuidGeneratorInterface,
-        string $pathToFile,
+        string $webPathToFile,
         string $mimeType,
         int $sizeInBytes,
         int $width,
@@ -73,7 +76,7 @@ class Image extends MediaDB
         $uuidStr = $uuidGeneratorInterface->generate();
         return new self(
             id: new Uuid($uuidStr),
-            pathToFile: $pathToFile,
+            webPathToFile: $webPathToFile,
             mimeType: $mimeType,
             sizeInBytes: $sizeInBytes,
             width: $width,

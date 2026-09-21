@@ -10,7 +10,7 @@ readonly class ImageResponseDto
 {
     public function __construct(
         public string $id,
-        public string $pathToFile,
+        public string $webPathToFile,
         public string $mimeType,
         public int $sizeInBytes,
         public int $width,
@@ -23,7 +23,7 @@ readonly class ImageResponseDto
     {
         return new self(
             id: $image->id->value,
-            pathToFile: $image->pathToFile,
+            webPathToFile: $image->webPathToFile,
             mimeType: $image->mimeType,
             sizeInBytes: $image->sizeInBytes,
             width: $image->width,

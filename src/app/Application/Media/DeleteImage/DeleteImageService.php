@@ -23,7 +23,7 @@ readonly class DeleteImageService implements DeleteImageUseCase
             throw new ImageNotFoundException();
         }
 
-        $filePath = $this->imageStorageRootPath . $image->pathToFile;
+        $filePath = $this->imageStorageRootPath . $image->webPathToFile;
         if (file_exists($filePath)) {
             unlink($filePath);
         }

@@ -8,7 +8,7 @@ use App\Domain\Cart\Model\Cart;
 
 interface CartRepository
 {
-    public function findByUserId(string $userId): Cart;
+    public function findByUserId(string $userId): ?Cart;
 
     public function save(Cart $cart): void;
 }

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Media\GetImagePage;
+namespace App\Application\Media\GetVideos;
 
-use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
+use App\Application\Media\Dto\Request\VideoResponseDto;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 
-interface GetImagePageUseCase
+interface GetVideosUseCase
 {
     /**
-     * @return Page<ImageResponseDto>
+     * @return Page<VideoResponseDto>
      */
     public function execute(Pageable $pageable): Page;
 }

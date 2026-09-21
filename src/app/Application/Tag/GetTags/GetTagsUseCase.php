@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Product\GetProductPage;
+namespace App\Application\Tag\GetTags;
 
-use App\Application\Product\Shared\Dto\Response\ProductResponseDto;
+use App\Application\Tag\Shared\Dto\Response\TagResponseDto;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 
-interface GetProductPageUseCase
+interface GetTagsUseCase
 {
     /**
-     * @return Page<ProductResponseDto>
+     * @return Page<TagResponseDto>
      */
     public function execute(Pageable $pageable): Page;
 }

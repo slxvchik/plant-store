@@ -8,5 +8,5 @@ interface MediaStorageInterface
 {
     public function store(string $temporaryPath, string $targetFileName): string;
 
-    public function delete(string $pathToFile): void;
+    public function delete(string $webPathToFile): void;
 }

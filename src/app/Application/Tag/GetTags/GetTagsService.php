@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Tag\GetTagPage;
+namespace App\Application\Tag\GetTags;
 
 use App\Application\Tag\Shared\Dto\Response\TagResponseDto;
 use App\Domain\Shared\Pagination\Page;
@@ -10,7 +10,7 @@ use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Tag\Repository\TagRepository;
 use Override;
 
-readonly class GetTagPageService implements GetTagPageUseCase
+readonly class GetTagsService implements GetTagsUseCase
 {
     public function __construct(
         private TagRepository $tagRepository

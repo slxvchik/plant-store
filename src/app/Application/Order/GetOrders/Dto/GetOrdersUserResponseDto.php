@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Order\GetOrderList\Dto;
+namespace App\Application\Order\GetOrders\Dto;
 
-final readonly class GetOrderListUserResponseDto
+final readonly class GetOrdersUserResponseDto
 {
     public function __construct(
         public string $id,

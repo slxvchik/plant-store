@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Order\GetOrderList;
+namespace App\Application\Order\GetOrders;
 
-use App\Application\Order\GetOrderList\Dto\GetOrderListResponseDto;
+use App\Application\Order\GetOrders\Dto\GetOrdersResponseDto;
 use App\Domain\Order\Criteria\OrderSearchCriteria;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 
-interface GetOrderListUseCase
+interface GetOrdersUseCase
 {
     /**
-     * @return Page<GetOrderListResponseDto>
+     * @return Page<GetOrdersResponseDto>
      */
     public function execute(Pageable $pageable, OrderSearchCriteria $orderSearchCriteria): Page;
 }
