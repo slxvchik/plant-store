@@ -198,10 +198,15 @@ class Product
 
     public function getOffer(string $offerId): Offer
     {
-        if ($this->offers[$offerId] === null) {
+        if (!$this->offerExists($offerId)) {
             throw new OfferNotFoundException();
         }
         return $this->offers[$offerId];
+    }
+
+    public function offerExists(string $offerId): bool
+    {
+        return $this->offers[$offerId] !== null;
     }
 
     public function getOfferAvailableQuantity(string $offerId): int

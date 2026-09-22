@@ -4,5 +4,5 @@ namespace App\Application\Cart\DeleteProduct;
 
 interface DeleteProductUseCase
 {
-    public function execute(string $cartId): void;
+    public function execute(DeleteProductRequestDto $deleteProductRequestDto): void;
 }

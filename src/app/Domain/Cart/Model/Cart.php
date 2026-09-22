@@ -4,43 +4,53 @@ declare(strict_types=1);
 
 namespace App\Domain\Cart\Model;
 
+use App\Domain\Shared\Uuid\Uuid;
+use App\Domain\Shared\Uuid\UuidGeneratorInterface;
+use DateTimeImmutable;
+
 class Cart
 {
+    public Uuid $id;
     public ?string $userId;
-    public ?string $anonymousId;
     /**
      * @var array<string, array<string, CartLine>> Map[$productId][$offerId] => CartLine
      */
     private array $cartLines;
+    private(set) DateTimeImmutable $updated;
 
     /**
      * @param array<string, array<string, CartLine>> $cartLines Map[$productId][$offerId] => CartLine
      */
-    private function __construct(?string $userId, ?string $anonymousId, array $cartLines)
+    private function __construct(Uuid $id, ?string $userId, array $cartLines, DateTimeImmutable $updated)
     {
+        $this->id = $id;
         $this->userId = $userId;
-        $this->anonymousId = $anonymousId;
         $this->cartLines = $cartLines;
+        $this->updated = $updated;
     }
 
-    public static function createNew(?string $userId, ?string $anonymousId): self
+    public static function createNew(UuidGeneratorInterface $uuidGeneratorInterface, ?string $userId): self
     {
+        $id = $uuidGeneratorInterface->generate();
+        $uuid = new Uuid($id);
         return new self(
+            id: $uuid,
             userId: $userId,
-            anonymousId: $anonymousId,
-            cartLines: []
+            cartLines: [],
+            updated: new DateTimeImmutable()
         );
     }
 
     /**
      * @param array<string, array<string, CartLine>> $cartLines Map[$productId][$offerId] => CartLine
      */
-    public static function fromDb(?string $userId, ?string $anonymousId, array $cartLines): self
+    public static function fromDb(string $id, ?string $userId, array $cartLines, DateTimeImmutable $updated): self
     {
         return new self(
+            id: new Uuid($id),
             userId: $userId,
-            anonymousId: $anonymousId,
-            cartLines: $cartLines
+            cartLines: $cartLines,
+            updated: $updated
         );
     }
 
@@ -53,6 +63,7 @@ class Cart
             $newQuantity = $cartLine->quantity + $quantity;
             $this->cartLines[$productId][$offerId] = $cartLine->changeQuantity($newQuantity);
         }
+        $this->updated = new DateTimeImmutable();
     }
 
     public function removeProduct(string $productId, string $offerId): void
@@ -60,6 +71,7 @@ class Cart
         if (isset($this->cartLines[$productId][$offerId])) {
             unset($this->cartLines[$productId][$offerId]);
         }
+        $this->updated = new DateTimeImmutable();
     }
 
     private function getCartLine(string $productId, string $offerId): ?CartLine

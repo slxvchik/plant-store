@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Product\GetProductByAlias;
+namespace App\Application\Product\GetDetailProduct;
 
 use App\Application\Product\Shared\Dto\Response\ProductResponseDto;
 use App\Application\Product\Shared\Exception\ProductNotFoundException;
@@ -10,7 +10,7 @@ use App\Application\Product\Shared\Port\ProductDetailsFetcher;
 use App\Domain\Product\Repository\ProductRepository;
 use Override;
 
-readonly class GetProductByAliasService implements GetProductByAliasUseCase
+readonly class GetDetailProductService implements GetDetailProductUseCase
 {
     public function __construct(
         private ProductRepository $productRepository,

@@ -143,6 +143,15 @@ class Offer
         $this->stocks[$warehouseId] = $stock->refund($quantity);
     }
 
+    public function getAvailableQuantity(): int
+    {
+        $availableQuantity = 0;
+        foreach ($this->stocks as $stock) {
+            $availableQuantity += $stock->quantity;
+        }
+        return $availableQuantity;
+    }
+
     private function getStockByWarehouseId(string $warehouseId): Stock
     {
         $stock = $this->stocks[$warehouseId] ?? null;

@@ -6,6 +6,7 @@ readonly class SaveProductRequestDto
 {
     public function __construct(
         public string $cartId,
+        public ?string $userId,
         public string $productId,
         public string $offerId,
         public int $quantity

@@ -11,5 +11,5 @@ interface CreateCartUseCase
     /**
      * @return string cartId
      */
-    public function execute(UuidGeneratorInterface $uuidGeneratorInterface, string $userId): string;
+    public function execute(UuidGeneratorInterface $uuidGeneratorInterface, ?string $userId): string;
 }
