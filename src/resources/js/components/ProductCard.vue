@@ -16,18 +16,18 @@
             <p class="mb-1 font-sans text-xs font-medium tracking-wide text-gray-400 uppercase">
                 Категория
             </p>
-            <h3 class="mb-2 font-sans text-lg leading-snug font-medium text-main">
+            <h3 class="mb-2 font-sans text-lg leading-snug font-medium text-text-title">
                 Monstera Deliciosa
             </h3>
             <div class="mb-4 flex items-center gap-2">
                 <div class="flex gap-0.5">
                     <StarIcon v-for="n in 5" :key="n" class="h-3.5 w-3.5"
-                        :class="n === 5 ? 'text-gray-300' : 'text-bright'" />
+                        :class="n === 5 ? 'text-gray-300' : 'text-primary'" />
                 </div>
                 <span class="text-xs text-gray-400">4.9 (214)</span>
             </div>
             <div class="mt-auto flex items-center justify-between">
-                <span class="text-xl font-semibold break-all text-main">
+                <span class="text-xl font-semibold break-all text-text-title">
                     38 ₽
                 </span>
                 <div>

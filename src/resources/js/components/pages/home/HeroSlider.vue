@@ -4,7 +4,7 @@
             delay: 3000,
             disableOnInteraction: false,
         }" :loop="true" :effect="'fade'" :pagination="{ clickable: true }" :modules="swiperModules" :style="{
-            '--swiper-pagination-color': 'var(--color-bright)',
+            '--swiper-pagination-color': 'var(--color-primary)',
             '--swiper-pagination-bullet-inactive-opacity': '1',
             '--swiper-pagination-bullet-inactive-color': 'rgb(0 0 0 / 20%)',
         }" class="hero-gallery relative h-[60vh] min-h-140 w-full overflow-hidden md:h-[80vh]">
@@ -15,7 +15,7 @@
 
                 <div class="relative h-full w-full items-center pt-20">
                     <p
-                        class="mb-4 inline-block cursor-default font-serif font-semibold tracking-[0.2em] text-bright uppercase transition-all line-clamp-1">
+                        class="mb-4 inline-block cursor-default font-serif font-semibold tracking-[0.2em] text-primary uppercase transition-all line-clamp-1">
                         Наше обещание
                     </p>
                     <h2
@@ -56,7 +56,7 @@ const swiperModules = [EffectFade, Autoplay, Pagination];
 <style>
 .hero-gallery .swiper-pagination-bullet {
     transition: all 0.5s ease;
-    border: 1px solid var(--color-bright);
+    border: 1px solid var(--color-primary);
 }
 
 .hero-gallery .swiper-pagination-bullet-active {

@@ -29,12 +29,12 @@
             class="product-slider-nav absolute top-1/2 left-0 flex h-10 w-full -translate-y-1/2 flex-row justify-between"
         >
             <button
-                class="product-slider-prev left-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-btn-light-bg text-white backdrop-blur-sm transition-all duration-300 ease-in hover:bg-btn-light-bg-hover"
+                class="product-slider-prev left-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-primary text-white backdrop-blur-sm transition-all duration-300 ease-in hover:bg-primary-hover"
             >
                 <ChevronIcon class="relative right-px rotate-180" />
             </button>
             <button
-                class="product-slider-next right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-btn-light-bg text-white backdrop-blur-sm transition-all duration-300 ease-in hover:bg-btn-light-bg-hover"
+                class="product-slider-next right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-primary text-white backdrop-blur-sm transition-all duration-300 ease-in hover:bg-primary-hover"
             >
                 <ChevronIcon class="relative left-px" />
             </button>

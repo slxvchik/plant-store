@@ -13,13 +13,13 @@
                 >21 октября 2026</time
             >
             <span class="mx-1">·</span>
-            <p class="font-sans text-muted">4 мин</p>
+            <p class="font-sans text-text-muted">4 мин</p>
         </div>
         <div class="mt-3">
-            <h2 class="font-serif text-2xl text-main">
+            <h2 class="font-serif text-2xl text-text-title">
                 Признаки того, что растение готово к пересадке
             </h2>
-            <p class="mt-2 font-sans text-muted">
+            <p class="mt-2 font-sans text-text-muted">
                 Как распознать корневую систему, покрытую минеральными корками,
                 и сезонные предупреждающие сигналы, пока они не замедлили рост
                 растения.

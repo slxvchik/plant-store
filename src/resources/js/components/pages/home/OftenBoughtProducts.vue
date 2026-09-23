@@ -1,14 +1,14 @@
 <template>
-    <section class="w-full bg-bg-2 px-3 py-8 md:px-8 md:py-20 xl:px-20 xl:py-25">
+    <section class="w-full bg-bg-surface px-3 py-8 md:px-8 md:py-20 xl:px-20 xl:py-25">
         <h2 class="text font-serif font-bold text-accent uppercase">
             Наша тщательно подобранная теплица
         </h2>
         <p
-            class="mt-3 font-sans text-4xl leading-[1.1] font-light whitespace-pre-line text-main sm:text-5xl lg:text-6xl"
+            class="mt-3 font-sans text-4xl leading-[1.1] font-light whitespace-pre-line text-text-title sm:text-5xl lg:text-6xl"
         >
             Часто покупаемые
         </p>
-        <p class="mt-3 mb-10 font-sans text-muted sm:text-lg">
+        <p class="mt-3 mb-10 font-sans text-text-muted sm:text-lg">
             Каждый саженец отбирается по таким критериям, как здоровые корни,
             яркая листва и сбалансированный рост, и только после этого попадает
             к вам.

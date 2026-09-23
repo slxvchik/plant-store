@@ -1,5 +1,5 @@
 <template>
-    <section class="bg-bg-3 px-3 py-8 md:px-8 md:py-20 xl:px-20 xl:py-30 xl:flex xl:flex-row">
+    <section class="bg-bg-dark px-3 py-8 md:px-8 md:py-20 xl:px-20 xl:py-30 xl:flex xl:flex-row">
         <div class="xl:w-[65%]">
             <h2 class="text font-serif font-bold text-accent uppercase">
                 Наша миссия

@@ -4,7 +4,7 @@
             v-if="label"
             :for="id"
             class="mb-1.5 select-none"
-            :class="!error ? 'text-muted' : 'text-red-400'"
+            :class="!error ? 'text-text-muted' : 'text-red-400'"
         >
             {{ label }}
         </label>
@@ -16,7 +16,7 @@
             class="h-11 rounded-lg border px-4 py-3.5 transition-all duration-300 focus:outline-none"
             :class="
                 !error
-                    ? 'border-muted/50 bg-white text-muted placeholder:text-muted/50 focus:border-muted focus:placeholder:text-muted active:border-muted active:placeholder:text-muted'
+                    ? 'border-muted/50 bg-white text-text-muted placeholder:text-text-muted/50 focus:border-muted focus:placeholder:text-text-muted active:border-muted active:placeholder:text-text-muted'
                     : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:border-red-400 focus:placeholder:text-red-400 active:border-red-400 active:placeholder:text-red-400'
             "
         />

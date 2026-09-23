@@ -27,23 +27,22 @@
     --font-sans:
         'SofiaSans', ui-sans-serif, sans-serif;
 
-    --color-bg-1: #FFFFFF;
-    --color-bg-2: #F4F7F2;
-    --color-bg-3: #364D3E;
+    --color-bg-base: #FFFFFF;
+    --color-bg-surface: #F4F7F2;
+    --color-bg-dark: #364D3E;
 
-    --color-main: #1A2B1E;
-    --color-muted: #455A49;
-    --color-muted-hover: #719678;
-    --color-bright: #7AAB50;
+    --color-text-title: #1A2B1E;
+    --color-text-muted: #455A49;
+
+    --color-primary: #7AAB50;
+    --color-primary-hover: #61883F;
+
+    --color-secondary: #719678;
 
     --color-accent: #BC855F;
     --color-accent-hover: #A06D4A;
+}
 
-    --color-btn-dark-bg: #364D3E;
-    --color-btn-dark-bg-hover: #2B3D31;
-    --color-btn-dark-text: #FFFFFF;
-
-    --color-btn-light-bg: #7AAB50;
-    --color-btn-light-bg-hover: #61883F;
-    --color-btn-light-text: #FFFFFF;
+.no-scroll {
+    @apply overflow-hidden touch-none;
 }
