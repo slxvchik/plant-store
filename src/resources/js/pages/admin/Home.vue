@@ -2,7 +2,7 @@
     index admin page
 </template>
 
-<script setup type="ts">
+<script setup lang="ts">
 import AdminLayout from '@/components/AdminLayout.vue';
 
 defineOptions({

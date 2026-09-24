@@ -2,11 +2,16 @@
 
 namespace App\Providers;
 
+use App\Domain\Shared\Uuid\UuidGeneratorInterface;
+use App\Generators\UuidGenerator;
 use Carbon\CarbonImmutable;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(
+            UuidGeneratorInterface::class,
+            UuidGenerator::class
+        );
     }
 
     /**
@@ -24,6 +32,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        JsonResource::withoutWrapping();
+
+        Inertia::share([
+            'auth' => fn() => [
+                'user' => Auth::user()
+            ]
+        ]);
     }
 
     /**
@@ -37,14 +53,15 @@ class AppServiceProvider extends ServiceProvider
             app()->isProduction(),
         );
 
-        Password::defaults(fn (): ?Password => app()->isProduction()
-            ? Password::min(12)
+        Password::defaults(
+            fn(): ?Password => app()->isProduction()
+                ? Password::min(12)
                 ->mixedCase()
                 ->letters()
                 ->numbers()
                 ->symbols()
                 ->uncompromised()
-            : null,
+                : null,
         );
     }
 }

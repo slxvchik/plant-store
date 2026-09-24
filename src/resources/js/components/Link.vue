@@ -27,12 +27,14 @@ type Props = ButtonProps | LinkProps;
 
 const props = defineProps<Props>();
 
+defineOptions({ inheritAttrs: false });
+
+const inputAttrs = useAttrs();
+
 const computedType = computed(() => {
     if (props.type === 'button' || !props.href) return 'button';
     return isExternal.value ? 'a' : Link;
 })
-
-const inputAttrs = useAttrs();
 
 const computedClasses = computed(() => {
     return twClassMerge(
@@ -54,20 +56,16 @@ const isLink = computed(() => {
 })
 
 const attrs = computed(() => {
+    const { class: _, ...attrsWithoutClass } = inputAttrs;
+
     if (isButton.value) {
-        return { type: 'button' };
+        return { type: 'button', ...attrsWithoutClass };
     }
     if (isLink.value) {
         return isExternal.value
-            ? { target: '_blank', rel: 'noopener noreferrer' }
-            : {};
+            ? { target: '_blank', rel: 'noopener noreferrer', ...attrsWithoutClass }
+            : { ...attrsWithoutClass };
     }
-    return {};
+    return { ...attrsWithoutClass };
 });
-</script>
-
-<script lang="ts">
-export default {
-    inheritAttrs: false
-}
 </script>

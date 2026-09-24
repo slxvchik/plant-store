@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Warehouse\Repository\WarehouseRepository;
+use App\Models\Warehouse;
 use Override;
 
 class WarehouseRepositoryImpl implements WarehouseRepository
@@ -14,7 +15,12 @@ class WarehouseRepositoryImpl implements WarehouseRepository
     #[Override]
     public function findAll(): array
     {
-        throw new \Exception('Not implemented');
+        $warehouses = Warehouse::all();
+        $domainWarehouses = [];
+        foreach ($warehouses as $warehouse) {
+            $domainWarehouses[] = $warehouse->toDomain();
+        }
+        return $domainWarehouses;
     }
 
     #[Override]
@@ -38,7 +44,12 @@ class WarehouseRepositoryImpl implements WarehouseRepository
     #[Override]
     public function create(object $entity): string
     {
-        throw new \Exception('Not implemented');
+        Warehouse::create([
+            'id' => $entity->id->value,
+            'address' => $entity->address,
+            'phone' => $entity->phoneNumber
+        ]);
+        return $entity->id->value;
     }
 
     #[Override]

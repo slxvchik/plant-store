@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Warehouse\CreateWarehouse\CreateWarehouseRequestDto;
 use App\Application\Warehouse\CreateWarehouse\CreateWarehouseUseCase;
 use App\Application\Warehouse\DeleteWarehouse\DeleteWarehouseUseCase;
 use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesUseCase;
 use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseUseCase;
+use App\Http\Resources\Admin\WarehouseAdminResource;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class WarehouseController extends Controller
 {
@@ -18,42 +21,33 @@ class WarehouseController extends Controller
         private DeleteWarehouseUseCase $deleteWarehouseUseCase
     ) {}
 
-    public function index()
+    public function index(): Response
     {
         $warehouses = $this->getAllWarehousesUseCase->execute();
-        return Inertia::render('admin/Warehouses', ['warehouses' => $warehouses]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $warehouseAdminResources = [];
+        foreach ($warehouses as $warehouse) {
+            $warehouseAdminResources[] = new WarehouseAdminResource($warehouse);
+        }
+        return Inertia::render('admin/Warehouses', ['warehouses' => $warehouseAdminResources]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
-    }
+        $createDto = new CreateWarehouseRequestDto(
+            address: $request->input('address'),
+            phoneNumber: $request->input('phone')
+        );
+        $this->createWarehouseUseCase->execute($createDto);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $warehouses = $this->getAllWarehousesUseCase->execute();
+        $warehouseAdminResources = [];
+        foreach ($warehouses as $warehouse) {
+            $warehouseAdminResources[] = new WarehouseAdminResource($warehouse);
+        }
+        return Inertia::render('admin/Warehouses', ['warehouses' => $warehouseAdminResources]);
     }
 
     /**
