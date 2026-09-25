@@ -7,7 +7,10 @@ use App\Application\Warehouse\CreateWarehouse\CreateWarehouseUseCase;
 use App\Application\Warehouse\DeleteWarehouse\DeleteWarehouseUseCase;
 use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesUseCase;
 use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseUseCase;
+use App\Enums\NotificationType;
 use App\Http\Resources\Admin\WarehouseAdminResource;
+use App\ValueObjects\Notification;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -24,17 +27,14 @@ class WarehouseController extends Controller
     public function index(): Response
     {
         $warehouses = $this->getAllWarehousesUseCase->execute();
-        $warehouseAdminResources = [];
-        foreach ($warehouses as $warehouse) {
-            $warehouseAdminResources[] = new WarehouseAdminResource($warehouse);
-        }
+        $warehouseAdminResources = WarehouseAdminResource::collection($warehouses);
         return Inertia::render('admin/Warehouses', ['warehouses' => $warehouseAdminResources]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): Response
+    public function store(Request $request): RedirectResponse
     {
         $createDto = new CreateWarehouseRequestDto(
             address: $request->input('address'),
@@ -42,12 +42,12 @@ class WarehouseController extends Controller
         );
         $this->createWarehouseUseCase->execute($createDto);
 
-        $warehouses = $this->getAllWarehousesUseCase->execute();
-        $warehouseAdminResources = [];
-        foreach ($warehouses as $warehouse) {
-            $warehouseAdminResources[] = new WarehouseAdminResource($warehouse);
-        }
-        return Inertia::render('admin/Warehouses', ['warehouses' => $warehouseAdminResources]);
+        return redirect()->back()->with(
+            new Notification(
+                'Склад успешно добавлен!',
+                NotificationType::SUCCESS
+            )->toArray()
+        );
     }
 
     /**

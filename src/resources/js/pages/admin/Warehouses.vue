@@ -1,5 +1,5 @@
 <template>
-    <Button text="Создать" class="max-w-80 mb-5 rounded-lg" @click="isFormPopupOpen = !isFormPopupOpen" />
+    <Button text="Создать" class="max-w-80 mb-5 rounded-lg" @click="openCreateModal" />
     <div class="w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm">
         <div
             class="grid grid-cols-4 bg-gray-50 border-b border-gray-200 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
@@ -16,18 +16,25 @@
                 <div class="p-4 truncate">{{ warehouse.address }}</div>
                 <div class="p-4 whitespace-nowrap">{{ warehouse.phone }}</div>
                 <div class="flex p-4 gap-2">
-                    <Button text="Редактировать" class="w-fit rounded-lg bg-yellow-400 hover:bg-yellow-500" />
-                    <Button text="Удалить" class="w-fit rounded-lg bg-red-400 hover:bg-red-500" />
+                    <Button text="Редактировать" class="w-fit rounded-lg bg-yellow-400 hover:bg-yellow-500"
+                        @click="openEditModal(warehouse)" />
+                    <Button text="Удалить" class="w-fit rounded-lg bg-red-400 hover:bg-red-500"
+                        @click="deleteWarehouse(warehouse.id)" />
                 </div>
             </div>
         </div>
     </div>
-    <form v-if="isFormPopupOpen"
-        class="flex flex-col min-w-90 rounded-lg bg-bg-surface p-4 absolute top-[50%] left-[50%] z-99999 translate-x-[-50%] translate-y-[-50%]">
-        <Input id="address" placeholder="Адрес склада" label="Адрес" v-model="warehouseAddress" />
-        <Input id="phone" placeholder="+7 999 999 99 99" label="Номер телефона" class="mt-5" v-model="warehousePhone" />
-        <Button text="Создать" class="max-w-80 mt-5 rounded-lg" @click="createWarehouse" />
-    </form>
+
+    <Popup v-model:open="isFormPopupOpen" :title="isEditMode ? 'Редактировать склад' : 'Создать склад'">
+        <form class="flex flex-col w-full">
+            <Input id="address" placeholder="Адрес склада" label="Адрес" v-model="warehouseAddress" />
+            <Input id="phone" placeholder="+7 999 999 99 99" label="Номер телефона" class="mt-5"
+                v-model="warehousePhone" />
+            <Button :text="isEditMode ? 'Сохранить' : 'Создать'"
+                class="relative max-w-80 mt-5 rounded-lg left-[50%] translate-x-[-50%]"
+                @click="isEditMode ? updateWarehouse() : createWarehouse()" />
+        </form>
+    </Popup>
 </template>
 
 <script setup lang="ts">
@@ -36,6 +43,7 @@ import Button from '@/components/Button.vue';
 import Input from '@/components/Input.vue';
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import Popup from '@/components/Popup.vue';
 
 interface Warehouse {
     id: string;
@@ -59,9 +67,27 @@ const props = defineProps({
     },
 });
 
+const isFormPopupOpen = ref(false);
+const isEditMode = ref(false);
+
+const warehouseId = ref<string | null>(null);
 const warehouseAddress = ref('');
 const warehousePhone = ref('');
-const isFormPopupOpen = ref(false);
+
+const openCreateModal = () => {
+    isEditMode.value = false;
+    warehouseAddress.value = '';
+    warehousePhone.value = '';
+    isFormPopupOpen.value = true;
+}
+
+const openEditModal = (warehouse: Warehouse) => {
+    isEditMode.value = true;
+    warehouseId.value = warehouse.id;
+    warehouseAddress.value = warehouse.address;
+    warehousePhone.value = warehouse.phone;
+    isFormPopupOpen.value = true;
+}
 
 const createWarehouse = () => {
     const warehouse = {
@@ -70,17 +96,38 @@ const createWarehouse = () => {
     };
     router.post('/admin/warehouses', warehouse, {
         onSuccess: () => {
-            // Этот коллбэк сработает, когда Inertia успешно обновит страницу и props
-            isFormPopupOpen.value = false; // Закрываем попап
-            warehouseAddress.value = '';   // Очищаем поля
+            isFormPopupOpen.value = false;
+            warehouseAddress.value = '';
             warehousePhone.value = '';
         },
         onError: (errors) => {
-            // Здесь можно обработать ошибки валидации от Ларавел, если они будут
             console.error(errors);
         }
     });
 }
 
-console.log(props.warehouses);
+const updateWarehouse = () => {
+    const warehouse = {
+        address: warehouseAddress.value,
+        phone: warehousePhone.value
+    };
+    router.put(`/admin/warehouses/${warehouseId.value}`, warehouse, {
+        onSuccess: () => {
+            isFormPopupOpen.value = false;
+        },
+        onError: (errors) => {
+            console.error(errors);
+        }
+    });
+}
+
+const deleteWarehouse = (warehouseId: string) => {
+    router.delete(`/admin/warehouses/${warehouseId}`, {
+        onSuccess: () => {
+        },
+        onError: (errors) => {
+            console.error(errors);
+        }
+    });
+}
 </script>
