@@ -6,6 +6,7 @@ use App\Application\Warehouse\CreateWarehouse\CreateWarehouseRequestDto;
 use App\Application\Warehouse\CreateWarehouse\CreateWarehouseUseCase;
 use App\Application\Warehouse\DeleteWarehouse\DeleteWarehouseUseCase;
 use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesUseCase;
+use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseRequestDto;
 use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseUseCase;
 use App\Enums\NotificationType;
 use App\Http\Resources\Admin\WarehouseAdminResource;
@@ -18,10 +19,10 @@ use Inertia\Response;
 class WarehouseController extends Controller
 {
     public function __construct(
-        private GetAllWarehousesUseCase $getAllWarehousesUseCase,
-        private CreateWarehouseUseCase $createWarehouseUseCase,
-        private UpdateWarehouseUseCase $updateWarehouseUseCase,
-        private DeleteWarehouseUseCase $deleteWarehouseUseCase
+        private readonly GetAllWarehousesUseCase $getAllWarehousesUseCase,
+        private readonly CreateWarehouseUseCase  $createWarehouseUseCase,
+        private readonly UpdateWarehouseUseCase  $updateWarehouseUseCase,
+        private readonly DeleteWarehouseUseCase $deleteWarehouseUseCase
     ) {}
 
     public function index(): Response
@@ -40,11 +41,12 @@ class WarehouseController extends Controller
             address: $request->input('address'),
             phoneNumber: $request->input('phone')
         );
+
         $this->createWarehouseUseCase->execute($createDto);
 
         return redirect()->back()->with(
             new Notification(
-                'Склад успешно добавлен!',
+                'Склад успешно добавлен.',
                 NotificationType::SUCCESS
             )->toArray()
         );
@@ -53,9 +55,26 @@ class WarehouseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
-        //
+        $request->validate([
+            'address' => 'required|string',
+        ]);
+
+        $updateWarehouseRequestDto = new UpdateWarehouseRequestDto(
+            id: $id,
+            address: $request->input('address'),
+            phoneNumber: $request->input('phone')
+        );
+
+        $this->updateWarehouseUseCase->execute($updateWarehouseRequestDto);
+
+        return redirect()->back()->with(
+            new Notification(
+                'Склад успешно обновлён.',
+                NotificationType::SUCCESS
+            )->toArray()
+        );
     }
 
     /**
@@ -63,6 +82,13 @@ class WarehouseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->deleteWarehouseUseCase->execute($id);
+
+        return redirect()->back()->with(
+            new Notification(
+                'Склад успешно удалён.',
+                NotificationType::SUCCESS
+            )->toArray()
+        );
     }
 }

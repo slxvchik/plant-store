@@ -32,13 +32,19 @@ class WarehouseRepositoryImpl implements WarehouseRepository
     #[Override]
     public function findById(string|int $id): ?object
     {
-        throw new \Exception('Not implemented');
+        $warehouse = Warehouse::find($id);
+        return $warehouse->exists() ? $warehouse->toDomain() : null;
     }
 
     #[Override]
     public function findByIds(array $ids): array
     {
-        throw new \Exception('Not implemented');
+        $warehouses = Warehouse::find($ids)->toList();
+        $domainWarehouses = [];
+        foreach ($warehouses as $warehouse) {
+            $domainWarehouses[] = $warehouse->toDomain();
+        }
+        return $domainWarehouses;
     }
 
     #[Override]
@@ -55,12 +61,16 @@ class WarehouseRepositoryImpl implements WarehouseRepository
     #[Override]
     public function update(object $entity): void
     {
-        throw new \Exception('Not implemented');
+        $warehouse = Warehouse::findOrFail($entity->id->value);
+        $warehouse->address = $entity->address;
+        $warehouse->phone = $entity->phoneNumber;
+        $warehouse->save();
     }
 
     #[Override]
     public function delete(string $id): void
     {
-        throw new \Exception('Not implemented');
+        $warehouse = Warehouse::findOrFail($id);
+        $warehouse->delete();
     }
 }

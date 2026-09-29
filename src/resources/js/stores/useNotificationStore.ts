@@ -1,11 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-
-export interface NotificationItem {
-    id: string;
-    message: string;
-    type: 'info' | 'error' | 'success' | 'warning';
-}
+import {NotificationItem} from "@/types/notification";
 
 export const useNotificationStore = defineStore('notification', () => {
     const items = ref<NotificationItem[]>([]);
@@ -15,15 +10,15 @@ export const useNotificationStore = defineStore('notification', () => {
             ? crypto.randomUUID()
             : (Date.now().toString(36) + Math.random().toString(36).substring(2, 9));
 
-        items.value.push({ id, message, type })
+        items.value.push({ id, message, type });
 
         setTimeout(() => {
-            remove(id)
-        }, duration)
+            remove(id);
+        }, duration);
     }
 
     function remove(id: string) {
-        items.value = items.value.filter(item => item.id !== id)
+        items.value = items.value.filter(item => item.id !== id);
     }
 
     return { items, add, remove }

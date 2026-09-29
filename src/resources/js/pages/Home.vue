@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import Layout from '@/components/Layout.vue';
+import Layout from '@/components/layouts/Layout.vue';
 import Blog from '@/components/pages/home/Blog.vue';
 import Callback from '@/components/pages/home/Callback.vue';
 import HeroSlider from '@/components/pages/home/HeroSlider.vue';

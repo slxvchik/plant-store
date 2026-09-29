@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import AdminLayout from '@/components/AdminLayout.vue';
+import AdminLayout from '@/components/layouts/AdminLayout.vue';
 
 defineOptions({
     layout: AdminLayout,

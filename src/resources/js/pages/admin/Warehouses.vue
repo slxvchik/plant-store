@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import AdminLayout from '@/components/AdminLayout.vue';
+import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Button from '@/components/Button.vue';
 import Input from '@/components/Input.vue';
 import { ref } from 'vue';

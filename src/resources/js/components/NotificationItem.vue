@@ -14,12 +14,7 @@
 <script setup lang="ts">
 import CrossIcon from '@/components/icons/CrossIcon.vue';
 import { useNotificationStore } from '@/stores/useNotificationStore';
-
-interface NotificationItem {
-    id: string,
-    type: 'info' | 'error' | 'success' | 'warning';
-    message: string;
-}
+import {NotificationItem} from "@/types/notification";
 
 defineProps<{
     notification: NotificationItem;

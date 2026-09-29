@@ -41,7 +41,7 @@ class Warehouse
         );
     }
 
-    public function update(string $address, ?string $phoneNumber)
+    public function update(string $address, ?string $phoneNumber): void
     {
         $this->address = $address;
         $this->phoneNumber = $phoneNumber;

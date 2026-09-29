@@ -52,7 +52,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 AppExceptionStatus::ALREADY_EXISTS,
                 AppExceptionStatus::INVALID_ARGUMENT,
                 AppExceptionStatus::BUSINESS_ERROR => redirect()
-                    ->back()
+                    ->back(
+                        status: $e->getCode()
+                    )
                     ->withInput()
                     ->with(Notification::fromAppException($e)),
 

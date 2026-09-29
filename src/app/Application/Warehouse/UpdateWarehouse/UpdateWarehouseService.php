@@ -6,6 +6,7 @@ namespace App\Application\Warehouse\UpdateWarehouse;
 
 use App\Application\Warehouse\Shared\Exception\WarehouseNotFound;
 use App\Domain\Warehouse\Repository\WarehouseRepository;
+use Illuminate\Support\Facades\Log;
 use Override;
 
 readonly class UpdateWarehouseService implements UpdateWarehouseUseCase
@@ -21,7 +22,7 @@ readonly class UpdateWarehouseService implements UpdateWarehouseUseCase
         if ($warehouse === null) {
             throw new WarehouseNotFound();
         }
-
+        Log::debug(print_r($warehouse, true));
         $warehouse->update(
             address: $updateWarehouseRequestDto->address,
             phoneNumber: $updateWarehouseRequestDto->phoneNumber

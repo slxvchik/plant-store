@@ -17,7 +17,7 @@
                 <div class="flex flex-col gap-3 min-w-30">
                     <p class="text-xl font-semibold text-accent uppercase">Поддержка</p>
                     <div class="flex flex-col gap-2.5">
-                        <Link v-for="text in [
+                        <Button styleType="link" v-for="text in [
                             'Гарантия',
                             'Возврат',
                             'Оферта'
@@ -39,7 +39,7 @@
                 ]">
                     <span v-if="index > 0" class="hidden sm:inline text-gray-400">·</span>
                     <li>
-                        <Link :text="text" class="text-center sm:text-left" />
+                        <Button styleType="link" :text="text" class="text-center sm:text-left" />
                     </li>
                 </template>
             </ul>
@@ -50,4 +50,5 @@
 <script setup lang="ts">
 import LogoIcon from '@/components/icons/LogoIcon.vue';
 import Link from '@/components/Link.vue';
+import Button from "@/components/Button.vue";
 </script>
