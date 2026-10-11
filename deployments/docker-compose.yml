@@ -22,6 +22,7 @@ services:
       context: ./php
       dockerfile: ./Dockerfile
     container_name: plant_store_php_fpm
+    user: "${WWWUSER}:${WWWGROUP}"
     restart: always
     working_dir: /var/www/
     volumes:

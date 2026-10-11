@@ -44,18 +44,13 @@ import Input from '@/components/Input.vue';
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import Popup from '@/components/Popup.vue';
-
-interface Warehouse {
-    id: string;
-    address: string;
-    phone: string;
-}
+import { Warehouse } from '@/types/warehouse';
 
 defineOptions({
     layout: AdminLayout,
 });
 
-const props = defineProps({
+defineProps({
     auth: {
         type: Object,
         required: false,

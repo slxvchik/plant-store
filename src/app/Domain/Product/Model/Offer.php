@@ -55,11 +55,21 @@ class Offer
      */
     private(set) ?int $age;
     private(set) ?DateTimeImmutable $sowingDate;
+    /**
+     * @var string[] Image ids
+     */
+    private(set) array $imageIds;
+    /**
+     * @var string[] Video ids
+     */
+    private(set) array $videoIds;
 
     /**
      * @param Stock[] $stocks
+     * @param string[] $imageIds
+     * @param string[] $videoIds
      */
-    public function __construct(string $id, bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate)
+    public function __construct(string $id, bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds)
     {
         $uuid = new Uuid($id);
         $this->id = $uuid;
@@ -72,12 +82,14 @@ class Offer
         $this->size = $size;
         $this->age = $age;
         $this->sowingDate = $sowingDate;
+        $this->imageIds = $imageIds;
+        $this->videoIds = $videoIds;
     }
 
     /**
      * @param Stock[] $stocks
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator,  bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator,  bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds): self
     {
         $uuid = $uuidIdentityGenerator->generate();
         return new self(
@@ -90,7 +102,9 @@ class Offer
             formFactor: $formFactor,
             size: $size,
             age: $age,
-            sowingDate: $sowingDate
+            sowingDate: $sowingDate,
+            imageIds: $imageIds,
+            videoIds: $videoIds
         );
     }
 
@@ -107,6 +121,8 @@ class Offer
         ?string $size,
         ?int $age,
         ?DateTimeImmutable $sowingDate,
+        array $imageIds,
+        array $videoIds
     ): void {
         $this->active = $active;
         $this->sku = $sku;
@@ -117,6 +133,8 @@ class Offer
         $this->size = $size;
         $this->age = $age;
         $this->sowingDate = $sowingDate;
+        $this->imageIds = $imageIds;
+        $this->videoIds = $videoIds;
     }
 
     public function reserve(string $warehouseId, int $quantity): void

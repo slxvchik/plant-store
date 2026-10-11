@@ -13,6 +13,8 @@ readonly class SaveOffer
 {
     /**
      * @param Stock[] $stocks
+     * @param string[] $imageIds
+     * @param string[] $videoIds
      */
     public function __construct(
         public ?string $id,
@@ -24,6 +26,8 @@ readonly class SaveOffer
         public ?string $formFactor,
         public ?string $size,
         public ?int $age,
-        public ?DateTimeImmutable $sowingDate
+        public ?DateTimeImmutable $sowingDate,
+        public array $imageIds,
+        public array $videoIds
     ) {}
 }

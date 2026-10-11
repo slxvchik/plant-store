@@ -152,7 +152,9 @@ class Product
                     formFactor: $saveOffer->formFactor,
                     size: $saveOffer->size,
                     age: $saveOffer->age,
-                    sowingDate: $saveOffer->sowingDate
+                    sowingDate: $saveOffer->sowingDate,
+                    imageIds: $saveOffer->imageIds,
+                    videoIds: $saveOffer->videoIds
                 );
                 $this->offers[$newOffer->id->value] = $saveOffer;
                 $newOfferIds[] = $newOffer->id->value;
@@ -173,7 +175,9 @@ class Product
                 formFactor: $saveOffer->formFactor,
                 size: $saveOffer->size,
                 age: $saveOffer->age,
-                sowingDate: $saveOffer->sowingDate
+                sowingDate: $saveOffer->sowingDate,
+                imageIds: $saveOffer->imageIds,
+                videoIds: $saveOffer->videoIds
             );
         }
 

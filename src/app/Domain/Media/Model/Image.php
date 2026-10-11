@@ -10,8 +10,8 @@ use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
 class Image extends MediaDB
 {
-    private(set) int $width;
-    private(set) int $height;
+    private(set) ?int $width;
+    private(set) ?int $height;
     private(set) ?string $titleText;
     private(set) ?string $altText;
     /**
