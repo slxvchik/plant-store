@@ -27,7 +27,7 @@
                         <template v-if="tab.isOpen">
                             <Link v-for="childTab in tab.children" :href="childTab.href"
                                 class="pl-5 flex text-white items-center px-2 py-1.5 rounded-sm transition-all hover:bg-primary-hover"
-                                :class="{ 'bg-primary': tab.active }">
+                                :class="{ 'bg-primary': childTab.active }">
                                 {{ childTab.name }}
                             </Link>
                         </template>

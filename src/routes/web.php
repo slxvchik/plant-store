@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
@@ -7,6 +8,10 @@ Route::inertia('/', 'Home')->name('home');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::inertia('/', 'admin/Home')->name('home');
+
+    Route::prefix('tags')->name('tags.')->group(function () {
+        Route::get('/', [TagController::class, 'index'])->name('list');
+    });
 
     Route::prefix('warehouses')->name('warehouses.')->group(function () {
         Route::get('/', [WarehouseController::class, 'index'])->name('list');

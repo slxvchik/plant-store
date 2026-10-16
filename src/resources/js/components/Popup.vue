@@ -1,8 +1,12 @@
 <template>
     <div v-if="isOpen" id="overlay" class="fixed inset-0 bg-black/50 flex items-center justify-center select-none"
-        @click.self="isOpen = false">
-        <div id="dialog" class="relative bg-white w-full max-w-xl rounded-lg shadow-xl p-6
-              focus:outline-none" role="dialog" aria-modal="true" :aria-labelledby="title ? 'dialogTitle' : undefined">
+         @mousedown="onOverlayMousedown"
+         @mouseup="onOverlayMouseup">
+        <div id="dialog"
+             class="relative bg-white w-full max-w-xl rounded-lg shadow-xl p-6 focus:outline-none"
+             role="dialog"
+             aria-modal="true"
+             :aria-labelledby="title ? 'dialogTitle' : undefined">
 
             <button class="absolute right-6 flex w-6 h-6 items-center justify-center cursor-pointer group"
                 @click="isOpen = false">
@@ -23,10 +27,10 @@
 </template>
 
 <script setup lang="ts">
-import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
+import { useBodyScrollLock } from '@/composables/useBodyScrollLock'
 
-const isOpen = defineModel<boolean>('open', { default: false });
-useBodyScrollLock(isOpen);
+const isOpen = defineModel<boolean>('open', { default: false })
+useBodyScrollLock(isOpen)
 
 defineProps({
     title: {
@@ -34,4 +38,21 @@ defineProps({
         required: false
     }
 })
+
+let isMouseDownOnOverlay = false
+
+const onOverlayMousedown = (event: MouseEvent) => {
+    const target = event.target as HTMLElement
+    isMouseDownOnOverlay = target.id === 'overlay'
+}
+
+const onOverlayMouseup = (event: MouseEvent) => {
+    const target = event.target as HTMLElement
+
+    if (isMouseDownOnOverlay && target.id === 'overlay') {
+        isOpen.value = false
+    }
+
+    isMouseDownOnOverlay = false
+}
 </script>

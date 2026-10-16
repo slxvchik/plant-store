@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Tag\Model;
 
-use App\Domain\Shared\Exception\InternalException;
+use App\Domain\Shared\Exception\FieldRequiredException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
@@ -49,10 +49,10 @@ class Tag
     public function update(string $alias, string $name, bool $active): void
     {
         if (empty($alias)) {
-            throw new InternalException("Alias");
+            throw new FieldRequiredException("Alias");
         }
         if (empty($name)) {
-            throw new InternalException("Name");
+            throw new FieldRequiredException("Name");
         }
         $this->alias = $alias;
         $this->name = $name;

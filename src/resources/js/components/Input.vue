@@ -15,16 +15,18 @@
 <script setup lang="ts">
 interface Props {
     id: string;
-    type?: 'text' | 'password' | 'email' | 'number'; // Строгая типизация типов инпута
+    type?: 'text' | 'password' | 'email' | 'number';
     placeholder?: string;
     label?: string;
     error?: string;
 }
+
 withDefaults(defineProps<Props>(), {
     type: 'text',
     placeholder: '',
     label: '',
-    error: '',
+    error: ''
 });
+
 const modelValue = defineModel<string>({ default: '' });
 </script>
