@@ -21,6 +21,7 @@ class Product
             $this->alias = $value;
         }
     }
+    private(set) ?int $sort;
     private(set) string $name {
         set {
             if (empty($value)) {
@@ -59,11 +60,12 @@ class Product
      * @param string[] $imageIds
      * @param Offer[] $offers
      */
-    private function __construct(Uuid $id, bool $active, string $alias, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers)
+    private function __construct(Uuid $id, bool $active, string $alias, ?int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers)
     {
         $this->id = $id;
         $this->active = $active;
         $this->alias = $alias;
+        $this->sort = $sort;
         $this->name = $name;
         $this->description = $description;
         $this->categoryIds = $categories;
@@ -73,13 +75,14 @@ class Product
         $this->offers = $offers;
     }
 
-    public static function fromDb(string $id, bool $active, string $alias, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers): self
+    public static function fromDb(string $id, bool $active, string $alias, ?int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers): self
     {
         $uuid = new Uuid($id);
         return new self(
             id: $uuid,
             active: $active,
             alias: $alias,
+            sort: $sort,
             name: $name,
             description: $description,
             categories: $categories,
@@ -96,7 +99,7 @@ class Product
      * @param string[] $videoIds
      * @param string[] $imageIds
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, string $name, array $categories, array $tags, array $videoIds, array $imageIds, ?string $description): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, ?int $sort, string $name, array $categories, array $tags, array $videoIds, array $imageIds, ?string $description): self
     {
         $uuidValue = $uuidIdentityGenerator->generate();
         $newUuid = new Uuid($uuidValue);
@@ -104,6 +107,7 @@ class Product
             id: $newUuid,
             active: $active,
             alias: $alias,
+            sort: $sort,
             name: $name,
             description: $description,
             categories: $categories,
@@ -120,9 +124,10 @@ class Product
      * @param string[] $videoIds
      * @param string[] $imageIds
      */
-    public function update(string $alias, string $name, bool $active, ?string $description, array $categoryIds, array $tagIds, array $videoIds, array $imageIds): void
+    public function update(string $alias, ?int $sort, string $name, bool $active, ?string $description, array $categoryIds, array $tagIds, array $videoIds, array $imageIds): void
     {
         $this->alias = $alias;
+        $this->sort = $sort;
         $this->name = $name;
         $this->active = $active;
         $this->description = $description;
@@ -146,6 +151,7 @@ class Product
                     uuidIdentityGenerator: $uuidGeneratorInterface,
                     active: $saveOffer->active,
                     sku: $saveOffer->sku,
+                    sort: $saveOffer->sort,
                     description: $saveOffer->description,
                     price: $saveOffer->price,
                     stocks: $saveOffer->stocks,
@@ -169,6 +175,7 @@ class Product
             $this->offers[$id]->update(
                 active: $saveOffer->active,
                 sku: $saveOffer->sku,
+                sort: $saveOffer->sort,
                 description: $saveOffer->description,
                 price: $saveOffer->price,
                 stocks: $saveOffer->stocks,

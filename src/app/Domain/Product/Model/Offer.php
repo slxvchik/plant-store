@@ -27,6 +27,7 @@ class Offer
             $this->sku = $value;
         }
     }
+    private(set) ?int $sort;
     private(set) ?string $description;
     /**
      * @var int $price in kopecks
@@ -69,12 +70,13 @@ class Offer
      * @param string[] $imageIds
      * @param string[] $videoIds
      */
-    public function __construct(string $id, bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds)
+    public function __construct(string $id, bool $active, string $sku, ?int $sort, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds)
     {
         $uuid = new Uuid($id);
         $this->id = $uuid;
         $this->active = $active;
         $this->sku = $sku;
+        $this->sort = $sort;
         $this->description = $description;
         $this->price = $price;
         $this->stocks = $stocks;
@@ -89,13 +91,14 @@ class Offer
     /**
      * @param Stock[] $stocks
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator,  bool $active, string $sku, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator,  bool $active, string $sku, ?int $sort, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds): self
     {
         $uuid = $uuidIdentityGenerator->generate();
         return new self(
             id: $uuid,
             active: $active,
             sku: $sku,
+            sort: $sort,
             description: $description,
             price: $price,
             stocks: $stocks,
@@ -114,6 +117,7 @@ class Offer
     public function update(
         bool $active,
         string $sku,
+        ?int $sort,
         ?string $description,
         int $price,
         array $stocks,
@@ -126,6 +130,7 @@ class Offer
     ): void {
         $this->active = $active;
         $this->sku = $sku;
+        $this->sort = $sort;
         $this->description = $description;
         $this->price = $price;
         $this->stocks = $stocks;

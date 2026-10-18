@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('alias', 128);
+            $table->integer('sort');
             $table->string('name', 128);
             $table->boolean('active');
             $table->timestamps();
