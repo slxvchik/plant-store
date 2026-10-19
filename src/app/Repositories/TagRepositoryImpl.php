@@ -4,8 +4,10 @@ namespace App\Repositories;
 
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Domain\Tag\Model\Tag;
+use App\Domain\Tag\Model\Tag as DomainTagModel;
 use App\Domain\Tag\Repository\TagRepository;
+use App\Models\Tag;
+use App\Pagination\PaginationAdapter;
 use Override;
 
 class TagRepositoryImpl implements TagRepository
@@ -13,48 +15,79 @@ class TagRepositoryImpl implements TagRepository
     #[Override]
     function create(object $entity): string
     {
-
+        $created = Tag::create([
+            'id' => $entity->id,
+            'alias' => $entity->alias,
+            'sort' => $entity->sort,
+            'name' => $entity->name,
+            'active' => $entity->active,
+        ]);
+        return $created->id;
     }
 
     #[Override]
     function update(object $entity): void
     {
-        // TODO: Implement update() method.
+        $tag = Tag::findOrFail($entity->id->value);
+        $tag->alias = $entity->alias;
+        $tag->sort = $entity->sort;
+        $tag->name = $entity->name;
+        $tag->active = $entity->active;
+        $tag->save();
     }
 
     #[Override]
     function delete(string $id): void
     {
-        // TODO: Implement delete() method.
+        $tag = Tag::findOrFail($id);
+        $tag->delete();
     }
 
     #[Override]
     function findById(int|string $id): ?object
     {
-        // TODO: Implement findById() method.
+        $tag = Tag::find($id);
+        return $tag->exists() ? $tag->toDomain() : null;
     }
 
+    /**
+     * @param string[] $ids
+     * @return DomainTagModel[]
+     */
     #[Override]
     function findByIds(array $ids): array
     {
-        // TODO: Implement findByIds() method.
+        return Tag::whereIn('id', $ids)
+            ->orderBy('sort')
+            ->get()
+            ->map(function (Tag $tag) {
+                return $tag->toDomain();
+            })->all();
     }
 
     #[Override]
     function findPage(Pageable $pageable): Page
     {
-        // TODO: Implement findPage() method.
+        $paginator = Tag::query()->paginate(
+            perPage: $pageable->perPage,
+            page: $pageable->page,
+        );
+        return PaginationAdapter::toDomainPage(
+            paginator: $paginator,
+            mapper: fn(Tag $tag) => $tag->toDomain(),
+        );
     }
 
     #[Override]
     function findAll(): array
     {
-
+        throw new \Exception("Not implemented");
     }
 
     #[Override]
-    public function findByAlias(string $alias): Tag
+    public function findByAlias(string $alias): ?DomainTagModel
     {
-        // TODO: Implement findByAlias() method.
+        $tag = Tag::where('alias', $alias);
+        return $tag->exists() ? $tag->toDomain() : null;
     }
 }

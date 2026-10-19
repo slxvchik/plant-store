@@ -9,7 +9,7 @@ use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use Override;
 
-class GetCategoriesService implements GetCategoriesUserCase
+readonly class GetCategoriesService implements GetCategoriesUseCase
 {
     public function __construct(
         private final CategoryRepository $categoryRepository

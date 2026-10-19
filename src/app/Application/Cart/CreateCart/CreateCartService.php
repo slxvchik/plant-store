@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Cart\CreateCart;
 
-use App\Application\Cart\Shared\Exception\CartAlreadyExistsException;
 use App\Application\User\Shared\Exception\UserNotFoundException;
 use App\Domain\Cart\Model\Cart;
 use App\Domain\Cart\Repository\CartRepository;

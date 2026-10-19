@@ -12,5 +12,5 @@ use App\Domain\Tag\Model\Tag;
  */
 interface TagRepository extends BaseRepository
 {
-    public function findByAlias(string $alias): Tag;
+    public function findByAlias(string $alias): ?Tag;
 }

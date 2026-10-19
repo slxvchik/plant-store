@@ -28,6 +28,7 @@ readonly class CreateProductService implements CreateProductUseCase
             uuidIdentityGenerator: $this->uuidGeneratorInterface,
             active: $createProductRequestDto->active,
             alias: $createProductRequestDto->alias,
+            sort: $createProductRequestDto->sort,
             name: $createProductRequestDto->name,
             categories: $createProductRequestDto->categoryIds,
             tags: $createProductRequestDto->tagIds,
@@ -61,13 +62,16 @@ readonly class CreateProductService implements CreateProductUseCase
                 id: null,
                 active: $saveOffer->active,
                 sku: $saveOffer->sku,
+                sort: $saveOffer->sort,
                 description: $saveOffer->description,
                 price: $saveOffer->price,
                 stocks: $stocks,
                 formFactor: $saveOffer->formFactor,
                 size: $saveOffer->size,
                 age: $saveOffer->age,
-                sowingDate: $saveOffer->sowingDate
+                sowingDate: $saveOffer->sowingDate,
+                imageIds: $saveOffer->imageIds,
+                videoIds: $saveOffer->videoIds
             );
         }
         return $newOffers;

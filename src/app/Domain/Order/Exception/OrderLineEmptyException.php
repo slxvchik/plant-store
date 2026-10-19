@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Product\Exception;
+namespace App\Domain\Order\Exception;
 
 use App\Domain\Shared\AppException\AppException;
 use App\Domain\Shared\AppException\AppExceptionStatus;

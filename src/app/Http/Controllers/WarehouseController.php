@@ -29,7 +29,7 @@ class WarehouseController extends Controller
     {
         $warehouses = $this->getAllWarehousesUseCase->execute();
         $warehouseAdminResources = WarehouseAdminResource::collection($warehouses);
-        return Inertia::render('admin/Warehouses', ['warehouses' => $warehouseAdminResources]);
+        return Inertia::render('admin/Warehouses', ['response' => $warehouseAdminResources]);
     }
 
     /**

@@ -29,6 +29,7 @@ readonly class CreateTagService implements CreateTagUseCase
         $tag = Tag::createNew(
             uuidIdentityGenerator: $this->uuidGeneratorInterface,
             alias: $createTagRequestDto->alias,
+            sort: $createTagRequestDto->sort,
             name: $createTagRequestDto->name,
             active: $createTagRequestDto->active
         );

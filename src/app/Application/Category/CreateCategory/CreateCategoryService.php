@@ -10,7 +10,7 @@ use App\Domain\Category\Repository\CategoryRepository;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Override;
 
-class CreateCategoryService implements CreateCategoryUseCase
+readonly class CreateCategoryService implements CreateCategoryUseCase
 {
     public function __construct(
         private final UuidGeneratorInterface $uuidGeneratorInterface,
@@ -28,6 +28,7 @@ class CreateCategoryService implements CreateCategoryUseCase
         $category = Category::createNew(
             uuidIdentityGenerator: $this->uuidGeneratorInterface,
             alias: $createCategoryRequestDto->alias,
+            sort: $createCategoryRequestDto->sort,
             name: $createCategoryRequestDto->name,
             active: $createCategoryRequestDto->active
         );

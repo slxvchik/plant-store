@@ -15,12 +15,15 @@ readonly class SaveOfferRequestDto
         public ?string $id,
         public bool $active,
         public string $sku,
+        public ?int $sort,
         public ?string $description,
         public int $price,
         public array $stocks,
         public ?string $formFactor,
         public ?string $size,
         public ?int $age,
-        public ?DateTimeImmutable $sowingDate
+        public ?DateTimeImmutable $sowingDate,
+        public array $imageIds,
+        public array $videoIds
     ) {}
 }

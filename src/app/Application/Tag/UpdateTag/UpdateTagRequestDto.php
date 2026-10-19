@@ -9,6 +9,7 @@ readonly class UpdateTagRequestDto
     public function __construct(
         public string $id,
         public string $alias,
+        public ?int $sort,
         public string $name,
         public bool $active,
     ) {}

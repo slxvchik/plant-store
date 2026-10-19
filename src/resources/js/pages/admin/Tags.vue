@@ -47,6 +47,7 @@ import { router } from '@inertiajs/vue3';
 import Popup from '@/components/Popup.vue';
 import { Tag } from "@/types/tag";
 import Checkbox from "@/components/Checkbox.vue";
+import { PageResponse } from '@/types/page-response';
 
 defineOptions({
     layout: AdminLayout
@@ -57,10 +58,9 @@ defineProps({
         type: Object,
         required: false,
     },
-    tags: {
-        type: Array as () => Tag[],
-        required: false,
-        default: () => []
+    tagsPage: {
+        type: Array as () => PageResponse<Tag>[],
+        required: true
     },
 });
 

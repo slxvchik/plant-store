@@ -8,6 +8,7 @@ use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Warehouse\Repository\WarehouseRepository;
 use App\Models\Warehouse;
+use Exception;
 use Override;
 
 class WarehouseRepositoryImpl implements WarehouseRepository
@@ -23,10 +24,13 @@ class WarehouseRepositoryImpl implements WarehouseRepository
         return $domainWarehouses;
     }
 
+    /**
+     * @throws Exception
+     */
     #[Override]
     public function findPage(Pageable $pageable): Page
     {
-        throw new \Exception('Not implemented');
+        throw new Exception('Not implemented');
     }
 
     #[Override]
@@ -53,7 +57,7 @@ class WarehouseRepositoryImpl implements WarehouseRepository
         Warehouse::create([
             'id' => $entity->id->value,
             'address' => $entity->address,
-            'phone' => $entity->phoneNumber
+            'phone' => $entity->phoneNumber,
         ]);
         return $entity->id->value;
     }

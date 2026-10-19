@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Cart\Shared\Exception;
+namespace App\Application\Cart\CreateCart;
 
 use App\Domain\Shared\AppException\AppException;
 use App\Domain\Shared\AppException\AppExceptionStatus;

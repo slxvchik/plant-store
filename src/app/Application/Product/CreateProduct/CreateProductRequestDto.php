@@ -18,6 +18,7 @@ readonly class CreateProductRequestDto
     public function __construct(
         public bool $active,
         public string $alias,
+        public ?int $sort,
         public string $name,
         public ?string $description,
         public array $categoryIds,

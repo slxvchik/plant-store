@@ -12,5 +12,5 @@ use App\Domain\Shared\BaseRepository\BaseRepository;
  */
 interface CategoryRepository extends BaseRepository
 {
-    public function findByAlias(string $alias): Category;
+    public function findByAlias(string $alias): ?Category;
 }

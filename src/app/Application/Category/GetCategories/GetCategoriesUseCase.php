@@ -8,7 +8,7 @@ use App\Application\Category\Shared\Dto\Response\CategoryResponseDto;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 
-interface GetCategoriesUserCase
+interface GetCategoriesUseCase
 {
     /**
      * @return Page<CategoryResponseDto>

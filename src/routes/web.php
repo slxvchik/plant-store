@@ -10,7 +10,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::inertia('/', 'admin/Home')->name('home');
 
     Route::prefix('tags')->name('tags.')->group(function () {
-        Route::get('/', [TagController::class, 'index'])->name('list');
+        Route::get('/', [TagController::class, 'index'])->name('index');
+        Route::post('/', [TagController::class, 'store'])->name('store');
+        Route::put('/{id}', [TagController::class, 'update'])->name('update');
+        Route::delete('/{id}', [TagController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('categories')->name('categories.')->group(function () {
+        Route::get('/', [TagController::class, 'index'])->name('index');
+        Route::post('/', [TagController::class, 'store'])->name('store');
+        Route::put('/{id}', [TagController::class, 'update'])->name('update');
+        Route::delete('/{id}', [TagController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('warehouses')->name('warehouses.')->group(function () {
