@@ -16,12 +16,9 @@ class WarehouseRepositoryImpl implements WarehouseRepository
     #[Override]
     public function findAll(): array
     {
-        $warehouses = Warehouse::all();
-        $domainWarehouses = [];
-        foreach ($warehouses as $warehouse) {
-            $domainWarehouses[] = $warehouse->toDomain();
-        }
-        return $domainWarehouses;
+        return Warehouse::all()
+            ->map(fn (Warehouse $warehouse) => $warehouse->toDomain())
+            ->all();
     }
 
     /**
@@ -36,19 +33,16 @@ class WarehouseRepositoryImpl implements WarehouseRepository
     #[Override]
     public function findById(string|int $id): ?object
     {
-        $warehouse = Warehouse::find($id);
-        return $warehouse->exists() ? $warehouse->toDomain() : null;
+        return Warehouse::find($id)?->toDomain();
     }
 
     #[Override]
     public function findByIds(array $ids): array
     {
-        $warehouses = Warehouse::find($ids)->toList();
-        $domainWarehouses = [];
-        foreach ($warehouses as $warehouse) {
-            $domainWarehouses[] = $warehouse->toDomain();
-        }
-        return $domainWarehouses;
+        return Warehouse::whereIn('id', $ids)
+            ->get()
+            ->map(fn (Warehouse $warehouse) => $warehouse->toDomain())
+            ->all();
     }
 
     #[Override]
@@ -65,16 +59,15 @@ class WarehouseRepositoryImpl implements WarehouseRepository
     #[Override]
     public function update(object $entity): void
     {
-        $warehouse = Warehouse::findOrFail($entity->id->value);
-        $warehouse->address = $entity->address;
-        $warehouse->phone = $entity->phoneNumber;
-        $warehouse->save();
+        Warehouse::findOrFail($entity->id->value)->update([
+            'address' => $entity->address,
+            'phone' => $entity->phoneNumber
+        ]);
     }
 
     #[Override]
     public function delete(string $id): void
     {
-        $warehouse = Warehouse::findOrFail($id);
-        $warehouse->delete();
+        Warehouse::findOrFail($id)->delete();
     }
 }

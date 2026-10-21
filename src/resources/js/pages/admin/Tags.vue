@@ -10,8 +10,8 @@
         </div>
 
         <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
-            <div v-for="tag in tags" :key="tag.id"
-                 class="grid grid-cols-4 hover:bg-gray-50 transition-colors">
+            <div v-for="tag in tagsPage.items" :key="tag.id"
+                 class="grid grid-cols-5 hover:bg-gray-50 transition-colors">
                 <div class="p-4 font-medium text-gray-900">#{{ tag.id }}</div>
                 <div class="p-4 truncate">{{ tag.alias }}</div>
                 <div class="p-4 whitespace-nowrap">{{ tag.name }}</div>
@@ -40,14 +40,14 @@
 
 <script setup lang="ts">
 import AdminLayout from "@/components/layouts/AdminLayout.vue";
-import Button from '@/components/Button.vue';
-import Input from '@/components/Input.vue';
-import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
 import Popup from '@/components/Popup.vue';
-import { Tag } from "@/types/tag";
-import Checkbox from "@/components/Checkbox.vue";
-import { PageResponse } from '@/types/page-response';
+import type { PageResponse } from '@/types/page-response';
+import Input from '@/components/Input.vue';
+import Checkbox from '@/components/Checkbox.vue';
+import Button from '@/components/Button.vue';
+import { Tag } from '@/types';
+import { router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineOptions({
     layout: AdminLayout
@@ -59,7 +59,7 @@ defineProps({
         required: false,
     },
     tagsPage: {
-        type: Array as () => PageResponse<Tag>[],
+        type: Object as () => PageResponse<Tag>,
         required: true
     },
 });

@@ -8,6 +8,7 @@ use App\Domain\Tag\Model\Tag as DomainTagModel;
 use App\Domain\Tag\Repository\TagRepository;
 use App\Models\Tag;
 use App\Pagination\PaginationAdapter;
+use Exception;
 use Override;
 
 class TagRepositoryImpl implements TagRepository
@@ -28,26 +29,24 @@ class TagRepositoryImpl implements TagRepository
     #[Override]
     function update(object $entity): void
     {
-        $tag = Tag::findOrFail($entity->id->value);
-        $tag->alias = $entity->alias;
-        $tag->sort = $entity->sort;
-        $tag->name = $entity->name;
-        $tag->active = $entity->active;
-        $tag->save();
+        Tag::findOrFail($entity->id->value)->update([
+            'alias' => $entity->alias,
+            'sort' => $entity->sort,
+            'name' => $entity->name,
+            'active' => $entity->active,
+        ]);
     }
 
     #[Override]
     function delete(string $id): void
     {
-        $tag = Tag::findOrFail($id);
-        $tag->delete();
+        Tag::findOrFail($id)->delete();
     }
 
     #[Override]
     function findById(int|string $id): ?object
     {
-        $tag = Tag::find($id);
-        return $tag->exists() ? $tag->toDomain() : null;
+        return Tag::find($id)?->toDomain();
     }
 
     /**
@@ -60,9 +59,8 @@ class TagRepositoryImpl implements TagRepository
         return Tag::whereIn('id', $ids)
             ->orderBy('sort')
             ->get()
-            ->map(function (Tag $tag) {
-                return $tag->toDomain();
-            })->all();
+            ->map(fn (Tag $tag) => $tag->toDomain())
+            ->all();
     }
 
     #[Override]
@@ -78,16 +76,18 @@ class TagRepositoryImpl implements TagRepository
         );
     }
 
+    /**
+     * @throws Exception
+     */
     #[Override]
     function findAll(): array
     {
-        throw new \Exception("Not implemented");
+        throw new Exception("Not implemented");
     }
 
     #[Override]
     public function findByAlias(string $alias): ?DomainTagModel
     {
-        $tag = Tag::where('alias', $alias);
-        return $tag->exists() ? $tag->toDomain() : null;
+        return Tag::firstWhere('alias', $alias)?->toDomain();
     }
 }
