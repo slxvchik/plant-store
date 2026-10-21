@@ -9,9 +9,11 @@ use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
 class Warehouse
 {
-    private(set) final Uuid $id;
-    private(set) string $address;
-    private(set) ?string $phoneNumber;
+    final public private(set) Uuid $id;
+
+    public private(set) string $address;
+
+    public private(set) ?string $phoneNumber;
 
     private function __construct(Uuid $id, string $address, ?string $phoneNumber)
     {
@@ -23,6 +25,7 @@ class Warehouse
     public static function fromDb(string $id, string $address, ?string $phoneNumber): self
     {
         $uuid = new Uuid($id);
+
         return new self(
             id: $uuid,
             address: $address,
@@ -34,6 +37,7 @@ class Warehouse
     {
         $id = $uuidGeneratorInterface->generate();
         $uuid = new Uuid($id);
+
         return new self(
             id: $uuid,
             address: $address,

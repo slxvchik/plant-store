@@ -20,7 +20,7 @@ readonly class DeleteProductService implements DeleteProductUseCase
     {
         $product = $this->productRepository->findById($id);
         if ($product === null) {
-            throw new ProductNotFoundException();
+            throw new ProductNotFoundException;
         }
 
         $this->productRepository->delete($id);

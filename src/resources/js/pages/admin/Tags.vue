@@ -1,42 +1,48 @@
 <template>
-    <Button
-        text="Создать"
-        class="mb-5 max-w-80 rounded-lg"
-        @click="openCreateModal"
-    />
+    <div class="flex flex-col gap-5">
+        <h1 class="text-4xl text-text-title">Теги</h1>
+        <div class="max-w-80">
+            <Button
+                text="Создать"
+                class="rounded-lg"
+                @click="openCreateModal"
+            />
+        </div>
+    </div>
     <div
-        class="w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
+        class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
     >
         <div
-            class="grid grid-cols-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
+            class="grid grid-cols-6 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
         >
             <div class="p-4">Id</div>
             <div class="p-4">Алиас</div>
-            <div class="p-4">Сортировка</div>
             <div class="p-4">Название</div>
+            <div class="p-4">Сортировка</div>
             <div class="p-4">Активность</div>
+            <div class="p-4">Действие</div>
         </div>
 
         <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
             <div
                 v-for="tag in tagsPage.items"
                 :key="tag.id"
-                class="grid grid-cols-5 transition-colors hover:bg-gray-50"
+                class="grid grid-cols-6 transition-colors hover:bg-gray-50"
             >
                 <div class="p-4 font-medium text-gray-900">#{{ tag.id }}</div>
                 <div class="truncate p-4">{{ tag.alias }}</div>
                 <div class="p-4">{{ tag.name }}</div>
-                <div class="p-4 whitespace-nowrap">{{ tag.sort ?? '-' }}</div>
+                <div class="p-4 whitespace-nowrap">{{ tag.sort }}</div>
                 <div class="p-4">{{ tag.active }}</div>
-                <div class="flex gap-2 p-4">
+                <div class="flex flex-wrap gap-2 p-4">
                     <Button
                         text="Редактировать"
-                        class="w-fit rounded-lg bg-yellow-400 hover:bg-yellow-500"
+                        class="rounded-lg bg-yellow-400 hover:bg-yellow-500"
                         @click="openEditModal(tag)"
                     />
                     <Button
                         text="Удалить"
-                        class="w-fit rounded-lg bg-red-400 hover:bg-red-500"
+                        class="rounded-lg bg-red-400 hover:bg-red-500"
                         @click="deleteTag(tag.id)"
                     />
                 </div>
@@ -64,8 +70,8 @@
             />
             <Input
                 id="name"
-                placeholder="Тег 1"
-                label="Название"
+                placeholder="500"
+                label="Сортировка"
                 class="mt-5"
                 type="number"
                 v-model="tagSort"
@@ -78,6 +84,7 @@
                 v-model="tagActive"
             />
             <Button
+                type="button"
                 :text="isEditMode ? 'Сохранить' : 'Создать'"
                 class="relative left-[50%] mt-5 max-w-80 translate-x-[-50%] rounded-lg"
                 @click="isEditMode ? updateTag() : createTag()"
@@ -87,15 +94,16 @@
 </template>
 
 <script setup lang="ts">
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Popup from '@/components/Popup.vue';
-import type { PageResponse } from '@/types/page-response';
-import Input from '@/components/Input.vue';
-import Checkbox from '@/components/Checkbox.vue';
-import Button from '@/components/Button.vue';
-import { Tag } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import Button from '@/components/Button.vue';
+import Checkbox from '@/components/Checkbox.vue';
+import Input from '@/components/Input.vue';
+import AdminLayout from '@/components/layouts/AdminLayout.vue';
+import Popup from '@/components/Popup.vue';
+import AdminTags from '@/routes/admin/tags';
+import type { Tag } from '@/types';
+import type { PageResponse } from '@/types/page-response';
 
 defineOptions({
     layout: AdminLayout,
@@ -118,7 +126,7 @@ const isEditMode = ref(false);
 const tagId = ref<string | undefined>();
 const tagAlias = ref('');
 const tagName = ref('');
-const tagSort = ref<bigint | undefined>(undefined);
+const tagSort = ref<bigint>(BigInt(500));
 const tagActive = ref(false);
 
 const openCreateModal = () => {
@@ -126,7 +134,7 @@ const openCreateModal = () => {
     tagId.value = undefined;
     tagAlias.value = '';
     tagName.value = '';
-    tagSort.value = undefined;
+    tagSort.value = BigInt(500);
     tagActive.value = false;
     isFormPopupOpen.value = true;
 };
@@ -144,15 +152,16 @@ const openEditModal = (tag: Tag) => {
 const createTag = () => {
     const tag = {
         alias: tagAlias.value,
+        sort: tagSort.value,
         name: tagName.value,
         active: tagActive.value,
     };
-    router.post('/admin/tags', tag, {
+    router.post(AdminTags.store.url(), tag, {
         onSuccess: () => {
             isFormPopupOpen.value = false;
             tagId.value = undefined;
             tagAlias.value = '';
-            tagSort.value = undefined;
+            tagSort.value = BigInt(500);
             tagName.value = '';
             tagActive.value = false;
         },
@@ -163,18 +172,23 @@ const createTag = () => {
 };
 
 const updateTag = () => {
+    if (tagId.value === undefined) {
+        return;
+    }
+
     const tag = {
         alias: tagAlias.value,
         sort: tagSort.value,
         name: tagName.value,
         active: tagActive.value,
     };
-    router.put(`/admin/tags/${tagId.value}`, tag, {
+
+    router.put(AdminTags.update.url(tagId.value), tag, {
         onSuccess: () => {
             isFormPopupOpen.value = false;
             tagId.value = undefined;
             tagAlias.value = '';
-            tagSort.value = undefined;
+            tagSort.value = BigInt(500);
             tagName.value = '';
             tagActive.value = false;
         },
@@ -185,7 +199,7 @@ const updateTag = () => {
 };
 
 const deleteTag = (tagId: string) => {
-    router.delete(`/admin/tags/${tagId}`, {
+    router.delete(AdminTags.destroy.url(tagId), {
         onSuccess: () => {},
         onError: (errors) => {
             console.error(errors);

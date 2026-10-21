@@ -11,7 +11,7 @@ class OfferNotFoundException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::NOT_FOUND,
-            "Торговое предложение не найдено. Пожалуйста обновите страницу."
+            'Торговое предложение не найдено. Пожалуйста обновите страницу.'
         );
     }
 }

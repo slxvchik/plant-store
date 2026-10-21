@@ -7,14 +7,13 @@ namespace App\Application\Order\GetUserOrders\Dto;
 use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
 use App\Domain\Media\Model\Image;
 use App\Domain\Order\Model\Order;
-use App\Domain\Order\Model\OrderLine;
 use App\Domain\Order\Model\OrderStatus;
 use App\Domain\Product\Model\Product;
 
 final readonly class GetUserOrdersResponseDto
 {
     /**
-     * @param GetUserOrdersOrderLineResponseDto[] $orderLineResponseDto
+     * @param  GetUserOrdersOrderLineResponseDto[]  $orderLineResponseDto
      */
     public function __construct(
         public string $id,
@@ -25,15 +24,15 @@ final readonly class GetUserOrdersResponseDto
     ) {}
 
     /**
-     * @param Product[] $productsMap $productsMap[productId] => product
-     * @param Image[] $imagesMap $imagesMap[imageId] => image
+     * @param  Product[]  $productsMap  $productsMap[productId] => product
+     * @param  Image[]  $imagesMap  $imagesMap[imageId] => image
      */
     public static function fromDomain(Order $order, array $productsMap, array $imagesMap): self
     {
         $orderLines = [];
         foreach ($order->orderLines as $orderLine) {
             $product = $productsMap[$orderLine->productId] ?? null;
-            $imageId = (!empty($product->imageIds)) ? $product->imageIds[0] : null;
+            $imageId = (! empty($product->imageIds)) ? $product->imageIds[0] : null;
             $image = $imageId !== null ? ($imagesMap[$imageId] ?? null) : null;
 
             $orderLines[] = new GetUserOrdersOrderLineResponseDto(
@@ -45,6 +44,7 @@ final readonly class GetUserOrdersResponseDto
                 unitPriceInKopecks: $orderLine->unitPriceInKopecks
             );
         }
+
         return new self(
             id: $order->id->value,
             userId: $order->userId,

@@ -9,8 +9,8 @@ use App\Domain\Media\Repository\ImageRepository;
 use App\Domain\Order\Criteria\OrderSearchCriteria;
 use App\Domain\Order\Repository\OrderRepository;
 use App\Domain\Product\Repository\ProductRepository;
-use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\Pagination\Page;
+use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\User\Repository\UserRepository;
 use App\Domain\Warehouse\Repository\WarehouseRepository;
 use Override;
@@ -57,7 +57,7 @@ readonly class GetOrdersService implements GetOrdersUseCase
         $imageIdsMap = [];
         foreach ($products as $product) {
             $productsMap[$product->id->value] = $product;
-            if (!empty($product->imageIds)) {
+            if (! empty($product->imageIds)) {
                 $imageIdsMap[$product->imageIds[0]] = true;
             }
         }

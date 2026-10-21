@@ -16,7 +16,7 @@ readonly class DeleteUserRequestService implements DeleteUserRequestUseCase
     {
         $userRequest = $this->userRequestRepository->findById($id);
         if ($userRequest === null) {
-            throw new UserRequestNotFoundException();
+            throw new UserRequestNotFoundException;
         }
         $this->userRequestRepository->delete($id);
     }

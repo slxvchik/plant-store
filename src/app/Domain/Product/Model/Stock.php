@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Model;
 
-use App\Domain\Product\Exception\ProductPurchaseQuantityException;
 use App\Domain\Product\Exception\ProductQuantityRemoveReserveException;
 use App\Domain\Product\Exception\ProductQuantityReserveException;
 use App\Domain\Product\Exception\ProductShipReserveException;
@@ -32,7 +31,7 @@ readonly class Stock
     {
         $stockQuantity = $this->quantity - $quantity;
         if ($stockQuantity < 0) {
-            throw new ProductQuantityReserveException();
+            throw new ProductQuantityReserveException;
         }
 
         return new self(
@@ -49,7 +48,7 @@ readonly class Stock
     {
         $reserved = $this->reserved - $quantity;
         if ($reserved < 0) {
-            throw new ProductQuantityRemoveReserveException();
+            throw new ProductQuantityRemoveReserveException;
         }
 
         return new self(
@@ -66,7 +65,7 @@ readonly class Stock
     {
         $reservedQuantity = $this->reserved - $quantity;
         if ($reservedQuantity < 0) {
-            throw new ProductShipReserveException();
+            throw new ProductShipReserveException;
         }
 
         return new self(

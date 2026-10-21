@@ -10,7 +10,7 @@ use DateTimeImmutable;
 readonly class GetUserProfileResponseDto
 {
     /**
-     * @param Role[] $roles
+     * @param  Role[]  $roles
      */
     public function __construct(
         public string $id,

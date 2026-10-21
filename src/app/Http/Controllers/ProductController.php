@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Shared\Pagination\Page;
+use App\Pagination\PageResponseDto;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
@@ -11,7 +14,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('admin/products/ProductsIndex', [
+            'productsPage' => new PageResponseDto(
+                page: Page::empty(),
+                url: route('admin.products.index'),
+            ),
+        ]);
     }
 
     /**
@@ -19,7 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('admin/products/CreateProduct');
     }
 
     /**
@@ -35,7 +43,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Inertia::render('admin/products/ShowProduct');
     }
 
     /**
@@ -43,7 +51,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render('admin/products/EditProduct');
     }
 
     /**

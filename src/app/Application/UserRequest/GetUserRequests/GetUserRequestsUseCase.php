@@ -12,5 +12,5 @@ interface GetUserRequestsUseCase
     /**
      * @return Page<GetUserRequestsResponseDto>
      */
-    function execute(Pageable $pageable): Page;
+    public function execute(Pageable $pageable): Page;
 }

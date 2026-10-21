@@ -24,11 +24,11 @@ readonly class AuthorizeUserService implements AuthorizeUserUseCase
     {
         $user = $this->userRepository->findByEmail($email);
         if ($user === null) {
-            throw new UserInvalidCredentialsException();
+            throw new UserInvalidCredentialsException;
         }
 
-        if (!$user->isCurrentPassword($password)) {
-            throw new UserInvalidCredentialsException();
+        if (! $user->isCurrentPassword($password)) {
+            throw new UserInvalidCredentialsException;
         }
 
         $session = Session::createNew(

@@ -2,11 +2,10 @@
     <svg
         fill="#364D3E"
         xmlns="http://www.w3.org/2000/svg"
-        width="800px"
-        height="800px"
         viewBox="0 0 444.244 444.244"
         xml:space="preserve"
         aria-hidden="true"
+        class="h-full w-full"
     >
         <g>
             <g>
@@ -128,6 +127,3 @@
         </g>
     </svg>
 </template>
-
-<script setup lang="ts">
-</script>

@@ -24,11 +24,11 @@ readonly class CreateCartService implements CreateCartUseCase
         if ($userId !== null) {
             $user = $this->userRepository->findById($userId);
             if ($user === null) {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException;
             }
             $cart = $this->cartRepository->findByUserId($userId);
             if ($cart !== null) {
-                throw new CartAlreadyExistsException();
+                throw new CartAlreadyExistsException;
             }
         }
 

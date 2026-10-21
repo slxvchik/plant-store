@@ -11,7 +11,7 @@ use Override;
 class DeleteCategoryService implements DeleteCategoryUseCase
 {
     public function __construct(
-        private final CategoryRepository $categoryRepository
+        final private CategoryRepository $categoryRepository
     ) {}
 
     #[Override]
@@ -19,7 +19,7 @@ class DeleteCategoryService implements DeleteCategoryUseCase
     {
         $category = $this->categoryRepository->findById($id);
         if ($category === null) {
-            throw new CategoryNotFoundException();
+            throw new CategoryNotFoundException;
         }
 
         $this->categoryRepository->delete($id);

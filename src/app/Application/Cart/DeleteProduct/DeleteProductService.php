@@ -23,15 +23,15 @@ readonly class DeleteProductService implements DeleteProductUseCase
     {
         $cart = $this->cartRepository->findById($deleteProductRequestDto->cartId);
         if ($cart === null) {
-            throw new CartNotFoundException();
+            throw new CartNotFoundException;
         }
 
         if ($cart->userId !== null && $cart->userId !== $deleteProductRequestDto->userId) {
-            throw new CartUserAccessDeniedException();
-        } else if ($cart->userId === null && $cart->userId !== $deleteProductRequestDto->userId) {
+            throw new CartUserAccessDeniedException;
+        } elseif ($cart->userId === null && $cart->userId !== $deleteProductRequestDto->userId) {
             $user = $this->userRepository->findById($deleteProductRequestDto->userId);
             if ($user === null) {
-                throw new CartUserNotFoundException();
+                throw new CartUserNotFoundException;
             }
             $cart->userId = $user->id->value;
         }

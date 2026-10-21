@@ -6,8 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import { useNotificationStore } from '@/stores/useNotificationStore.js';
 import NotificationItem from '@/components/NotificationItem.vue';
+import { useNotificationStore } from '@/stores/useNotificationStore.js';
 
 const store = useNotificationStore();
 </script>

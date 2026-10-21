@@ -7,12 +7,17 @@ use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
 class UserRequest
 {
-    private(set) Uuid $id;
-    private(set) ?string $formId;
-    private(set) ?string $FIO;
-    private(set) ?string $email;
-    private(set) ?string $phone;
-    private(set) ?string $comment;
+    public private(set) Uuid $id;
+
+    public private(set) ?string $formId;
+
+    public private(set) ?string $FIO;
+
+    public private(set) ?string $email;
+
+    public private(set) ?string $phone;
+
+    public private(set) ?string $comment;
 
     private function __construct(Uuid $id, ?string $formId, ?string $FIO, ?string $email, ?string $phone, ?string $comment)
     {
@@ -27,6 +32,7 @@ class UserRequest
     public static function fromDb(string $id, ?string $formId, ?string $FIO, ?string $email, ?string $phone, ?string $comment): self
     {
         $uuid = new Uuid($id);
+
         return new self($uuid, $formId, $FIO, $email, $phone, $comment);
     }
 
@@ -34,6 +40,7 @@ class UserRequest
     {
         $uuid = $uuidGenerator->generate();
         $id = new Uuid($uuid);
+
         return new self($id, $formId, $FIO, $email, $phone, $comment);
     }
 }

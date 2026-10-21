@@ -9,6 +9,6 @@ class UserRequestNotFoundException extends AppException
 {
     public function __construct()
     {
-        parent::__construct(AppExceptionStatus::NOT_FOUND, "Пользовательская заявка не найдена.");
+        parent::__construct(AppExceptionStatus::NOT_FOUND, 'Пользовательская заявка не найдена.');
     }
 }

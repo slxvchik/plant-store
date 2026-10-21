@@ -19,7 +19,7 @@ readonly class TakeOrderIntoWorkService implements TakeOrderIntoWorkUseCase
     {
         $order = $this->orderRepository->findById($orderId);
         if ($order === null) {
-            throw new OrderNotFoundException();
+            throw new OrderNotFoundException;
         }
 
         $order->takeInWork();

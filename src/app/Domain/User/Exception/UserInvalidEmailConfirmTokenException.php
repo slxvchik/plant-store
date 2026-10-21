@@ -11,7 +11,7 @@ class UserInvalidEmailConfirmTokenException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::INVALID_ARGUMENT,
-            "Произошла ошибка при подтверждении почты. Код подтверждения не валиден."
+            'Произошла ошибка при подтверждении почты. Код подтверждения не валиден.'
         );
     }
 }

@@ -11,7 +11,7 @@ class UserPasswordEmptyException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::INVALID_ARGUMENT,
-            "Пароль не может быть пустым."
+            'Пароль не может быть пустым.'
         );
     }
 }

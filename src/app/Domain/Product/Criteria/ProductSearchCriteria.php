@@ -9,7 +9,7 @@ use DateTimeImmutable;
 final readonly class ProductSearchCriteria
 {
     /**
-     * @param string[] $tagIds
+     * @param  string[]  $tagIds
      */
     public function __construct(
         public ?string $name = null,

@@ -13,7 +13,7 @@ class InvalidMimeTypeException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::INVALID_ARGUMENT,
-            "Неподдерживаемый тип изображения: $mimeType. Пожалуйста, используйте один из следующих типов: " . implode(', ', $supportedMimeTypes)
+            "Неподдерживаемый тип изображения: $mimeType. Пожалуйста, используйте один из следующих типов: ".implode(', ', $supportedMimeTypes)
         );
     }
 }

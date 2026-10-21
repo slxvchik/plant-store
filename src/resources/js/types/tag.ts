@@ -1,7 +1,7 @@
 export type Tag = {
     id: string;
     alias: string;
-    sort?: bigint;
+    sort: bigint;
     name: string;
     active: boolean;
 }

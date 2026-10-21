@@ -13,7 +13,7 @@ class UserWrongPasswordException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::INVALID_ARGUMENT,
-            "Текущий пароль указан неверно."
+            'Текущий пароль указан неверно.'
         );
     }
 }

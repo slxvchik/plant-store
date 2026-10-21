@@ -2,7 +2,4 @@
 
 namespace App\Application\MainPageGallery\DeleteSlide;
 
-interface DeleteSlideUseCase
-{
-
-}
+interface DeleteSlideUseCase {}

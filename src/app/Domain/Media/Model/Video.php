@@ -10,13 +10,20 @@ use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
 class Video extends MediaDB
 {
-    private(set) ?int $width;
-    private(set) ?int $height;
-    private(set) bool $loop;
-    private(set) bool $muted;
-    private(set) ?int $durationSec;
-    private(set) ?string $codec;
-    private(set) ?string $thumbnailId;
+    public private(set) ?int $width;
+
+    public private(set) ?int $height;
+
+    public private(set) bool $loop;
+
+    public private(set) bool $muted;
+
+    public private(set) ?int $durationSec;
+
+    public private(set) ?string $codec;
+
+    public private(set) ?string $thumbnailId;
+
     /**
      * @var string[]
      */
@@ -26,15 +33,15 @@ class Video extends MediaDB
      * @throws InvalidMimeTypeException
      */
     private function __construct(
-        Uuid    $id,
-        string  $webPathToFile,
-        string  $mimeType,
-        int     $sizeInBytes,
-        ?int    $width,
-        ?int    $height,
-        bool    $loop,
-        bool    $muted,
-        ?int    $durationSec,
+        Uuid $id,
+        string $webPathToFile,
+        string $mimeType,
+        int $sizeInBytes,
+        ?int $width,
+        ?int $height,
+        bool $loop,
+        bool $muted,
+        ?int $durationSec,
         ?string $codec,
         ?string $thumbnailId
     ) {
@@ -54,15 +61,15 @@ class Video extends MediaDB
     }
 
     public static function fromDb(
-        string  $id,
-        string  $webPathToFile,
-        string  $mimeType,
-        int     $sizeInBytes,
-        ?int    $width,
-        ?int    $height,
-        bool    $loop,
-        bool    $muted,
-        ?int    $durationSec,
+        string $id,
+        string $webPathToFile,
+        string $mimeType,
+        int $sizeInBytes,
+        ?int $width,
+        ?int $height,
+        bool $loop,
+        bool $muted,
+        ?int $durationSec,
         ?string $codec,
         ?string $thumbnailId
     ): self {
@@ -95,6 +102,7 @@ class Video extends MediaDB
         ?string $thumbnailId
     ): self {
         $uuidStr = $uuidGeneratorInterface->generate();
+
         return new self(
             id: new Uuid($uuidStr),
             webPathToFile: $webPathToFile,

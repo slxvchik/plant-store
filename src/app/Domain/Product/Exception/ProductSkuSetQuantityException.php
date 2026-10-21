@@ -11,7 +11,7 @@ class ProductSkuSetQuantityException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::BUSINESS_ERROR,
-            "Количество товара не может быть отрицательным."
+            'Количество товара не может быть отрицательным.'
         );
     }
 }

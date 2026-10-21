@@ -44,7 +44,8 @@ final class TagController extends Controller
             page: $tagsPage,
             url: route('admin.tags.index')
         );
-        return Inertia::render('admin/Tags', ["tagsPage" => $pageResponseDto]);
+
+        return Inertia::render('admin/Tags', ['tagsPage' => $pageResponseDto]);
     }
 
     /**
@@ -52,6 +53,7 @@ final class TagController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $request->validate([]);
         $createTagRequestDto = new CreateTagRequestDto(
             alias: $request->input('alias'),
             sort: $request->input('sort'),
@@ -59,11 +61,12 @@ final class TagController extends Controller
             active: $request->input('active'),
         );
         $this->createTagUseCase->execute($createTagRequestDto);
+
         return redirect()->back()->with([
             new Notification(
-                message: "Тег создан.",
+                message: 'Тег создан.',
                 type: NotificationType::SUCCESS
-            )
+            ),
         ]);
     }
 
@@ -80,11 +83,12 @@ final class TagController extends Controller
             active: $request->input('active'),
         );
         $this->updateTagUseCase->execute($updateTagRequestDto);
+
         return redirect()->back()->with([
             new Notification(
-                message: "Тег обновлён.",
-                type: NotificationType::SUCCESS
-            )
+                message: 'Тег обновлён.',
+                type: NotificationType::SUCCESS,
+            ),
         ]);
     }
 
@@ -94,10 +98,11 @@ final class TagController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $this->deleteTagUseCase->execute($id);
+
         return redirect()->back()->with(
             new Notification(
-                message: "Тег удалён.",
-                type: NotificationType::SUCCESS
+                message: 'Тег удалён.',
+                type: NotificationType::SUCCESS,
             )->toArray()
         );
     }

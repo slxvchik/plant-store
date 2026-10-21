@@ -11,7 +11,7 @@ class ProductSkuSetPriceException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::BUSINESS_ERROR,
-            "Цена торгового предложения должна быть больше 0."
+            'Цена торгового предложения должна быть больше 0.'
         );
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Warehouse\DeleteWarehouse;
 
-use App\Application\Warehouse\Shared\Exception\WarehouseNotFound;
+use App\Application\Warehouse\Shared\Exception\WarehouseNotFoundException;
 use App\Domain\Warehouse\Repository\WarehouseRepository;
 use Override;
 
@@ -19,7 +19,7 @@ readonly class DeleteWarehouseService implements DeleteWarehouseUseCase
     {
         $warehouse = $this->warehouseRepository->findById($id);
         if ($warehouse === null) {
-            throw new WarehouseNotFound();
+            throw new WarehouseNotFoundException;
         }
 
         $this->warehouseRepository->delete($id);

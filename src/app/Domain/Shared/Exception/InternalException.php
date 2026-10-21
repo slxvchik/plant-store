@@ -7,11 +7,11 @@ use App\Domain\Shared\AppException\AppExceptionStatus;
 
 class InternalException extends AppException
 {
-    public function __construct(?string $message = "")
+    public function __construct(?string $message = '')
     {
         parent::__construct(
             AppExceptionStatus::INTERNAL_ERROR,
-            "Произошла внутренняя ошибка." . ($message ? " " . $message : "")
+            'Произошла внутренняя ошибка.'.($message ? ' '.$message : '')
         );
     }
 }

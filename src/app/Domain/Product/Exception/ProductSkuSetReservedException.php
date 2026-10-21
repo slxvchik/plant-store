@@ -11,7 +11,7 @@ class ProductSkuSetReservedException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::BUSINESS_ERROR,
-            "Количество зарезервированного товара не может быть отрицательным."
+            'Количество зарезервированного товара не может быть отрицательным.'
         );
     }
 }

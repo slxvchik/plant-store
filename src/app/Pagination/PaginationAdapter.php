@@ -15,7 +15,7 @@ class PaginationAdapter
             pageSize: $paginator->perPage(),
             totalPages: $paginator->lastPage(),
             totalCount: $paginator->total(),
-            hasPrev: !$paginator->onFirstPage(),
+            hasPrev: ! $paginator->onFirstPage(),
             hasNext: $paginator->hasMorePages(),
         );
     }

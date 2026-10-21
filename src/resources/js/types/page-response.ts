@@ -1,5 +1,9 @@
 export type PageResponse<T> = {
     items: T[];
+    pagination: Pagination;
+};
+
+export type Pagination = {
     currentPage: bigint;
     totalPages: bigint;
     perPage: bigint;
@@ -9,4 +13,4 @@ export type PageResponse<T> = {
     next2Url?: string;
     firstUrl?: string;
     lastUrl?: string;
-};
+}

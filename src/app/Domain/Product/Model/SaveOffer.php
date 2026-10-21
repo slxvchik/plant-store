@@ -12,15 +12,15 @@ use DateTimeImmutable;
 readonly class SaveOffer
 {
     /**
-     * @param Stock[] $stocks
-     * @param string[] $imageIds
-     * @param string[] $videoIds
+     * @param  Stock[]  $stocks
+     * @param  string[]  $imageIds
+     * @param  string[]  $videoIds
      */
     public function __construct(
         public ?string $id,
         public bool $active,
         public string $sku,
-        public ?int $sort,
+        public int $sort,
         public ?string $description,
         public int $price,
         public array $stocks,

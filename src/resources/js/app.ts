@@ -16,6 +16,7 @@ createInertiaApp({
 
         if (!el) {
             console.error('Inertia root element not found.');
+
             return;
         }
 

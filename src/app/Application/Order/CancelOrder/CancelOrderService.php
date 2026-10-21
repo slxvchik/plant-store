@@ -23,7 +23,7 @@ readonly class CancelOrderService implements CancelOrderUseCase
     {
         $order = $this->orderRepository->findById($orderId);
         if ($order === null) {
-            throw new OrderNotFoundException();
+            throw new OrderNotFoundException;
         }
 
         $warehouses = $this->warehouseRepository->findAll();

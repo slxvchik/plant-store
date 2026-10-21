@@ -11,7 +11,7 @@ class ProductQuantityReserveException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::BUSINESS_ERROR,
-            "Недостаточно товара для бронирования. Возможно товар уже купили, пожалуйста обновите страницу."
+            'Недостаточно товара для бронирования. Возможно товар уже купили, пожалуйста обновите страницу.'
         );
     }
 }

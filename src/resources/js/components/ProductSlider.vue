@@ -31,12 +31,16 @@
             <button
                 class="product-slider-prev left-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-primary text-white backdrop-blur-sm transition-all duration-300 ease-in hover:bg-primary-hover"
             >
-                <ChevronIcon class="relative right-px rotate-180" />
+                <span class="relative right-px h-6 w-6 rotate-180">
+                    <ChevronIcon />
+                </span>
             </button>
             <button
                 class="product-slider-next right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-primary text-white backdrop-blur-sm transition-all duration-300 ease-in hover:bg-primary-hover"
             >
-                <ChevronIcon class="relative left-px" />
+                <span class="relative left-px h-6 w-6">
+                    <ChevronIcon />
+                </span>
             </button>
         </div>
     </div>

@@ -32,15 +32,15 @@ readonly class GetUserCartService implements GetUserCartUseCase
     {
         $cart = $this->cartRepository->findById($getUserCartRequestDto->cartId);
         if ($cart === null) {
-            throw new CartNotFoundException();
+            throw new CartNotFoundException;
         }
 
         if ($cart->userId !== null && $cart->userId !== $getUserCartRequestDto->userId) {
-            throw new CartUserAccessDeniedException();
-        } else if ($cart->userId === null && $cart->userId !== $getUserCartRequestDto->userId) {
+            throw new CartUserAccessDeniedException;
+        } elseif ($cart->userId === null && $cart->userId !== $getUserCartRequestDto->userId) {
             $user = $this->userRepository->findById($getUserCartRequestDto->userId);
             if ($user === null) {
-                throw new CartUserNotFoundException();
+                throw new CartUserNotFoundException;
             }
             $cart->userId = $user->id->value;
         }
@@ -87,7 +87,7 @@ readonly class GetUserCartService implements GetUserCartUseCase
                 }
             }
 
-            if (!$product->offerExists($cartLine->offerId)) {
+            if (! $product->offerExists($cartLine->offerId)) {
                 continue;
             }
 

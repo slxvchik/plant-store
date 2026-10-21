@@ -11,6 +11,7 @@ class Category extends Model
     use HasUuids;
 
     public $incrementing = false;
+
     public $fillable = ['id', 'alias', 'sort', 'name', 'active'];
 
     public function toDomain(): DomainCategoryModel

@@ -16,7 +16,7 @@ use App\Domain\Shared\Pagination\Pageable;
 interface OrderRepository extends BaseRepository
 {
     /**
-     * @return Order[] 
+     * @return Order[]
      */
     public function findByUserId(string $userId): array;
 

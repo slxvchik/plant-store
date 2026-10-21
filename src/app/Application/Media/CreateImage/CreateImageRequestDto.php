@@ -9,9 +9,13 @@ use App\Domain\Media\Model\Media;
 readonly class CreateImageRequestDto
 {
     public Media $media;
+
     public int $width;
+
     public int $height;
+
     public ?string $titleText;
+
     public ?string $altText;
 
     public function __construct(Media $media, ?string $altText, ?string $titleText)

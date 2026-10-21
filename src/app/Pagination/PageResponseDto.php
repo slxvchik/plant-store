@@ -10,25 +10,30 @@ use App\Domain\Shared\Pagination\Page;
 readonly class PageResponseDto
 {
     /**
-     * @var T[] $items
+     * @var T[]
      */
     public array $items;
+
     public int $currentPage;
+
     public int $totalPages;
+
     public int $perPage;
+
     public ?string $prevUrl;
+
     public ?string $prev2Url;
+
     public ?string $nextUrl;
+
     public ?string $next2Url;
+
     public ?string $lastUrl;
+
     public ?string $firstUrl;
 
-    /**
-     * @param Page $page
-     * @param string $url
-     */
     public function __construct(
-        Page   $page,
+        Page $page,
         string $url
     ) {
         $this->items = $page->items;
@@ -74,11 +79,11 @@ readonly class PageResponseDto
 
         $query = http_build_query($queryParams);
 
-        $scheme = isset($urlParts['scheme']) ? $urlParts['scheme'] . '://' : '';
+        $scheme = isset($urlParts['scheme']) ? $urlParts['scheme'].'://' : '';
         $host = $urlParts['host'] ?? '';
         $path = $urlParts['path'] ?? '';
-        $fragment = isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '';
+        $fragment = isset($urlParts['fragment']) ? '#'.$urlParts['fragment'] : '';
 
-        return $scheme . $host . $path . '?' . $query . $fragment;
+        return $scheme.$host.$path.'?'.$query.$fragment;
     }
 }

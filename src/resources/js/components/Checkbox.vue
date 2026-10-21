@@ -1,12 +1,18 @@
 <template>
     <div class="flex w-full flex-col">
-        <div class="flex items-center">
-            <input :id="id"
-                   type="checkbox"
-                   v-model="modelValue"
-                   class="w-4 h-4 border border-default-medium rounded-xs bg-primary"
+        <div class="flex cursor-pointer items-center">
+            <input
+                :id="id"
+                type="checkbox"
+                v-model="modelValue"
+                class="border-default-medium h-4 w-4 rounded-xs border bg-primary"
             />
-            <label :for="id" class="select-none ms-2 font-medium text-heading">{{ text }}</label>
+            <label
+                :for="id"
+                class="text-heading ms-2 cursor-pointer font-medium select-none"
+            >
+                {{ text }}
+            </label>
         </div>
         <p v-if="error" class="text-red-400">{{ error }}</p>
     </div>
@@ -21,7 +27,7 @@ interface Props {
 
 withDefaults(defineProps<Props>(), {
     text: '',
-    error: ''
+    error: '',
 });
 
 const modelValue = defineModel<boolean>({ default: false });

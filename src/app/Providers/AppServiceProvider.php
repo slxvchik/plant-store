@@ -36,9 +36,9 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
 
         Inertia::share([
-            'auth' => fn() => [
-                'user' => Auth::user()
-            ]
+            'auth' => fn () => [
+                'user' => Auth::user(),
+            ],
         ]);
     }
 
@@ -54,13 +54,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(
-            fn(): ?Password => app()->isProduction()
+            fn (): ?Password => app()->isProduction()
                 ? Password::min(12)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
                 : null,
         );
     }

@@ -14,8 +14,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__ . '/../routes/web.php',
-        commands: __DIR__ . '/../routes/console.php',
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -26,16 +26,18 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
-            fn(Request $request) => $request->is('api/*') || $request->expectsJson(),
+            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             return Inertia::render('Error', [
                 'status' => 404,
-                'message' => 'Страница не найдена.'
+                'message' => 'Страница не найдена.',
             ])->toResponse($request)->setStatusCode(404);
         });
+
         $exceptions->render(function (AppException $e, Request $request) {
-            if (!$request->hasSession()) {
+            if (! $request->hasSession()) {
                 $httpCode = match ($e->getCode()) {
                     AppExceptionStatus::INVALID_ARGUMENT => 400,
                     AppExceptionStatus::NOT_FOUND => 404,
@@ -46,6 +48,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 return response()->json(['error' => $e->getMessage()], $httpCode);
             }
+
             return match ($e->getCode()) {
                 AppExceptionStatus::INTERNAL_ERROR,
                 AppExceptionStatus::NOT_FOUND,
@@ -55,12 +58,11 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->back(
                         status: $e->getCode()
                     )
-                    ->withInput()
                     ->with(Notification::fromAppException($e)),
 
                 default => Inertia::render('Errors/Error', [
                     'status' => 500,
-                    'message' => 'Произошла неизвестная ошибка.'
+                    'message' => 'Произошла неизвестная ошибка.',
                 ])->toResponse($request)->setStatusCode(500),
             };
         });

@@ -18,7 +18,7 @@ readonly class Notification
     {
         return [
             'message' => $this->message,
-            'type' => $this->type->value
+            'type' => $this->type->value,
         ];
     }
 
@@ -26,7 +26,7 @@ readonly class Notification
     {
         return [
             'message' => $appException->getMessage(),
-            'type' => NotificationType::ERROR
+            'type' => NotificationType::ERROR,
         ];
     }
 }

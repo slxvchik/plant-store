@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Model;
 
-use App\Domain\Product\Exception\ProductPurchaseQuantityException;
 use App\Domain\Product\Exception\ProductSkuSetPriceException;
 use App\Domain\Product\Exception\ProductStockNotFoundException;
 use App\Domain\Shared\Exception\InternalException;
@@ -17,66 +16,78 @@ use DateTimeImmutable;
  */
 class Offer
 {
-    private(set) final Uuid $id;
-    private(set) bool $active;
-    private(set) string $sku {
+    final public private(set) Uuid $id;
+
+    public private(set) bool $active;
+
+    public private(set) string $sku {
         /**
          * @throws InternalException
          */
         set {
             if (empty($value)) {
-                throw new InternalException("Sku");
+                throw new InternalException('Sku');
             }
             $this->sku = $value;
         }
     }
-    private(set) ?int $sort;
-    private(set) ?string $description;
+
+    public private(set) int $sort;
+
+    public private(set) ?string $description;
+
     /**
-     * @var int $price in kopecks
-     * Example (100.10 rub: $price = 10010)
+     * @var int in kopecks
+     *          Example (100.10 rub: $price = 10010)
      */
-    private(set) int $price {
+    public private(set) int $price {
         /**
          * @throws ProductSkuSetPriceException
          */
         set {
             if ($value <= 0) {
-                throw new ProductSkuSetPriceException();
+                throw new ProductSkuSetPriceException;
             }
             $this->price = $value;
         }
     }
+
     /**
      * @var Stock[] stocks map
-     * [warehouseId => Stock]
+     *              [warehouseId => Stock]
      */
-    private(set) array $stocks;
+    public private(set) array $stocks;
+
     /**
      * @var string|null Seeds | Seedlings | Seedling
      */
-    private(set) ?string $formFactor;
-    private(set) ?string $size;
+    public private(set) ?string $formFactor;
+
+    public private(set) ?string $size;
+
     /**
      * @var int|null Age in months
      */
-    private(set) ?int $age;
-    private(set) ?DateTimeImmutable $sowingDate;
+    public private(set) ?int $age;
+
+    public private(set) ?DateTimeImmutable $sowingDate;
+
     /**
      * @var string[] Image ids
      */
-    private(set) array $imageIds;
+    public private(set) array $imageIds;
+
     /**
      * @var string[] Video ids
      */
-    private(set) array $videoIds;
+    public private(set) array $videoIds;
 
     /**
-     * @param Stock[] $stocks
-     * @param string[] $imageIds
-     * @param string[] $videoIds
+     * @param  Stock[]  $stocks
+     * @param  string[]  $imageIds
+     * @param  string[]  $videoIds
      */
-    public function __construct(string $id, bool $active, string $sku, ?int $sort, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds)
+    public function __construct(string $id, bool $active, string $sku, int $sort, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds)
     {
         $uuid = new Uuid($id);
         $this->id = $uuid;
@@ -95,11 +106,12 @@ class Offer
     }
 
     /**
-     * @param Stock[] $stocks
+     * @param  Stock[]  $stocks
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator,  bool $active, string $sku, ?int $sort, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $sku, int $sort, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds): self
     {
         $uuid = $uuidIdentityGenerator->generate();
+
         return new self(
             id: $uuid,
             active: $active,
@@ -118,12 +130,12 @@ class Offer
     }
 
     /**
-     * @param Stock[] $stocks
+     * @param  Stock[]  $stocks
      */
     public function update(
         bool $active,
         string $sku,
-        ?int $sort,
+        int $sort,
         ?string $description,
         int $price,
         array $stocks,
@@ -178,6 +190,7 @@ class Offer
         foreach ($this->stocks as $stock) {
             $availableQuantity += $stock->quantity;
         }
+
         return $availableQuantity;
     }
 
@@ -189,7 +202,7 @@ class Offer
         $stock = $this->stocks[$warehouseId] ?? null;
 
         if ($stock === null) {
-            throw new ProductStockNotFoundException();
+            throw new ProductStockNotFoundException;
         }
 
         return $stock;

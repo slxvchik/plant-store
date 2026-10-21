@@ -14,9 +14,9 @@ class Session
     const int EXPIRED_TIME = 1000 * 60 * 60 * 24 * 7;
 
     private function __construct(
-        private(set) Uuid $token,
-        private(set) string $userId,
-        private(set) DateTimeImmutable $expiredDate,
+        public private(set) Uuid $token,
+        public private(set) string $userId,
+        public private(set) DateTimeImmutable $expiredDate,
     ) {}
 
     public static function fromDb(Uuid $token, string $userId, DateTimeImmutable $expiredDate): self

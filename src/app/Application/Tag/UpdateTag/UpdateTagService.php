@@ -20,7 +20,7 @@ readonly class UpdateTagService implements UpdateTagUseCase
     {
         $tag = $this->tagRepository->findById($updateTagRequestDto->id);
         if ($tag === null) {
-            throw new TagNotFoundException();
+            throw new TagNotFoundException;
         }
 
         $tag->update(

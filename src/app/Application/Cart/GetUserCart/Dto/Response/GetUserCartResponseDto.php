@@ -7,7 +7,7 @@ namespace App\Application\Cart\GetUserCart\Dto\Response;
 readonly class GetUserCartResponseDto
 {
     /**
-     * @param GetUserCartCartLineResponseDto[] $cartLines
+     * @param  GetUserCartCartLineResponseDto[]  $cartLines
      */
     public function __construct(
         public string $cartId,

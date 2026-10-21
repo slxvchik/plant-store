@@ -33,7 +33,7 @@
                         питомниках
                     </p>
                     <div class="min-w-24 w-fit">
-                        <Button href="/catalog" text="В каталог" class="" />
+                        <Button href="/catalog" text="В каталог" />
                     </div>
                 </div>
             </swiper-slide>

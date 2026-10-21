@@ -1,11 +1,16 @@
 <template>
-    <Button
-        text="Создать"
-        class="mb-5 max-w-80 rounded-lg"
-        @click="openCreateModal"
-    />
+    <div class="flex flex-col gap-5">
+        <h1 class="text-4xl text-text-title">Склады</h1>
+        <div class="max-w-80">
+            <Button
+                text="Создать"
+                class="rounded-lg"
+                @click="openCreateModal"
+            />
+        </div>
+    </div>
     <div
-        class="w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
+        class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
     >
         <div
             class="grid grid-cols-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
@@ -62,6 +67,7 @@
                 v-model="warehousePhone"
             />
             <Button
+                type="button"
                 :text="isEditMode ? 'Сохранить' : 'Создать'"
                 class="relative left-[50%] mt-5 max-w-80 translate-x-[-50%] rounded-lg"
                 @click="isEditMode ? updateWarehouse() : createWarehouse()"
@@ -71,13 +77,14 @@
 </template>
 
 <script setup lang="ts">
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
+import { router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import Button from '@/components/Button.vue';
 import Input from '@/components/Input.vue';
-import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
+import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Popup from '@/components/Popup.vue';
-import { Warehouse } from '@/types/warehouse';
+import AdminWarehouses from '@/routes/admin/warehouses';
+import type { Warehouse } from '@/types/warehouse';
 
 defineOptions({
     layout: AdminLayout,
@@ -123,7 +130,7 @@ const createWarehouse = () => {
         address: warehouseAddress.value,
         phone: warehousePhone.value,
     };
-    router.post('/admin/warehouses', warehouse, {
+    router.post(AdminWarehouses.store.url(), warehouse, {
         onSuccess: () => {
             isFormPopupOpen.value = false;
             warehouseId.value = undefined;
@@ -137,11 +144,16 @@ const createWarehouse = () => {
 };
 
 const updateWarehouse = () => {
+    if (!warehouseId.value) {
+        return;
+    }
+
     const warehouse = {
         address: warehouseAddress.value,
         phone: warehousePhone.value,
     };
-    router.put(`/admin/warehouses/${warehouseId.value}`, warehouse, {
+
+    router.put(AdminWarehouses.update.url(warehouseId.value), warehouse, {
         onSuccess: () => {
             isFormPopupOpen.value = false;
             warehouseId.value = undefined;
@@ -155,7 +167,7 @@ const updateWarehouse = () => {
 };
 
 const deleteWarehouse = (warehouseId: string) => {
-    router.delete(`/admin/warehouses/${warehouseId}`, {
+    router.delete(AdminWarehouses.destroy.url(warehouseId), {
         onSuccess: () => {},
         onError: (errors) => {
             console.error(errors);

@@ -9,11 +9,11 @@ use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
 readonly class UpdateProductRequestDto
 {
     /**
-     * @param string[] $categoryIds
-     * @param string[] $tagIds
-     * @param string[] $videoIds
-     * @param string[] $imageIds
-     * @param SaveOfferRequestDto[] $offers
+     * @param  string[]  $categoryIds
+     * @param  string[]  $tagIds
+     * @param  string[]  $videoIds
+     * @param  string[]  $imageIds
+     * @param  SaveOfferRequestDto[]  $offers
      */
     public function __construct(
         public string $id,

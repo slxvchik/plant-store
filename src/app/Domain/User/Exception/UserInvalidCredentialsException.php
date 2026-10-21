@@ -13,7 +13,7 @@ class UserInvalidCredentialsException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::INVALID_ARGUMENT,
-            "Неверный email или пароль."
+            'Неверный email или пароль.'
         );
     }
 }

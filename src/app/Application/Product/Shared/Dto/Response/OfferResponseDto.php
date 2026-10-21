@@ -13,7 +13,7 @@ use DateTimeImmutable;
 readonly class OfferResponseDto
 {
     /**
-     * @param StockResponseDto[] $stocks
+     * @param  StockResponseDto[]  $stocks
      */
     public function __construct(
         public string $id,
@@ -29,7 +29,7 @@ readonly class OfferResponseDto
     ) {}
 
     /**
-     * @param StockResponseDto[] $stockResponseDto
+     * @param  StockResponseDto[]  $stockResponseDto
      */
     public static function fromDomain(Offer $offer, array $stockResponseDto): self
     {

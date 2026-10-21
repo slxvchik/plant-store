@@ -1,8 +1,8 @@
-import { Warehouse } from '@/types/warehouse';
-import { Category } from '@/types/category';
-import { Tag } from '@/types/tag';
-import { Video } from '@/types/video';
-import { Image } from '@/types/image';
+import type { Category } from '@/types/category';
+import type { Image } from '@/types/image';
+import type { Tag } from '@/types/tag';
+import type { Video } from '@/types/video';
+import type { Warehouse } from '@/types/warehouse';
 
 export type Product = {
     id: string;

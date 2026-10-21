@@ -26,7 +26,7 @@ readonly class UpdateProductService implements UpdateProductUseCase
     {
         $product = $this->productRepository->findById($updateProductRequestDto->id);
         if ($product === null) {
-            throw new ProductNotFoundException();
+            throw new ProductNotFoundException;
         }
 
         $product->update(
@@ -53,7 +53,7 @@ readonly class UpdateProductService implements UpdateProductUseCase
     }
 
     /**
-     * @param SaveOfferRequestDto[] $offerDtos
+     * @param  SaveOfferRequestDto[]  $offerDtos
      * @return SaveOffer[]
      */
     private function buildOffers(array $offerDtos): array
@@ -81,7 +81,7 @@ readonly class UpdateProductService implements UpdateProductUseCase
     }
 
     /**
-     * @param SaveStockRequestDto[] $stockDtos
+     * @param  SaveStockRequestDto[]  $stockDtos
      * @return Stock[]
      */
     private function buildStocks(array $stockDtos): array

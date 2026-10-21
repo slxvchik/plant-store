@@ -7,6 +7,7 @@ namespace App\Domain\Shared\Pagination;
 final readonly class Pageable
 {
     public int $page;
+
     public int $perPage;
 
     public function __construct(
@@ -15,6 +16,6 @@ final readonly class Pageable
         private int $maxPerPage = 100,
     ) {
         $this->page = max($page ?? 1, 1);
-        $this->perPage = min(max($perPage ?? 1, 1), $this->maxPerPage);
+        $this->perPage = min(max($perPage ?? 10, 1), $this->maxPerPage);
     }
 }

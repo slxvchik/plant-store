@@ -1,10 +1,8 @@
 <template>
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
         viewBox="0 0 24 24"
-        class="relative bottom-0.5"
+        class="w-full h-full"
     >
         <path
             fill="currentColor"

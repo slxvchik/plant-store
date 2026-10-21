@@ -5,7 +5,6 @@ namespace App\Application\Order\GetUserOrders;
 use App\Application\Order\GetUserOrders\Dto\GetUserOrdersResponseDto;
 use App\Domain\Media\Repository\ImageRepository;
 use App\Domain\Order\Criteria\OrderSearchCriteria;
-use App\Domain\Order\Model\Order;
 use App\Domain\Order\Repository\OrderRepository;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Pagination\Page;
@@ -41,7 +40,7 @@ final readonly class GetUserOrdersService implements GetUserOrdersUseCase
         $imageIdsMap = [];
         foreach ($products as $product) {
             $productsMap[$product->id->value] = $product;
-            if (!empty($product->imageIds)) {
+            if (! empty($product->imageIds)) {
                 $imageIdsMap[$product->imageIds[0]] = true;
             }
         }

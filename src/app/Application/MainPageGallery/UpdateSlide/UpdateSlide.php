@@ -2,7 +2,4 @@
 
 namespace App\Application\MainPageGallery\UpdateSlide;
 
-interface UpdateSlide
-{
-
-}
+interface UpdateSlide {}

@@ -11,62 +11,71 @@ use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
 class Product
 {
-    private(set) final Uuid $id;
-    private(set) bool $active;
-    private(set) string $alias {
+    final public private(set) Uuid $id;
+
+    public private(set) bool $active;
+
+    public private(set) string $alias {
         /**
          * @throws InternalException
          */
         set {
             if (empty($value)) {
-                throw new InternalException("Alias");
+                throw new InternalException('Alias');
             }
             $this->alias = $value;
         }
     }
-    private(set) ?int $sort;
-    private(set) string $name {
+
+    public private(set) int $sort;
+
+    public private(set) string $name {
         /**
          * @throws InternalException
          */
         set {
             if (empty($value)) {
-                throw new InternalException("Alias");
+                throw new InternalException('Alias');
             }
             $this->name = $value;
         }
     }
-    private(set) ?string $description;
+
+    public private(set) ?string $description;
+
     /**
      * @var Offer[]
      */
     private array $offers;
+
     /**
      * @var string[] Category ids
      */
-    private(set) array $categoryIds;
+    public private(set) array $categoryIds;
+
     /**
      * @var string[] Tag ids
      */
+    public private(set) array $tagIds;
 
-    private(set) array $tagIds;
     /**
      * @var string[] Video ids
      */
-    private(set) array $videoIds;
+    public private(set) array $videoIds;
+
     /**
      * @var string[] Image ids
      */
-    private(set) array $imageIds;
+    public private(set) array $imageIds;
 
     /**
-     * @param string[] $categories
-     * @param string[] $tags
-     * @param string[] $videoIds
-     * @param string[] $imageIds
-     * @param Offer[] $offers
+     * @param  string[]  $categories
+     * @param  string[]  $tags
+     * @param  string[]  $videoIds
+     * @param  string[]  $imageIds
+     * @param  Offer[]  $offers
      */
-    private function __construct(Uuid $id, bool $active, string $alias, ?int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers)
+    private function __construct(Uuid $id, bool $active, string $alias, int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers)
     {
         $this->id = $id;
         $this->active = $active;
@@ -81,9 +90,10 @@ class Product
         $this->offers = $offers;
     }
 
-    public static function fromDb(string $id, bool $active, string $alias, ?int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers): self
+    public static function fromDb(string $id, bool $active, string $alias, int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers): self
     {
         $uuid = new Uuid($id);
+
         return new self(
             id: $uuid,
             active: $active,
@@ -100,15 +110,16 @@ class Product
     }
 
     /**
-     * @param string[] $categories
-     * @param string[] $tags
-     * @param string[] $videoIds
-     * @param string[] $imageIds
+     * @param  string[]  $categories
+     * @param  string[]  $tags
+     * @param  string[]  $videoIds
+     * @param  string[]  $imageIds
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, ?int $sort, string $name, array $categories, array $tags, array $videoIds, array $imageIds, ?string $description): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, int $sort, string $name, array $categories, array $tags, array $videoIds, array $imageIds, ?string $description): self
     {
         $uuidValue = $uuidIdentityGenerator->generate();
         $newUuid = new Uuid($uuidValue);
+
         return new self(
             id: $newUuid,
             active: $active,
@@ -125,12 +136,12 @@ class Product
     }
 
     /**
-     * @param string[] $categoryIds
-     * @param string[] $tagIds
-     * @param string[] $videoIds
-     * @param string[] $imageIds
+     * @param  string[]  $categoryIds
+     * @param  string[]  $tagIds
+     * @param  string[]  $videoIds
+     * @param  string[]  $imageIds
      */
-    public function update(string $alias, ?int $sort, string $name, bool $active, ?string $description, array $categoryIds, array $tagIds, array $videoIds, array $imageIds): void
+    public function update(string $alias, int $sort, string $name, bool $active, ?string $description, array $categoryIds, array $tagIds, array $videoIds, array $imageIds): void
     {
         $this->alias = $alias;
         $this->sort = $sort;
@@ -144,7 +155,8 @@ class Product
     }
 
     /**
-     * @param SaveOffer[] $saveOffers
+     * @param  SaveOffer[]  $saveOffers
+     *
      * @throws OfferNotFoundException
      */
     public function saveOffers(array $saveOffers, UuidGeneratorInterface $uuidGeneratorInterface): void
@@ -171,11 +183,12 @@ class Product
                 );
                 $this->offers[$newOffer->id->value] = $saveOffer;
                 $newOfferIds[] = $newOffer->id->value;
+
                 continue;
             }
 
-            if (!isset($this->offers[$id])) {
-                throw new OfferNotFoundException();
+            if (! isset($this->offers[$id])) {
+                throw new OfferNotFoundException;
             }
 
             $this->offers[$id]->update(
@@ -210,6 +223,7 @@ class Product
         foreach ($this->offers as $offer) {
             $offers[] = $offer;
         }
+
         return $offers;
     }
 
@@ -218,9 +232,10 @@ class Product
      */
     public function getOffer(string $offerId): Offer
     {
-        if (!$this->offerExists($offerId)) {
-            throw new OfferNotFoundException();
+        if (! $this->offerExists($offerId)) {
+            throw new OfferNotFoundException;
         }
+
         return $this->offers[$offerId];
     }
 
@@ -236,6 +251,7 @@ class Product
         foreach ($offer->stocks as $stock) {
             $availableCount += $stock->getAvailableQuantity();
         }
+
         return $availableCount;
     }
 }

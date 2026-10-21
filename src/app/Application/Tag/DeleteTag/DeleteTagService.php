@@ -19,7 +19,7 @@ readonly class DeleteTagService implements DeleteTagUseCase
     {
         $tag = $this->tagRepository->findById($id);
         if ($tag === null) {
-            throw new TagNotFoundException();
+            throw new TagNotFoundException;
         }
 
         $this->tagRepository->delete($id);

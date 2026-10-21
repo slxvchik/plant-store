@@ -20,7 +20,7 @@ use Inertia\Response;
 class CategoryController extends Controller
 {
     public function __construct(
-        private readonly GetCategoriesUseCase  $getCategoriesUserCase,
+        private readonly GetCategoriesUseCase $getCategoriesUserCase,
         private readonly CreateCategoryUseCase $createCategoryUseCase,
         private readonly UpdateCategoryUseCase $updateCategoryUseCase,
         private readonly DeleteCategoryUseCase $deleteCategoryUseCase
@@ -35,16 +35,20 @@ class CategoryController extends Controller
             'page' => 'nullable|int',
             'perPage' => 'nullable|int',
         ]);
+
         $pageable = new Pageable(
             page: $request->input('page'),
             perPage: $request->input('perPage'),
         );
+
         $tagsPage = $this->getCategoriesUserCase->execute($pageable);
+
         $pageResponseDto = new PageResponseDto(
             page: $tagsPage,
             url: route('admin.categories.index')
         );
-        return Inertia::render('admin/Categories', ["categoriesPage" => $pageResponseDto]);
+
+        return Inertia::render('admin/Categories', ['categoriesPage' => $pageResponseDto]);
     }
 
     /**
@@ -59,11 +63,12 @@ class CategoryController extends Controller
             active: $request->input('active'),
         );
         $this->createCategoryUseCase->execute($createTagRequestDto);
+
         return redirect()->back()->with([
             new Notification(
-                message: "Категория создана.",
+                message: 'Категория создана.',
                 type: NotificationType::SUCCESS
-            )
+            ),
         ]);
     }
 
@@ -80,11 +85,12 @@ class CategoryController extends Controller
             active: $request->input('active'),
         );
         $this->updateCategoryUseCase->execute($updateTagRequestDto);
+
         return redirect()->back()->with([
             new Notification(
-                message: "Категория обновлена.",
+                message: 'Категория обновлена.',
                 type: NotificationType::SUCCESS
-            )
+            ),
         ]);
     }
 
@@ -94,9 +100,10 @@ class CategoryController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $this->deleteCategoryUseCase->execute($id);
+
         return redirect()->back()->with(
             new Notification(
-                message: "Категория удалёна.",
+                message: 'Категория удалёна.',
                 type: NotificationType::SUCCESS
             )->toArray()
         );

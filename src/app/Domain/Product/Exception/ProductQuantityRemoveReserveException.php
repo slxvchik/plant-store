@@ -11,7 +11,7 @@ class ProductQuantityRemoveReserveException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::BUSINESS_ERROR,
-            "Произошла ошибка при удалении товара из резерва. Пожалуйста обновите страницу или обратитесь к администратору."
+            'Произошла ошибка при удалении товара из резерва. Пожалуйста обновите страницу или обратитесь к администратору.'
         );
     }
 }

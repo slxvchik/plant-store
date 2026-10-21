@@ -20,11 +20,11 @@ use App\Domain\Product\Model\Product;
 readonly class ProductResponseDto
 {
     /**
-     * @param OfferResponseDto[] $offers
-     * @param CategoryResponseDto[] $categories
-     * @param TagResponseDto[] $tags
-     * @param VideoResponseDto[] $videos
-     * @param ImageResponseDto[] $images
+     * @param  OfferResponseDto[]  $offers
+     * @param  CategoryResponseDto[]  $categories
+     * @param  TagResponseDto[]  $tags
+     * @param  VideoResponseDto[]  $videos
+     * @param  ImageResponseDto[]  $images
      */
     public function __construct(
         public string $id,
@@ -40,11 +40,11 @@ readonly class ProductResponseDto
     ) {}
 
     /**
-     * @param OfferResponseDto[] $offers
-     * @param CategoryResponseDto[] $categories
-     * @param TagResponseDto[] $tags
-     * @param VideoResponseDto[] $videos
-     * @param ImageResponseDto[] $images
+     * @param  OfferResponseDto[]  $offers
+     * @param  CategoryResponseDto[]  $categories
+     * @param  TagResponseDto[]  $tags
+     * @param  VideoResponseDto[]  $videos
+     * @param  ImageResponseDto[]  $images
      */
     public static function fromDomain(
         Product $product,

@@ -13,8 +13,8 @@ use Override;
 readonly class CreateImageService implements CreateImageUseCase
 {
     /**
-     * @param string $imageStorageRootPath should be with slash in the end
-     * @param string $webUploadImagePath should be with slash in the end
+     * @param  string  $imageStorageRootPath  should be with slash in the end
+     * @param  string  $webUploadImagePath  should be with slash in the end
      */
     public function __construct(
         private UuidGeneratorInterface $uuidGeneratorInterface,
@@ -26,16 +26,16 @@ readonly class CreateImageService implements CreateImageUseCase
     #[Override]
     public function execute(CreateImageRequestDto $createImageRequestDto): string
     {
-        if (!empty($createImageRequestDto->media->error)) {
-            throw new InternalException("Не удалось загрузить файл.");
+        if (! empty($createImageRequestDto->media->error)) {
+            throw new InternalException('Не удалось загрузить файл.');
         }
 
         $mimeParts = explode('/', $createImageRequestDto->media->mimeType);
         $fileExtension = end($mimeParts);
 
-        $uniqueFileName = $this->uuidGeneratorInterface->generate() . '.' . $fileExtension;
+        $uniqueFileName = $this->uuidGeneratorInterface->generate().'.'.$fileExtension;
 
-        $relativePath = $this->webUploadImagePath . $uniqueFileName;
+        $relativePath = $this->webUploadImagePath.$uniqueFileName;
 
         $image = Image::createNew(
             uuidGeneratorInterface: $this->uuidGeneratorInterface,
@@ -48,15 +48,15 @@ readonly class CreateImageService implements CreateImageUseCase
             altText: $createImageRequestDto->altText
         );
 
-        $absolutePath = $this->imageStorageRootPath . $image->webPathToFile;
+        $absolutePath = $this->imageStorageRootPath.$image->webPathToFile;
 
         $directory = dirname($absolutePath);
-        if (!is_dir($directory)) {
+        if (! is_dir($directory)) {
             mkdir($directory, 0755, true);
         }
 
-        if (!move_uploaded_file($createImageRequestDto->media->tmpName, $absolutePath)) {
-            throw new InternalException("Не удалось загрузить файл.");
+        if (! move_uploaded_file($createImageRequestDto->media->tmpName, $absolutePath)) {
+            throw new InternalException('Не удалось загрузить файл.');
         }
 
         return $this->imageRepository->create($image);

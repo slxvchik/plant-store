@@ -34,13 +34,13 @@ readonly class RegisterUserService implements RegisterUserUseCase
 
         $existingUserByPhone = $this->userRepository->findByPhone($user->phone);
         if ($existingUserByPhone !== null) {
-            throw new UserPhoneAlreadyExistsException();
+            throw new UserPhoneAlreadyExistsException;
         }
 
         if ($user->email !== null) {
             $existingUserByEmail = $this->userRepository->findByEmail($user->email);
             if ($existingUserByEmail !== null) {
-                throw new UserEmailAlreadyExistsException();
+                throw new UserEmailAlreadyExistsException;
             }
         }
 

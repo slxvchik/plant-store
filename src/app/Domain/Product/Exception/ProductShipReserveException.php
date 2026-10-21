@@ -11,7 +11,7 @@ class ProductShipReserveException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::BUSINESS_ERROR,
-            "Невозможно отгрузить товар. Нехватает количества зарезервированного товара."
+            'Невозможно отгрузить товар. Нехватает количества зарезервированного товара.'
         );
     }
 }

@@ -14,10 +14,10 @@ class WarehouseAdminResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return ([
+        return [
             'id' => $this->id->value,
             'address' => $this->address,
-            'phone' => $this->phoneNumber
-        ]);
+            'phone' => $this->phoneNumber,
+        ];
     }
 }

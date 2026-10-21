@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\UserRequest\GetUserRequests\DeleteUserRequestUseCase;
+use App\Application\UserRequest\DeleteUserRequest\DeleteUserRequestUseCase;
 use App\Application\UserRequest\GetUserRequests\GetUserRequestsUseCase;
 use App\Application\UserRequest\SaveFormRequest\SaveFormRequestDto;
 use App\Application\UserRequest\SaveFormRequest\SaveFormRequestUseCase;
@@ -22,7 +22,7 @@ class UserRequestController extends Controller
         private readonly DeleteUserRequestUseCase $deleteUserRequestUseCase
     ) {}
 
-    public function saveCallbackForm(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'fio' => 'required|string',
@@ -55,6 +55,18 @@ class UserRequestController extends Controller
 
         $requests = $this->getUserRequestsUseCase->execute($pageable);
 
-        return Inertia::render('admin/UserRequests', $requests);
+        return Inertia::render('admin/UserRequests', ['userRequestsPage' => $requests]);
+    }
+
+    public function destroy(string $id): RedirectResponse
+    {
+        $this->deleteUserRequestUseCase->execute($id);
+
+        return redirect()->back()->with([
+            new Notification(
+                message: 'Заявка пользователя успешно удалена',
+                type: NotificationType::SUCCESS,
+            ),
+        ]);
     }
 }

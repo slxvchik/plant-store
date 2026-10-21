@@ -13,22 +13,22 @@ use Override;
 
 class CategoryRepositoryImpl implements CategoryRepository
 {
-
     #[Override]
-    function create(object $entity): string
+    public function create(object $entity): string
     {
         $created = Category::create([
-            'id' => $entity->id,
+            'id' => $entity->id->value,
             'alias' => $entity->alias,
             'sort' => $entity->sort,
             'name' => $entity->name,
-            'active' => $entity->active
+            'active' => $entity->active,
         ]);
+
         return $created->id;
     }
 
     #[Override]
-    function update(object $entity): void
+    public function update(object $entity): void
     {
         Category::findOrFail($entity->id->value)->update([
             'alias' => $entity->alias,
@@ -39,13 +39,13 @@ class CategoryRepositoryImpl implements CategoryRepository
     }
 
     #[Override]
-    function delete(string $id): void
+    public function delete(string $id): void
     {
         Category::findOrFail($id)->delete();
     }
 
     #[Override]
-    function findById(int|string $id): ?object
+    public function findById(int|string $id): ?object
     {
         return Category::find($id)?->toDomain();
     }
@@ -54,21 +54,22 @@ class CategoryRepositoryImpl implements CategoryRepository
      * @throws Exception
      */
     #[Override]
-    function findByIds(array $ids): array
+    public function findByIds(array $ids): array
     {
-        throw new Exception("Not implemented");
+        throw new Exception('Not implemented');
     }
 
     #[Override]
-    function findPage(Pageable $pageable): Page
+    public function findPage(Pageable $pageable): Page
     {
         $paginator = Category::query()->paginate(
             perPage: $pageable->perPage,
             page: $pageable->page,
         );
+
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
-            mapper: fn(Category $category) => $category->toDomain(),
+            mapper: fn (Category $category) => $category->toDomain(),
         );
     }
 
@@ -76,9 +77,9 @@ class CategoryRepositoryImpl implements CategoryRepository
      * @throws Exception
      */
     #[Override]
-    function findAll(): array
+    public function findAll(): array
     {
-        throw new Exception("Not implemented");
+        throw new Exception('Not implemented');
     }
 
     #[Override]

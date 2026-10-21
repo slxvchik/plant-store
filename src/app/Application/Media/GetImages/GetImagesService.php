@@ -6,8 +6,8 @@ namespace App\Application\Media\GetImages;
 
 use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
 use App\Domain\Media\Repository\ImageRepository;
-use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\Pagination\Page;
+use App\Domain\Shared\Pagination\Pageable;
 use Override;
 
 readonly class GetImagesService implements GetImagesUseCase

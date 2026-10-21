@@ -10,10 +10,14 @@ use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
 class Image extends MediaDB
 {
-    private(set) ?int $width;
-    private(set) ?int $height;
-    private(set) ?string $titleText;
-    private(set) ?string $altText;
+    public private(set) ?int $width;
+
+    public private(set) ?int $height;
+
+    public private(set) ?string $titleText;
+
+    public private(set) ?string $altText;
+
     /**
      * @var string[]
      */
@@ -23,12 +27,12 @@ class Image extends MediaDB
      * @throws InvalidMimeTypeException
      */
     private function __construct(
-        Uuid    $id,
-        string  $webPathToFile,
-        string  $mimeType,
-        int     $sizeInBytes,
-        int     $width,
-        int     $height,
+        Uuid $id,
+        string $webPathToFile,
+        string $mimeType,
+        int $sizeInBytes,
+        int $width,
+        int $height,
         ?string $titleText,
         ?string $altText
     ) {
@@ -77,6 +81,7 @@ class Image extends MediaDB
         ?string $altText
     ): self {
         $uuidStr = $uuidGeneratorInterface->generate();
+
         return new self(
             id: new Uuid($uuidStr),
             webPathToFile: $webPathToFile,

@@ -6,6 +6,7 @@ use App\Domain\Shared\Uuid\Uuid;
 
 class News
 {
-    private(set) Uuid $id;
+    public private(set) Uuid $id;
+
     private string $alias;
 }

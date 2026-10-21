@@ -23,6 +23,7 @@ readonly class GetUserRequestsService implements GetUserRequestsUseCase
         foreach ($page->items as $userRequest) {
             $userResponseDtos[] = GetUserRequestsResponseDto::fromDomain($userRequest);
         }
+
         return $page->changeItems($userResponseDtos);
     }
 }

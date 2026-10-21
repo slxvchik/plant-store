@@ -6,8 +6,8 @@ namespace App\Domain\User\Model;
 
 enum Role: string
 {
-    case USER = "USER";
-    case ADMINISTRATOR = "ADMIN";
-    case MANAGER = "MANAGER";
-    case WAREHOUSE_WORKER = "WAREHOUSE_WORKER";
+    case USER = 'USER';
+    case ADMINISTRATOR = 'ADMIN';
+    case MANAGER = 'MANAGER';
+    case WAREHOUSE_WORKER = 'WAREHOUSE_WORKER';
 }

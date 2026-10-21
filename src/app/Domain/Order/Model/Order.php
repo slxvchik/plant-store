@@ -11,27 +11,31 @@ use DateTimeImmutable;
 
 class Order
 {
-    private(set) Uuid $id;
-    private(set) string $userId;
-    private(set) OrderStatus $status;
+    public private(set) Uuid $id;
+
+    public private(set) string $userId;
+
+    public private(set) OrderStatus $status;
+
     /**
      * @var OrderLine[]
      */
-    private(set) array $orderLines {
+    public private(set) array $orderLines {
         /**
          * @throws OrderLineEmptyException
          */
         set {
             if (empty($value)) {
-                throw new OrderLineEmptyException();
+                throw new OrderLineEmptyException;
             }
             $this->orderLines = $value;
         }
     }
-    private(set) DateTimeImmutable $created;
+
+    public private(set) DateTimeImmutable $created;
 
     /**
-     * @param OrderLine[] $orderLines
+     * @param  OrderLine[]  $orderLines
      */
     private function __construct(Uuid $id, string $userId, OrderStatus $status, array $orderLines, DateTimeImmutable $created)
     {
@@ -43,11 +47,12 @@ class Order
     }
 
     /**
-     * @param OrderLine[] $orderLines
+     * @param  OrderLine[]  $orderLines
      */
     public static function fromDb(string $id, string $userId, OrderStatus $status, array $orderLines, DateTimeImmutable $created): self
     {
         $uuid = new Uuid($id);
+
         return new self(
             id: $uuid,
             userId: $userId,
@@ -58,18 +63,19 @@ class Order
     }
 
     /**
-     * @param OrderLine[] $orderLines
+     * @param  OrderLine[]  $orderLines
      */
     public static function createNew(UuidGeneratorInterface $uuidGeneratorInterface, string $userId, array $orderLines): self
     {
         $uuidStr = $uuidGeneratorInterface->generate();
         $uuid = new Uuid($uuidStr);
+
         return new self(
             id: $uuid,
             userId: $userId,
             status: OrderStatus::CREATED,
             orderLines: $orderLines,
-            created: new DateTimeImmutable()
+            created: new DateTimeImmutable
         );
     }
 

@@ -22,10 +22,11 @@ readonly class GetDetailProductService implements GetDetailProductUseCase
     {
         $product = $this->productRepository->findByAlias($alias);
         if ($product === null) {
-            throw new ProductNotFoundException();
+            throw new ProductNotFoundException;
         }
 
         $productDtoList = $this->productDetailsFetcher->getByIds([$product->id]);
+
         return $productDtoList[0];
     }
 }

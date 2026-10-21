@@ -14,20 +14,21 @@ use Override;
 class TagRepositoryImpl implements TagRepository
 {
     #[Override]
-    function create(object $entity): string
+    public function create(object $entity): string
     {
         $created = Tag::create([
-            'id' => $entity->id,
+            'id' => $entity->id->value,
             'alias' => $entity->alias,
             'sort' => $entity->sort,
             'name' => $entity->name,
             'active' => $entity->active,
         ]);
+
         return $created->id;
     }
 
     #[Override]
-    function update(object $entity): void
+    public function update(object $entity): void
     {
         Tag::findOrFail($entity->id->value)->update([
             'alias' => $entity->alias,
@@ -38,23 +39,23 @@ class TagRepositoryImpl implements TagRepository
     }
 
     #[Override]
-    function delete(string $id): void
+    public function delete(string $id): void
     {
         Tag::findOrFail($id)->delete();
     }
 
     #[Override]
-    function findById(int|string $id): ?object
+    public function findById(int|string $id): ?object
     {
         return Tag::find($id)?->toDomain();
     }
 
     /**
-     * @param string[] $ids
+     * @param  string[]  $ids
      * @return DomainTagModel[]
      */
     #[Override]
-    function findByIds(array $ids): array
+    public function findByIds(array $ids): array
     {
         return Tag::whereIn('id', $ids)
             ->orderBy('sort')
@@ -64,15 +65,16 @@ class TagRepositoryImpl implements TagRepository
     }
 
     #[Override]
-    function findPage(Pageable $pageable): Page
+    public function findPage(Pageable $pageable): Page
     {
         $paginator = Tag::query()->paginate(
             perPage: $pageable->perPage,
             page: $pageable->page,
         );
+
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
-            mapper: fn(Tag $tag) => $tag->toDomain(),
+            mapper: fn (Tag $tag) => $tag->toDomain(),
         );
     }
 
@@ -80,9 +82,9 @@ class TagRepositoryImpl implements TagRepository
      * @throws Exception
      */
     #[Override]
-    function findAll(): array
+    public function findAll(): array
     {
-        throw new Exception("Not implemented");
+        throw new Exception('Not implemented');
     }
 
     #[Override]

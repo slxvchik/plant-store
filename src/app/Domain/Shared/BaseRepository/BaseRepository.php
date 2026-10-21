@@ -11,32 +11,36 @@ use App\Domain\Shared\Pagination\Pageable;
 interface BaseRepository
 {
     /**
-     * @param T $entity
+     * @param  T  $entity
      * @return string id
      */
-    function create(object $entity): string;
+    public function create(object $entity): string;
 
     /**
-     * @param T $entity
+     * @param  T  $entity
      */
-    function update(object $entity): void;
-    function delete(string $id): void;
+    public function update(object $entity): void;
+
+    public function delete(string $id): void;
+
     /**
-     * @param string|int $id
      * @return T|null
      */
-    function findById(string|int $id): ?object;
+    public function findById(string|int $id): ?object;
+
     /**
-     * @param string[]|int[] $ids
+     * @param  string[]|int[]  $ids
      * @return T[]
      */
-    function findByIds(array $ids): array;
+    public function findByIds(array $ids): array;
+
     /**
      * @return Page<T>
      */
-    function findPage(Pageable $pageable): Page;
+    public function findPage(Pageable $pageable): Page;
+
     /**
      * @return T[]
      */
-    function findAll(): array;
+    public function findAll(): array;
 }

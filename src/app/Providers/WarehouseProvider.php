@@ -10,11 +10,8 @@ use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesService;
 use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesUseCase;
 use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseService;
 use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseUseCase;
-use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use App\Domain\Warehouse\Repository\WarehouseRepository;
-use App\Generators\UuidGenerator;
 use App\Repositories\WarehouseRepositoryImpl;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class WarehouseProvider extends ServiceProvider

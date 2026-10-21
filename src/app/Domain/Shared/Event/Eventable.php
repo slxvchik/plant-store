@@ -20,6 +20,7 @@ trait Eventable
     {
         $events = $this->events;
         $this->events = [];
+
         return $events;
     }
 }

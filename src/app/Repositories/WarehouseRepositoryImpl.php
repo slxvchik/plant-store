@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\Pagination\Page;
+use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Warehouse\Repository\WarehouseRepository;
 use App\Models\Warehouse;
 use Exception;
@@ -53,6 +53,7 @@ class WarehouseRepositoryImpl implements WarehouseRepository
             'address' => $entity->address,
             'phone' => $entity->phoneNumber,
         ]);
+
         return $entity->id->value;
     }
 
@@ -61,7 +62,7 @@ class WarehouseRepositoryImpl implements WarehouseRepository
     {
         Warehouse::findOrFail($entity->id->value)->update([
             'address' => $entity->address,
-            'phone' => $entity->phoneNumber
+            'phone' => $entity->phoneNumber,
         ]);
     }
 

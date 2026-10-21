@@ -12,7 +12,7 @@ use Override;
 readonly class UpdateCategoryService implements UpdateCategoryUseCase
 {
     public function __construct(
-        private final CategoryRepository $categoryRepository
+        final private CategoryRepository $categoryRepository
     ) {}
 
     #[Override]
@@ -20,7 +20,7 @@ readonly class UpdateCategoryService implements UpdateCategoryUseCase
     {
         $category = $this->categoryRepository->findById($updateCategoryRequestDto->id);
         if ($category === null) {
-            throw new CategoryNotFoundException();
+            throw new CategoryNotFoundException;
         }
 
         $category->update(

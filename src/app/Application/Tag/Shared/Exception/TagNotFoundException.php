@@ -6,14 +6,12 @@ namespace App\Application\Tag\Shared\Exception;
 
 use App\Domain\Shared\AppException\AppException;
 use App\Domain\Shared\AppException\AppExceptionStatus;
-use Override;
 
 class TagNotFoundException extends AppException
 {
-    #[Override]
     public function __construct(?string $id = null)
     {
-        $extra = "";
+        $extra = '';
         if ($id !== null) {
             $extra .= " id: $id.";
         }

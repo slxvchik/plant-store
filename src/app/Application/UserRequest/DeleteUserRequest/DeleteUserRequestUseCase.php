@@ -6,5 +6,5 @@ namespace App\Application\UserRequest\DeleteUserRequest;
 
 interface DeleteUserRequestUseCase
 {
-    function execute(string $id): void;
+    public function execute(string $id): void;
 }

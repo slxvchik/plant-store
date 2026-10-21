@@ -28,22 +28,22 @@ readonly class SaveProductService implements SaveProductUseCase
     {
         $cart = $this->cartRepository->findById($saveProductRequestDto->cartId);
         if ($cart === null) {
-            throw new CartNotFoundException();
+            throw new CartNotFoundException;
         }
 
         if ($cart->userId !== null && $cart->userId !== $saveProductRequestDto->userId) {
-            throw new CartUserAccessDeniedException();
-        } else if ($cart->userId === null && $cart->userId !== $saveProductRequestDto->userId) {
+            throw new CartUserAccessDeniedException;
+        } elseif ($cart->userId === null && $cart->userId !== $saveProductRequestDto->userId) {
             $user = $this->userRepository->findById($saveProductRequestDto->userId);
             if ($user === null) {
-                throw new CartUserNotFoundException();
+                throw new CartUserNotFoundException;
             }
             $cart->userId = $user->id->value;
         }
 
         $product = $this->productRepository->findById($saveProductRequestDto->productId);
         if ($product === null) {
-            throw new ProductNotFoundException();
+            throw new ProductNotFoundException;
         }
         $offer = $product->getOffer($saveProductRequestDto->offerId);
 

@@ -31,13 +31,13 @@ readonly class CreateOrderService implements CreateOrderUseCase
     {
         $cart = $this->cartRepository->findByUserId($userId);
         if ($cart === null) {
-            throw new CartNotFoundException();
+            throw new CartNotFoundException;
         }
 
         $cartLines = $cart->getCartLines();
 
         if (count($cartLines) === 0) {
-            throw new OrderEmptyCartException();
+            throw new OrderEmptyCartException;
         }
 
         // now only with one warehouse with simple logic
@@ -75,7 +75,7 @@ readonly class CreateOrderService implements CreateOrderUseCase
 
         // comparing expected prices and current prices
         if ($actualSumInKopecks !== $expectedSumInKopecks) {
-            throw new OrderInvalidSumExpectationException();
+            throw new OrderInvalidSumExpectationException;
         }
 
         $order = Order::createNew(

@@ -1,8 +1,13 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\CategoryProvider;
+use App\Providers\TagProvider;
+use App\Providers\WarehouseProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\CategoryProvider::class,
-    App\Providers\TagProvider::class,
-    App\Providers\WarehouseProvider::class,
+    AppServiceProvider::class,
+    CategoryProvider::class,
+    TagProvider::class,
+    WarehouseProvider::class,
 ];

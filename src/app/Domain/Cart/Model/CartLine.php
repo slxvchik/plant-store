@@ -10,6 +10,7 @@ namespace App\Domain\Cart\Model;
 readonly class CartLine
 {
     public int $quantity;
+
     public function __construct(
         public string $productId,
         public string $offerId,
@@ -23,6 +24,7 @@ readonly class CartLine
         if ($quantity <= 0) {
             $quantity = 1;
         }
+
         return new CartLine(
             productId: $this->productId,
             offerId: $this->offerId,

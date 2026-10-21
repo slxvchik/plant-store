@@ -11,7 +11,7 @@ class OrderLineEmptyException extends AppException
     {
         parent::__construct(
             AppExceptionStatus::BUSINESS_ERROR,
-            "Невозможно создать заказ без товара. Пожалуйста добавьте товар в корзину и оформите заказ."
+            'Невозможно создать заказ без товара. Пожалуйста добавьте товар в корзину и оформите заказ.'
         );
     }
 }

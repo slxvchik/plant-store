@@ -19,7 +19,7 @@ readonly class UpdateImageService implements UpdateImageUseCase
     {
         $image = $this->imageRepository->findById($updateImageRequestDto->id);
         if ($image === null) {
-            throw new ImageNotFoundException();
+            throw new ImageNotFoundException;
         }
 
         $image->update(

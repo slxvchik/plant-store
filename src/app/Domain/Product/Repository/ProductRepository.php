@@ -15,9 +15,6 @@ use App\Domain\Shared\Pagination\Pageable;
  */
 interface ProductRepository extends BaseRepository
 {
-    /**
-     * @return Product|null
-     */
     public function findByAlias(string $alias): ?Product;
 
     /**

@@ -9,16 +9,16 @@ use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
 readonly class CreateProductRequestDto
 {
     /**
-     * @param string[] $categoryIds
-     * @param string[] $tagIds
-     * @param string[] $videoIds
-     * @param string[] $imageIds
-     * @param SaveOfferRequestDto[] $offers
+     * @param  string[]  $categoryIds
+     * @param  string[]  $tagIds
+     * @param  string[]  $videoIds
+     * @param  string[]  $imageIds
+     * @param  SaveOfferRequestDto[]  $offers
      */
     public function __construct(
         public bool $active,
         public string $alias,
-        public ?int $sort,
+        public int $sort,
         public string $name,
         public ?string $description,
         public array $categoryIds,

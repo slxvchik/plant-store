@@ -23,39 +23,50 @@ class User
 
     private const string PASSWORD_PATTERN = '/(?=.*[A-Za-z])(?=.*\d)(?=.*[*)(!@#$%_^&-])[A-Za-z\d*)(!@#$%_^&-]{8,}/';
 
-    private(set) final Uuid $id;
+    final public private(set) Uuid $id;
+
     private string $passwordHash;
-    private(set) string $firstName {
+
+    public private(set) string $firstName {
         set {
             $this->firstName = trim($value);
         }
     }
-    private(set) ?string $lastName {
+
+    public private(set) ?string $lastName {
         set {
             $cleanVal = trim($value);
-            if (!empty($cleanVal)) {
+            if (! empty($cleanVal)) {
                 $this->lastName = $cleanVal;
             }
         }
     }
-    private(set) string $email {
+
+    public private(set) string $email {
         set {
             $this->email = trim($value);
         }
     }
+
     private ?string $emailConfirmToken;
-    private(set) bool $emailConfirmed;
-    private(set) string $phone;
-    private(set) ?string $imageId;
+
+    public private(set) bool $emailConfirmed;
+
+    public private(set) string $phone;
+
+    public private(set) ?string $imageId;
+
     /**
      * @var Role[]
      */
-    private(set) array $roles;
-    private(set) DateTimeImmutable $createdAt;
-    private(set) ?DateTimeImmutable $updatedAt;
+    public private(set) array $roles;
+
+    public private(set) DateTimeImmutable $createdAt;
+
+    public private(set) ?DateTimeImmutable $updatedAt;
 
     /**
-     * @param Role[] $roles
+     * @param  Role[]  $roles
      */
     private function __construct(Uuid $id, string $passwordHash, string $firstName, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt)
     {
@@ -109,7 +120,7 @@ class User
             phone: $phone,
             imageId: null,
             roles: [Role::USER],
-            createdAt: new DateTimeImmutable(),
+            createdAt: new DateTimeImmutable,
             updatedAt: null
         );
 
@@ -140,7 +151,7 @@ class User
         $this->phone = $phone;
         $this->imageId = $imageId;
         $this->roles = $roles;
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable;
     }
 
     public function update(string $firstname, ?string $lastName, string $phone, ?string $imageId): void
@@ -149,7 +160,7 @@ class User
         $this->lastName = $lastName;
         $this->phone = $phone;
         $this->imageId = $imageId;
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable;
     }
 
     public function updateEmail(string $newEmail): void
@@ -159,7 +170,7 @@ class User
         $this->email = $newEmail;
         $this->emailConfirmToken = $confirmToken;
         $this->emailConfirmed = false;
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable;
 
         $this->recordEvent(new SendConfirmEmailEvent(
             userId: $this->id->value,
@@ -175,14 +186,14 @@ class User
     public function confirmEmail(string $newEmail, string $confirmToken): void
     {
         if ($this->email !== $newEmail) {
-            throw new UserEmailMismatchException();
+            throw new UserEmailMismatchException;
         }
         if ($this->emailConfirmToken !== $confirmToken) {
-            throw new UserInvalidEmailConfirmTokenException();
+            throw new UserInvalidEmailConfirmTokenException;
         }
         $this->emailConfirmed = true;
         $this->emailConfirmToken = null;
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable;
     }
 
     /**
@@ -192,12 +203,12 @@ class User
      */
     public function changePassword(string $oldPassword, string $newPassword): void
     {
-        if (!$this->isCurrentPassword($oldPassword)) {
-            throw new UserWrongPasswordException();
+        if (! $this->isCurrentPassword($oldPassword)) {
+            throw new UserWrongPasswordException;
         }
 
         $this->passwordHash = self::generatePasswordHash($newPassword);
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable;
     }
 
     /**
@@ -206,8 +217,9 @@ class User
     public function isCurrentPassword(string $password): bool
     {
         if (trim($password) === '') {
-            throw new UserPasswordEmptyException();
+            throw new UserPasswordEmptyException;
         }
+
         return hash_equals($this->passwordHash, self::getPasswordHash($password));
     }
 
@@ -216,14 +228,16 @@ class User
      * Min 1 special symbol.
      * Min 1 letter.
      * Min 1 number.
+     *
      * @throws UserBadPasswordException
      */
     private static function generatePasswordHash(string $password): string
     {
         $cleanPassword = trim($password);
-        if (!preg_match(self::PASSWORD_PATTERN, $cleanPassword)) {
-            throw new UserBadPasswordException();
+        if (! preg_match(self::PASSWORD_PATTERN, $cleanPassword)) {
+            throw new UserBadPasswordException;
         }
+
         return self::getPasswordHash($cleanPassword);
     }
 
@@ -239,9 +253,10 @@ class User
     {
         try {
             $bytes = random_bytes(32);
+
             return bin2hex($bytes);
         } catch (RandomException) {
-            throw new UserGenerateEmailConfirmTokenException();
+            throw new UserGenerateEmailConfirmTokenException;
         }
     }
 }

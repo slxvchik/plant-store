@@ -11,15 +11,18 @@ use DateTimeImmutable;
 class Cart
 {
     public Uuid $id;
+
     public ?string $userId;
+
     /**
      * @var array<string, array<string, CartLine>> Map[$productId][$offerId] => CartLine
      */
     private array $cartLines;
-    private(set) DateTimeImmutable $updated;
+
+    public private(set) DateTimeImmutable $updated;
 
     /**
-     * @param array<string, array<string, CartLine>> $cartLines Map[$productId][$offerId] => CartLine
+     * @param  array<string, array<string, CartLine>>  $cartLines  Map[$productId][$offerId] => CartLine
      */
     private function __construct(Uuid $id, ?string $userId, array $cartLines, DateTimeImmutable $updated)
     {
@@ -33,16 +36,17 @@ class Cart
     {
         $id = $uuidGeneratorInterface->generate();
         $uuid = new Uuid($id);
+
         return new self(
             id: $uuid,
             userId: $userId,
             cartLines: [],
-            updated: new DateTimeImmutable()
+            updated: new DateTimeImmutable
         );
     }
 
     /**
-     * @param array<string, array<string, CartLine>> $cartLines Map[$productId][$offerId] => CartLine
+     * @param  array<string, array<string, CartLine>>  $cartLines  Map[$productId][$offerId] => CartLine
      */
     public static function fromDb(string $id, ?string $userId, array $cartLines, DateTimeImmutable $updated): self
     {
@@ -63,7 +67,7 @@ class Cart
             $newQuantity = $cartLine->quantity + $quantity;
             $this->cartLines[$productId][$offerId] = $cartLine->changeQuantity($newQuantity);
         }
-        $this->updated = new DateTimeImmutable();
+        $this->updated = new DateTimeImmutable;
     }
 
     public function removeProduct(string $productId, string $offerId): void
@@ -71,7 +75,7 @@ class Cart
         if (isset($this->cartLines[$productId][$offerId])) {
             unset($this->cartLines[$productId][$offerId]);
         }
-        $this->updated = new DateTimeImmutable();
+        $this->updated = new DateTimeImmutable;
     }
 
     private function getCartLine(string $productId, string $offerId): ?CartLine
@@ -90,6 +94,7 @@ class Cart
                 $cartLines[] = $cartLine;
             }
         }
+
         return $cartLines;
     }
 }

@@ -17,7 +17,9 @@ class Warehouse extends Model
     use HasUuids;
 
     protected $keyType = 'string';
+
     public $incrementing = false;
+
     public $timestamps = false;
 
     protected $fillable = ['id', 'address', 'phone'];

@@ -12,7 +12,7 @@ use DateTimeImmutable;
 readonly class GetUserCartProductResponseDto
 {
     /**
-     * @param array<ImageResponseDto> $images
+     * @param  array<ImageResponseDto>  $images
      */
     public function __construct(
         // product info
@@ -33,7 +33,7 @@ readonly class GetUserCartProductResponseDto
     ) {}
 
     /**
-     * @param array<ImageResponseDto> $images
+     * @param  array<ImageResponseDto>  $images
      */
     public static function fromDomain(Product $product, Offer $offer, array $images): self
     {

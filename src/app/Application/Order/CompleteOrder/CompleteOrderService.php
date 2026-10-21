@@ -23,7 +23,7 @@ readonly class CompleteOrderService implements CompleteOrderUseCase
     {
         $order = $this->orderRepository->findById($id);
         if ($order === null) {
-            throw new OrderNotFoundException();
+            throw new OrderNotFoundException;
         }
 
         $warehouses = $this->warehouseRepository->findAll();

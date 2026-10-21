@@ -50,7 +50,7 @@ readonly class CreateProductService implements CreateProductUseCase
     }
 
     /**
-     * @param SaveOfferRequestDto[] $saveOfferRequestDtos
+     * @param  SaveOfferRequestDto[]  $saveOfferRequestDtos
      * @return SaveOffer[]
      */
     private function buildOffers(array $saveOfferRequestDtos): array
@@ -74,11 +74,12 @@ readonly class CreateProductService implements CreateProductUseCase
                 videoIds: $saveOffer->videoIds
             );
         }
+
         return $newOffers;
     }
 
     /**
-     * @param SaveStockRequestDto[] $saveStockRequestDtos
+     * @param  SaveStockRequestDto[]  $saveStockRequestDtos
      * @return Stock[]
      */
     private function buildStocks(array $saveStockRequestDtos): array
@@ -91,6 +92,7 @@ readonly class CreateProductService implements CreateProductUseCase
                 reserved: $saveStockRequestDto->reserved
             );
         }
+
         return $stocks;
     }
 }

@@ -9,13 +9,13 @@ use DateTimeImmutable;
 readonly class SaveOfferRequestDto
 {
     /**
-     * @param SaveStockRequestDto[] $stocks
+     * @param  SaveStockRequestDto[]  $stocks
      */
     public function __construct(
         public ?string $id,
         public bool $active,
         public string $sku,
-        public ?int $sort,
+        public int $sort,
         public ?string $description,
         public int $price,
         public array $stocks,

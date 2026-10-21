@@ -11,6 +11,7 @@ readonly class TagResponseDto
     public function __construct(
         public string $id,
         public string $alias,
+        public int $sort,
         public string $name,
         public bool $active,
     ) {}
@@ -20,6 +21,7 @@ readonly class TagResponseDto
         return new self(
             id: $tag->id->value,
             alias: $tag->alias,
+            sort: $tag->sort,
             name: $tag->name,
             active: $tag->active,
         );

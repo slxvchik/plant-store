@@ -9,12 +9,12 @@ use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
 final readonly class GetOrdersOrderLineResponseDto
 {
     public function __construct(
-        public string            $productId,
-        public string            $offerId,
+        public string $productId,
+        public string $offerId,
         public ?ImageResponseDto $imageResponseDto,
-        public ?string           $productName,
-        public int               $quantity,
-        public int               $unitPriceInKopecks,
-        public string            $warehouseAddress
+        public ?string $productName,
+        public int $quantity,
+        public int $unitPriceInKopecks,
+        public string $warehouseAddress
     ) {}
 }

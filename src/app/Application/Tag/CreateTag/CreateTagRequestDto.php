@@ -8,7 +8,7 @@ readonly class CreateTagRequestDto
 {
     public function __construct(
         public string $alias,
-        public ?int $sort,
+        public int $sort,
         public string $name,
         public bool $active,
     ) {}

@@ -20,8 +20,8 @@ class WarehouseController extends Controller
 {
     public function __construct(
         private readonly GetAllWarehousesUseCase $getAllWarehousesUseCase,
-        private readonly CreateWarehouseUseCase  $createWarehouseUseCase,
-        private readonly UpdateWarehouseUseCase  $updateWarehouseUseCase,
+        private readonly CreateWarehouseUseCase $createWarehouseUseCase,
+        private readonly UpdateWarehouseUseCase $updateWarehouseUseCase,
         private readonly DeleteWarehouseUseCase $deleteWarehouseUseCase
     ) {}
 
@@ -29,7 +29,8 @@ class WarehouseController extends Controller
     {
         $warehouses = $this->getAllWarehousesUseCase->execute();
         $warehouseAdminResources = WarehouseAdminResource::collection($warehouses);
-        return Inertia::render('admin/Warehouses', ['response' => $warehouseAdminResources]);
+
+        return Inertia::render('admin/Warehouses', ['warehouses' => $warehouseAdminResources]);
     }
 
     /**

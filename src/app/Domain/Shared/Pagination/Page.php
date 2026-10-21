@@ -10,7 +10,7 @@ namespace App\Domain\Shared\Pagination;
 final readonly class Page
 {
     /**
-     * @param T[] $items
+     * @param  T[]  $items
      */
     public function __construct(
         public array $items,
@@ -36,7 +36,7 @@ final readonly class Page
     }
 
     /**
-     * @param T[] $newItems
+     * @param  T[]  $newItems
      * @return Page<T>
      */
     public function changeItems(array $newItems): Page
