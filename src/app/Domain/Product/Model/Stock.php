@@ -25,6 +25,9 @@ readonly class Stock
         return $this->quantity - $this->reserved;
     }
 
+    /**
+     * @throws ProductQuantityReserveException
+     */
     public function reserve(int $quantity): self
     {
         $stockQuantity = $this->quantity - $quantity;
@@ -39,6 +42,9 @@ readonly class Stock
         );
     }
 
+    /**
+     * @throws ProductQuantityRemoveReserveException
+     */
     public function cancelReserve(int $quantity): self
     {
         $reserved = $this->reserved - $quantity;
@@ -53,6 +59,9 @@ readonly class Stock
         );
     }
 
+    /**
+     * @throws ProductShipReserveException
+     */
     public function ship(int $quantity): self
     {
         $reservedQuantity = $this->reserved - $quantity;

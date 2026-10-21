@@ -168,6 +168,10 @@ class User
         ));
     }
 
+    /**
+     * @throws UserEmailMismatchException
+     * @throws UserInvalidEmailConfirmTokenException
+     */
     public function confirmEmail(string $newEmail, string $confirmToken): void
     {
         if ($this->email !== $newEmail) {
@@ -181,6 +185,11 @@ class User
         $this->updatedAt = new DateTimeImmutable();
     }
 
+    /**
+     * @throws UserBadPasswordException
+     * @throws UserWrongPasswordException
+     * @throws UserPasswordEmptyException
+     */
     public function changePassword(string $oldPassword, string $newPassword): void
     {
         if (!$this->isCurrentPassword($oldPassword)) {
@@ -191,6 +200,9 @@ class User
         $this->updatedAt = new DateTimeImmutable();
     }
 
+    /**
+     * @throws UserPasswordEmptyException
+     */
     public function isCurrentPassword(string $password): bool
     {
         if (trim($password) === '') {
@@ -204,6 +216,7 @@ class User
      * Min 1 special symbol.
      * Min 1 letter.
      * Min 1 number.
+     * @throws UserBadPasswordException
      */
     private static function generatePasswordHash(string $password): string
     {
@@ -219,6 +232,9 @@ class User
         return password_hash($password, PASSWORD_DEFAULT);
     }
 
+    /**
+     * @throws UserGenerateEmailConfirmTokenException
+     */
     private static function generateEmailConfirmToken(): string
     {
         try {

@@ -22,6 +22,9 @@ class Video extends MediaDB
      */
     private const array ACCEPTABLE_TYPES = ['video/mp4', 'video/webm'];
 
+    /**
+     * @throws InvalidMimeTypeException
+     */
     private function __construct(
         Uuid    $id,
         string  $webPathToFile,

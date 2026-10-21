@@ -20,6 +20,9 @@ class Offer
     private(set) final Uuid $id;
     private(set) bool $active;
     private(set) string $sku {
+        /**
+         * @throws InternalException
+         */
         set {
             if (empty($value)) {
                 throw new InternalException("Sku");
@@ -34,6 +37,9 @@ class Offer
      * Example (100.10 rub: $price = 10010)
      */
     private(set) int $price {
+        /**
+         * @throws ProductSkuSetPriceException
+         */
         set {
             if ($value <= 0) {
                 throw new ProductSkuSetPriceException();
@@ -175,6 +181,9 @@ class Offer
         return $availableQuantity;
     }
 
+    /**
+     * @throws ProductStockNotFoundException
+     */
     private function getStockByWarehouseId(string $warehouseId): Stock
     {
         $stock = $this->stocks[$warehouseId] ?? null;

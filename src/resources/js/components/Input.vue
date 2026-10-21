@@ -28,5 +28,5 @@ withDefaults(defineProps<Props>(), {
     error: ''
 });
 
-const modelValue = defineModel<string>({ default: '' });
+const modelValue = defineModel<string | bigint | number>({ default: '' });
 </script>

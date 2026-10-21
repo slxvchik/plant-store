@@ -12,6 +12,7 @@
         >
             <div class="p-4">Id</div>
             <div class="p-4">Алиас</div>
+            <div class="p-4">Сортировка</div>
             <div class="p-4">Название</div>
             <div class="p-4">Активность</div>
         </div>
@@ -26,6 +27,7 @@
                     #{{ category.id }}
                 </div>
                 <div class="truncate p-4">{{ category.alias }}</div>
+                <div class="p-4">{{ category.sort ?? '-' }}</div>
                 <div class="p-4 whitespace-nowrap">{{ category.name }}</div>
                 <div class="p-4">{{ category.active }}</div>
                 <div class="flex gap-2 p-4">
@@ -37,7 +39,7 @@
                     <Button
                         text="Удалить"
                         class="w-fit rounded-lg bg-red-400 hover:bg-red-500"
-                        @click="deleteTag(category.id)"
+                        @click="deleteCategory(category.id)"
                     />
                 </div>
             </div>
@@ -51,44 +53,50 @@
         <form class="flex w-full flex-col">
             <Input
                 id="alias"
-                placeholder="tag-1"
+                placeholder="category-1"
                 label="Алиас"
-                v-model="tagAlias"
+                v-model="categoryAlias"
             />
             <Input
                 id="name"
-                placeholder="Тег 1"
+                placeholder="Категория 1"
                 label="Название"
                 class="mt-5"
-                v-model="tagName"
+                v-model="categoryName"
+            />
+            <Input
+                id="name"
+                label="Название"
+                class="mt-5"
+                type="number"
+                v-model="categorySort"
             />
             <Checkbox
                 id="active"
                 placeholder="Тег 1"
                 text="Активность"
                 class="mt-5"
-                v-model="tagActive"
+                v-model="categoryActive"
             />
             <Button
                 :text="isEditMode ? 'Сохранить' : 'Создать'"
                 class="relative left-[50%] mt-5 max-w-80 translate-x-[-50%] rounded-lg"
-                @click="isEditMode ? updateTag() : createTag()"
+                @click="isEditMode ? updateCategory() : createCategory()"
             />
         </form>
     </Popup>
 </template>
 
 <script setup lang="ts">
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Button from '@/components/Button.vue';
-import Input from '@/components/Input.vue';
-import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
-import Popup from '@/components/Popup.vue';
-import { Tag } from '@/types/tag';
+import { ref } from 'vue';
+import Button from '@/components/Button.vue';
 import Checkbox from '@/components/Checkbox.vue';
+import Input from '@/components/Input.vue';
+import AdminLayout from '@/components/layouts/AdminLayout.vue';
+import Popup from '@/components/Popup.vue';
+import type { Category } from '@/types';
 import type { PageResponse } from '@/types/page-response';
-import { Category } from '@/types';
 
 defineOptions({
     layout: AdminLayout,
@@ -108,40 +116,47 @@ defineProps({
 const isFormPopupOpen = ref(false);
 const isEditMode = ref(false);
 
-const tagId = ref<string | null>(null);
-const tagAlias = ref('');
-const tagName = ref('');
-const tagActive = ref(false);
+const categoryId = ref<string | undefined>(undefined);
+const categoryAlias = ref('');
+const categorySort = ref<bigint | undefined>(undefined);
+const categoryName = ref('');
+const categoryActive = ref(false);
 
 const openCreateModal = () => {
     isEditMode.value = false;
-    tagAlias.value = '';
-    tagName.value = '';
-    tagActive.value = false;
+    categoryId.value = undefined;
+    categoryAlias.value = '';
+    categorySort.value = undefined;
+    categoryName.value = '';
+    categoryActive.value = false;
     isFormPopupOpen.value = true;
 };
 
-const openEditModal = (tag: Tag) => {
+const openEditModal = (category: Category) => {
     isEditMode.value = true;
-    tagId.value = tag.id;
-    tagAlias.value = tag.alias;
-    tagName.value = tag.name;
-    tagActive.value = tag.active;
+    categoryId.value = category.id;
+    categoryAlias.value = category.alias;
+    categorySort.value = category.sort;
+    categoryName.value = category.name;
+    categoryActive.value = category.active;
     isFormPopupOpen.value = true;
 };
 
-const createTag = () => {
-    const tag = {
-        alias: tagAlias.value,
-        name: tagName.value,
-        active: tagActive.value,
+const createCategory = () => {
+    const category = {
+        alias: categoryAlias.value,
+        sort: categorySort.value,
+        name: categoryName.value,
+        active: categoryActive.value,
     };
-    router.post('/admin/categories', tag, {
+    router.post('/admin/categories', category, {
         onSuccess: () => {
             isFormPopupOpen.value = false;
-            tagAlias.value = '';
-            tagName.value = '';
-            tagActive.value = false;
+            categoryId.value = undefined;
+            categoryAlias.value = '';
+            categorySort.value = undefined;
+            categoryName.value = '';
+            categoryActive.value = false;
         },
         onError: (errors) => {
             console.error(errors);
@@ -149,19 +164,21 @@ const createTag = () => {
     });
 };
 
-const updateTag = () => {
-    const tag = {
-        alias: tagAlias.value,
-        name: tagName.value,
-        active: tagActive.value,
+const updateCategory = () => {
+    const category = {
+        alias: categoryAlias.value,
+        sort: categorySort.value,
+        name: categoryName.value,
+        active: categoryActive.value,
     };
-    router.put(`/admin/categories/${tagId.value}`, tag, {
+    router.put(`/admin/categories/${categoryId.value}`, category, {
         onSuccess: () => {
             isFormPopupOpen.value = false;
-            tagId.value = null;
-            tagAlias.value = '';
-            tagName.value = '';
-            tagActive.value = false;
+            categoryId.value = undefined;
+            categoryAlias.value = '';
+            categorySort.value = undefined;
+            categoryName.value = '';
+            categoryActive.value = false;
         },
         onError: (errors) => {
             console.error(errors);
@@ -169,8 +186,8 @@ const updateTag = () => {
     });
 };
 
-const deleteTag = (tagId: string) => {
-    router.delete(`/admin/categories/${tagId}`, {
+const deleteCategory = (categoryId: string) => {
+    router.delete(`/admin/categories/${categoryId}`, {
         onSuccess: () => {},
         onError: (errors) => {
             console.error(errors);

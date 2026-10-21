@@ -19,6 +19,9 @@ class Image extends MediaDB
      */
     private const array ACCEPTABLE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
+    /**
+     * @throws InvalidMimeTypeException
+     */
     private function __construct(
         Uuid    $id,
         string  $webPathToFile,

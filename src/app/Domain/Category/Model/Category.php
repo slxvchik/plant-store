@@ -50,6 +50,9 @@ class Category
         );
     }
 
+    /**
+     * @throws InternalException
+     */
     public function update(string $alias, ?int $sort, string $name, bool $active): void
     {
         if (empty($alias)) {

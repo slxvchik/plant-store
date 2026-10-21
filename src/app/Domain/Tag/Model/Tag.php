@@ -50,6 +50,9 @@ class Tag
         );
     }
 
+    /**
+     * @throws FieldRequiredException
+     */
     public function update(string $alias, ?int $sort, string $name, bool $active): void
     {
         if (empty($alias)) {

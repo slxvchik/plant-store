@@ -14,6 +14,9 @@ class Product
     private(set) final Uuid $id;
     private(set) bool $active;
     private(set) string $alias {
+        /**
+         * @throws InternalException
+         */
         set {
             if (empty($value)) {
                 throw new InternalException("Alias");
@@ -23,6 +26,9 @@ class Product
     }
     private(set) ?int $sort;
     private(set) string $name {
+        /**
+         * @throws InternalException
+         */
         set {
             if (empty($value)) {
                 throw new InternalException("Alias");
@@ -139,6 +145,7 @@ class Product
 
     /**
      * @param SaveOffer[] $saveOffers
+     * @throws OfferNotFoundException
      */
     public function saveOffers(array $saveOffers, UuidGeneratorInterface $uuidGeneratorInterface): void
     {
@@ -166,7 +173,6 @@ class Product
                 $newOfferIds[] = $newOffer->id->value;
                 continue;
             }
-
 
             if (!isset($this->offers[$id])) {
                 throw new OfferNotFoundException();
@@ -207,6 +213,9 @@ class Product
         return $offers;
     }
 
+    /**
+     * @throws OfferNotFoundException
+     */
     public function getOffer(string $offerId): Offer
     {
         if (!$this->offerExists($offerId)) {

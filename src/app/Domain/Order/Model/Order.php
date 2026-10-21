@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Order\Model;
 
-use App\Domain\Product\Exception\OrderLineEmptyException;
+use App\Domain\Order\Exception\OrderLineEmptyException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use DateTimeImmutable;
@@ -18,6 +18,9 @@ class Order
      * @var OrderLine[]
      */
     private(set) array $orderLines {
+        /**
+         * @throws OrderLineEmptyException
+         */
         set {
             if (empty($value)) {
                 throw new OrderLineEmptyException();
