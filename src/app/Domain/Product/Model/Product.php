@@ -6,6 +6,7 @@ namespace App\Domain\Product\Model;
 
 use App\Domain\Product\Exception\OfferNotFoundException;
 use App\Domain\Shared\Exception\InternalException;
+use App\Domain\Shared\SortedItem\SortedItem;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
@@ -59,20 +60,20 @@ class Product
     public private(set) array $tagIds;
 
     /**
-     * @var string[] Video ids
+     * @var SortedItem<string>[] sorted Video ids
      */
     public private(set) array $videoIds;
 
     /**
-     * @var string[] Image ids
+     * @var SortedItem<string>[] sorted Image ids
      */
     public private(set) array $imageIds;
 
     /**
      * @param  string[]  $categories
      * @param  string[]  $tags
-     * @param  string[]  $videoIds
-     * @param  string[]  $imageIds
+     * @param  SortedItem<string>[]  $videoIds
+     * @param  SortedItem<string>[]  $imageIds
      * @param  Offer[]  $offers
      */
     private function __construct(Uuid $id, bool $active, string $alias, int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers)
@@ -90,6 +91,13 @@ class Product
         $this->offers = $offers;
     }
 
+    /**
+     * @param  string[]  $categories
+     * @param  string[]  $tags
+     * @param  SortedItem<string>[]  $videoIds
+     * @param  SortedItem<string>[]  $imageIds
+     * @param  Offer[]  $offers
+     */
     public static function fromDb(string $id, bool $active, string $alias, int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers): self
     {
         $uuid = new Uuid($id);
@@ -112,8 +120,8 @@ class Product
     /**
      * @param  string[]  $categories
      * @param  string[]  $tags
-     * @param  string[]  $videoIds
-     * @param  string[]  $imageIds
+     * @param  SortedItem<string>[]  $videoIds
+     * @param  SortedItem<string>[]  $imageIds
      */
     public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, int $sort, string $name, array $categories, array $tags, array $videoIds, array $imageIds, ?string $description): self
     {
@@ -138,8 +146,8 @@ class Product
     /**
      * @param  string[]  $categoryIds
      * @param  string[]  $tagIds
-     * @param  string[]  $videoIds
-     * @param  string[]  $imageIds
+     * @param  SortedItem<string>[]  $videoIds
+     * @param  SortedItem<string>[]  $imageIds
      */
     public function update(string $alias, int $sort, string $name, bool $active, ?string $description, array $categoryIds, array $tagIds, array $videoIds, array $imageIds): void
     {
@@ -244,6 +252,9 @@ class Product
         return $this->offers[$offerId] !== null;
     }
 
+    /**
+     * @throws OfferNotFoundException
+     */
     public function getOfferAvailableQuantity(string $offerId): int
     {
         $availableCount = 0;

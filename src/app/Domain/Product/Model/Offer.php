@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Model;
 
+use App\Domain\Product\Exception\ProductQuantityRemoveReserveException;
+use App\Domain\Product\Exception\ProductQuantityReserveException;
+use App\Domain\Product\Exception\ProductShipReserveException;
 use App\Domain\Product\Exception\ProductSkuSetPriceException;
 use App\Domain\Product\Exception\ProductStockNotFoundException;
 use App\Domain\Shared\Exception\InternalException;
+use App\Domain\Shared\SortedItem\SortedItem;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use DateTimeImmutable;
@@ -73,19 +77,19 @@ class Offer
     public private(set) ?DateTimeImmutable $sowingDate;
 
     /**
-     * @var string[] Image ids
+     * @var SortedItem<string>[] sorted Image ids
      */
     public private(set) array $imageIds;
 
     /**
-     * @var string[] Video ids
+     * @var SortedItem<string>[] sorted Video ids
      */
     public private(set) array $videoIds;
 
     /**
      * @param  Stock[]  $stocks
-     * @param  string[]  $imageIds
-     * @param  string[]  $videoIds
+     * @param  SortedItem<string>[]  $imageIds
+     * @param  SortedItem<string>[]  $videoIds
      */
     public function __construct(string $id, bool $active, string $sku, int $sort, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds)
     {
@@ -107,6 +111,8 @@ class Offer
 
     /**
      * @param  Stock[]  $stocks
+     * @param  SortedItem<string>[]  $imageIds
+     * @param  SortedItem<string>[]  $videoIds
      */
     public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $sku, int $sort, ?string $description, int $price, array $stocks, ?string $formFactor, ?string $size, ?int $age, ?DateTimeImmutable $sowingDate, array $imageIds, array $videoIds): self
     {
@@ -131,6 +137,8 @@ class Offer
 
     /**
      * @param  Stock[]  $stocks
+     * @param  SortedItem<string>[]  $imageIds
+     * @param  SortedItem<string>[]  $videoIds
      */
     public function update(
         bool $active,
@@ -160,24 +168,39 @@ class Offer
         $this->videoIds = $videoIds;
     }
 
+    /**
+     * @throws ProductStockNotFoundException
+     * @throws ProductQuantityReserveException
+     */
     public function reserve(string $warehouseId, int $quantity): void
     {
         $stock = $this->getStockByWarehouseId($warehouseId);
         $this->stocks[$warehouseId] = $stock->reserve($quantity);
     }
 
+    /**
+     * @throws ProductStockNotFoundException
+     * @throws ProductQuantityRemoveReserveException
+     */
     public function cancelReserve(string $warehouseId, int $quantity): void
     {
         $stock = $this->getStockByWarehouseId($warehouseId);
         $this->stocks[$warehouseId] = $stock->cancelReserve($quantity);
     }
 
+    /**
+     * @throws ProductStockNotFoundException
+     * @throws ProductShipReserveException
+     */
     public function ship(string $warehouseId, int $quantity): void
     {
         $stock = $this->getStockByWarehouseId($warehouseId);
         $this->stocks[$warehouseId] = $stock->ship($quantity);
     }
 
+    /**
+     * @throws ProductStockNotFoundException
+     */
     public function refund(string $warehouseId, int $quantity): void
     {
         $stock = $this->getStockByWarehouseId($warehouseId);

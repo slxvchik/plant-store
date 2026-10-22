@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\Product\Shared\Dto\Request;
 
+use App\Domain\Shared\SortedItem\SortedItem;
 use DateTimeImmutable;
 
 readonly class SaveOfferRequestDto
 {
     /**
      * @param  SaveStockRequestDto[]  $stocks
+     * @param  SortedItem<string>[]  $imageIds
+     * @param  SortedItem<string>[]  $videoIds
      */
     public function __construct(
         public ?string $id,

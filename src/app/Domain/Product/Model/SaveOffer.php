@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Model;
 
+use App\Domain\Shared\SortedItem\SortedItem;
 use DateTimeImmutable;
 
 /**
@@ -13,8 +14,8 @@ readonly class SaveOffer
 {
     /**
      * @param  Stock[]  $stocks
-     * @param  string[]  $imageIds
-     * @param  string[]  $videoIds
+     * @param  SortedItem<string>[]  $imageIds
+     * @param  SortedItem<string>[]  $videoIds
      */
     public function __construct(
         public ?string $id,

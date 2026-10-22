@@ -26,9 +26,9 @@ final readonly class Page
     {
         return new self(
             items: [],
-            pageNumber: 0,
-            pageSize: 0,
-            totalPages: 0,
+            pageNumber: 1,
+            pageSize: 10,
+            totalPages: 1,
             totalCount: 0,
             hasPrev: false,
             hasNext: false

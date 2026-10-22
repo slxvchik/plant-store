@@ -7,6 +7,7 @@ namespace App\Application\Product\CreateProduct;
 use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
 use App\Application\Product\Shared\Dto\Request\SaveStockRequestDto;
 use App\Application\Product\Shared\Exception\ProductAliasExistsException;
+use App\Domain\Product\Exception\OfferNotFoundException;
 use App\Domain\Product\Model\Product;
 use App\Domain\Product\Model\SaveOffer;
 use App\Domain\Product\Model\Stock;
@@ -21,6 +22,10 @@ readonly class CreateProductService implements CreateProductUseCase
         private ProductRepository $productRepository,
     ) {}
 
+    /**
+     * @throws OfferNotFoundException
+     * @throws ProductAliasExistsException
+     */
     #[Override]
     public function execute(CreateProductRequestDto $createProductRequestDto): string
     {
@@ -71,7 +76,7 @@ readonly class CreateProductService implements CreateProductUseCase
                 age: $saveOffer->age,
                 sowingDate: $saveOffer->sowingDate,
                 imageIds: $saveOffer->imageIds,
-                videoIds: $saveOffer->videoIds
+                videoIds: $saveOffer->videoIds,
             );
         }
 

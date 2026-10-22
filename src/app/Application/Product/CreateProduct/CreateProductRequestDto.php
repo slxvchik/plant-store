@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Application\Product\CreateProduct;
 
 use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
+use App\Domain\Shared\SortedItem\SortedItem;
 
 readonly class CreateProductRequestDto
 {
     /**
      * @param  string[]  $categoryIds
      * @param  string[]  $tagIds
-     * @param  string[]  $videoIds
-     * @param  string[]  $imageIds
+     * @param  SortedItem<string>[]  $videoIds
+     * @param  SortedItem<string>[]  $imageIds
      * @param  SaveOfferRequestDto[]  $offers
      */
     public function __construct(

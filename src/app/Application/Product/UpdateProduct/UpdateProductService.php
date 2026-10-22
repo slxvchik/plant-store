@@ -8,6 +8,7 @@ use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
 use App\Application\Product\Shared\Dto\Request\SaveStockRequestDto;
 use App\Application\Product\Shared\Exception\ProductAliasExistsException;
 use App\Application\Product\Shared\Exception\ProductNotFoundException;
+use App\Domain\Product\Exception\OfferNotFoundException;
 use App\Domain\Product\Model\SaveOffer;
 use App\Domain\Product\Model\Stock;
 use App\Domain\Product\Repository\ProductRepository;
@@ -21,6 +22,11 @@ readonly class UpdateProductService implements UpdateProductUseCase
         private ProductRepository $productRepository
     ) {}
 
+    /**
+     * @throws OfferNotFoundException
+     * @throws ProductNotFoundException
+     * @throws ProductAliasExistsException
+     */
     #[Override]
     public function execute(UpdateProductRequestDto $updateProductRequestDto): void
     {
@@ -31,6 +37,7 @@ readonly class UpdateProductService implements UpdateProductUseCase
 
         $product->update(
             alias: $updateProductRequestDto->alias,
+            sort: $updateProductRequestDto->sort,
             name: $updateProductRequestDto->name,
             active: $updateProductRequestDto->active,
             description: $updateProductRequestDto->description,
@@ -67,13 +74,16 @@ readonly class UpdateProductService implements UpdateProductUseCase
                 id: $offerDto->id,
                 active: $offerDto->active,
                 sku: $offerDto->sku,
+                sort: $offerDto->sort,
                 description: $offerDto->description,
                 price: $offerDto->price,
                 stocks: $stocks,
                 formFactor: $offerDto->formFactor,
                 size: $offerDto->size,
                 age: $offerDto->age,
-                sowingDate: $offerDto->sowingDate
+                sowingDate: $offerDto->sowingDate,
+                imageIds: $offerDto->imageIds,
+                videoIds: $offerDto->videoIds,
             );
         }
 
@@ -92,7 +102,7 @@ readonly class UpdateProductService implements UpdateProductUseCase
             $stocks[] = new Stock(
                 warehouseId: $stockDto->warehouseId,
                 quantity: $stockDto->quantity,
-                reserved: $stockDto->reserved
+                reserved: $stockDto->reserved,
             );
         }
 
