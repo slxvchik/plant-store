@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('warehouses', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('address', 2048);
-            $table->string('phone', 18);
+            $table->text('address');
+            $table->string('phone', 18)->nullable();;
         });
     }
 

@@ -10,6 +10,9 @@ use App\Domain\Shared\Exception\InternalException;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Override;
 
+/**
+ * Should be transactional
+ */
 readonly class CreateImageService implements CreateImageUseCase
 {
     /**
@@ -23,6 +26,9 @@ readonly class CreateImageService implements CreateImageUseCase
         private string $webUploadImagePath
     ) {}
 
+    /**
+     * @throws InternalException
+     */
     #[Override]
     public function execute(CreateImageRequestDto $createImageRequestDto): string
     {
@@ -59,6 +65,14 @@ readonly class CreateImageService implements CreateImageUseCase
             throw new InternalException('Не удалось загрузить файл.');
         }
 
-        return $this->imageRepository->create($image);
+        try {
+            return $this->imageRepository->create($image);
+        } catch (\Throwable $e) {
+            if (file_exists($absolutePath)) {
+                unlink($absolutePath);
+            }
+
+            throw new InternalException('Не удалось сохранить данные изображения.');
+        }
     }
 }
