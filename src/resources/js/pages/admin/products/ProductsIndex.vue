@@ -47,13 +47,14 @@
             </div>
         </div>
     </div>
-    <div class="mt-10">
-        <PaginationList />
+    <div class="mt-10" v-if="pagination.totalPages > 1">
+        <PaginationList :pagination="pagination" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import Button from '@/components/Button.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Link from '@/components/Link.vue';
@@ -61,16 +62,21 @@ import PaginationList from '@/components/PaginationList.vue';
 import AdminProducts from '@/routes/admin/products';
 import type { Product } from '@/types';
 import type { PageResponse } from '@/types/page-response.ts';
+import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse.ts';
 
 defineOptions({
     layout: AdminLayout,
 });
 
-defineProps({
+const props = defineProps({
     productsPage: {
         type: Object as () => PageResponse<Product>,
         required: true,
     },
+});
+
+const pagination = computed(() => {
+    return getPaginationFromPageResponse(props.productsPage);
 });
 
 const deleteProduct = (productId: string) => {

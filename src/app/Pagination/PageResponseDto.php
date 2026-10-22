@@ -41,7 +41,7 @@ readonly class PageResponseDto
         $this->totalPages = $page->totalPages;
         $this->perPage = $page->pageSize;
 
-        $this->firstUrl = $page->totalPages > 0 ? $this->buildUrl($url, 1, $page->pageSize) : null;
+        $this->firstUrl = $url;
 
         $this->prevUrl = $page->hasPrev ? $this->buildUrl($url, $page->pageNumber - 1, $page->pageSize) : null;
 
@@ -53,7 +53,7 @@ readonly class PageResponseDto
         $next2Page = $page->pageNumber + 2;
         $this->next2Url = $next2Page <= $page->totalPages ? $this->buildUrl($url, $next2Page, $page->pageSize) : null;
 
-        $this->lastUrl = $page->totalPages > 0 ? $this->buildUrl($url, $page->totalPages, $page->pageSize) : null;
+        $this->lastUrl = $page->totalPages > 1 ? $this->buildUrl($url, $page->totalPages, $page->pageSize) : null;
     }
 
     private function buildUrl(string $baseUrl, int $page, int $pageSize): string
