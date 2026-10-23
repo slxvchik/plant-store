@@ -2,13 +2,15 @@
 
 namespace App\Repositories;
 
+use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Tag\Model\Tag as DomainTagModel;
 use App\Domain\Tag\Repository\TagRepository;
 use App\Models\Tag;
-use App\Pagination\PaginationAdapter;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use InvalidArgumentException;
 use Override;
 
 class TagRepositoryImpl implements TagRepository
@@ -38,6 +40,10 @@ class TagRepositoryImpl implements TagRepository
         ]);
     }
 
+    /**
+     * @throws ModelNotFoundException
+     * @throws \LogicException
+     */
     #[Override]
     public function delete(string $id): void
     {
@@ -51,8 +57,9 @@ class TagRepositoryImpl implements TagRepository
     }
 
     /**
-     * @param  string[]  $ids
+     * @param string[] $ids
      * @return DomainTagModel[]
+     * @throws InvalidArgumentException
      */
     #[Override]
     public function findByIds(array $ids): array
@@ -64,6 +71,9 @@ class TagRepositoryImpl implements TagRepository
             ->all();
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Override]
     public function findPage(Pageable $pageable): Page
     {

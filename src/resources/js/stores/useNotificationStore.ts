@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import {NotificationItem} from "@/types/notification";
+import type {NotificationItem} from "@/types/notification";
 
 export const useNotificationStore = defineStore('notification', () => {
     const items = ref<NotificationItem[]>([]);
 
-    function add(message: string, type: NotificationItem['type'], duration = 4000) {
+    function add(message: string, type: NotificationItem['type'], duration = 15000) {
         const id = typeof crypto && 'randomUUID' in crypto
             ? crypto.randomUUID()
             : (Date.now().toString(36) + Math.random().toString(36).substring(2, 9));

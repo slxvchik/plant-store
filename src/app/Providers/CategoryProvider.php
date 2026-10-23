@@ -6,6 +6,8 @@ use App\Application\Category\CreateCategory\CreateCategoryService;
 use App\Application\Category\CreateCategory\CreateCategoryUseCase;
 use App\Application\Category\DeleteCategory\DeleteCategoryService;
 use App\Application\Category\DeleteCategory\DeleteCategoryUseCase;
+use App\Application\Category\GetAllCategories\GetAllCategoriesService;
+use App\Application\Category\GetAllCategories\GetAllCategoriesUseCase;
 use App\Application\Category\GetCategories\GetCategoriesService;
 use App\Application\Category\GetCategories\GetCategoriesUseCase;
 use App\Application\Category\UpdateCategory\UpdateCategoryService;
@@ -29,6 +31,11 @@ class CategoryProvider extends ServiceProvider
         $this->app->singleton(
             GetCategoriesUseCase::class,
             GetCategoriesService::class
+        );
+
+        $this->app->singleton(
+            GetAllCategoriesUseCase::class,
+            GetAllCategoriesService::class
         );
 
         $this->app->singleton(

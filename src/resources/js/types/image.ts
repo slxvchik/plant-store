@@ -9,3 +9,11 @@ export type Image = {
     titleText?: string;
     altText?: string;
 };
+
+export type UploadableImage = {
+    id: string;
+    file: File;
+    previewUrl: string;
+    titleText?: string;
+    altText?: string;
+};

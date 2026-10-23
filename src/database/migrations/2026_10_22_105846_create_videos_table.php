@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('web_path_to_file', 128);
             $table->string('mime_type', 64);
             $table->integer('size_in_bytes');
             $table->integer('width')->nullable();

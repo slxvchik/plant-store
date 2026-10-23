@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full flex-col">
+    <div class="flex flex-col">
         <div class="flex cursor-pointer items-center">
             <input
                 :id="id"

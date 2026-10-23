@@ -28,7 +28,6 @@ class Image extends MediaDB
      */
     private function __construct(
         Uuid $id,
-        string $webPathToFile,
         string $mimeType,
         int $sizeInBytes,
         int $width,
@@ -36,11 +35,11 @@ class Image extends MediaDB
         ?string $titleText,
         ?string $altText
     ) {
-        if (in_array($mimeType, self::ACCEPTABLE_TYPES)) {
+        if (! in_array($mimeType, self::ACCEPTABLE_TYPES)) {
             throw new InvalidMimeTypeException($mimeType, self::ACCEPTABLE_TYPES);
         }
 
-        parent::__construct($id, $webPathToFile, $mimeType, $sizeInBytes);
+        parent::__construct($id, $mimeType, $sizeInBytes);
 
         $this->width = $width;
         $this->height = $height;
@@ -50,7 +49,6 @@ class Image extends MediaDB
 
     public static function fromDb(
         string $id,
-        string $webPathToFile,
         string $mimeType,
         int $sizeInBytes,
         int $width,
@@ -60,7 +58,6 @@ class Image extends MediaDB
     ): self {
         return new self(
             id: new Uuid($id),
-            webPathToFile: $webPathToFile,
             mimeType: $mimeType,
             sizeInBytes: $sizeInBytes,
             width: $width,
@@ -70,9 +67,11 @@ class Image extends MediaDB
         );
     }
 
+    /**
+     * @throws InvalidMimeTypeException
+     */
     public static function createNew(
         UuidGeneratorInterface $uuidGeneratorInterface,
-        string $webPathToFile,
         string $mimeType,
         int $sizeInBytes,
         int $width,
@@ -84,7 +83,6 @@ class Image extends MediaDB
 
         return new self(
             id: new Uuid($uuidStr),
-            webPathToFile: $webPathToFile,
             mimeType: $mimeType,
             sizeInBytes: $sizeInBytes,
             width: $width,

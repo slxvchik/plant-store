@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Adapters\Pagination\PageResponseDto;
 use App\Application\Category\CreateCategory\CreateCategoryRequestDto;
 use App\Application\Category\CreateCategory\CreateCategoryUseCase;
 use App\Application\Category\DeleteCategory\DeleteCategoryUseCase;
@@ -9,9 +10,8 @@ use App\Application\Category\GetCategories\GetCategoriesUseCase;
 use App\Application\Category\UpdateCategory\UpdateCategoryRequestDto;
 use App\Application\Category\UpdateCategory\UpdateCategoryUseCase;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Enums\NotificationType;
-use App\Pagination\PageResponseDto;
-use App\ValueObjects\Notification;
+use App\Notification\Notification;
+use App\Notification\NotificationType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;

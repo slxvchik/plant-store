@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full flex-col">
+    <div class="flex flex-col">
         <label v-if="label" :for="id" class="mb-1.5 select-none" :class="!error ? 'text-text-muted' : 'text-red-400'">
             {{ label }}
         </label>
@@ -26,7 +26,7 @@ withDefaults(defineProps<Props>(), {
     placeholder: '',
     label: '',
     error: ''
-});
+})
 
 const modelValue = defineModel<string | bigint | number>({ default: '' });
 </script>

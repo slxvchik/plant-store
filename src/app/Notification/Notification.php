@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\ValueObjects;
+namespace App\Notification;
 
 use App\Domain\Shared\AppException\AppException;
-use App\Enums\NotificationType;
 
 readonly class Notification
 {

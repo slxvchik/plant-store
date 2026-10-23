@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Generators;
+namespace App\Adapters;
 
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Illuminate\Support\Str;

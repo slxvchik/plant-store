@@ -14,6 +14,9 @@ readonly class UpdateImageService implements UpdateImageUseCase
         private ImageRepository $imageRepository
     ) {}
 
+    /**
+     * @throws ImageNotFoundException
+     */
     #[Override]
     public function execute(UpdateImageRequestDto $updateImageRequestDto): void
     {

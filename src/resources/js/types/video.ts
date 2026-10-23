@@ -1,4 +1,4 @@
-import { Image } from '@/types/image';
+import type { Image } from '@/types/image';
 
 export type Video = {
     id: string;

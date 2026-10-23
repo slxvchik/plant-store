@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Media\Shared\Dto\Response;
 
+use App\Application\Media\Shared\FileStorageInterface;
 use App\Domain\Media\Model\Image;
 
 readonly class ImageResponseDto
@@ -19,11 +20,11 @@ readonly class ImageResponseDto
         public ?string $altText
     ) {}
 
-    public static function fromDomain(Image $image): self
+    public static function fromDomain(Image $image, string $webPathToFile): self
     {
         return new self(
             id: $image->id->value,
-            webPathToFile: $image->webPathToFile,
+            webPathToFile: $webPathToFile,
             mimeType: $image->mimeType,
             sizeInBytes: $image->sizeInBytes,
             width: $image->width,

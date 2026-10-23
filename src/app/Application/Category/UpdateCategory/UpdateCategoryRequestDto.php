@@ -8,6 +8,7 @@ readonly class UpdateCategoryRequestDto
 {
     public function __construct(
         public string $id,
+        public ?string $parentId,
         public string $alias,
         public int $sort,
         public string $name,

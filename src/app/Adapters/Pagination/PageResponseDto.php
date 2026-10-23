@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pagination;
+namespace App\Adapters\Pagination;
 
 use App\Domain\Shared\Pagination\Page;
 

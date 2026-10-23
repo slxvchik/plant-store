@@ -7,6 +7,7 @@ namespace App\Application\Category\UpdateCategory;
 use App\Application\Category\Shared\Exception\CategoryAliasExistsException;
 use App\Application\Category\Shared\Exception\CategoryNotFoundException;
 use App\Domain\Category\Repository\CategoryRepository;
+use App\Domain\Shared\Exception\InternalException;
 use Override;
 
 readonly class UpdateCategoryService implements UpdateCategoryUseCase
@@ -15,6 +16,11 @@ readonly class UpdateCategoryService implements UpdateCategoryUseCase
         final private CategoryRepository $categoryRepository
     ) {}
 
+    /**
+     * @throws InternalException
+     * @throws CategoryNotFoundException
+     * @throws CategoryAliasExistsException
+     */
     #[Override]
     public function execute(UpdateCategoryRequestDto $updateCategoryRequestDto): void
     {
@@ -23,7 +29,13 @@ readonly class UpdateCategoryService implements UpdateCategoryUseCase
             throw new CategoryNotFoundException;
         }
 
+        $parentCategory = $this->categoryRepository->findById($updateCategoryRequestDto->parentId);
+        if ($parentCategory === null) {
+            throw new CategoryNotFoundException($updateCategoryRequestDto->parentId);
+        }
+
         $category->update(
+            parentId: $updateCategoryRequestDto->parentId,
             alias: $updateCategoryRequestDto->alias,
             sort: $updateCategoryRequestDto->sort,
             name: $updateCategoryRequestDto->name,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Adapters\Pagination\PageResponseDto;
 use App\Application\Tag\CreateTag\CreateTagRequestDto;
 use App\Application\Tag\CreateTag\CreateTagUseCase;
 use App\Application\Tag\DeleteTag\DeleteTagUseCase;
@@ -9,9 +10,8 @@ use App\Application\Tag\GetTags\GetTagsUseCase;
 use App\Application\Tag\UpdateTag\UpdateTagRequestDto;
 use App\Application\Tag\UpdateTag\UpdateTagUseCase;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Enums\NotificationType;
-use App\Pagination\PageResponseDto;
-use App\ValueObjects\Notification;
+use App\Notification\Notification;
+use App\Notification\NotificationType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;

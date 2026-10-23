@@ -1,7 +1,7 @@
 <template>
-    <div class="flex w-full min-w-screen">
+    <div class="flex min-h-screen w-full bg-bg-surface">
         <SideBar />
-        <div class="flex flex-col ml-80 p-5 w-full min-h-screen bg-bg-surface">
+        <div class="flex min-h-screen flex-1 flex-col bg-bg-surface p-5 pl-85">
             <slot />
         </div>
         <NotificationList />

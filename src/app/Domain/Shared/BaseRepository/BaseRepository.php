@@ -24,6 +24,7 @@ interface BaseRepository
     public function delete(string $id): void;
 
     /**
+     * @param string|int $id
      * @return T|null
      */
     public function findById(string|int $id): ?object;

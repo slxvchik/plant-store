@@ -3,7 +3,7 @@
         <h1 class="text-4xl text-text-title">Товары</h1>
         <div class="w-fit">
             <Link
-                :href="AdminProducts.show(1)"
+                :href="AdminProducts.create.url()"
                 text="Создать товар"
                 styleType="button"
                 class="rounded-lg"

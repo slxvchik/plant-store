@@ -3,7 +3,7 @@
 use App\Domain\Shared\AppException\AppException;
 use App\Domain\Shared\AppException\AppExceptionStatus;
 use App\Http\Middleware\HandleInertiaRequests;
-use App\ValueObjects\Notification;
+use App\Notification\Notification;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -49,15 +49,13 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json(['error' => $e->getMessage()], $httpCode);
             }
 
-            return match ($e->getCode()) {
+            return match ($e->appExceptionStatus) {
                 AppExceptionStatus::INTERNAL_ERROR,
                 AppExceptionStatus::NOT_FOUND,
                 AppExceptionStatus::ALREADY_EXISTS,
                 AppExceptionStatus::INVALID_ARGUMENT,
                 AppExceptionStatus::BUSINESS_ERROR => redirect()
-                    ->back(
-                        status: $e->getCode()
-                    )
+                    ->back()
                     ->with(Notification::fromAppException($e)),
 
                 default => Inertia::render('Errors/Error', [

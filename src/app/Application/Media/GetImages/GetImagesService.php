@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Media\GetImages;
 
 use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
+use App\Application\Media\Shared\FileStorageInterface;
 use App\Domain\Media\Repository\ImageRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
@@ -13,7 +14,8 @@ use Override;
 readonly class GetImagesService implements GetImagesUseCase
 {
     public function __construct(
-        private ImageRepository $imageRepository
+        private ImageRepository $imageRepository,
+        private FileStorageInterface $fileStorage,
     ) {}
 
     #[Override]
@@ -23,7 +25,11 @@ readonly class GetImagesService implements GetImagesUseCase
 
         $imageResponseDtos = [];
         foreach ($page->items as $item) {
-            $imageResponseDtos[] = ImageResponseDto::fromDomain($item);
+            $webPathToFile = $this->fileStorage->url($item->id->value);
+            $imageResponseDtos[] = ImageResponseDto::fromDomain(
+                image: $item,
+                webPathToFile: $webPathToFile,
+            );
         }
 
         return $page->changeItems($imageResponseDtos);

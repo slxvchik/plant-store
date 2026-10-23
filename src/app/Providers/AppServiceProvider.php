@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Adapters\UuidGenerator;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
-use App\Generators\UuidGenerator;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;

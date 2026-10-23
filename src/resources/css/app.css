@@ -44,6 +44,11 @@
     --color-accent-hover: #A06D4A;
 }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 .no-scroll {
     @apply overflow-hidden touch-none;
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Category\CreateCategory;
 
 use App\Application\Category\Shared\Exception\CategoryAliasExistsException;
+use App\Application\Category\Shared\Exception\CategoryNotFoundException;
 use App\Domain\Category\Model\Category;
 use App\Domain\Category\Repository\CategoryRepository;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
@@ -17,6 +18,10 @@ readonly class CreateCategoryService implements CreateCategoryUseCase
         final private CategoryRepository $categoryRepository
     ) {}
 
+    /**
+     * @throws CategoryAliasExistsException
+     * @throws CategoryNotFoundException
+     */
     #[Override]
     public function execute(CreateCategoryRequestDto $createCategoryRequestDto): string
     {
@@ -25,8 +30,14 @@ readonly class CreateCategoryService implements CreateCategoryUseCase
             throw new CategoryAliasExistsException($createCategoryRequestDto->alias);
         }
 
+        $parentCategory = $this->categoryRepository->findById($createCategoryRequestDto->parentId);
+        if ($parentCategory === null) {
+            throw new CategoryNotFoundException($createCategoryRequestDto->parentId);
+        }
+
         $category = Category::createNew(
             uuidIdentityGenerator: $this->uuidGeneratorInterface,
+            parentId: $createCategoryRequestDto->parentId,
             alias: $createCategoryRequestDto->alias,
             sort: $createCategoryRequestDto->sort,
             name: $createCategoryRequestDto->name,

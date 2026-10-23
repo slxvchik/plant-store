@@ -2,13 +2,15 @@
 
 namespace App\Repositories;
 
+use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Category\Model\Category as DomainCategoryModel;
 use App\Domain\Category\Repository\CategoryRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Models\Category;
-use App\Pagination\PaginationAdapter;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use InvalidArgumentException;
 use Override;
 
 class CategoryRepositoryImpl implements CategoryRepository
@@ -27,6 +29,9 @@ class CategoryRepositoryImpl implements CategoryRepository
         return $created->id;
     }
 
+    /**
+     * @throws ModelNotFoundException
+     */
     #[Override]
     public function update(object $entity): void
     {
@@ -59,6 +64,9 @@ class CategoryRepositoryImpl implements CategoryRepository
         throw new Exception('Not implemented');
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Override]
     public function findPage(Pageable $pageable): Page
     {
@@ -79,7 +87,9 @@ class CategoryRepositoryImpl implements CategoryRepository
     #[Override]
     public function findAll(): array
     {
-        throw new Exception('Not implemented');
+        return Category::all()->map(function (Category $category) {
+            return $category->toDomain();
+        })->toArray();
     }
 
     #[Override]

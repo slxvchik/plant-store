@@ -12,6 +12,8 @@ class Category
 {
     final public private(set) Uuid $id;
 
+    public private(set) ?Uuid $parentId;
+
     public private(set) string $alias;
 
     public private(set) int $sort;
@@ -20,21 +22,23 @@ class Category
 
     public private(set) bool $active;
 
-    private function __construct(Uuid $id, string $alias, int $sort, string $name, bool $active)
+    private function __construct(Uuid $id, ?Uuid $parentId, string $alias, int $sort, string $name, bool $active)
     {
         $this->id = $id;
+        $this->parentId = $parentId;
         $this->alias = $alias;
         $this->sort = $sort;
         $this->name = $name;
         $this->active = $active;
     }
 
-    public static function fromDb(string $id, string $alias, int $sort, string $name, bool $active): self
+    public static function fromDb(string $id, ?string $parentId, string $alias, int $sort, string $name, bool $active): self
     {
         $uuid = new Uuid($id);
-
+        $parentUuid = $parentId ? new Uuid($parentId) : null;
         return new self(
             id: $uuid,
+            parentId: $parentUuid,
             alias: $alias,
             sort: $sort,
             name: $name,
@@ -42,13 +46,14 @@ class Category
         );
     }
 
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, string $alias, int $sort, string $name, bool $active): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, ?string $parentId, string $alias, int $sort, string $name, bool $active): self
     {
         $uuidValue = $uuidIdentityGenerator->generate();
         $id = new Uuid($uuidValue);
-
+        $parentUuid = $parentId ? new Uuid($parentId) : null;
         return new self(
             id: $id,
+            parentId: $parentUuid,
             alias: $alias,
             sort: $sort,
             name: $name,
@@ -59,7 +64,7 @@ class Category
     /**
      * @throws InternalException
      */
-    public function update(string $alias, int $sort, string $name, bool $active): void
+    public function update(?string $parentId, string $alias, int $sort, string $name, bool $active): void
     {
         if (empty($alias)) {
             throw new InternalException('Alias');
@@ -67,6 +72,7 @@ class Category
         if (empty($name)) {
             throw new InternalException('Name');
         }
+        $this->parentId = $parentId ? new Uuid($parentId) : null;
         $this->alias = $alias;
         $this->sort = $sort;
         $this->name = $name;

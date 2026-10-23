@@ -13,7 +13,6 @@ abstract class MediaDB
 
     public function __construct(
         public readonly Uuid $id,
-        public readonly string $webPathToFile,
         public readonly string $mimeType,
         public readonly int $sizeInBytes
     ) {

@@ -10,6 +10,7 @@ readonly class CategoryResponseDto
 {
     public function __construct(
         public string $id,
+        public ?string $parentId,
         public string $alias,
         public int $sort,
         public string $name,
@@ -20,6 +21,7 @@ readonly class CategoryResponseDto
     {
         return new self(
             id: $category->id->value,
+            parentId: $category->parentId->value,
             alias: $category->alias,
             sort: $category->sort,
             name: $category->name,
