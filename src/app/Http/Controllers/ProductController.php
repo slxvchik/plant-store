@@ -4,29 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Adapters\Pagination\PageResponseDto;
 use App\Application\Category\GetAllCategories\GetAllCategoriesUseCase;
-use App\Application\Media\CreateImage\CreateImageRequestDto;
 use App\Application\Media\CreateImage\CreateImageUseCase;
-use App\Application\Product\CreateProduct\CreateProductRequestDto;
+use App\Application\Media\DeleteImage\DeleteImageUseCase;
 use App\Application\Product\CreateProduct\CreateProductUseCase;
-use App\Domain\Media\Model\Media;
+use App\Application\Product\UpdateProduct\UpdateProductUseCase;
+use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesUseCase;
 use App\Domain\Shared\Pagination\Page;
-use App\Domain\Shared\SortedItem\SortedItem;
+use App\Http\Requests\StoreProductRequest;
 use App\Notification\Notification;
 use App\Notification\NotificationType;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use LogicException;
-use RuntimeException;
-use Throwable;
+use InvalidArgumentException;
+use ValueError;
 
 class ProductController extends Controller
 {
     public function __construct(
-        private readonly CreateProductUseCase $createProductUseCase,
         private readonly GetAllCategoriesUseCase $getAllCategoriesUseCase,
+        private readonly GetAllWarehousesUseCase $getAllWarehousesUseCase,
+        private readonly CreateProductUseCase $createProductUseCase,
+        private readonly UpdateProductUseCase $updateProductUseCase,
         private readonly CreateImageUseCase $createImageUseCase,
+        private readonly DeleteImageUseCase $deleteImageUseCase,
     ) {}
 
     /**
@@ -44,78 +43,37 @@ class ProductController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     *
+     * @throws InvalidArgumentException
      */
     public function create()
     {
         $categories = $this->getAllCategoriesUseCase->execute();
+        $warehouses = $this->getAllWarehousesUseCase->execute();
 
         return Inertia::render('admin/products/CreateProduct', [
             'categories' => $categories,
+            'warehouses' => $warehouses,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @throws LogicException|RuntimeException
-     * @throws Throwable
+     * @throws ValueError
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        DB::beginTransaction();
-        try {
-            $imageIds = [];
-            foreach ($request->file('images') as $index => $image) {
-                $media = new Media(
-                    name: $image->getClientOriginalName(),
-                    mimeType: $image->getMimeType(),
-                    tmpName: $image->getPathname(),
-                    error: $image->getError(),
-                    size: $image->getSize(),
-                );
-                $createImageRequestDto = new CreateImageRequestDto(
-                    media: $media,
-                    altText: '',
-                    titleText: '',
-                );
-                $createdId = $this->createImageUseCase->execute($createImageRequestDto);
-                $imageIds[] = new SortedItem(
-                    id: $createdId,
-                    sort: $index,
-                );
-            }
-        } catch (Exception $exception) {
-            DB::rollBack();
+        $request->validated();
 
-            report($exception);
-            return redirect()->back()->with([
-                new Notification(
-                    'Произошла ошибка при сохранении товара',
-                    NotificationType::ERROR,
-                ),
-            ]);
-        }
+        $productId = $this->createProductUseCase->execute($request->getCreateProductData());
 
-        return redirect()->back()->with([
+        return redirect()->back('admin.products.edit', $productId)->with([
             new Notification(
-                '',
+                'Продукт создан',
                 NotificationType::SUCCESS,
             ),
         ]);
-
-        $createProductRequestDto = new CreateProductRequestDto(
-            active: $request->active,
-            alias: $request->alias,
-            sort: $request->sort,
-            name: $request->name,
-            description: $request->description,
-            categoryIds: $request->categoryIds,
-            tagIds: [],
-            videoIds: [],
-            imageIds: $imageIds,
-            offers: []
-        );
-        $this->createProductUseCase->execute($createProductRequestDto);
     }
 
     /**
@@ -127,19 +85,22 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        return Inertia::render('admin/products/EditProduct');
-    }
-
-    /**
      * Update the specified resource in storage.
+     *
+     * @throws ValueError
      */
-    public function update(Request $request, string $id)
+    public function update(StoreProductRequest $request, string $id)
     {
-        //
+        $request->validated();
+
+        $this->updateProductUseCase->execute($request->getUpdateProductData());
+
+        return redirect()->back()->with([
+            new Notification(
+                'Продукт создан.',
+                NotificationType::SUCCESS,
+            ),
+        ]);
     }
 
     /**

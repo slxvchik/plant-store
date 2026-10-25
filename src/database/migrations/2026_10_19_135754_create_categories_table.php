@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('parent_id')
+                ->nullable()
+                ->constrained(
+                    'categories',
+                    'id',
+                );
             $table->string('alias', 128);
             $table->integer('sort');
             $table->string('name', 128);

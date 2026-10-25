@@ -2,11 +2,7 @@
     <div class="flex flex-col gap-5">
         <h1 class="text-4xl text-text-title">Теги</h1>
         <div class="max-w-80">
-            <Button
-                text="Создать"
-                class="rounded-lg"
-                @click="openCreateModal"
-            />
+            <Button text="Создать" secondary @click="openCreateModal" />
         </div>
     </div>
     <div
@@ -37,12 +33,12 @@
                 <div class="flex flex-wrap gap-2 p-4">
                     <Button
                         text="Редактировать"
-                        class="rounded-lg bg-yellow-400 hover:bg-yellow-500"
+                        class="bg-yellow-400 hover:bg-yellow-500"
                         @click="openEditModal(tag)"
                     />
                     <Button
                         text="Удалить"
-                        class="rounded-lg bg-red-400 hover:bg-red-500"
+                        class="bg-red-400 hover:bg-red-500"
                         @click="deleteTag(tag.id)"
                     />
                 </div>
@@ -85,8 +81,9 @@
             />
             <Button
                 type="button"
+                secondary
                 :text="isEditMode ? 'Сохранить' : 'Создать'"
-                class="relative left-[50%] mt-5 max-w-80 translate-x-[-50%] rounded-lg"
+                class="relative left-[50%] mt-5 max-w-80 translate-x-[-50%]"
                 @click="isEditMode ? updateTag() : createTag()"
             />
         </form>

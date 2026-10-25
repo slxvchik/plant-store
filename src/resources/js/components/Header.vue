@@ -20,15 +20,17 @@
                 aria-label="Главное меню"
             >
                 <ul class="flex items-center gap-6 text-sm font-medium">
-                    <li
-                        v-for="link in [
-                            { href: '/search', text: 'Поиск' },
-                            { href: '/catalog', text: 'Каталог' },
-                            { href: '/blog', text: 'Блог' },
-                            { href: '/about', text: 'О нас' },
-                        ]"
-                    >
-                        <Link :href="link.href" :text="link.text" />
+                    <li>
+                        <Link href="/search" text="Поиск" secondary />
+                    </li>
+                    <li>
+                        <Link href="/catalog" text="Каталог" secondary />
+                    </li>
+                    <li>
+                        <Link href="/blog" text="Блог" secondary />
+                    </li>
+                    <li>
+                        <Link href="/about" text="О нас" secondary />
                     </li>
                 </ul>
             </nav>
@@ -39,7 +41,7 @@
             >
                 <ul class="flex items-center gap-6 text-sm font-medium">
                     <li>
-                        <Link href="/basket">
+                        <Link href="/basket" secondary>
                             <template #after-text>
                                 <div class="relative h-6 w-6">
                                     <BasketIcon />
@@ -48,7 +50,7 @@
                         </Link>
                     </li>
                     <li>
-                        <Link href="/profile" text="Личный кабинет" />
+                        <Link href="/profile" text="Личный кабинет" secondary />
                     </li>
                 </ul>
             </nav>

@@ -66,6 +66,9 @@ class Category
      */
     public function update(?string $parentId, string $alias, int $sort, string $name, bool $active): void
     {
+        if ($this->id->value === $parentId) {
+            $parentId = null;
+        }
         if (empty($alias)) {
             throw new InternalException('Alias');
         }

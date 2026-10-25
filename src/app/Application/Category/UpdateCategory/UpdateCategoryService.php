@@ -29,9 +29,11 @@ readonly class UpdateCategoryService implements UpdateCategoryUseCase
             throw new CategoryNotFoundException;
         }
 
-        $parentCategory = $this->categoryRepository->findById($updateCategoryRequestDto->parentId);
-        if ($parentCategory === null) {
-            throw new CategoryNotFoundException($updateCategoryRequestDto->parentId);
+        if ($updateCategoryRequestDto->parentId !== null) {
+            $parentCategory = $this->categoryRepository->findById($updateCategoryRequestDto->parentId);
+            if ($parentCategory === null) {
+                throw new CategoryNotFoundException($updateCategoryRequestDto->parentId);
+            }
         }
 
         $category->update(

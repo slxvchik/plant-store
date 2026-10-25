@@ -22,16 +22,16 @@ export type Offer = {
     active: boolean;
     sku: string;
     description?: string;
-    price: bigint;
+    price: number;
     stocks: Stock[];
     formFactor?: string;
     size?: string;
-    age?: bigint;
+    age?: number;
     sowingDate?: Date;
 }
 
 export type Stock = {
     warehouse: Warehouse;
-    quantity: bigint;
-    reserved: bigint;
+    quantity: number;
+    reserved: number;
 }

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Adapters\UuidGenerator;
+use App\Adapters\UuidGeneratorImpl;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             UuidGeneratorInterface::class,
-            UuidGenerator::class
+            UuidGeneratorImpl::class
         );
     }
 

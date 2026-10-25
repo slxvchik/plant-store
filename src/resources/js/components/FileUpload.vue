@@ -45,26 +45,40 @@
             type="file"
             multiple
             @change="handleFileChange"
+            :accept="acceptTypes"
         />
     </div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, ref } from 'vue';
 import TrashBasket from '@/components/icons/TrashBasket.vue';
 import type { UploadableImage } from '@/types';
 
 interface Props {
     id: string;
     label?: string;
-    type: 'image' | 'video';
+    type?: 'image' | 'video';
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const modelValue = defineModel<UploadableImage[] | null>({ default: null });
+
+const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const VALID_VIDEO_TYPES = ['video/mp4', 'video/webm'];
+
+const acceptTypes = computed(() => {
+    if (props.type === 'image') {
+        return VALID_IMAGE_TYPES.join(', ');
+    } else if (props.type === 'video') {
+        return VALID_VIDEO_TYPES.join(', ');
+    }
+
+    return undefined;
+});
 
 const clearPreviews = () => {
     if (modelValue.value === null) {

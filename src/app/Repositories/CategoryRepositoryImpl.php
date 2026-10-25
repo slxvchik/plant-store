@@ -11,15 +11,37 @@ use App\Models\Category;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
+use LogicException;
 use Override;
 
 class CategoryRepositoryImpl implements CategoryRepository
 {
+    /**
+     * @param  DomainCategoryModel  $entity
+     *
+     * @throws ModelNotFoundException
+     */
+    #[Override]
+    public function update(object $entity): void
+    {
+        Category::findOrFail($entity->id->value)->update([
+            'parent_id' => $entity->parentId?->value,
+            'alias' => $entity->alias,
+            'sort' => $entity->sort,
+            'name' => $entity->name,
+            'active' => $entity->active,
+        ]);
+    }
+
+    /**
+     * @param  DomainCategoryModel  $entity
+     */
     #[Override]
     public function create(object $entity): string
     {
         $created = Category::create([
             'id' => $entity->id->value,
+            'parent_id' => $entity->parentId?->value,
             'alias' => $entity->alias,
             'sort' => $entity->sort,
             'name' => $entity->name,
@@ -31,18 +53,8 @@ class CategoryRepositoryImpl implements CategoryRepository
 
     /**
      * @throws ModelNotFoundException
+     * @throws LogicException
      */
-    #[Override]
-    public function update(object $entity): void
-    {
-        Category::findOrFail($entity->id->value)->update([
-            'alias' => $entity->alias,
-            'sort' => $entity->sort,
-            'name' => $entity->name,
-            'active' => $entity->active,
-        ]);
-    }
-
     #[Override]
     public function delete(string $id): void
     {
@@ -61,7 +73,9 @@ class CategoryRepositoryImpl implements CategoryRepository
     #[Override]
     public function findByIds(array $ids): array
     {
-        throw new Exception('Not implemented');
+        return Category::find($ids)->map(function (Category $category) {
+            return $category->toDomain();
+        })->toArray();
     }
 
     /**

@@ -25,14 +25,16 @@ readonly class CreateCategoryService implements CreateCategoryUseCase
     #[Override]
     public function execute(CreateCategoryRequestDto $createCategoryRequestDto): string
     {
-        $tag = $this->categoryRepository->findByAlias($createCategoryRequestDto->alias);
-        if ($tag !== null) {
+        $categoryExists = $this->categoryRepository->findByAlias($createCategoryRequestDto->alias);
+        if ($categoryExists !== null) {
             throw new CategoryAliasExistsException($createCategoryRequestDto->alias);
         }
 
-        $parentCategory = $this->categoryRepository->findById($createCategoryRequestDto->parentId);
-        if ($parentCategory === null) {
-            throw new CategoryNotFoundException($createCategoryRequestDto->parentId);
+        if ($createCategoryRequestDto->parentId !== null) {
+            $parentCategory = $this->categoryRepository->findById($createCategoryRequestDto->parentId);
+            if ($parentCategory === null) {
+                throw new CategoryNotFoundException($createCategoryRequestDto->parentId);
+            }
         }
 
         $category = Category::createNew(

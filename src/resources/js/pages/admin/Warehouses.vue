@@ -2,11 +2,7 @@
     <div class="flex flex-col gap-5">
         <h1 class="text-4xl text-text-title">Склады</h1>
         <div class="max-w-80">
-            <Button
-                text="Создать"
-                class="rounded-lg"
-                @click="openCreateModal"
-            />
+            <Button text="Создать" secondary @click="openCreateModal" />
         </div>
     </div>
     <div
@@ -35,12 +31,12 @@
                 <div class="flex gap-2 p-4">
                     <Button
                         text="Редактировать"
-                        class="w-fit rounded-lg bg-yellow-400 hover:bg-yellow-500"
+                        class="w-fit bg-yellow-400 hover:bg-yellow-500"
                         @click="openEditModal(warehouse)"
                     />
                     <Button
                         text="Удалить"
-                        class="w-fit rounded-lg bg-red-400 hover:bg-red-500"
+                        class="w-fit bg-red-400 hover:bg-red-500"
                         @click="deleteWarehouse(warehouse.id)"
                     />
                 </div>
@@ -68,8 +64,9 @@
             />
             <Button
                 type="button"
+                secondary
                 :text="isEditMode ? 'Сохранить' : 'Создать'"
-                class="relative left-[50%] mt-5 max-w-80 translate-x-[-50%] rounded-lg"
+                class="relative left-[50%] mt-5 max-w-80 translate-x-[-50%]"
                 @click="isEditMode ? updateWarehouse() : createWarehouse()"
             />
         </form>

@@ -12,16 +12,17 @@ class Category extends Model
 
     public $incrementing = false;
 
-    public $fillable = ['id', 'alias', 'sort', 'name', 'active'];
+    public $fillable = ['id', 'parent_id', 'alias', 'sort', 'name', 'active'];
 
     public function toDomain(): DomainCategoryModel
     {
         return DomainCategoryModel::fromDb(
             id: $this->id,
+            parentId: $this->parent_id,
             alias: $this->alias,
             sort: $this->sort,
             name: $this->name,
-            active: $this->active
+            active: $this->active,
         );
     }
 }

@@ -8,7 +8,7 @@ use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Illuminate\Support\Str;
 use Override;
 
-class UuidGenerator implements UuidGeneratorInterface
+class UuidGeneratorImpl implements UuidGeneratorInterface
 {
     #[Override]
     public function generate(): string

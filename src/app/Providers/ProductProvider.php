@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Application\Product\CreateProduct\CreateProductService;
 use App\Application\Product\CreateProduct\CreateProductUseCase;
+use App\Application\Product\UpdateProduct\UpdateProductService;
+use App\Application\Product\UpdateProduct\UpdateProductUseCase;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Repositories\ProductRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +25,11 @@ class ProductProvider extends ServiceProvider
         $this->app->singleton(
             CreateProductUseCase::class,
             CreateProductService::class
+        );
+
+        $this->app->singleton(
+            UpdateProductUseCase::class,
+            UpdateProductService::class
         );
     }
 

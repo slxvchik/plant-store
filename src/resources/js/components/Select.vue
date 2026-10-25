@@ -52,17 +52,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import ChevronIcon from '@/components/icons/ChevronIcon.vue';
-
-interface SelectVal {
-    value: string | number;
-    label: string;
-}
+import { SelectVal } from '@/types/select.ts';
 
 interface Props {
     multiple?: boolean;
     items: SelectVal[];
     placeholder?: string;
     label?: string;
+    nullable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -99,7 +96,12 @@ const selectItem = (item: SelectVal) => {
             modelValue.value = [...modelValue.value, item.value];
         }
     } else {
-        modelValue.value = item.value;
+        if (props.nullable && modelValue.value === item.value) {
+            modelValue.value = null;
+        } else {
+            modelValue.value = item.value;
+        }
+
         isOpen.value = false;
     }
 };

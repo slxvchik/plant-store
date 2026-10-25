@@ -6,7 +6,8 @@ use App\Adapters\Pagination\PageResponseDto;
 use App\Application\Category\CreateCategory\CreateCategoryRequestDto;
 use App\Application\Category\CreateCategory\CreateCategoryUseCase;
 use App\Application\Category\DeleteCategory\DeleteCategoryUseCase;
-use App\Application\Category\GetCategories\GetCategoriesUseCase;
+use App\Application\Category\GetAllCategories\GetAllCategoriesUseCase;
+use App\Application\Category\GetCategoriesPage\GetCategoriesPageUseCase;
 use App\Application\Category\UpdateCategory\UpdateCategoryRequestDto;
 use App\Application\Category\UpdateCategory\UpdateCategoryUseCase;
 use App\Domain\Shared\Pagination\Pageable;
@@ -20,10 +21,11 @@ use Inertia\Response;
 class CategoryController extends Controller
 {
     public function __construct(
-        private readonly GetCategoriesUseCase $getCategoriesUserCase,
-        private readonly CreateCategoryUseCase $createCategoryUseCase,
-        private readonly UpdateCategoryUseCase $updateCategoryUseCase,
-        private readonly DeleteCategoryUseCase $deleteCategoryUseCase
+        private readonly GetAllCategoriesUseCase  $getAllCategoriesUseCase,
+        private readonly GetCategoriesPageUseCase $getCategoriesUserCase,
+        private readonly CreateCategoryUseCase    $createCategoryUseCase,
+        private readonly UpdateCategoryUseCase    $updateCategoryUseCase,
+        private readonly DeleteCategoryUseCase    $deleteCategoryUseCase
     ) {}
 
     /**
@@ -41,14 +43,19 @@ class CategoryController extends Controller
             perPage: $request->input('perPage'),
         );
 
-        $tagsPage = $this->getCategoriesUserCase->execute($pageable);
+        $categoriesPage = $this->getCategoriesUserCase->execute($pageable);
 
         $pageResponseDto = new PageResponseDto(
-            page: $tagsPage,
+            page: $categoriesPage,
             url: route('admin.categories.index')
         );
 
-        return Inertia::render('admin/Categories', ['categoriesPage' => $pageResponseDto]);
+        $allCategories = $this->getAllCategoriesUseCase->execute();
+
+        return Inertia::render('admin/Categories', [
+            'categoriesPage' => $pageResponseDto,
+            'categories' => $allCategories,
+        ]);
     }
 
     /**
@@ -57,6 +64,7 @@ class CategoryController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $createTagRequestDto = new CreateCategoryRequestDto(
+            parentId: $request->input('parentId'),
             alias: $request->input('alias'),
             sort: $request->input('sort'),
             name: $request->input('name'),
@@ -79,11 +87,13 @@ class CategoryController extends Controller
     {
         $updateTagRequestDto = new UpdateCategoryRequestDto(
             id: $id,
+            parentId: $request->input('parentId'),
             alias: $request->input('alias'),
             sort: $request->input('sort'),
             name: $request->input('name'),
             active: $request->input('active'),
         );
+
         $this->updateCategoryUseCase->execute($updateTagRequestDto);
 
         return redirect()->back()->with([

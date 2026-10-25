@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Adapters\FileStorageImpl;
 use App\Application\Media\CreateImage\CreateImageService;
 use App\Application\Media\CreateImage\CreateImageUseCase;
+use App\Application\Media\DeleteImage\DeleteImageService;
+use App\Application\Media\DeleteImage\DeleteImageUseCase;
 use App\Application\Media\Shared\FileStorageInterface;
 use App\Domain\Media\Repository\ImageRepository;
 use App\Repositories\ImageRepositoryImpl;
@@ -31,6 +33,11 @@ class ImageProvider extends ServiceProvider
         $this->app->singleton(
             CreateImageUseCase::class,
             CreateImageService::class,
+        );
+
+        $this->app->singleton(
+            DeleteImageUseCase::class,
+            DeleteImageService::class,
         );
     }
 

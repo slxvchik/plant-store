@@ -7,7 +7,7 @@
         >
             <a
                 href="/"
-                class="flex h-16 items-center gap-2 border-b border-primary px-4 text-lg font-bold tracking-wider text-white"
+                class="flex h-16 items-center gap-2 border-b border-secondary px-4 text-lg font-bold tracking-wider text-white"
             >
                 <div class="h-10 w-10">
                     <LogoIcon class="fill-white" />
@@ -21,15 +21,15 @@
                     <Link
                         v-if="!tab.children"
                         :href="tab.href"
-                        class="flex items-center rounded-sm px-2 py-1.5 text-white transition-all hover:bg-primary-hover"
-                        :class="{ 'bg-primary': tab.active }"
+                        class="flex items-center rounded-sm px-2 py-1.5 text-white transition-all hover:bg-secondary-hover"
+                        :class="{ 'bg-secondary': tab.active }"
                     >
                         {{ tab.name }}
                     </Link>
                     <div v-else>
                         <button
                             type="button"
-                            class="flex w-full cursor-pointer items-center rounded-sm px-2 py-1.5 text-white transition-all hover:bg-primary-hover"
+                            class="flex w-full cursor-pointer items-center rounded-sm px-2 py-1.5 text-white transition-all hover:bg-secondary-hover"
                             @click="tab.isOpen = !tab.isOpen"
                         >
                             <span
@@ -48,8 +48,8 @@
                                 v-for="childTab in tab.children"
                                 :href="childTab.href"
                                 :key="childTab.href"
-                                class="flex items-center rounded-sm px-2 py-1.5 pl-5 text-white transition-all hover:bg-primary-hover"
-                                :class="{ 'bg-primary': childTab.active }"
+                                class="flex items-center rounded-sm px-2 py-1.5 pl-5 text-white transition-all hover:bg-secondary-hover"
+                                :class="{ 'bg-secondary': childTab.active }"
                             >
                                 {{ childTab.name }}
                             </Link>
@@ -116,6 +116,7 @@ const updateMenuState = (currentPath: string) => {
 
             const hasActiveChild = tab.children.some((child) => child.active);
             tab.active = hasActiveChild;
+
             if (hasActiveChild) {
                 tab.isOpen = true;
             }

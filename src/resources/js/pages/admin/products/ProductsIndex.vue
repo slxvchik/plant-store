@@ -6,7 +6,7 @@
                 :href="AdminProducts.create.url()"
                 text="Создать товар"
                 styleType="button"
-                class="rounded-lg"
+                secondary
             />
         </div>
     </div>
@@ -39,7 +39,7 @@
                     <Button
                         type="button"
                         text="Удалить"
-                        class="w-fit rounded-lg bg-red-400 hover:bg-red-500"
+                        class="w-fit bg-red-400 hover:bg-red-500"
                         styleType="link"
                         @click="deleteProduct(product.id)"
                     />
