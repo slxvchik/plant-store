@@ -13,7 +13,7 @@ use Override;
 readonly class GetCategoriesPageService implements GetCategoriesPageUseCase
 {
     public function __construct(
-        final private CategoryRepository $categoryRepository
+        private CategoryRepository $categoryRepository
     ) {}
 
     #[Override]

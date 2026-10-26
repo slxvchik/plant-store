@@ -1,16 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use App\Domain\Product\Model\Product as DomainProductModel;
+use App\Domain\Product\Model\Product as DomainProduct;
 use App\Domain\Shared\SortedItem\SortedItem;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 use stdClass;
 
+/**
+ * @property string $id
+ * @property bool $active
+ * @property string $alias
+ * @property int $sort
+ * @property string $name
+ * @property ?string $description
+ * @property Collection<int, Offer> $offers
+ */
 class Product extends Model
 {
     use HasUuids;
@@ -22,10 +33,7 @@ class Product extends Model
         'sort' => 'integer',
     ];
 
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function toDomain(): DomainProductModel
+    public function toDomain(): DomainProduct
     {
         $categoryIds = DB::table('product_categories')->where('product_id', $this->id)->pluck('category_id')->toArray();
         $tagIds = DB::table('product_tags')->where('product_id', $this->id)->pluck('tag_id')->toArray();
@@ -33,36 +41,39 @@ class Product extends Model
             ->where('product_id', $this->id)
             ->orderBy('sort')
             ->get()
-            ->map(fn (stdClass $row) => new SortedItem(
+            ->map(fn (stdClass $row): SortedItem => new SortedItem(
                 id: $row->image_id,
                 sort: (int) $row->sort,
             ))
-            ->toArray();
+            ->all();
         $videoIds = DB::table('product_videos')
             ->where('product_id', $this->id)
             ->orderBy('sort')
             ->get()
-            ->map(fn (stdClass $row) => new SortedItem(
+            ->map(fn (stdClass $row): SortedItem => new SortedItem(
                 id: $row->video_id,
                 sort: (int) $row->sort,
             ))
-            ->toArray();
+            ->all();
 
-        return DomainProductModel::fromDb(
+        return DomainProduct::fromDb(
             id: $this->id,
             active: $this->active,
             alias: $this->alias,
             sort: $this->sort,
             name: $this->name,
-            description: $this->description ?? null,
+            description: $this->description,
             categories: $categoryIds,
             tags: $tagIds,
             videoIds: $videoIds,
             imageIds: $imageIds,
-            offers: $this->offers->map(fn (Offer $offer) => $offer->toDomain())->toArray(),
+            offers: $this->offers->map(fn (Offer $offer) => $offer->toDomain())->all(),
         );
     }
 
+    /**
+     * @return BelongsToMany<Offer, $this>
+     */
     public function offers(): BelongsToMany
     {
         return $this->belongsToMany(

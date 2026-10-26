@@ -1,49 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Domain\Tag\Model\Tag as DomainTagModel;
+use App\Domain\Tag\Model\Tag as DomainTag;
 use App\Domain\Tag\Repository\TagRepository;
 use App\Models\Tag;
-use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use InvalidArgumentException;
 use Override;
 
 class TagRepositoryImpl implements TagRepository
 {
     #[Override]
-    public function create(object $entity): string
+    public function create(DomainTag $tag): string
     {
-        $created = Tag::create([
-            'id' => $entity->id->value,
-            'alias' => $entity->alias,
-            'sort' => $entity->sort,
-            'name' => $entity->name,
-            'active' => $entity->active,
-        ]);
+        $created = Tag::create($this->attributes($tag));
 
         return $created->id;
     }
 
     #[Override]
-    public function update(object $entity): void
+    public function update(DomainTag $tag): void
     {
-        Tag::findOrFail($entity->id->value)->update([
-            'alias' => $entity->alias,
-            'sort' => $entity->sort,
-            'name' => $entity->name,
-            'active' => $entity->active,
-        ]);
+        Tag::findOrFail($tag->id->value)->update($this->attributes($tag));
     }
 
-    /**
-     * @throws ModelNotFoundException
-     * @throws \LogicException
-     */
     #[Override]
     public function delete(string $id): void
     {
@@ -51,29 +35,21 @@ class TagRepositoryImpl implements TagRepository
     }
 
     #[Override]
-    public function findById(int|string $id): ?object
+    public function findById(string $id): ?DomainTag
     {
         return Tag::find($id)?->toDomain();
     }
 
-    /**
-     * @param string[] $ids
-     * @return DomainTagModel[]
-     * @throws InvalidArgumentException
-     */
     #[Override]
     public function findByIds(array $ids): array
     {
         return Tag::whereIn('id', $ids)
             ->orderBy('sort')
             ->get()
-            ->map(fn (Tag $tag) => $tag->toDomain())
+            ->map(fn (Tag $tag): DomainTag => $tag->toDomain())
             ->all();
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     #[Override]
     public function findPage(Pageable $pageable): Page
     {
@@ -84,22 +60,27 @@ class TagRepositoryImpl implements TagRepository
 
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
-            mapper: fn (Tag $tag) => $tag->toDomain(),
+            mapper: fn (Tag $tag): DomainTag => $tag->toDomain(),
         );
     }
 
-    /**
-     * @throws Exception
-     */
     #[Override]
-    public function findAll(): array
-    {
-        throw new Exception('Not implemented');
-    }
-
-    #[Override]
-    public function findByAlias(string $alias): ?DomainTagModel
+    public function findByAlias(string $alias): ?DomainTag
     {
         return Tag::firstWhere('alias', $alias)?->toDomain();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function attributes(DomainTag $tag): array
+    {
+        return [
+            'id' => $tag->id->value,
+            'alias' => $tag->alias,
+            'sort' => $tag->sort,
+            'name' => $tag->name,
+            'active' => $tag->active,
+        ];
     }
 }

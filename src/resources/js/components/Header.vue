@@ -78,6 +78,7 @@
                         { href: '/cart', text: 'Корзина' },
                         { href: '/profile', text: 'Личный кабинет' },
                     ]"
+                    :key="link.href"
                 >
                     <Link :href="link.href" :text="link.text" />
                 </li>
@@ -87,11 +88,11 @@
 </template>
 
 <script setup lang="ts">
-import LogoIcon from '@/components/icons/LogoIcon.vue';
-import BasketIcon from '@/components/icons/BasketIcon.vue';
-import BurgerMenu from '@/components/BurgerMenu.vue';
-import Link from '@/components/Link.vue';
 import { ref } from 'vue';
+import BurgerMenu from '@/components/BurgerMenu.vue';
+import BasketIcon from '@/components/icons/BasketIcon.vue';
+import LogoIcon from '@/components/icons/LogoIcon.vue';
+import Link from '@/components/Link.vue';
 import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
 
 const isBurgerMenuOpen = ref(false);

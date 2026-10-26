@@ -28,7 +28,7 @@ interface FileStorageInterface
     public function exists(string $path): bool;
 
     /**
-     * Удалить файл или массив файлов.
+     * @param  string|string[]  $paths
      */
     public function delete(string|array $paths): bool;
 

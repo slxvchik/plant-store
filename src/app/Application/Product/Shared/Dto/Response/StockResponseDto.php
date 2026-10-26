@@ -6,21 +6,36 @@ namespace App\Application\Product\Shared\Dto\Response;
 
 use App\Application\Warehouse\Shared\Dto\Response\WarehouseResponseDto;
 use App\Domain\Product\Model\Stock;
+use JsonSerializable;
+use Override;
 
-readonly class StockResponseDto
+readonly class StockResponseDto implements JsonSerializable
 {
     public function __construct(
-        public WarehouseResponseDto $warehouseResponseDto,
+        public WarehouseResponseDto $warehouse,
         public int $quantity,
-        public int $reserved
+        public int $reserved,
     ) {}
 
-    public static function fromDomain(Stock $stock, WarehouseResponseDto $warehouseResponseDto): self
+    public static function fromDomain(Stock $stock, WarehouseResponseDto $warehouse): self
     {
         return new self(
-            warehouseResponseDto: $warehouseResponseDto,
+            warehouse: $warehouse,
             quantity: $stock->quantity,
-            reserved: $stock->reserved
+            reserved: $stock->reserved,
         );
+    }
+
+    /**
+     * @return array{warehouse: WarehouseResponseDto, quantity: int, reserved: int}
+     */
+    #[Override]
+    public function jsonSerialize(): array
+    {
+        return [
+            'warehouse' => $this->warehouse,
+            'quantity' => $this->quantity,
+            'reserved' => $this->reserved,
+        ];
     }
 }

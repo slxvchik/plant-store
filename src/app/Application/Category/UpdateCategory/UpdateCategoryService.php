@@ -13,7 +13,7 @@ use Override;
 readonly class UpdateCategoryService implements UpdateCategoryUseCase
 {
     public function __construct(
-        final private CategoryRepository $categoryRepository
+        private CategoryRepository $categoryRepository
     ) {}
 
     /**

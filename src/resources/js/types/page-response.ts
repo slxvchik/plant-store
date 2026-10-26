@@ -3,21 +3,12 @@ export type PageResponse<T> = {
     currentPage: number;
     totalPages: number;
     perPage: number;
-    prevUrl?: string;
-    prev2Url?: string;
-    nextUrl?: string;
-    next2Url?: string;
-    firstUrl?: string;
-    lastUrl?: string;
+    prevUrl: string | null;
+    prev2Url: string | null;
+    nextUrl: string | null;
+    next2Url: string | null;
+    firstUrl: string;
+    lastUrl: string | null;
 };
 
-export type Pagination = {
-    currentPage: number;
-    totalPages: number;
-    prevUrl?: string;
-    prev2Url?: string;
-    nextUrl?: string;
-    next2Url?: string;
-    firstUrl?: string;
-    lastUrl?: string;
-}
+export type Pagination = Omit<PageResponse<never>, 'items' | 'perPage'>;

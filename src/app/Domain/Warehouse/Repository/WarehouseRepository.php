@@ -4,10 +4,26 @@ declare(strict_types=1);
 
 namespace App\Domain\Warehouse\Repository;
 
-use App\Domain\Shared\BaseRepository\BaseRepository;
 use App\Domain\Warehouse\Model\Warehouse;
 
-/**
- * @extends BaseRepository<Warehouse>
- */
-interface WarehouseRepository extends BaseRepository {}
+interface WarehouseRepository
+{
+    public function create(Warehouse $warehouse): string;
+
+    public function update(Warehouse $warehouse): void;
+
+    public function delete(string $id): void;
+
+    public function findById(string $id): ?Warehouse;
+
+    /**
+     * @param  string[]  $ids
+     * @return Warehouse[]
+     */
+    public function findByIds(array $ids): array;
+
+    /**
+     * @return Warehouse[]
+     */
+    public function findAll(): array;
+}

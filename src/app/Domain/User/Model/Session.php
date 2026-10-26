@@ -44,6 +44,6 @@ class Session
 
     public function isExpired(): bool
     {
-        return time() > $this->expiredDate;
+        return time() > $this->expiredDate->getTimestamp();
     }
 }

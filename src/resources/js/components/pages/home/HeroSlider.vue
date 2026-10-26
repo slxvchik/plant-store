@@ -42,9 +42,9 @@
 </template>
 
 <script setup lang="ts">
-import Button from '@/components/Button.vue';
 import { EffectFade, Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import Button from '@/components/Button.vue';
 
 import 'swiper/css';
 import 'swiper/css/effect-fade';

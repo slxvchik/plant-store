@@ -11,7 +11,7 @@ use Override;
 class DeleteCategoryService implements DeleteCategoryUseCase
 {
     public function __construct(
-        final private CategoryRepository $categoryRepository
+        private CategoryRepository $categoryRepository
     ) {}
 
     #[Override]

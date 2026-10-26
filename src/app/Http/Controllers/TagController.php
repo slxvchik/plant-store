@@ -1,19 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Adapters\Pagination\PageResponseDto;
-use App\Application\Tag\CreateTag\CreateTagRequestDto;
 use App\Application\Tag\CreateTag\CreateTagUseCase;
 use App\Application\Tag\DeleteTag\DeleteTagUseCase;
 use App\Application\Tag\GetTags\GetTagsUseCase;
-use App\Application\Tag\UpdateTag\UpdateTagRequestDto;
 use App\Application\Tag\UpdateTag\UpdateTagUseCase;
-use App\Domain\Shared\Pagination\Pageable;
+use App\Http\Requests\PaginationRequest;
+use App\Http\Requests\StoreTagRequest;
+use App\Http\Requests\UpdateTagRequest;
 use App\Notification\Notification;
-use App\Notification\NotificationType;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -23,87 +23,36 @@ final class TagController extends Controller
         private readonly GetTagsUseCase $getTagsUseCase,
         private readonly CreateTagUseCase $createTagUseCase,
         private readonly UpdateTagUseCase $updateTagUseCase,
-        private readonly DeleteTagUseCase $deleteTagUseCase
+        private readonly DeleteTagUseCase $deleteTagUseCase,
     ) {}
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request): Response
+    public function index(PaginationRequest $request): Response
     {
-        $request->validate([
-            'page' => 'nullable|int',
-            'perPage' => 'nullable|int',
-        ]);
-        $pageable = new Pageable(
-            page: $request->input('page'),
-            perPage: $request->input('perPage'),
-        );
-        $tagsPage = $this->getTagsUseCase->execute($pageable);
-        $pageResponseDto = new PageResponseDto(
-            page: $tagsPage,
-            url: route('admin.tags.index')
-        );
+        $tagsPage = $this->getTagsUseCase->execute($request->toPageable());
 
-        return Inertia::render('admin/Tags', ['tagsPage' => $pageResponseDto]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([]);
-        $createTagRequestDto = new CreateTagRequestDto(
-            alias: $request->input('alias'),
-            sort: $request->input('sort'),
-            name: $request->input('name'),
-            active: $request->input('active'),
-        );
-        $this->createTagUseCase->execute($createTagRequestDto);
-
-        return redirect()->back()->with([
-            new Notification(
-                message: 'Тег создан.',
-                type: NotificationType::SUCCESS
-            ),
+        return Inertia::render('admin/Tags', [
+            'tagsPage' => new PageResponseDto($tagsPage, $request->fullUrl()),
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id): RedirectResponse
+    public function store(StoreTagRequest $request): RedirectResponse
     {
-        $updateTagRequestDto = new UpdateTagRequestDto(
-            id: $id,
-            alias: $request->input('alias'),
-            sort: $request->input('sort'),
-            name: $request->input('name'),
-            active: $request->input('active'),
-        );
-        $this->updateTagUseCase->execute($updateTagRequestDto);
+        $this->createTagUseCase->execute($request->toDto());
 
-        return redirect()->back()->with([
-            new Notification(
-                message: 'Тег обновлён.',
-                type: NotificationType::SUCCESS,
-            ),
-        ]);
+        return redirect()->back()->with(Notification::flash('Тег создан.'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function update(UpdateTagRequest $request, string $id): RedirectResponse
+    {
+        $this->updateTagUseCase->execute($request->toDto($id));
+
+        return redirect()->back()->with(Notification::flash('Тег обновлён.'));
+    }
+
     public function destroy(string $id): RedirectResponse
     {
         $this->deleteTagUseCase->execute($id);
 
-        return redirect()->back()->with(
-            new Notification(
-                message: 'Тег удалён.',
-                type: NotificationType::SUCCESS,
-            )->toArray()
-        );
+        return redirect()->back()->with(Notification::flash('Тег удалён.'));
     }
 }

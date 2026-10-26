@@ -1,5 +1,5 @@
 export type Warehouse = {
     id: string;
     address: string;
-    phone: string;
-}
+    phone: string | null;
+};

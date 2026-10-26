@@ -1,38 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use App\Application\Media\CreateImage\CreateImageRequestDto;
 use App\Domain\Media\Model\Media;
 use App\Domain\Shared\AppException\AppException;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 
-class CreateImageRequest extends FormRequest
+class StoreImageRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array|string>
+     * @return array<string, string[]>
      */
     public function rules(): array
     {
         return [
-            'file' => ['required', 'file', 'image', 'max:5120'],
-            'altText' => ['nullable', 'string', 'max:255'],
-            'titleText' => ['nullable', 'string', 'max:255'],
+            'file' => ['required', 'file', 'image', 'mimes:jpeg,png,webp', 'max:5120'],
+            'altText' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'titleText' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [
@@ -44,17 +38,13 @@ class CreateImageRequest extends FormRequest
 
     /**
      * @throws AppException
-     * @throws \LogicException
-     * @throws \RuntimeException
      */
-    public function getCreateImageRequestDto(): CreateImageRequestDto
+    public function toDto(): CreateImageRequestDto
     {
         $file = $this->file('file');
 
         if (! $file instanceof UploadedFile) {
-            throw new AppException(
-                errorMessage: 'Неправильный формат загружаемого файла'
-            );
+            throw new AppException(errorMessage: 'Неправильный формат загружаемого файла');
         }
 
         $media = new Media(
@@ -65,10 +55,13 @@ class CreateImageRequest extends FormRequest
             size: $file->getSize(),
         );
 
+        /** @var array{altText?: ?string, titleText?: ?string} $data */
+        $data = $this->validated();
+
         return new CreateImageRequestDto(
             media: $media,
-            altText: $this->input('altText') ?? null,
-            titleText: $this->input('titleText') ?? null,
+            altText: $data['altText'] ?? null,
+            titleText: $data['titleText'] ?? null,
         );
     }
 }

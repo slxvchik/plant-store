@@ -19,11 +19,9 @@ readonly class GetAllWarehousesService implements GetAllWarehousesUseCase
     {
         $warehouses = $this->warehouseRepository->findAll();
 
-        $warehousesResult = [];
-        foreach ($warehouses as $warehouse) {
-            $warehousesResult[] = WarehouseResponseDto::fromDomain($warehouse);
-        }
-
-        return $warehouses;
+        return array_map(
+            fn ($warehouse): WarehouseResponseDto => WarehouseResponseDto::fromDomain($warehouse),
+            $warehouses,
+        );
     }
 }

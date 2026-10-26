@@ -2,7 +2,7 @@
 
 namespace App\Application\UserRequest\DeleteUserRequest;
 
-use App\Application\UserRequest\GetUserRequests\DeleteUserRequestUseCase;
+use App\Application\UserRequest\DeleteUserRequest\DeleteUserRequestUseCase;
 use App\Application\UserRequest\Shared\UserRequestNotFoundException;
 use App\Domain\UserRequest\Repository\UserRequestRepository;
 

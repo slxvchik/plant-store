@@ -11,7 +11,7 @@ use Override;
 readonly class GetAllCategoriesService implements GetAllCategoriesUseCase
 {
     public function __construct(
-        final private CategoryRepository $categoryRepository
+        private CategoryRepository $categoryRepository
     ) {}
 
     #[Override]

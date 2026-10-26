@@ -9,29 +9,31 @@ export type Product = {
     active: boolean;
     alias: string;
     name: string;
-    description?: string;
+    sort: number;
+    description: string | null;
     offers: Offer[];
     categories: Category[];
     tags: Tag[];
     videos: Video[];
     images: Image[];
-}
+};
 
 export type Offer = {
     id: string;
     active: boolean;
     sku: string;
-    description?: string;
+    sort: number;
+    description: string | null;
     price: number;
     stocks: Stock[];
-    formFactor?: string;
-    size?: string;
-    age?: number;
-    sowingDate?: string;
-}
+    formFactor: string | null;
+    size: string | null;
+    age: number | null;
+    sowingDate: string | null;
+};
 
 export type Stock = {
     warehouse: Warehouse;
     quantity: number;
     reserved: number;
-}
+};

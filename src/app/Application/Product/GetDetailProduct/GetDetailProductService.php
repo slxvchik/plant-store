@@ -25,7 +25,7 @@ readonly class GetDetailProductService implements GetDetailProductUseCase
             throw new ProductNotFoundException;
         }
 
-        $productDtoList = $this->productDetailsFetcher->getByIds([$product->id]);
+        $productDtoList = $this->productDetailsFetcher->getByIds([$product->id->value]);
 
         return $productDtoList[0];
     }

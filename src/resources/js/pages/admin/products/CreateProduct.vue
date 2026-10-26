@@ -1,421 +1,85 @@
 <template>
     <div class="flex flex-col gap-5">
         <Link :href="AdminProduct.index.url()" text="Назад" secondary />
-
         <div class="flex flex-row gap-10">
             <h1 class="text-4xl text-text-title">Создание товара</h1>
             <div class="w-fit">
                 <Button
                     type="button"
                     text="Создать"
-                    @click="createProduct"
                     secondary
+                    :disabled="form.processing"
+                    @click="submit"
                 />
             </div>
         </div>
-
         <Tabs :items="tabs">
             <template #product>
                 <ProductForm
-                    :allCategories="allProductCategories"
-                    v-model:name="productForm.name"
-                    v-model:active="productForm.active"
-                    v-model:alias="productForm.alias"
-                    v-model:sort="productForm.sort"
-                    v-model:description="productForm.description"
-                    v-model:categories="productForm.categories"
-                    v-model:images="productForm.images"
+                    v-model="form"
+                    :all-categories="categoryOptions"
+                    :errors="form.errors"
                 />
             </template>
-
             <template #offers>
                 <div class="flex flex-col gap-5">
                     <div class="max-w-80">
                         <Button
                             text="Добавить ТП"
                             class="bg-secondary hover:bg-secondary-hover"
-                            @click="openModalOfferCreatePopup"
+                            @click="offerDialog?.openCreate()"
                         />
                     </div>
-                    <div
-                        class="w-full overflow-hidden rounded-lg border border-gray-200 bg-white"
-                    >
-                        <div
-                            class="grid grid-cols-[80px_120px_1fr_350px_200px] border-b border-gray-200 bg-slate-50 font-medium text-gray-700"
-                        >
-                            <div class="border-r border-gray-200 p-3">Id</div>
-                            <div class="border-r border-gray-200 p-3">
-                                Активность
-                            </div>
-                            <div class="border-r border-gray-200 p-3">
-                                Артикул
-                            </div>
-                            <div class="border-r border-gray-200 p-3">
-                                Цена (коп.)
-                            </div>
-                            <div class="p-3 text-center">Действие</div>
-                        </div>
-                        <div class="divide-y divide-gray-200">
-                            <div
-                                v-for="(offer, index) in productOffers"
-                                :key="index"
-                                class="grid grid-cols-[80px_120px_1fr_350px_200px] items-center text-sm text-gray-700 hover:bg-slate-50"
-                            >
-                                <div
-                                    class="border-r border-gray-200 p-3 text-gray-400"
-                                >
-                                    {{ offer.id || 'Новое' }}
-                                </div>
-
-                                <div
-                                    class="flex justify-center border-r border-gray-200 p-3"
-                                >
-                                    {{ offer.active }}
-                                </div>
-
-                                <div class="border-r border-gray-200 p-2">
-                                    {{ offer.sku }}
-                                </div>
-
-                                <div class="border-r border-gray-200 p-2">
-                                    {{ offer.price }}
-                                </div>
-
-                                <div class="flex flex-col p-3 text-center">
-                                    <Button
-                                        styleType="link"
-                                        text="Редактировать"
-                                        class="cursor-pointer text-yellow-400 hover:text-yellow-600"
-                                        @click="openModalOfferEditPopup(index)"
-                                    />
-                                    <Button
-                                        styleType="link"
-                                        text="Удалить"
-                                        class="cursor-pointer text-red-400 hover:text-red-600"
-                                        @click="removeOffer(index)"
-                                    />
-                                </div>
-                            </div>
-
-                            <div
-                                v-if="productOffers.length === 0"
-                                class="bg-gray-50 p-8 text-center text-gray-400"
-                            >
-                                Торговые предложения еще не добавлены
-                            </div>
-                        </div>
-                        <div
-                            class="divide-y divide-gray-200 bg-white text-sm text-gray-700"
-                        ></div>
-                    </div>
+                    <ProductOfferList
+                        :offers="form.offers"
+                        @edit="offerDialog?.openEdit($event)"
+                        @remove="removeOffer"
+                    />
                 </div>
-                <Popup
-                    v-model:open="offerPopupIsOpen"
-                    :title="
-                        editingOfferIndex !== null
-                            ? 'Редактирование ТП'
-                            : 'Создание ТП'
-                    "
-                >
-                    <OfferForm
-                        :warehouses="warehouses"
-                        v-model:active="offerForm.active"
-                        v-model:sku="offerForm.sku"
-                        v-model:sort="offerForm.sort"
-                        v-model:description="offerForm.description"
-                        v-model:price="offerForm.price"
-                        v-model:formFactor="offerForm.formFactor"
-                        v-model:size="offerForm.size"
-                        v-model:age="offerForm.age"
-                        v-model:sowingDate="offerForm.sowingDate"
-                        v-model:images="offerForm.images"
-                        v-model:stocks="offerForm.stocks"
-                    />
-
-                    <Button
-                        type="button"
-                        :text="
-                            editingOfferIndex !== null ? 'Сохранить' : 'Создать'
-                        "
-                        @click="saveOffer"
-                        secondary
-                    />
-                </Popup>
+                <OfferEditorDialog
+                    ref="offerDialog"
+                    v-model:offers="form.offers"
+                    :warehouses="warehouses"
+                />
             </template>
         </Tabs>
     </div>
 </template>
 
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
-import { computed, reactive, ref, toRaw } from 'vue';
+import { computed, ref } from 'vue';
 import Button from '@/components/Button.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Link from '@/components/Link.vue';
-import OfferForm from '@/components/pages/admin/products/OfferForm.vue';
+import OfferEditorDialog from '@/components/pages/admin/products/OfferEditorDialog.vue';
 import ProductForm from '@/components/pages/admin/products/ProductForm.vue';
-import Popup from '@/components/Popup.vue';
+import ProductOfferList from '@/components/pages/admin/products/ProductOfferList.vue';
 import Tabs from '@/components/Tabs.vue';
-import AdminImage from '@/routes/admin/image';
+import { useProductForm } from '@/composables/useProductForm';
 import AdminProduct from '@/routes/admin/products';
-import { useNotificationStore } from '@/stores/useNotificationStore.ts';
-import type { Category, UploadableImage } from '@/types';
-import type { OfferFormState, ProductFormState } from '@/types/form/product.ts';
-import type { Warehouse } from '@/types/warehouse.ts';
+import type { Category } from '@/types/category';
+import type { Warehouse } from '@/types/warehouse';
 
-defineOptions({
-    layout: AdminLayout,
-});
+defineOptions({ layout: AdminLayout });
 
-interface Props {
+const props = defineProps<{
     categories: Category[];
     warehouses: Warehouse[];
-}
-
-const props = defineProps<Props>();
-
-const createEmptyOffer = (): OfferFormState => ({
-    id: undefined,
-    active: false,
-    sku: '',
-    sort: 500,
-    description: '',
-    price: 0,
-    stocks: props.warehouses.map((warehouse) => ({
-        warehouseId: warehouse.id,
-        quantity: 0,
-        reserved: 0,
-    })),
-    formFactor: undefined,
-    size: undefined,
-    age: undefined,
-    sowingDate: undefined,
-    images: null,
-    videos: null,
-});
-
-const productForm = reactive<ProductFormState>({
-    id: undefined,
-    name: '',
-    active: false,
-    alias: '',
-    sort: 500,
-    description: '',
-    categories: [] as string[],
-    images: null,
-});
-
-const productOffers = ref<OfferFormState[]>([]);
-
-const offerForm = reactive<OfferFormState>(createEmptyOffer());
-
-const offerPopupIsOpen = ref(false);
-const editingOfferIndex = ref<number | null>(null);
-
+}>();
+const { form, submit } = useProductForm();
+const offerDialog = ref<InstanceType<typeof OfferEditorDialog> | null>(null);
 const tabs = [
     { id: 'product', label: 'Товар' },
     { id: 'offers', label: 'Торговые предложения' },
 ];
-
-const allProductCategories = computed(() => {
-    return props.categories.map((category) => ({
+const categoryOptions = computed(() =>
+    props.categories.map((category) => ({
         label: category.name,
         value: category.id,
-    }));
-});
+    })),
+);
 
-const notificationStore = useNotificationStore();
-
-const openModalOfferCreatePopup = () => {
-    editingOfferIndex.value = null;
-    offerPopupIsOpen.value = true;
-    Object.assign(offerForm, createEmptyOffer());
-};
-
-const openModalOfferEditPopup = (index: number) => {
-    editingOfferIndex.value = index;
-    offerPopupIsOpen.value = true;
-
-    const sourceOffer = productOffers.value[index];
-
-    Object.assign(offerForm, createEmptyOffer());
-
-    const rawOffer = toRaw(sourceOffer);
-    offerForm.id = rawOffer.id;
-    offerForm.active = rawOffer.active;
-    offerForm.sku = rawOffer.sku;
-    offerForm.sort = rawOffer.sort;
-    offerForm.description = rawOffer.description;
-    offerForm.price = rawOffer.price;
-
-    if (Array.isArray(rawOffer.stocks)) {
-        offerForm.stocks = rawOffer.stocks.map((stock: any) => ({
-            warehouseId: stock.warehouseId,
-            quantity: stock.quantity,
-            reserved: stock.reserved,
-        }));
-    }
-};
-
-function saveOffer() {
-    if (editingOfferIndex.value !== null) {
-        productOffers.value[editingOfferIndex.value] = { ...offerForm };
-    } else {
-        productOffers.value.push({ ...offerForm });
-    }
-
-    offerPopupIsOpen.value = false;
-}
-
-const removeOffer = (index: number) => {
-    productOffers.value.splice(index, 1);
-};
-
-const createProduct = async () => {
-    const uploadPromises: any = [];
-
-    if (productForm.images !== null && productForm.images?.length > 0) {
-        productForm.images.forEach((image) => {
-            const promise = createImage(image).then((id) => {
-                if (id) {
-                    image.id = id;
-
-                    return image;
-                }
-
-                return null;
-            });
-            uploadPromises.push(promise);
-        });
-    }
-
-    if (productOffers.value?.length > 0) {
-        productOffers.value.forEach((offer) => {
-            if (offer.images !== null && offer.images?.length > 0) {
-                offer.images.forEach((image) => {
-                    const promise = createImage(image).then((id) => {
-                        if (id) {
-                            image.id = id;
-
-                            return image;
-                        }
-
-                        return null;
-                    });
-                    uploadPromises.push(promise);
-                });
-            }
-        });
-    }
-
-    const results = await Promise.allSettled(uploadPromises);
-
-    const uploadedImagesToRollback: UploadableImage[] = [];
-    let hasErrors = false;
-
-    results.forEach((result) => {
-        if (result.status === 'fulfilled' && result.value) {
-            uploadedImagesToRollback.push(result.value);
-        } else if (result.status === 'rejected' || !result.value) {
-            hasErrors = true;
-        }
-    });
-
-    if (hasErrors) {
-        console.warn(
-            'Произошла ошибка при загрузке картинок. Начинаем откат...',
-        );
-
-        await deleteSavedImages(uploadedImagesToRollback);
-
-        throw new Error(
-            'Не удалось загрузить все изображения, изменения отменены.',
-        );
-    }
-
-    const payload = {
-        ...productForm,
-        offers: [...productOffers.value],
-    };
-
-    router.post(AdminProduct.store.url(), payload, {
-        onSuccess: () => {
-            notificationStore.add('Товар успешно создан', 'success', 3000);
-        },
-        onError: (errors) => {
-            console.log('Валидационные ошибки:', errors);
-            notificationStore.add(
-                'Проверьте правильность заполнения полей',
-                'error',
-                5000,
-            );
-            deleteSavedImages(uploadedImagesToRollback);
-        },
-    });
-};
-
-const deleteSavedImages = async (uploadedImages: UploadableImage[]) => {
-    if (uploadedImages.length > 0) {
-        try {
-            await Promise.all(
-                uploadedImages.map(async (image) => {
-                    return new Promise<void>((resolve) => {
-                        if (!image.id) {
-                            return resolve();
-                        }
-
-                        fetch(AdminImage.destroy.url(image.id), {
-                            method: 'DELETE',
-                        });
-                    });
-                }),
-            );
-            console.log(
-                'Успешно загруженные картинки были удалены из-за ошибки.',
-            );
-        } catch (rollbackError) {
-            console.error(
-                'Ошибка при попытке очистить загруженные изображения:',
-                rollbackError,
-            );
-        }
-    }
-};
-
-const createImage = async (
-    image: UploadableImage,
-): Promise<string | undefined> => {
-    if (image.id) {
-        return image.id;
-    }
-
-    return new Promise<string>((resolve, reject) => {
-        const formData = new FormData();
-
-        formData.append('file', image.file);
-
-        if (image.titleText) {
-            formData.append('titleText', image.titleText);
-        }
-
-        if (image.altText) {
-            formData.append('altText', image.altText);
-        }
-
-        fetch(AdminImage.create.url(), {
-            method: 'POST',
-            body: formData,
-        }).then((response) => {
-            return response.json();
-        }).then((data: any) => {
-            const createdId = data?.created;
-
-            if (createdId) {
-                resolve(createdId);
-            } else {
-                reject('ID не был возвращен сервером');
-            }
-        });
-    });
+const removeOffer = (clientKey: string): void => {
+    form.offers = form.offers.filter((offer) => offer.clientKey !== clientKey);
 };
 </script>

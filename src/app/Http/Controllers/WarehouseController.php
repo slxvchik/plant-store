@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use App\Application\Warehouse\CreateWarehouse\CreateWarehouseRequestDto;
 use App\Application\Warehouse\CreateWarehouse\CreateWarehouseUseCase;
 use App\Application\Warehouse\DeleteWarehouse\DeleteWarehouseUseCase;
 use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesUseCase;
-use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseRequestDto;
 use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseUseCase;
-use App\Http\Resources\Admin\WarehouseAdminResource;
+use App\Http\Requests\StoreWarehouseRequest;
+use App\Http\Requests\UpdateWarehouseRequest;
 use App\Notification\Notification;
-use App\Notification\NotificationType;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -22,74 +21,34 @@ class WarehouseController extends Controller
         private readonly GetAllWarehousesUseCase $getAllWarehousesUseCase,
         private readonly CreateWarehouseUseCase $createWarehouseUseCase,
         private readonly UpdateWarehouseUseCase $updateWarehouseUseCase,
-        private readonly DeleteWarehouseUseCase $deleteWarehouseUseCase
+        private readonly DeleteWarehouseUseCase $deleteWarehouseUseCase,
     ) {}
 
     public function index(): Response
     {
-        $warehouses = $this->getAllWarehousesUseCase->execute();
-        $warehouseAdminResources = WarehouseAdminResource::collection($warehouses);
-
-        return Inertia::render('admin/Warehouses', ['warehouses' => $warehouseAdminResources]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        $createDto = new CreateWarehouseRequestDto(
-            address: $request->input('address'),
-            phoneNumber: $request->input('phone')
-        );
-
-        $this->createWarehouseUseCase->execute($createDto);
-
-        return redirect()->back()->with(
-            new Notification(
-                'Склад успешно добавлен.',
-                NotificationType::SUCCESS
-            )->toArray()
-        );
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id): RedirectResponse
-    {
-        $request->validate([
-            'address' => 'required|string',
+        return Inertia::render('admin/Warehouses', [
+            'warehouses' => $this->getAllWarehousesUseCase->execute(),
         ]);
-
-        $updateWarehouseRequestDto = new UpdateWarehouseRequestDto(
-            id: $id,
-            address: $request->input('address'),
-            phoneNumber: $request->input('phone')
-        );
-
-        $this->updateWarehouseUseCase->execute($updateWarehouseRequestDto);
-
-        return redirect()->back()->with(
-            new Notification(
-                'Склад успешно обновлён.',
-                NotificationType::SUCCESS
-            )->toArray()
-        );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function store(StoreWarehouseRequest $request): RedirectResponse
+    {
+        $this->createWarehouseUseCase->execute($request->toDto());
+
+        return redirect()->back()->with(Notification::flash('Склад успешно добавлен.'));
+    }
+
+    public function update(UpdateWarehouseRequest $request, string $id): RedirectResponse
+    {
+        $this->updateWarehouseUseCase->execute($request->toDto($id));
+
+        return redirect()->back()->with(Notification::flash('Склад успешно обновлён.'));
+    }
+
+    public function destroy(string $id): RedirectResponse
     {
         $this->deleteWarehouseUseCase->execute($id);
 
-        return redirect()->back()->with(
-            new Notification(
-                'Склад успешно удалён.',
-                NotificationType::SUCCESS
-            )->toArray()
-        );
+        return redirect()->back()->with(Notification::flash('Склад успешно удалён.'));
     }
 }

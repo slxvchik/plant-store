@@ -6,15 +6,17 @@ namespace App\Domain\Order\Repository;
 
 use App\Domain\Order\Criteria\OrderSearchCriteria;
 use App\Domain\Order\Model\Order;
-use App\Domain\Shared\BaseRepository\BaseRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 
-/**
- * @extends BaseRepository<Order>
- */
-interface OrderRepository extends BaseRepository
+interface OrderRepository
 {
+    public function create(Order $order): string;
+
+    public function update(Order $order): void;
+
+    public function findById(string $id): ?Order;
+
     /**
      * @return Order[]
      */

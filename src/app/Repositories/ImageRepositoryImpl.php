@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
-use App\Domain\Media\Model\Image as DomainImageModel;
+use App\Adapters\Pagination\PaginationAdapter;
+use App\Domain\Media\Model\Image as DomainImage;
 use App\Domain\Media\Repository\ImageRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
@@ -11,66 +14,62 @@ use Override;
 
 class ImageRepositoryImpl implements ImageRepository
 {
-    /**
-     * @param  DomainImageModel  $entity
-     */
     #[Override]
-    public function create(object $entity): string
+    public function create(DomainImage $image): string
     {
-        $image = Image::create([
-            'id' => $entity->id->value,
-            'mime_type' => $entity->mimeType,
-            'size_in_bytes' => $entity->sizeInBytes,
-            'width' => $entity->width,
-            'height' => $entity->height,
-            'title_text' => $entity->titleText,
-            'alt_text' => $entity->altText,
+        $created = Image::create([
+            'id' => $image->id->value,
+            'mime_type' => $image->mimeType,
+            'size_in_bytes' => $image->sizeInBytes,
+            'width' => $image->width,
+            'height' => $image->height,
+            'title_text' => $image->titleText,
+            'alt_text' => $image->altText,
         ]);
 
-        return $image->id;
+        return $created->id;
     }
 
-    /**
-     * @param  DomainImageModel  $entity
-     */
     #[Override]
-    public function update(object $entity): void
+    public function update(DomainImage $image): void
     {
-        Image::where('id', $entity->id->value)->update([
-            'title_text' => $entity->titleText,
-            'alt_text' => $entity->altText,
+        Image::findOrFail($image->id->value)->update([
+            'title_text' => $image->titleText,
+            'alt_text' => $image->altText,
         ]);
     }
 
     #[Override]
     public function delete(string $id): void
     {
-        Image::destroy($id);
+        Image::findOrFail($id)->delete();
     }
 
     #[Override]
-    public function findById(int|string $id): ?object
+    public function findById(string $id): ?DomainImage
     {
-        $image = Image::find($id);
-
-        return $image->exists() ? $image->toDomain() : null;
+        return Image::find($id)?->toDomain();
     }
 
     #[Override]
     public function findByIds(array $ids): array
     {
-        // TODO: Implement findByIds() method.
+        return Image::find($ids)
+            ->map(fn (Image $image): DomainImage => $image->toDomain())
+            ->all();
     }
 
     #[Override]
     public function findPage(Pageable $pageable): Page
     {
-        // TODO: Implement findPage() method.
-    }
+        $paginator = Image::query()->paginate(
+            perPage: $pageable->perPage,
+            page: $pageable->page,
+        );
 
-    #[Override]
-    public function findAll(): array
-    {
-        // TODO: Implement findAll() method.
+        return PaginationAdapter::toDomainPage(
+            paginator: $paginator,
+            mapper: fn (Image $image): DomainImage => $image->toDomain(),
+        );
     }
 }

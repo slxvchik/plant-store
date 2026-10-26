@@ -6,6 +6,9 @@ namespace App\Domain\Shared\Event;
 
 trait Eventable
 {
+    /**
+     * @var object[]
+     */
     private array $events = [];
 
     public function recordEvent(object $eventInterface): void

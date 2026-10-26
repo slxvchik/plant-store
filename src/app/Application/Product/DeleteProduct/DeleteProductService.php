@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Product\DeleteProduct;
 
-use App\Application\Cart\DeleteProduct\DeleteProductUseCase;
+use App\Application\Product\DeleteProduct\DeleteProductUseCase;
 use App\Application\Product\Shared\Exception\ProductNotFoundException;
 use App\Domain\Product\Repository\ProductRepository;
 use Override;

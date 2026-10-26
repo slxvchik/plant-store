@@ -1,21 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Adapters\Pagination\PageResponseDto;
 use App\Application\Category\GetAllCategories\GetAllCategoriesUseCase;
-use App\Application\Media\CreateImage\CreateImageUseCase;
-use App\Application\Media\DeleteImage\DeleteImageUseCase;
 use App\Application\Product\CreateProduct\CreateProductUseCase;
 use App\Application\Product\UpdateProduct\UpdateProductUseCase;
 use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesUseCase;
 use App\Domain\Shared\Pagination\Page;
+use App\Http\Requests\PaginationRequest;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Notification\Notification;
-use App\Notification\NotificationType;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
-use InvalidArgumentException;
-use ValueError;
+use Inertia\Response;
 
 class ProductController extends Controller
 {
@@ -26,84 +27,44 @@ class ProductController extends Controller
         private readonly UpdateProductUseCase $updateProductUseCase,
     ) {}
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(PaginationRequest $request): Response
     {
         return Inertia::render('admin/products/ProductsIndex', [
-            'productsPage' => new PageResponseDto(
-                page: Page::empty(),
-                url: route('admin.products.index'),
-            ),
+            'productsPage' => new PageResponseDto(Page::empty(), $request->fullUrl()),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @throws InvalidArgumentException
-     */
-    public function create()
+    public function create(): Response
     {
-        $categories = $this->getAllCategoriesUseCase->execute();
-        $warehouses = $this->getAllWarehousesUseCase->execute();
-
         return Inertia::render('admin/products/CreateProduct', [
-            'categories' => $categories,
-            'warehouses' => $warehouses,
+            'categories' => $this->getAllCategoriesUseCase->execute(),
+            'warehouses' => $this->getAllWarehousesUseCase->execute(),
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @throws ValueError
-     */
-    public function store(StoreProductRequest $request)
+    public function store(StoreProductRequest $request): RedirectResponse
     {
-        $productId = $this->createProductUseCase->execute($request->getCreateProductData());
+        $productId = $this->createProductUseCase->execute($request->toDto());
 
-        return redirect()->back('admin.products.edit', $productId)->with([
-            new Notification(
-                'Продукт создан',
-                NotificationType::SUCCESS,
-            ),
-        ]);
+        return redirect()
+            ->route('admin.products.show', $productId)
+            ->with(Notification::flash('Продукт создан.'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(string $id): Response
     {
         return Inertia::render('admin/products/ShowProduct');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @throws ValueError
-     */
-    public function update(StoreProductRequest $request, string $id)
+    public function update(UpdateProductRequest $request, string $id): RedirectResponse
     {
-        $request->validated();
+        $this->updateProductUseCase->execute($request->toDto($id));
 
-        $this->updateProductUseCase->execute($request->getUpdateProductData());
-
-        return redirect()->back()->with([
-            new Notification(
-                'Продукт создан.',
-                NotificationType::SUCCESS,
-            ),
-        ]);
+        return redirect()->back()->with(Notification::flash('Продукт обновлён.'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(string $id): void
     {
-        //
+        // Product deletion is not implemented yet.
     }
 }

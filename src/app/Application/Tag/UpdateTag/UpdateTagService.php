@@ -25,6 +25,7 @@ readonly class UpdateTagService implements UpdateTagUseCase
 
         $tag->update(
             alias: $updateTagRequestDto->alias,
+            sort: $updateTagRequestDto->sort,
             name: $updateTagRequestDto->name,
             active: $updateTagRequestDto->active
         );

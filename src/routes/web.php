@@ -8,6 +8,8 @@ use App\Http\Controllers\UserRequestController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
+Route::pattern('id', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+
 Route::inertia('/', 'Home')->name('home');
 Route::post('/callback', [UserRequestController::class, 'store'])->name('callback');
 

@@ -3,15 +3,8 @@
         <div v-if="label" class="mb-1.5 text-text-muted select-none">
             {{ label }}
         </div>
-        <div
-            class="flex flex-row flex-wrap gap-2"
-            v-if="modelValue !== null && type === 'image'"
-        >
-            <div
-                class="relative"
-                v-for="image in modelValue.values()"
-                :key="image.id"
-            >
+        <div v-if="modelValue.length && type === 'image'" class="flex flex-row flex-wrap gap-2">
+            <div v-for="image in modelValue" :key="image.pseudoId" class="relative">
                 <img
                     :src="image.previewUrl"
                     :alt="image.file.name"
@@ -20,32 +13,25 @@
                     class="rounded object-cover"
                 />
                 <div class="flex flex-col gap-2">
-                    <input
-                        v-model="image.titleText"
-                        type="text"
-                        placeholder="Title текст"
-                    />
-                    <input
-                        v-model="image.altText"
-                        type="text"
-                        placeholder="Alt текст"
-                    />
+                    <input v-model="image.titleText" type="text" placeholder="Title текст" />
+                    <input v-model="image.altText" type="text" placeholder="Alt текст" />
                 </div>
-                <div
-                    @click="removeFile(image.pseudoId, image.id)"
+                <button
+                    type="button"
                     class="absolute top-1 right-1 h-10 w-10 cursor-pointer rounded-lg bg-white text-secondary transition-colors duration-300 hover:text-secondary-hover"
+                    @click="removeFile(image)"
                 >
                     <TrashBasket />
-                </div>
+                </button>
             </div>
         </div>
         <input
-            ref="fileInput"
             :id="id"
+            ref="fileInput"
             type="file"
             multiple
-            @change="handleFileChange"
             :accept="acceptTypes"
+            @change="handleFileChange"
         />
     </div>
 </template>
@@ -53,7 +39,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue';
 import TrashBasket from '@/components/icons/TrashBasket.vue';
-import type { UploadableImage } from '@/types';
+import type { UploadableImage } from '@/types/image';
 
 interface Props {
     id: string;
@@ -62,92 +48,47 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
+const modelValue = defineModel<UploadableImage[]>({ default: () => [] });
 const fileInput = ref<HTMLInputElement | null>(null);
-
-const modelValue = defineModel<UploadableImage[] | null>({ default: null });
-
-const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
-const VALID_VIDEO_TYPES = ['video/mp4', 'video/webm'];
 
 const acceptTypes = computed(() => {
     if (props.type === 'image') {
-        return VALID_IMAGE_TYPES.join(', ');
-    } else if (props.type === 'video') {
-        return VALID_VIDEO_TYPES.join(', ');
+        return 'image/jpeg,image/png,image/webp';
+    }
+
+    if (props.type === 'video') {
+        return 'video/mp4,video/webm';
     }
 
     return undefined;
 });
 
-const clearPreviews = () => {
-    if (modelValue.value === null) {
-        return;
-    }
-
-    modelValue.value.forEach((img) => URL.revokeObjectURL(img.previewUrl));
-    modelValue.value = [];
-};
-
 const handleFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
 
-    if (target.files && target.files.length > 0) {
-        modelValue.value = Array.from(target.files).map((file) => ({
-            id: undefined,
-            pseudoId: `${file.name}-${file.size}-${file.lastModified}`,
-            file: file,
-            previewUrl: URL.createObjectURL(file),
-            titleText: '',
-            altText: '',
-        }));
-    } else {
-        modelValue.value = null;
-    }
+    modelValue.value.forEach((image) => URL.revokeObjectURL(image.previewUrl));
+    modelValue.value = Array.from(target.files ?? []).map((file) => ({
+        pseudoId: `${file.name}-${file.size}-${file.lastModified}`,
+        file,
+        previewUrl: URL.createObjectURL(file),
+        titleText: '',
+        altText: '',
+    }));
 };
 
-const removeFile = (pseudoId: string, id?: string) => {
-    if (!modelValue.value) {
-        return;
-    }
+const removeFile = (image: UploadableImage) => {
+    URL.revokeObjectURL(image.previewUrl);
+    modelValue.value = modelValue.value.filter((item) => item !== image);
 
-    let fileIndex: number;
-
-    if (id !== undefined) {
-        fileIndex = modelValue.value.findIndex((image) => image.id === id);
-    } else {
-        fileIndex = modelValue.value.findIndex(
-            (image) => image.pseudoId === pseudoId,
-        );
-    }
-
-    if (fileIndex === -1) {
-        return;
-    }
-
-    URL.revokeObjectURL(modelValue.value[fileIndex].previewUrl);
-    modelValue.value.splice(fileIndex, 1);
-
-    if (modelValue.value.length === 0) {
-        modelValue.value = null;
-    }
+    const dataTransfer = new DataTransfer();
+    modelValue.value.forEach((item) => dataTransfer.items.add(item.file));
 
     if (fileInput.value) {
-        if (modelValue.value !== null) {
-            const dataTransfer = new DataTransfer();
-
-            modelValue.value.forEach((file) =>
-                dataTransfer.items.add(file.file),
-            );
-
-            fileInput.value.files = dataTransfer.files;
-        } else {
-            fileInput.value.value = '';
-        }
+        fileInput.value.files = dataTransfer.files;
     }
 };
 
 onBeforeUnmount(() => {
-    clearPreviews();
+    modelValue.value.forEach((image) => URL.revokeObjectURL(image.previewUrl));
 });
 </script>

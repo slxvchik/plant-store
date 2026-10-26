@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
+use App\Adapters\Pagination\PageResponseDto;
 use App\Application\UserRequest\DeleteUserRequest\DeleteUserRequestUseCase;
 use App\Application\UserRequest\GetUserRequests\GetUserRequestsUseCase;
-use App\Application\UserRequest\SaveFormRequest\SaveFormRequestDto;
 use App\Application\UserRequest\SaveFormRequest\SaveFormRequestUseCase;
-use App\Domain\Shared\Pagination\Pageable;
+use App\Http\Requests\PaginationRequest;
+use App\Http\Requests\StoreCallbackRequest;
 use App\Notification\Notification;
-use App\Notification\NotificationType;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,54 +20,29 @@ class UserRequestController extends Controller
     public function __construct(
         private readonly SaveFormRequestUseCase $saveFormRequestUseCase,
         private readonly GetUserRequestsUseCase $getUserRequestsUseCase,
-        private readonly DeleteUserRequestUseCase $deleteUserRequestUseCase
+        private readonly DeleteUserRequestUseCase $deleteUserRequestUseCase,
     ) {}
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreCallbackRequest $request): RedirectResponse
     {
-        $request->validate([
-            'fio' => 'required|string',
-            'phone' => 'required|string',
-        ]);
+        $this->saveFormRequestUseCase->execute($request->toDto());
 
-        $saveFormRequestDto = new SaveFormRequestDto(
-            formId: 'callback-form',
-            FIO: $request->input('fio'),
-            phone: $request->input('phone'),
-            comment: $request->input('comment')
-        );
-
-        $this->saveFormRequestUseCase->execute($saveFormRequestDto);
-
-        return redirect()->back()->with(
-            new Notification(
-                'Спасибо за заявку',
-                NotificationType::SUCCESS
-            )->toArray()
-        );
+        return redirect()->back()->with(Notification::flash('Спасибо за заявку'));
     }
 
-    public function index(Request $request): Response
+    public function index(PaginationRequest $request): Response
     {
-        $pageable = new Pageable(
-            page: $request->input('page', 1),
-            perPage: $request->input('perPage', 10)
-        );
+        $requests = $this->getUserRequestsUseCase->execute($request->toPageable());
 
-        $requests = $this->getUserRequestsUseCase->execute($pageable);
-
-        return Inertia::render('admin/UserRequests', ['userRequestsPage' => $requests]);
+        return Inertia::render('admin/UserRequests', [
+            'userRequestsPage' => new PageResponseDto($requests, $request->fullUrl()),
+        ]);
     }
 
     public function destroy(string $id): RedirectResponse
     {
         $this->deleteUserRequestUseCase->execute($id);
 
-        return redirect()->back()->with([
-            new Notification(
-                message: 'Заявка пользователя успешно удалена',
-                type: NotificationType::SUCCESS,
-            ),
-        ]);
+        return redirect()->back()->with(Notification::flash('Заявка пользователя успешно удалена'));
     }
 }

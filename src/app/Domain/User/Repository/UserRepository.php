@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Repository;
 
-use App\Domain\Shared\BaseRepository\BaseRepository;
 use App\Domain\User\Model\User;
 
-/**
- * @extends BaseRepository<User>
- */
-interface UserRepository extends BaseRepository
+interface UserRepository
 {
-    public function findByPhone(string $phone): User;
+    public function create(User $user): string;
 
-    public function findByEmail(string $email): User;
+    public function findById(string $id): ?User;
 
-    public function findByEmailConfirmToken(string $confirmToken): User;
+    /**
+     * @param  string[]  $ids
+     * @return User[]
+     */
+    public function findByIds(array $ids): array;
+
+    public function findByPhone(string $phone): ?User;
+
+    public function findByEmail(string $email): ?User;
+
+    public function findByEmailConfirmToken(string $confirmToken): ?User;
 }

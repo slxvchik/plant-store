@@ -4,34 +4,35 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Domain\Shared\Pagination\Page;
-use App\Domain\Shared\Pagination\Pageable;
+use App\Domain\Warehouse\Model\Warehouse as DomainWarehouse;
 use App\Domain\Warehouse\Repository\WarehouseRepository;
 use App\Models\Warehouse;
-use Exception;
 use Override;
 
 class WarehouseRepositoryImpl implements WarehouseRepository
 {
     #[Override]
-    public function findAll(): array
+    public function create(DomainWarehouse $warehouse): string
     {
-        return Warehouse::all()
-            ->map(fn (Warehouse $warehouse) => $warehouse->toDomain())
-            ->all();
-    }
+        Warehouse::create($this->attributes($warehouse));
 
-    /**
-     * @throws Exception
-     */
-    #[Override]
-    public function findPage(Pageable $pageable): Page
-    {
-        throw new Exception('Not implemented');
+        return $warehouse->id->value;
     }
 
     #[Override]
-    public function findById(string|int $id): ?object
+    public function update(DomainWarehouse $warehouse): void
+    {
+        Warehouse::findOrFail($warehouse->id->value)->update($this->attributes($warehouse));
+    }
+
+    #[Override]
+    public function delete(string $id): void
+    {
+        Warehouse::findOrFail($id)->delete();
+    }
+
+    #[Override]
+    public function findById(string $id): ?DomainWarehouse
     {
         return Warehouse::find($id)?->toDomain();
     }
@@ -41,34 +42,27 @@ class WarehouseRepositoryImpl implements WarehouseRepository
     {
         return Warehouse::whereIn('id', $ids)
             ->get()
-            ->map(fn (Warehouse $warehouse) => $warehouse->toDomain())
+            ->map(fn (Warehouse $warehouse): DomainWarehouse => $warehouse->toDomain())
             ->all();
     }
 
     #[Override]
-    public function create(object $entity): string
+    public function findAll(): array
     {
-        Warehouse::create([
-            'id' => $entity->id->value,
-            'address' => $entity->address,
-            'phone' => $entity->phoneNumber,
-        ]);
-
-        return $entity->id->value;
+        return Warehouse::all()
+            ->map(fn (Warehouse $warehouse): DomainWarehouse => $warehouse->toDomain())
+            ->all();
     }
 
-    #[Override]
-    public function update(object $entity): void
+    /**
+     * @return array<string, mixed>
+     */
+    private function attributes(DomainWarehouse $warehouse): array
     {
-        Warehouse::findOrFail($entity->id->value)->update([
-            'address' => $entity->address,
-            'phone' => $entity->phoneNumber,
-        ]);
-    }
-
-    #[Override]
-    public function delete(string $id): void
-    {
-        Warehouse::findOrFail($id)->delete();
+        return [
+            'id' => $warehouse->id->value,
+            'address' => $warehouse->address,
+            'phone' => $warehouse->phoneNumber,
+        ];
     }
 }

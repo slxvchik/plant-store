@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Domain\Product\Criteria\ProductSearchCriteria;
@@ -7,52 +9,56 @@ use App\Domain\Product\Model\Product;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
+use LogicException;
+use Override;
 
 class ProductRepositoryImpl implements ProductRepository
 {
-
-    public function create(object $entity): string
+    #[Override]
+    public function create(Product $product): string
     {
-        // TODO: Implement create() method.
+        throw new LogicException('Product persistence is not implemented.');
     }
 
-    public function update(object $entity): void
+    #[Override]
+    public function update(Product $product): void
     {
-        // TODO: Implement update() method.
+        throw new LogicException('Product persistence is not implemented.');
     }
 
+    #[Override]
     public function delete(string $id): void
     {
-        // TODO: Implement delete() method.
+        throw new LogicException('Product persistence is not implemented.');
     }
 
-    public function findById(int|string $id): ?object
+    #[Override]
+    public function findById(string $id): ?Product
     {
-        // TODO: Implement findById() method.
+        throw new LogicException('Product persistence is not implemented.');
     }
 
+    #[Override]
     public function findByIds(array $ids): array
     {
-        // TODO: Implement findByIds() method.
+        throw new LogicException('Product persistence is not implemented.');
     }
 
+    #[Override]
     public function findPage(Pageable $pageable): Page
     {
-        // TODO: Implement findPage() method.
+        throw new LogicException('Product persistence is not implemented.');
     }
 
-    public function findAll(): array
-    {
-        // TODO: Implement findAll() method.
-    }
-
+    #[Override]
     public function findByAlias(string $alias): ?Product
     {
-        // TODO: Implement findByAlias() method.
+        throw new LogicException('Product persistence is not implemented.');
     }
 
+    #[Override]
     public function search(ProductSearchCriteria $criteria, Pageable $pageable): Page
     {
-        // TODO: Implement search() method.
+        throw new LogicException('Product persistence is not implemented.');
     }
 }

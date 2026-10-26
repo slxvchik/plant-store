@@ -1,13 +1,12 @@
 export type Image = {
     id: string;
-    path: string;
+    webPathToFile: string;
     mimeType: string;
     sizeInBytes: number;
-    created: Date;
-    width?: number;
-    height?: number;
-    titleText?: string;
-    altText?: string;
+    width: number | null;
+    height: number | null;
+    titleText: string | null;
+    altText: string | null;
 };
 
 export type UploadableImage = {
@@ -15,6 +14,6 @@ export type UploadableImage = {
     pseudoId: string;
     file: File;
     previewUrl: string;
-    titleText?: string;
-    altText?: string;
+    titleText: string;
+    altText: string;
 };

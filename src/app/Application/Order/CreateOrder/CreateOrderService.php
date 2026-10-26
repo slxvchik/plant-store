@@ -50,7 +50,7 @@ readonly class CreateOrderService implements CreateOrderUseCase
             $productIds[$cartLine->productId][] = $cartLine->offerId;
         }
 
-        $actualProducts = $this->productRepository->findByIds($productIds);
+        $actualProducts = $this->productRepository->findByIds(array_keys($productIds));
         $actualProductsMap = [];
         foreach ($actualProducts as $actualProduct) {
             $actualProductsMap[$actualProduct->id->value] = $actualProduct;

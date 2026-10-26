@@ -19,9 +19,12 @@ final readonly class Page
         public int $totalPages,
         public int $totalCount,
         public bool $hasPrev,
-        public bool $hasNext
+        public bool $hasNext,
     ) {}
 
+    /**
+     * @return self<never>
+     */
     public static function empty(): self
     {
         return new self(
@@ -31,13 +34,15 @@ final readonly class Page
             totalPages: 1,
             totalCount: 0,
             hasPrev: false,
-            hasNext: false
+            hasNext: false,
         );
     }
 
     /**
-     * @param  T[]  $newItems
-     * @return Page<T>
+     * @template U
+     *
+     * @param  U[]  $newItems
+     * @return Page<U>
      */
     public function changeItems(array $newItems): Page
     {
@@ -48,7 +53,7 @@ final readonly class Page
             totalPages: $this->totalPages,
             totalCount: $this->totalCount,
             hasPrev: $this->hasPrev,
-            hasNext: $this->hasNext
+            hasNext: $this->hasNext,
         );
     }
 }

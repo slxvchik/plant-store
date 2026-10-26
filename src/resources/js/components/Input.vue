@@ -10,15 +10,16 @@
         </label>
         <input
             :id="id"
-            :type="type"
             v-model="modelValue"
+            :type="type"
             :placeholder="placeholder"
+            :required="required"
             autocomplete="off"
             class="h-11 rounded-lg border px-4 py-3.5 transition-all duration-300 focus:outline-none"
             :class="
                 !error
                     ? 'border-text-muted/50 bg-white text-text-muted placeholder:text-text-muted/50 focus:border-text-muted active:border-text-muted'
-                    : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:border-red-400 focus:placeholder:text-red-400 active:border-red-400 active:placeholder:text-red-400'
+                    : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:placeholder:text-red-400/50 active:border-red-400 active:placeholder:text-red-400/50'
             "
         />
         <p v-if="error" class="text-red-400">{{ error }}</p>
@@ -26,33 +27,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { validate } from '@/utils/fieldValidator.ts';
-
 interface Props {
     id: string;
-    type?: 'text' | 'password' | 'email' | 'number';
+    type?: 'text' | 'password' | 'email' | 'number' | 'date';
     placeholder?: string;
     label?: string;
-    rules?: string;
+    error?: string;
+    required?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
     type: 'text',
     placeholder: '',
     label: '',
     error: '',
+    required: false,
 });
 
-const modelValue = defineModel<string | bigint | number>({ default: '' });
-
-const error = ref<string | undefined>(undefined);
-
-watch(modelValue, (newValue, oldValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
-
-    } else {
-        validate();
-    }
-});
+const modelValue = defineModel<string | number | null>({ default: '' });
 </script>

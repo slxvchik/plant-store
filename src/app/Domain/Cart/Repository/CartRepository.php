@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Domain\Cart\Repository;
 
 use App\Domain\Cart\Model\Cart;
-use App\Domain\Shared\BaseRepository\BaseRepository;
 
-/**
- * @extends BaseRepository<Cart>
- */
-interface CartRepository extends BaseRepository
+interface CartRepository
 {
+    public function create(Cart $cart): string;
+
+    public function update(Cart $cart): void;
+
+    public function findById(string $id): ?Cart;
+
     public function findByUserId(string $userId): ?Cart;
 }

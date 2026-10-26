@@ -1,16 +1,13 @@
-import type { Image } from '@/types/image';
-
 export type Video = {
     id: string;
-    path: string;
+    webPathToFile: string;
     mimeType: string;
-    sizeInBytes: bigint;
-    created: Date;
-    width?: bigint;
-    height?: bigint;
+    sizeInBytes: number;
+    width: number | null;
+    height: number | null;
     loop: boolean;
     muted: boolean;
-    durationSec?: bigint;
-    codec?: string;
-    thumbnail?: Image;
-}
+    durationSec: number | null;
+    codec: string | null;
+    thumbnailId: string | null;
+};

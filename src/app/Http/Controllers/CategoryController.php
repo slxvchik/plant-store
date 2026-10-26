@@ -1,121 +1,61 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Adapters\Pagination\PageResponseDto;
-use App\Application\Category\CreateCategory\CreateCategoryRequestDto;
 use App\Application\Category\CreateCategory\CreateCategoryUseCase;
 use App\Application\Category\DeleteCategory\DeleteCategoryUseCase;
 use App\Application\Category\GetAllCategories\GetAllCategoriesUseCase;
 use App\Application\Category\GetCategoriesPage\GetCategoriesPageUseCase;
-use App\Application\Category\UpdateCategory\UpdateCategoryRequestDto;
 use App\Application\Category\UpdateCategory\UpdateCategoryUseCase;
-use App\Domain\Shared\Pagination\Pageable;
+use App\Http\Requests\PaginationRequest;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Notification\Notification;
-use App\Notification\NotificationType;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CategoryController extends Controller
 {
     public function __construct(
-        private readonly GetAllCategoriesUseCase  $getAllCategoriesUseCase,
-        private readonly GetCategoriesPageUseCase $getCategoriesUserCase,
-        private readonly CreateCategoryUseCase    $createCategoryUseCase,
-        private readonly UpdateCategoryUseCase    $updateCategoryUseCase,
-        private readonly DeleteCategoryUseCase    $deleteCategoryUseCase
+        private readonly GetAllCategoriesUseCase $getAllCategoriesUseCase,
+        private readonly GetCategoriesPageUseCase $getCategoriesPageUseCase,
+        private readonly CreateCategoryUseCase $createCategoryUseCase,
+        private readonly UpdateCategoryUseCase $updateCategoryUseCase,
+        private readonly DeleteCategoryUseCase $deleteCategoryUseCase,
     ) {}
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request): Response
+    public function index(PaginationRequest $request): Response
     {
-        $request->validate([
-            'page' => 'nullable|int',
-            'perPage' => 'nullable|int',
-        ]);
-
-        $pageable = new Pageable(
-            page: $request->input('page'),
-            perPage: $request->input('perPage'),
-        );
-
-        $categoriesPage = $this->getCategoriesUserCase->execute($pageable);
-
-        $pageResponseDto = new PageResponseDto(
-            page: $categoriesPage,
-            url: route('admin.categories.index')
-        );
-
-        $allCategories = $this->getAllCategoriesUseCase->execute();
+        $categoriesPage = $this->getCategoriesPageUseCase->execute($request->toPageable());
 
         return Inertia::render('admin/Categories', [
-            'categoriesPage' => $pageResponseDto,
-            'categories' => $allCategories,
+            'categoriesPage' => new PageResponseDto($categoriesPage, $request->fullUrl()),
+            'categories' => $this->getAllCategoriesUseCase->execute(),
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
-        $createTagRequestDto = new CreateCategoryRequestDto(
-            parentId: $request->input('parentId'),
-            alias: $request->input('alias'),
-            sort: $request->input('sort'),
-            name: $request->input('name'),
-            active: $request->input('active'),
-        );
-        $this->createCategoryUseCase->execute($createTagRequestDto);
+        $this->createCategoryUseCase->execute($request->toDto());
 
-        return redirect()->back()->with([
-            new Notification(
-                message: 'Категория создана.',
-                type: NotificationType::SUCCESS
-            ),
-        ]);
+        return redirect()->back()->with(Notification::flash('Категория создана.'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(UpdateCategoryRequest $request, string $id): RedirectResponse
     {
-        $updateTagRequestDto = new UpdateCategoryRequestDto(
-            id: $id,
-            parentId: $request->input('parentId'),
-            alias: $request->input('alias'),
-            sort: $request->input('sort'),
-            name: $request->input('name'),
-            active: $request->input('active'),
-        );
+        $this->updateCategoryUseCase->execute($request->toDto($id));
 
-        $this->updateCategoryUseCase->execute($updateTagRequestDto);
-
-        return redirect()->back()->with([
-            new Notification(
-                message: 'Категория обновлена.',
-                type: NotificationType::SUCCESS
-            ),
-        ]);
+        return redirect()->back()->with(Notification::flash('Категория обновлена.'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id): RedirectResponse
     {
         $this->deleteCategoryUseCase->execute($id);
 
-        return redirect()->back()->with(
-            new Notification(
-                message: 'Категория удалёна.',
-                type: NotificationType::SUCCESS
-            )->toArray()
-        );
+        return redirect()->back()->with(Notification::flash('Категория удалена.'));
     }
 }

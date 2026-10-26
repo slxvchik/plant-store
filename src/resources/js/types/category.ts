@@ -1,8 +1,8 @@
 export type Category = {
     id: string;
-    parent?: Category;
+    parent: Category | null;
     alias: string;
-    sort: bigint;
+    sort: number;
     name: string;
     active: boolean;
-}
+};

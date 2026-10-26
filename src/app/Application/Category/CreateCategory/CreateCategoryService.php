@@ -14,8 +14,8 @@ use Override;
 readonly class CreateCategoryService implements CreateCategoryUseCase
 {
     public function __construct(
-        final private UuidGeneratorInterface $uuidGeneratorInterface,
-        final private CategoryRepository $categoryRepository
+        private UuidGeneratorInterface $uuidGeneratorInterface,
+        private CategoryRepository $categoryRepository
     ) {}
 
     /**

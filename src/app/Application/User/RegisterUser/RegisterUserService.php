@@ -8,7 +8,6 @@ use App\Application\User\Shared\Exception\UserEmailAlreadyExistsException;
 use App\Application\User\Shared\Exception\UserPhoneAlreadyExistsException;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use App\Domain\User\Model\User;
-use App\Domain\User\Repository\SessionRepository;
 use App\Domain\User\Repository\UserRepository;
 use Override;
 
@@ -16,8 +15,7 @@ readonly class RegisterUserService implements RegisterUserUseCase
 {
     public function __construct(
         private UuidGeneratorInterface $uuidGeneratorInterface,
-        private SessionRepository $sessionRepository,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
     ) {}
 
     #[Override]
@@ -29,19 +27,15 @@ readonly class RegisterUserService implements RegisterUserUseCase
             password: $registerUserDto->password,
             firstName: $registerUserDto->firstname,
             lastName: $registerUserDto->lastName,
-            email: $registerUserDto->email
+            email: $registerUserDto->email,
         );
 
-        $existingUserByPhone = $this->userRepository->findByPhone($user->phone);
-        if ($existingUserByPhone !== null) {
+        if ($this->userRepository->findByPhone($user->phone) !== null) {
             throw new UserPhoneAlreadyExistsException;
         }
 
-        if ($user->email !== null) {
-            $existingUserByEmail = $this->userRepository->findByEmail($user->email);
-            if ($existingUserByEmail !== null) {
-                throw new UserEmailAlreadyExistsException;
-            }
+        if ($user->email !== null && $this->userRepository->findByEmail($user->email) !== null) {
+            throw new UserEmailAlreadyExistsException;
         }
 
         return $this->userRepository->create($user);

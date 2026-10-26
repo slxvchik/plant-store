@@ -189,7 +189,7 @@ class Product
                     imageIds: $saveOffer->imageIds,
                     videoIds: $saveOffer->videoIds
                 );
-                $this->offers[$newOffer->id->value] = $saveOffer;
+                $this->offers[$newOffer->id->value] = $newOffer;
                 $newOfferIds[] = $newOffer->id->value;
 
                 continue;
@@ -249,7 +249,7 @@ class Product
 
     public function offerExists(string $offerId): bool
     {
-        return $this->offers[$offerId] !== null;
+        return isset($this->offers[$offerId]);
     }
 
     /**

@@ -38,7 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (AppException $e, Request $request) {
             if (! $request->hasSession()) {
-                $httpCode = match ($e->getCode()) {
+                $httpCode = match ($e->appExceptionStatus) {
                     AppExceptionStatus::INVALID_ARGUMENT => 400,
                     AppExceptionStatus::NOT_FOUND => 404,
                     AppExceptionStatus::ALREADY_EXISTS => 409,
@@ -49,19 +49,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json(['error' => $e->getMessage()], $httpCode);
             }
 
-            return match ($e->appExceptionStatus) {
-                AppExceptionStatus::INTERNAL_ERROR,
-                AppExceptionStatus::NOT_FOUND,
-                AppExceptionStatus::ALREADY_EXISTS,
-                AppExceptionStatus::INVALID_ARGUMENT,
-                AppExceptionStatus::BUSINESS_ERROR => redirect()
-                    ->back()
-                    ->with(Notification::fromAppException($e)),
-
-                default => Inertia::render('Errors/Error', [
-                    'status' => 500,
-                    'message' => 'Произошла неизвестная ошибка.',
-                ])->toResponse($request)->setStatusCode(500),
-            };
+            return redirect()->back()->with(Notification::fromAppException($e));
         });
     })->create();

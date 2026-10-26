@@ -9,6 +9,9 @@ use App\Domain\Shared\AppException\AppExceptionStatus;
 
 class InvalidMimeTypeException extends AppException
 {
+    /**
+     * @param  string[]  $supportedMimeTypes
+     */
     public function __construct(string $mimeType, array $supportedMimeTypes)
     {
         parent::__construct(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adapters;
 
 use App\Application\Media\Shared\FileStorageInterface;
@@ -14,7 +16,7 @@ class FileStorageImpl implements FileStorageInterface
 
     public function put(string $path, string $contents): bool
     {
-        return Storage::disk($this->disk)->put($path, $contents);
+        return (bool) Storage::disk($this->disk)->put($path, $contents);
     }
 
     /**
@@ -26,9 +28,7 @@ class FileStorageImpl implements FileStorageInterface
             return false;
         }
 
-        $file = new File($localFilePath);
-
-        return Storage::disk($this->disk)->putFile($targetPath, $file);
+        return Storage::disk($this->disk)->putFile($targetPath, new File($localFilePath));
     }
 
     public function get(string $path): string
@@ -55,6 +55,8 @@ class FileStorageImpl implements FileStorageInterface
     }
 
     /**
+     * @return resource
+     *
      * @throws RuntimeException
      */
     public function readStream(string $path)

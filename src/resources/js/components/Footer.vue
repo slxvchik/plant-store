@@ -28,6 +28,7 @@
                         <Button
                             styleType="link"
                             v-for="text in ['Гарантия', 'Возврат', 'Оферта']"
+                            :key="text"
                             :text="text"
                             class="w-fit"
                         />
@@ -49,6 +50,7 @@
                         'Политика обработки персональных данных',
                         'Политика конфиденциальности',
                     ]"
+                    :key="text"
                 >
                     <span
                         v-if="index > 0"
@@ -69,7 +71,6 @@
 </template>
 
 <script setup lang="ts">
-import LogoIcon from '@/components/icons/LogoIcon.vue';
-import Link from '@/components/Link.vue';
 import Button from '@/components/Button.vue';
+import LogoIcon from '@/components/icons/LogoIcon.vue';
 </script>

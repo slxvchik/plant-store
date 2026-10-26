@@ -18,7 +18,6 @@ class Video extends Model
     {
         return DomainVideoModel::fromDb(
             id: $this->id,
-            webPathToFile: $this->web_path_to_file,
             mimeType: $this->mime_type,
             sizeInBytes: (int) $this->size_in_bytes,
             width: (int) $this->width,
