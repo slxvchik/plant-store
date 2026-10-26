@@ -2,16 +2,17 @@ export type Image = {
     id: string;
     path: string;
     mimeType: string;
-    sizeInBytes: bigint;
+    sizeInBytes: number;
     created: Date;
-    width?: bigint;
-    height?: bigint;
+    width?: number;
+    height?: number;
     titleText?: string;
     altText?: string;
 };
 
 export type UploadableImage = {
-    id: string;
+    id?: string;
+    pseudoId: string;
     file: File;
     previewUrl: string;
     titleText?: string;

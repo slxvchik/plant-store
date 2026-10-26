@@ -8,9 +8,11 @@ use App\Application\Media\DeleteImage\DeleteImageUseCase;
 use App\Application\Media\UpdateImage\UpdateImageRequestDto;
 use App\Application\Media\UpdateImage\UpdateImageUseCase;
 use App\Domain\Media\Model\Media;
-use App\Http\Requests\StoreImageRequest;
+use App\Domain\Shared\AppException\AppException;
+use App\Http\Requests\CreateImageRequest;
 use App\Notification\Notification;
 use App\Notification\NotificationType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -26,41 +28,22 @@ class ImageController extends Controller
     ) {}
 
     /**
+     * @throws AppException
      * @throws LogicException
      * @throws RuntimeException
      */
-    public function store(StoreImageRequest $request): RedirectResponse
+    public function store(CreateImageRequest $request): JsonResponse
     {
-        $validated = $request->validated();
-        $image = $validated['image'];
+        $request->validated();
 
-        $imageFile = $image['file'];
+        $createdId = $this->createImageUseCase->execute($request->getCreateImageRequestDto());
 
-        $media = new Media(
-            name: $imageFile->getClientOriginalName(),
-            mimeType: $imageFile->getMimeType(),
-            tmpName: $imageFile->getPathname(),
-            error: $imageFile->getError(),
-            size: $imageFile->getSize(),
-        );
-
-        $createImageRequestDto = new CreateImageRequestDto(
-            media: $media,
-            altText: $image['altText'] ?? null,
-            titleText: $image['titleText'] ?? null,
-        );
-
-        $createdId = $this->createImageUseCase->execute($createImageRequestDto);
-
-        return redirect()->back()->with([
-            new Notification(
-                message: "Изображение с id: $createdId создано.",
-                type: NotificationType::SUCCESS,
-            ),
+        return response()->json([
+            'created' => $createdId,
         ]);
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, string $id): JsonResponse
     {
         $updateImageRequestDto = new UpdateImageRequestDto(
             id: $id,
@@ -70,7 +53,7 @@ class ImageController extends Controller
 
         $this->updateImageUseCase->execute($updateImageRequestDto);
 
-        return redirect()->back()->with([
+        return response()->json([
             new Notification(
                 message: "Изображение с id: $id обновлено.",
                 type: NotificationType::SUCCESS,
@@ -78,11 +61,11 @@ class ImageController extends Controller
         ]);
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy(string $id): JsonResponse
     {
         $this->deleteImageUseCase->execute($id);
 
-        return redirect()->back()->with([
+        return response()->json([
             new Notification(
                 message: "Изображение с id: $id удалено.",
                 type: NotificationType::SUCCESS,

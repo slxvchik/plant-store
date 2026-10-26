@@ -31,11 +31,11 @@
         <Input id="offer_size" label="Размер" type="text" v-model="size" />
         <Input id="offer_age" label="Возраст" type="text" v-model="age" />
         <Input id="offer_age" label="Дата" type="text" v-model="sowingDate" />
-        <FileUpload id="offer_images" type="image" v-model="images" />
-        <div class="flex flex-col gap-4">
+        <FileUpload id="offer_images" type="image" label="Изображения" v-model="images" />
+        <div class="flex flex-col gap-4" v-if="warehouses.length">
             <h2 class="text-2xl text-text-title">Наличие на складах</h2>
             <div
-                v-for="(warehouse, index) in allWarehouses"
+                v-for="(warehouse, index) in warehouses"
                 :key="warehouse.id"
                 class="mb-4 grid grid-cols-3 gap-5"
             >
@@ -74,7 +74,7 @@ import type { StockFormState } from '@/types/form/product.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 
 interface Props {
-    allWarehouses: Warehouse[];
+    warehouses: Warehouse[];
 }
 
 const props = defineProps<Props>();
@@ -93,7 +93,7 @@ const description = defineModel<string | undefined>('description', {
 const price = defineModel('price', { type: Number, default: 0 });
 const formFactor = defineModel('formFactor', { type: String, default: '' });
 const size = defineModel('size', { type: String, default: '' });
-const age = defineModel('age', { type: Number, default: '' });
+const age = defineModel('age', { type: Number, default: 0 });
 const sowingDate = defineModel('sowingDate', { type: String, default: '' });
 const images = defineModel<UploadableImage[] | null>('images', {
     default: () => [],
@@ -101,7 +101,7 @@ const images = defineModel<UploadableImage[] | null>('images', {
 const stocks = defineModel<StockFormState[]>('stocks', { default: () => [] });
 
 watchEffect(() => {
-    stocks.value = props.allWarehouses.map((warehouse) => {
+    stocks.value = props.warehouses.map((warehouse) => {
         const existingStock = stocks.value.find(
             (s) => s.warehouseId === warehouse.id,
         );

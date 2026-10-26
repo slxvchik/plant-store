@@ -16,12 +16,10 @@ Route::prefix('user')->name('user.')->group(function () {});
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::inertia('/', 'admin/Home')->name('home');
 
-    Route::prefix('media')->name('media.')->group(function () {
-        Route::prefix('image.')->group(function () {
-            Route::post('/image/', [ImageController::class, 'store'])->name('create');
-            Route::put('/image/{id}', [ImageController::class, 'update'])->name('update');
-            Route::delete('/image/{id}', [ImageController::class, 'destroy'])->name('destroy');
-        });
+    Route::prefix('image')->name('image.')->group(function () {
+        Route::post('/', [ImageController::class, 'store'])->name('create');
+        Route::put('/{id}', [ImageController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ImageController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('products')->name('products.')->group(function () {

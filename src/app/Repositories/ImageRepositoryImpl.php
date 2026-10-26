@@ -36,19 +36,24 @@ class ImageRepositoryImpl implements ImageRepository
     #[Override]
     public function update(object $entity): void
     {
-        // TODO: Implement update() method.
+        Image::where('id', $entity->id->value)->update([
+            'title_text' => $entity->titleText,
+            'alt_text' => $entity->altText,
+        ]);
     }
 
     #[Override]
     public function delete(string $id): void
     {
-        // TODO: Implement delete() method.
+        Image::destroy($id);
     }
 
     #[Override]
     public function findById(int|string $id): ?object
     {
-        // TODO: Implement findById() method.
+        $image = Image::find($id);
+
+        return $image->exists() ? $image->toDomain() : null;
     }
 
     #[Override]

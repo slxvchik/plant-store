@@ -24,8 +24,6 @@ class ProductController extends Controller
         private readonly GetAllWarehousesUseCase $getAllWarehousesUseCase,
         private readonly CreateProductUseCase $createProductUseCase,
         private readonly UpdateProductUseCase $updateProductUseCase,
-        private readonly CreateImageUseCase $createImageUseCase,
-        private readonly DeleteImageUseCase $deleteImageUseCase,
     ) {}
 
     /**
@@ -64,8 +62,6 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $request->validated();
-
         $productId = $this->createProductUseCase->execute($request->getCreateProductData());
 
         return redirect()->back('admin.products.edit', $productId)->with([

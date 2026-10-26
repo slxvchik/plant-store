@@ -8,6 +8,8 @@ use App\Application\Media\CreateImage\CreateImageUseCase;
 use App\Application\Media\DeleteImage\DeleteImageService;
 use App\Application\Media\DeleteImage\DeleteImageUseCase;
 use App\Application\Media\Shared\FileStorageInterface;
+use App\Application\Media\UpdateImage\UpdateImageService;
+use App\Application\Media\UpdateImage\UpdateImageUseCase;
 use App\Domain\Media\Repository\ImageRepository;
 use App\Repositories\ImageRepositoryImpl;
 use Illuminate\Support\Facades\Storage;
@@ -33,6 +35,11 @@ class ImageProvider extends ServiceProvider
         $this->app->singleton(
             CreateImageUseCase::class,
             CreateImageService::class,
+        );
+
+        $this->app->singleton(
+            UpdateImageUseCase::class,
+            UpdateImageService::class,
         );
 
         $this->app->singleton(

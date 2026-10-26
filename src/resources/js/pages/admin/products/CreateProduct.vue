@@ -118,7 +118,7 @@
                     "
                 >
                     <OfferForm
-                        :allWarehouses="warehouses"
+                        :warehouses="warehouses"
                         v-model:active="offerForm.active"
                         v-model:sku="offerForm.sku"
                         v-model:sort="offerForm.sort"
@@ -156,8 +156,10 @@ import OfferForm from '@/components/pages/admin/products/OfferForm.vue';
 import ProductForm from '@/components/pages/admin/products/ProductForm.vue';
 import Popup from '@/components/Popup.vue';
 import Tabs from '@/components/Tabs.vue';
+import AdminImage from '@/routes/admin/image';
 import AdminProduct from '@/routes/admin/products';
-import type { Category } from '@/types';
+import { useNotificationStore } from '@/stores/useNotificationStore.ts';
+import type { Category, UploadableImage } from '@/types';
 import type { OfferFormState, ProductFormState } from '@/types/form/product.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 
@@ -222,6 +224,8 @@ const allProductCategories = computed(() => {
     }));
 });
 
+const notificationStore = useNotificationStore();
+
 const openModalOfferCreatePopup = () => {
     editingOfferIndex.value = null;
     offerPopupIsOpen.value = true;
@@ -267,12 +271,151 @@ const removeOffer = (index: number) => {
     productOffers.value.splice(index, 1);
 };
 
-const createProduct = () => {
+const createProduct = async () => {
+    const uploadPromises: any = [];
+
+    if (productForm.images !== null && productForm.images?.length > 0) {
+        productForm.images.forEach((image) => {
+            const promise = createImage(image).then((id) => {
+                if (id) {
+                    image.id = id;
+
+                    return image;
+                }
+
+                return null;
+            });
+            uploadPromises.push(promise);
+        });
+    }
+
+    if (productOffers.value?.length > 0) {
+        productOffers.value.forEach((offer) => {
+            if (offer.images !== null && offer.images?.length > 0) {
+                offer.images.forEach((image) => {
+                    const promise = createImage(image).then((id) => {
+                        if (id) {
+                            image.id = id;
+
+                            return image;
+                        }
+
+                        return null;
+                    });
+                    uploadPromises.push(promise);
+                });
+            }
+        });
+    }
+
+    const results = await Promise.allSettled(uploadPromises);
+
+    const uploadedImagesToRollback: UploadableImage[] = [];
+    let hasErrors = false;
+
+    results.forEach((result) => {
+        if (result.status === 'fulfilled' && result.value) {
+            uploadedImagesToRollback.push(result.value);
+        } else if (result.status === 'rejected' || !result.value) {
+            hasErrors = true;
+        }
+    });
+
+    if (hasErrors) {
+        console.warn(
+            'Произошла ошибка при загрузке картинок. Начинаем откат...',
+        );
+
+        await deleteSavedImages(uploadedImagesToRollback);
+
+        throw new Error(
+            'Не удалось загрузить все изображения, изменения отменены.',
+        );
+    }
+
     const payload = {
         ...productForm,
         offers: [...productOffers.value],
     };
-    // TODO: save all images.
-    router.post(AdminProduct.store.url(), payload);
+
+    router.post(AdminProduct.store.url(), payload, {
+        onSuccess: () => {
+            notificationStore.add('Товар успешно создан', 'success', 3000);
+        },
+        onError: (errors) => {
+            console.log('Валидационные ошибки:', errors);
+            notificationStore.add(
+                'Проверьте правильность заполнения полей',
+                'error',
+                5000,
+            );
+            deleteSavedImages(uploadedImagesToRollback);
+        },
+    });
+};
+
+const deleteSavedImages = async (uploadedImages: UploadableImage[]) => {
+    if (uploadedImages.length > 0) {
+        try {
+            await Promise.all(
+                uploadedImages.map(async (image) => {
+                    return new Promise<void>((resolve) => {
+                        if (!image.id) {
+                            return resolve();
+                        }
+
+                        fetch(AdminImage.destroy.url(image.id), {
+                            method: 'DELETE',
+                        });
+                    });
+                }),
+            );
+            console.log(
+                'Успешно загруженные картинки были удалены из-за ошибки.',
+            );
+        } catch (rollbackError) {
+            console.error(
+                'Ошибка при попытке очистить загруженные изображения:',
+                rollbackError,
+            );
+        }
+    }
+};
+
+const createImage = async (
+    image: UploadableImage,
+): Promise<string | undefined> => {
+    if (image.id) {
+        return image.id;
+    }
+
+    return new Promise<string>((resolve, reject) => {
+        const formData = new FormData();
+
+        formData.append('file', image.file);
+
+        if (image.titleText) {
+            formData.append('titleText', image.titleText);
+        }
+
+        if (image.altText) {
+            formData.append('altText', image.altText);
+        }
+
+        fetch(AdminImage.create.url(), {
+            method: 'POST',
+            body: formData,
+        }).then((response) => {
+            return response.json();
+        }).then((data: any) => {
+            const createdId = data?.created;
+
+            if (createdId) {
+                resolve(createdId);
+            } else {
+                reject('ID не был возвращен сервером');
+            }
+        });
+    });
 };
 </script>

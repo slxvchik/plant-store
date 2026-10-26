@@ -34,12 +34,6 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
 
         JsonResource::withoutWrapping();
-
-        Inertia::share([
-            'auth' => fn () => [
-                'user' => Auth::user(),
-            ],
-        ]);
     }
 
     /**

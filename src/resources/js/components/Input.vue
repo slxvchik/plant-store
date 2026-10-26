@@ -1,32 +1,58 @@
 <template>
     <div class="flex flex-col">
-        <label v-if="label" :for="id" class="mb-1.5 select-none" :class="!error ? 'text-text-muted' : 'text-red-400'">
+        <label
+            v-if="label"
+            :for="id"
+            class="mb-1.5 select-none"
+            :class="!error ? 'text-text-muted' : 'text-red-400'"
+        >
             {{ label }}
         </label>
-        <input :id="id" :type="type" v-model="modelValue" :placeholder="placeholder" autocomplete="off"
-            class="h-11 rounded-lg border px-4 py-3.5 transition-all duration-300 focus:outline-none" :class="!error
+        <input
+            :id="id"
+            :type="type"
+            v-model="modelValue"
+            :placeholder="placeholder"
+            autocomplete="off"
+            class="h-11 rounded-lg border px-4 py-3.5 transition-all duration-300 focus:outline-none"
+            :class="
+                !error
                     ? 'border-text-muted/50 bg-white text-text-muted placeholder:text-text-muted/50 focus:border-text-muted active:border-text-muted'
                     : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:border-red-400 focus:placeholder:text-red-400 active:border-red-400 active:placeholder:text-red-400'
-                " />
+            "
+        />
         <p v-if="error" class="text-red-400">{{ error }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+import { validate } from '@/utils/fieldValidator.ts';
+
 interface Props {
     id: string;
     type?: 'text' | 'password' | 'email' | 'number';
     placeholder?: string;
     label?: string;
-    error?: string;
+    rules?: string;
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
     type: 'text',
     placeholder: '',
     label: '',
-    error: ''
-})
+    error: '',
+});
 
 const modelValue = defineModel<string | bigint | number>({ default: '' });
+
+const error = ref<string | undefined>(undefined);
+
+watch(modelValue, (newValue, oldValue) => {
+    if (newValue === undefined || newValue === null || newValue === '') {
+
+    } else {
+        validate();
+    }
+});
 </script>

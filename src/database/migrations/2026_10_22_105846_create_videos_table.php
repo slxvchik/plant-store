@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('muted');
             $table->integer('duration_sec')->nullable();
             $table->string('codec', 64)->nullable();
-            $table->foreignUuid('thumbnail_id')->constrained('images', 'image_id');
+            $table->foreignUuid('thumbnail_id')->constrained('images', 'id');
             $table->timestamps();
         });
     }

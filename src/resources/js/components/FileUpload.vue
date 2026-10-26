@@ -32,7 +32,7 @@
                     />
                 </div>
                 <div
-                    @click="removeFile(image.id)"
+                    @click="removeFile(image.pseudoId, image.id)"
                     class="absolute top-1 right-1 h-10 w-10 cursor-pointer rounded-lg bg-white text-secondary transition-colors duration-300 hover:text-secondary-hover"
                 >
                     <TrashBasket />
@@ -94,7 +94,8 @@ const handleFileChange = (event: Event) => {
 
     if (target.files && target.files.length > 0) {
         modelValue.value = Array.from(target.files).map((file) => ({
-            id: `${file.name}-${file.size}-${file.lastModified}`,
+            id: undefined,
+            pseudoId: `${file.name}-${file.size}-${file.lastModified}`,
             file: file,
             previewUrl: URL.createObjectURL(file),
             titleText: '',
@@ -105,12 +106,20 @@ const handleFileChange = (event: Event) => {
     }
 };
 
-const removeFile = (id: string) => {
+const removeFile = (pseudoId: string, id?: string) => {
     if (!modelValue.value) {
         return;
     }
 
-    const fileIndex = modelValue.value.findIndex((image) => image.id === id);
+    let fileIndex: number;
+
+    if (id !== undefined) {
+        fileIndex = modelValue.value.findIndex((image) => image.id === id);
+    } else {
+        fileIndex = modelValue.value.findIndex(
+            (image) => image.pseudoId === pseudoId,
+        );
+    }
 
     if (fileIndex === -1) {
         return;

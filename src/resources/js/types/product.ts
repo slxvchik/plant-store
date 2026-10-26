@@ -27,7 +27,7 @@ export type Offer = {
     formFactor?: string;
     size?: string;
     age?: number;
-    sowingDate?: Date;
+    sowingDate?: string;
 }
 
 export type Stock = {
