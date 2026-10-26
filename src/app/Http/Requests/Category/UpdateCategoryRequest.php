@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Category;
 
 use App\Application\Category\UpdateCategory\UpdateCategoryRequestDto;
 

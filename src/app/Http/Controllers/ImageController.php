@@ -7,8 +7,8 @@ namespace App\Http\Controllers;
 use App\Application\Media\CreateImage\CreateImageUseCase;
 use App\Application\Media\DeleteImage\DeleteImageUseCase;
 use App\Application\Media\UpdateImage\UpdateImageUseCase;
-use App\Http\Requests\StoreImageRequest;
-use App\Http\Requests\UpdateImageRequest;
+use App\Http\Requests\Image\StoreImageRequest;
+use App\Http\Requests\Image\UpdateImageRequest;
 use App\Notification\Notification;
 use Illuminate\Http\JsonResponse;
 

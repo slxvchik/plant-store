@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Product;
 
 use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
 use App\Application\Product\Shared\Dto\Request\SaveStockRequestDto;
@@ -138,7 +138,7 @@ abstract class ProductRequest extends FormRequest
 
     /**
      * @param  array<int, array{id: string, sort?: int}>  $items
-     * @return SortedItem<string>[]
+     * @return SortedItem
      */
     private function sortedItems(array $items): array
     {

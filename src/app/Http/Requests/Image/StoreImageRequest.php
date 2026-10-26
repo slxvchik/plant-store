@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Image;
 
 use App\Application\Media\CreateImage\CreateImageRequestDto;
 use App\Domain\Media\Model\Media;
 use App\Domain\Shared\AppException\AppException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
+use LogicException;
+use RuntimeException;
 
 class StoreImageRequest extends FormRequest
 {
@@ -38,6 +40,8 @@ class StoreImageRequest extends FormRequest
 
     /**
      * @throws AppException
+     * @throws LogicException
+     * @throws RuntimeException
      */
     public function toDto(): CreateImageRequestDto
     {
