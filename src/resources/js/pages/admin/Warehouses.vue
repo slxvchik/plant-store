@@ -59,6 +59,7 @@
                 id="phone"
                 v-model="form.phone"
                 placeholder="+7 999 999 99 99"
+                type="tel"
                 label="Номер телефона"
                 :error="form.errors.phone"
                 @update:modelValue="validateField('phone', form.phone)"

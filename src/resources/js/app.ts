@@ -3,6 +3,7 @@ import { createPinia } from 'pinia';
 import { createApp, h } from 'vue';
 import { useNotificationStore } from '@/stores/useNotificationStore';
 import type { Flash } from '@/types/flash';
+import { vMaska } from 'maska/vue';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 const pinia = createPinia();
@@ -18,7 +19,8 @@ createInertiaApp({
         }
 
         const app = createApp({ render: () => h(App, props) });
-        app.use(plugin);
+        app.use(plugin)
+            .directive('maska', vMaska);
         app.use(pinia);
 
         router.on('success', (event) => {

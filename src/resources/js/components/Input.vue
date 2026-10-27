@@ -20,6 +20,8 @@
                     ? 'border-text-muted/50 bg-white text-text-muted placeholder:text-text-muted/50 focus:border-text-muted active:border-text-muted'
                     : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:placeholder:text-red-400/50 active:border-red-400 active:placeholder:text-red-400/50'
             "
+            v-maska
+            :data-maska="type === 'tel' ? '+7 (###) ###-##-##' : null"
         />
         <p v-if="error" class="text-red-400">
             {{ error }}
@@ -28,9 +30,11 @@
 </template>
 
 <script setup lang="ts">
+import { vMaska as _vMaska } from 'maska/vue';
+
 interface Props {
     id: string;
-    type?: 'text' | 'password' | 'email' | 'number' | 'date';
+    type?: 'text' | 'password' | 'email' | 'number' | 'date' | 'tel';
     placeholder?: string;
     label?: string;
     error?: string;
