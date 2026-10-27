@@ -19,7 +19,9 @@
                     : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:border-red-400 focus:placeholder:text-red-400 active:border-red-400 active:placeholder:text-red-400'
             "
         />
-        <p v-if="error" class="text-red-400">{{ error }}</p>
+        <p v-if="error" class="text-red-400">
+            {{ error }}
+        </p>
     </div>
 </template>
 
@@ -29,13 +31,13 @@ interface Props {
     placeholder?: string;
     label?: string;
     error?: string;
+    rules?: string;
 }
 
 withDefaults(defineProps<Props>(), {
     type: 'text',
     placeholder: '',
     label: '',
-    error: '',
 });
 
 const modelValue = defineModel<string>({ default: '' });

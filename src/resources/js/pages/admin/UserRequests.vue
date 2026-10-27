@@ -25,7 +25,7 @@ import Button from '@/components/Button.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import PaginationList from '@/components/PaginationList.vue';
 import AdminRequests from '@/routes/admin/requests';
-import type { PageResponse } from '@/types/page-response';
+import type { PageResponse } from '@/types/pageResponse';
 import type { UserRequest } from '@/types/user-request';
 import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse';
 

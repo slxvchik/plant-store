@@ -1,10 +1,21 @@
 <template>
     <div class="flex flex-col gap-2">
-        <div v-if="label" class="mb-1.5 text-text-muted select-none">
+        <div
+            v-if="label"
+            class="mb-1.5 select-none"
+            :class="!error ? 'text-text-muted' : 'text-red-400'"
+        >
             {{ label }}
         </div>
-        <div v-if="modelValue.length && type === 'image'" class="flex flex-row flex-wrap gap-2">
-            <div v-for="image in modelValue" :key="image.pseudoId" class="relative">
+        <div
+            v-if="modelValue.length && type === 'image'"
+            class="flex flex-row flex-wrap gap-2"
+        >
+            <div
+                v-for="image in modelValue"
+                :key="image.pseudoId"
+                class="relative"
+            >
                 <img
                     :src="image.previewUrl"
                     :alt="image.file.name"
@@ -13,8 +24,16 @@
                     class="rounded object-cover"
                 />
                 <div class="flex flex-col gap-2">
-                    <input v-model="image.titleText" type="text" placeholder="Title текст" />
-                    <input v-model="image.altText" type="text" placeholder="Alt текст" />
+                    <input
+                        v-model="image.titleText"
+                        type="text"
+                        placeholder="Title текст"
+                    />
+                    <input
+                        v-model="image.altText"
+                        type="text"
+                        placeholder="Alt текст"
+                    />
                 </div>
                 <button
                     type="button"
@@ -33,18 +52,24 @@
             :accept="acceptTypes"
             @change="handleFileChange"
         />
+        <p v-if="error" class="text-red-400">
+            {{ error }}
+        </p>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import TrashBasket from '@/components/icons/TrashBasket.vue';
 import type { UploadableImage } from '@/types/image';
+import { validate } from '@/utils/validator.ts';
 
 interface Props {
     id: string;
     label?: string;
     type?: 'image' | 'video';
+    error?: string;
+    rules?: string;
 }
 
 const props = defineProps<Props>();

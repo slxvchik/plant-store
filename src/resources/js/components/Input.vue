@@ -13,7 +13,6 @@
             v-model="modelValue"
             :type="type"
             :placeholder="placeholder"
-            :required="required"
             autocomplete="off"
             class="h-11 rounded-lg border px-4 py-3.5 transition-all duration-300 focus:outline-none"
             :class="
@@ -22,7 +21,9 @@
                     : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:placeholder:text-red-400/50 active:border-red-400 active:placeholder:text-red-400/50'
             "
         />
-        <p v-if="error" class="text-red-400">{{ error }}</p>
+        <p v-if="error" class="text-red-400">
+            {{ error }}
+        </p>
     </div>
 </template>
 
@@ -33,15 +34,12 @@ interface Props {
     placeholder?: string;
     label?: string;
     error?: string;
-    required?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
     type: 'text',
     placeholder: '',
     label: '',
-    error: '',
-    required: false,
 });
 
 const modelValue = defineModel<string | number | null>({ default: '' });

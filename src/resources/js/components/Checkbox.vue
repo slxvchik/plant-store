@@ -10,11 +10,14 @@
             <label
                 :for="id"
                 class="text-heading ms-2 cursor-pointer font-medium select-none"
+                :class="!error ? 'text-text-muted' : 'text-red-400'"
             >
                 {{ text }}
             </label>
         </div>
-        <p v-if="error" class="text-red-400">{{ error }}</p>
+        <p v-if="error" class="text-red-400">
+            {{ error }}
+        </p>
     </div>
 </template>
 
@@ -27,7 +30,6 @@ interface Props {
 
 withDefaults(defineProps<Props>(), {
     text: '',
-    error: '',
 });
 
 const modelValue = defineModel<boolean>({ default: false });

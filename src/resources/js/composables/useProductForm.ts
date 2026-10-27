@@ -38,13 +38,11 @@ export function useProductForm() {
                     uploads.confirm();
                     notifications.add('Товар успешно создан', 'success', 3000);
                 },
-                onError: () => {
+                onError: (errors) => {
                     void uploads.rollback();
-                    notifications.add(
-                        'Проверьте правильность заполнения полей',
-                        'error',
-                        5000,
-                    );
+                    Object.values(errors).map(error => {
+                        notifications.add(error, 'error', 5000);
+                    });
                 },
             });
         } catch {

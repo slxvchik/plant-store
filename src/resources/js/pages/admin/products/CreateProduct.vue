@@ -1,6 +1,8 @@
 <template>
     <div class="flex flex-col gap-5">
-        <Link :href="AdminProduct.index.url()" text="Назад" secondary />
+        <div class="w-fit">
+            <Link :href="AdminProduct.index.url()" text="Назад" secondary />
+        </div>
         <div class="flex flex-row gap-10">
             <h1 class="text-4xl text-text-title">Создание товара</h1>
             <div class="w-fit">

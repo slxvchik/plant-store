@@ -1,4 +1,4 @@
-export interface SelectVal {
+export interface SelectItem {
     value: string | number;
     label: string;
 }
