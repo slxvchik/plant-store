@@ -11,6 +11,7 @@ use App\Application\Cart\Shared\Exception\CartUserAccessDeniedException;
 use App\Application\Cart\Shared\Exception\CartUserNotFoundException;
 use App\Application\Product\Shared\Exception\ProductNotFoundException;
 use App\Domain\Cart\Repository\CartRepository;
+use App\Domain\Product\Exception\OfferNotFoundException;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\User\Repository\UserRepository;
 use Override;
@@ -23,6 +24,13 @@ readonly class SaveProductService implements SaveProductUseCase
         private ProductRepository $productRepository
     ) {}
 
+    /**
+     * @throws ProductNotFoundException
+     * @throws OfferNotFoundException
+     * @throws CartUserAccessDeniedException
+     * @throws CartUserNotFoundException
+     * @throws CartNotFoundException
+     */
     #[Override]
     public function execute(SaveProductRequestDto $saveProductRequestDto): SaveProductResponseDto
     {

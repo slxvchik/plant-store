@@ -33,8 +33,7 @@ final readonly class GetOrdersResponseDto
         $orderLinesDtos = [];
         foreach ($order->orderLines as $orderLine) {
             $product = $productsMap[$orderLine->productId] ?? null;
-            $offer = $product?->getOffer($orderLine->productOfferId);
-            $imageId = (! empty($product->imageIds)) ? $product->imageIds[0] : null;
+            $imageId = (! empty($product?->imageIds)) ? $product->imageIds[0] : null;
             $imageModel = $imageId ? ($imagesMap[$imageId] ?? null) : null;
             $imageDto = $imageModel ? ImageResponseDto::fromDomain($imageModel) : null;
 
@@ -42,7 +41,7 @@ final readonly class GetOrdersResponseDto
                 productId: $orderLine->productId,
                 offerId: $orderLine->productOfferId,
                 imageResponseDto: $imageDto,
-                productName: $offer?->name ?? 'Товар не найден',
+                productName: $product?->name ?? 'Товар не найден',
                 quantity: $orderLine->quantity,
                 unitPriceInKopecks: $orderLine->unitPriceInKopecks,
                 warehouseAddress: $warehouseAddress

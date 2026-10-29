@@ -99,12 +99,12 @@ import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Popup from '@/components/Popup.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
 import AdminTags from '@/routes/admin/tags';
-import type { PageResponse } from '@/types/pageResponse';
+import type { Pagination } from '@/types/page-response';
 import type { Tag } from '@/types/tag';
 import { validate } from '@/utils/validator.ts';
 
 defineOptions({ layout: AdminLayout });
-defineProps<{ tagsPage: PageResponse<Tag> }>();
+defineProps<{ tagsPage: Pagination<Tag> }>();
 
 type TagForm = Omit<Tag, 'id'>;
 const createData = (): TagForm => ({

@@ -25,12 +25,12 @@ import Button from '@/components/Button.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import PaginationList from '@/components/PaginationList.vue';
 import AdminRequests from '@/routes/admin/requests';
-import type { PageResponse } from '@/types/pageResponse';
+import type { Pagination } from '@/types/page-response';
 import type { UserRequest } from '@/types/user-request';
 import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse';
 
 defineOptions({ layout: AdminLayout });
-const props = defineProps<{ userRequestsPage: PageResponse<UserRequest> }>();
+const props = defineProps<{ userRequestsPage: Pagination<UserRequest> }>();
 const pagination = computed(() => getPaginationFromPageResponse(props.userRequestsPage));
 const destroy = (id: string): void => {
     router.delete(AdminRequests.destroy.url(id), { preserveScroll: true });

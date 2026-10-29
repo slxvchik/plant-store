@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import TrashBasket from '@/components/icons/TrashBasket.vue';
-import type { UploadableImage } from '@/types/image';
+import type { ImageFormState } from '@/types/image';
 import { validate } from '@/utils/validator.ts';
 
 interface Props {
@@ -73,7 +73,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const modelValue = defineModel<UploadableImage[]>({ default: () => [] });
+const modelValue = defineModel<ImageFormState[]>({ default: () => [] });
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const acceptTypes = computed(() => {
@@ -101,7 +101,7 @@ const handleFileChange = (event: Event) => {
     }));
 };
 
-const removeFile = (image: UploadableImage) => {
+const removeFile = (image: ImageFormState) => {
     URL.revokeObjectURL(image.previewUrl);
     modelValue.value = modelValue.value.filter((item) => item !== image);
 

@@ -12,8 +12,10 @@ use App\Application\Cart\Shared\Exception\CartNotFoundException;
 use App\Application\Cart\Shared\Exception\CartUserAccessDeniedException;
 use App\Application\Cart\Shared\Exception\CartUserNotFoundException;
 use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
+use App\Application\Media\Shared\FileStorageInterface;
 use App\Domain\Cart\Repository\CartRepository;
 use App\Domain\Media\Repository\ImageRepository;
+use App\Domain\Product\Exception\OfferNotFoundException;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\User\Repository\UserRepository;
 use Override;
@@ -24,9 +26,16 @@ readonly class GetUserCartService implements GetUserCartUseCase
         private UserRepository $userRepository,
         private CartRepository $cartRepository,
         private ProductRepository $productRepository,
-        private ImageRepository $imageRepository
+        private ImageRepository $imageRepository,
+        private FileStorageInterface $fileStorage,
     ) {}
 
+    /**
+     * @throws OfferNotFoundException
+     * @throws CartUserAccessDeniedException
+     * @throws CartUserNotFoundException
+     * @throws CartNotFoundException
+     */
     #[Override]
     public function execute(GetUserCartRequestDto $getUserCartRequestDto): GetUserCartResponseDto
     {
@@ -60,8 +69,8 @@ readonly class GetUserCartService implements GetUserCartUseCase
         $imageIdsMap = [];
         foreach ($products as $product) {
             $productsMap[$product->id->value] = $product;
-            foreach ($product->imageIds as $imageId) {
-                $imageIdsMap[$imageId] = true;
+            foreach ($product->imageIds as $sortedImage) {
+                $imageIdsMap[$sortedImage->id] = true;
             }
         }
 
@@ -81,9 +90,10 @@ readonly class GetUserCartService implements GetUserCartUseCase
             }
 
             $images = [];
-            foreach ($product->imageIds as $imageId) {
-                if ($imagesMap[$imageId] !== null) {
-                    $images[] = ImageResponseDto::fromDomain($imagesMap[$imageId]);
+            foreach ($product->imageIds as $sortedImage) {
+                if ($imagesMap[$sortedImage->id] !== null) {
+                    $webPathToFile = $this->fileStorage->url($sortedImage->id);
+                    $images[$sortedImage->sort] = ImageResponseDto::fromDomain($imagesMap[$sortedImage->id], $webPathToFile);
                 }
             }
 

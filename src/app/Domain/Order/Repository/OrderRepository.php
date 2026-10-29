@@ -15,6 +15,8 @@ interface OrderRepository
 
     public function update(Order $order): void;
 
+    public function delete(string $id): void;
+
     public function findById(string $id): ?Order;
 
     /**

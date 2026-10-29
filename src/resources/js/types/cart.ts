@@ -1,5 +1,18 @@
 import type { Image } from '@/types/image';
 
+// Response
+export type Cart = {
+    cartId: string;
+    userId: string | null;
+    cartLines: CartLine[];
+};
+
+export type CartLine = {
+    product: CartProduct;
+    quantity: number;
+    availableQuantity: number;
+};
+
 export type CartProduct = {
     productId: string;
     alias: string;
@@ -13,16 +26,4 @@ export type CartProduct = {
     size: string | null;
     age: number | null;
     sowingDate: string | null;
-};
-
-export type CartLine = {
-    product: CartProduct;
-    quantity: number;
-    availableQuantity: number;
-};
-
-export type Cart = {
-    cartId: string;
-    userId: string | null;
-    cartLines: CartLine[];
 };

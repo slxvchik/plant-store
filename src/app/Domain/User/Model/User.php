@@ -35,6 +35,11 @@ class User
 
     public private(set) ?string $lastName {
         set {
+            if ($value === null) {
+                $this->lastName = null;
+
+                return;
+            }
             $cleanVal = trim($value);
             if (! empty($cleanVal)) {
                 $this->lastName = $cleanVal;
@@ -84,6 +89,9 @@ class User
         $this->updatedAt = $updatedAt;
     }
 
+    /**
+     * @param  Role[]  $roles
+     */
     public static function fromDb(Uuid $id, string $passwordHash, string $firstName, ?string $lastName, string $email, ?string $emailConfirmToken, bool $emailConfirmed, string $phone, ?string $imageId, array $roles, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt): self
     {
         return new self(
@@ -138,6 +146,8 @@ class User
      * that can modify user access and data directly,
      * without requiring confirmations or additional permissions.
      * This method doesn't generate events.
+     *
+     * @param  Role[]  $roles
      */
     public function silentUpdate(?string $password, string $firstname, ?string $lastName, string $email, bool $emailConfirmed, string $phone, ?string $imageId, array $roles): void
     {
@@ -220,7 +230,17 @@ class User
             throw new UserPasswordEmptyException;
         }
 
-        return hash_equals($this->passwordHash, self::getPasswordHash($password));
+        return password_verify($password, $this->passwordHash);
+    }
+
+    public function getPasswordHashValue(): string
+    {
+        return $this->passwordHash;
+    }
+
+    public function getEmailConfirmToken(): ?string
+    {
+        return $this->emailConfirmToken;
     }
 
     /**

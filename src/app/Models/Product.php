@@ -67,7 +67,7 @@ class Product extends Model
             tags: $tagIds,
             videoIds: $videoIds,
             imageIds: $imageIds,
-            offers: $this->offers->map(fn (Offer $offer) => $offer->toDomain())->all(),
+            offers: $this->offers->mapWithKeys(fn (Offer $offer): array => [$offer->id => $offer->toDomain()])->all(),
         );
     }
 

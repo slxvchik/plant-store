@@ -1,3 +1,4 @@
+//Response
 export type Image = {
     id: string;
     webPathToFile: string;
@@ -9,7 +10,8 @@ export type Image = {
     altText: string | null;
 };
 
-export type UploadableImage = {
+// Form state
+export type ImageFormState = {
     id?: string;
     pseudoId: string;
     file: File;
@@ -17,3 +19,12 @@ export type UploadableImage = {
     titleText: string;
     altText: string;
 };
+
+// Requests
+export type CreateImagePayload = {
+    file: File;
+    titleText?: string;
+    altText?: string;
+};
+
+export type UpdateImagePayload = Omit<CreateImagePayload, 'file'>;

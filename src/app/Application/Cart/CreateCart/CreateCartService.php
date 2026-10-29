@@ -18,6 +18,10 @@ readonly class CreateCartService implements CreateCartUseCase
         private UserRepository $userRepository
     ) {}
 
+    /**
+     * @throws CartAlreadyExistsException
+     * @throws UserNotFoundException
+     */
     #[Override]
     public function execute(UuidGeneratorInterface $uuidGeneratorInterface, ?string $userId): string
     {

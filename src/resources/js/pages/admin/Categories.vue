@@ -114,12 +114,12 @@ import Select from '@/components/Select.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
 import AdminCategories from '@/routes/admin/categories';
 import type { Category } from '@/types/category';
-import type { PageResponse } from '@/types/pageResponse';
+import type { Pagination } from '@/types/page-response';
 import { validate } from '@/utils/validator.ts';
 
 defineOptions({ layout: AdminLayout });
 const props = defineProps<{
-    categoriesPage: PageResponse<Category>;
+    categoriesPage: Pagination<Category>;
     categories: Category[];
 }>();
 

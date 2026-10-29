@@ -1,6 +1,6 @@
 import AdminImage from '@/routes/admin/image';
-import type { SortedMediaInput } from '@/types/form/product';
-import type { UploadableImage } from '@/types/image';
+import type { SortedMediaInput } from '@/types/product';
+import type { CreateImagePayload, ImageFormState } from '@/types/image';
 
 type CreatedImageResponse = {
     created: string;
@@ -21,7 +21,7 @@ export function useImageUploads() {
         return token;
     };
 
-    const uploadImage = async (image: UploadableImage): Promise<string> => {
+    const uploadImage = async (image: ImageFormState[]): Promise<string> => {
         const data = new FormData();
         data.append('file', image.file);
         data.append('titleText', image.titleText);
@@ -39,7 +39,9 @@ export function useImageUploads() {
         const body: unknown = await response.json().catch(() => null);
 
         if (!response.ok || !isCreatedImageResponse(body)) {
-            throw new Error(`Image upload failed with status ${response.status}.`);
+            throw new Error(
+                `Image upload failed with status ${response.status}.`,
+            );
         }
 
         uploadedIds.push(body.created);
@@ -47,7 +49,7 @@ export function useImageUploads() {
         return body.created;
     };
 
-    const upload = async (images: UploadableImage[]): Promise<SortedMediaInput[]> => {
+    const upload = async (images: ImageFormState[]): Promise<SortedMediaInput[]> => {
         return Promise.all(
             images.map(async (image, index) => ({
                 id: image.id ?? (await uploadImage(image)),

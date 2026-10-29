@@ -10,6 +10,8 @@ use App\Application\Cart\GetUserCart\GetUserCartService;
 use App\Application\Cart\GetUserCart\GetUserCartUseCase;
 use App\Application\Cart\SaveProduct\SaveProductService;
 use App\Application\Cart\SaveProduct\SaveProductUseCase;
+use App\Domain\Cart\Repository\CartRepository;
+use App\Repositories\CartRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
 
 class CartProvider extends ServiceProvider
@@ -19,6 +21,11 @@ class CartProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(
+            CartRepository::class,
+            CartRepositoryImpl::class
+        );
+
         $this->app->singleton(
             CreateCartUseCase::class,
             CreateCartService::class
