@@ -32,8 +32,7 @@
                             class="flex w-full cursor-pointer items-center rounded-sm px-2 py-1.5 text-white transition-all hover:bg-secondary-hover"
                             @click="tab.isOpen = !tab.isOpen"
                         >
-                            <span
-                                class="flex-1 whitespace-nowrap text-left"
+                            <span class="flex-1 text-left whitespace-nowrap"
                                 >{{ tab.name }}
                             </span>
                             <span
@@ -88,6 +87,7 @@ const menuTabs = ref([
         ],
     },
     { name: 'Склады', href: '/admin/warehouses', active: false },
+    { name: 'Корзины', href: '/admin/carts', active: false },
     { name: 'Пользователи', href: '/admin/users', active: false },
     { name: 'Новости', href: '/admin/news', active: false },
     { name: 'Общие настройки', href: '/admin/settings', active: false },

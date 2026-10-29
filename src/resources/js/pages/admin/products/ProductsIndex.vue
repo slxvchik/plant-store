@@ -61,7 +61,7 @@ import Link from '@/components/Link.vue';
 import PaginationList from '@/components/PaginationList.vue';
 import AdminProducts from '@/routes/admin/products';
 import type { Product } from '@/types';
-import type { PageResponse } from '@/types/page-response.ts';
+import type { PageResponse } from '@/types/pageResponse.ts';
 import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse.ts';
 
 defineOptions({

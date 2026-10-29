@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
@@ -60,5 +61,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/', [WarehouseController::class, 'store'])->name('store');
         Route::put('/{id}', [WarehouseController::class, 'update'])->name('update');
         Route::delete('/{id}', [WarehouseController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('carts')->name('carts.')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('list');
+        Route::post('/', [CartController::class, 'store'])->name('store');
+        Route::post('/{cartId}/products', [CartController::class, 'saveProduct'])->name('save');
+        Route::delete('/{cartId}/products/{productId}/offers/{offerId}', [CartController::class, 'deleteProduct'])->name('delete');
     });
 });
