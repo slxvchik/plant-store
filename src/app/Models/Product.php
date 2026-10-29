@@ -28,6 +28,14 @@ class Product extends Model
 
     public $incrementing = false;
 
+    public $fillable = [
+        'id',
+        'active',
+        'sort',
+        'name',
+        'description',
+    ];
+
     protected $casts = [
         'active' => 'boolean',
         'sort' => 'integer',

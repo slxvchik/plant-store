@@ -1,37 +1,29 @@
 import AdminImage from '@/routes/admin/image';
-import type { SortedMediaInput } from '@/types/product';
-import type { CreateImagePayload, ImageFormState } from '@/types/image';
+import type { CreateImagePayload, ImageFormState, UpdateImagePayload } from '@/types/image.ts';
 
 type CreatedImageResponse = {
     created: string;
 };
 
 export function useImageUploads() {
-    let uploadedIds: string[] = [];
+    let createdIds: string[] = [];
 
-    const csrfToken = (): string => {
-        const token = document.querySelector<HTMLMetaElement>(
-            'meta[name="csrf-token"]',
-        )?.content;
-
-        if (!token) {
-            throw new Error('CSRF token is missing.');
-        }
-
-        return token;
-    };
-
-    const uploadImage = async (image: ImageFormState[]): Promise<string> => {
+    const createImage = async (image: CreateImagePayload): Promise<string> => {
         const data = new FormData();
         data.append('file', image.file);
-        data.append('titleText', image.titleText);
-        data.append('altText', image.altText);
+
+        if (image.titleText) {
+            data.append('titleText', image.titleText);
+        }
+
+        if (image.altText) {
+            data.append('altText', image.altText);
+        }
 
         const response = await fetch(AdminImage.create.url(), {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'X-CSRF-TOKEN': csrfToken(),
                 'X-Requested-With': 'XMLHttpRequest',
             },
             body: data,
@@ -44,23 +36,49 @@ export function useImageUploads() {
             );
         }
 
-        uploadedIds.push(body.created);
+        createdIds.push(body.created);
 
         return body.created;
     };
 
-    const upload = async (images: ImageFormState[]): Promise<SortedMediaInput[]> => {
+    const updateImage = async (id: string, image: UpdateImagePayload): Promise<string> => {
+        fetch(AdminImage.update.url(id), {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({
+                altText: image.altText,
+                titleText: image.titleText,
+            }),
+        });
+
+        return id;
+    };
+
+    const upload = async (images: ImageFormState[]): Promise<string[]> => {
         return Promise.all(
-            images.map(async (image, index) => ({
-                id: image.id ?? (await uploadImage(image)),
-                sort: 500 + index,
-            })),
+            images.map(async (image) =>
+                image.id ? (
+                    await updateImage(image.id, {
+                        altText: image.altText,
+                        titleText: image.titleText,
+                    })
+                ) : (
+                    await createImage({
+                        file: image.file,
+                        altText: image.altText,
+                        titleText: image.titleText,
+                    })
+                )
+            )
         );
     };
 
     const rollback = async (): Promise<void> => {
-        const ids = uploadedIds;
-        uploadedIds = [];
+        const ids = createdIds;
+        createdIds = [];
 
         await Promise.all(
             ids.map(async (id) => {
@@ -68,7 +86,6 @@ export function useImageUploads() {
                     method: 'DELETE',
                     headers: {
                         Accept: 'application/json',
-                        'X-CSRF-TOKEN': csrfToken(),
                         'X-Requested-With': 'XMLHttpRequest',
                     },
                 });
@@ -81,7 +98,7 @@ export function useImageUploads() {
     };
 
     const confirm = (): void => {
-        uploadedIds = [];
+        createdIds = [];
     };
 
     return { upload, rollback, confirm };

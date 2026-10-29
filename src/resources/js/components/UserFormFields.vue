@@ -63,8 +63,8 @@
 import Checkbox from '@/components/Checkbox.vue';
 import Input from '@/components/Input.vue';
 import Select from '@/components/Select.vue';
-import type { UserFormState } from '@/types/form/user.ts';
-import type { SelectItem } from '@/types/selectItem';
+import type { SelectItem } from '@/types/select-item.ts';
+import type { UserFormState } from '@/types/user.ts';
 
 interface Props {
     isEditMode?: boolean;

@@ -34,7 +34,7 @@
                     <Link
                         text="Смотреть"
                         class="bg-green-400 hover:bg-green-500"
-                        href="{{ route('admin.products.show') }}"
+                        :href="AdminRoutes.products.show.url(product.id)"
                     />
                     <Button
                         type="button"
@@ -61,8 +61,9 @@ import Link from '@/components/Link.vue';
 import PaginationList from '@/components/PaginationList.vue';
 import AdminProducts from '@/routes/admin/products';
 import type { Product } from '@/types';
-import type { Pagination } from '@/types/page-response.ts';
+import type { Page } from '@/types/pagination.ts';
 import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse.ts';
+import AdminRoutes from '@/routes/admin';
 
 defineOptions({
     layout: AdminLayout,
@@ -70,7 +71,7 @@ defineOptions({
 
 const props = defineProps({
     productsPage: {
-        type: Object as () => Pagination<Product>,
+        type: Object as () => Page<Product>,
         required: true,
     },
 });

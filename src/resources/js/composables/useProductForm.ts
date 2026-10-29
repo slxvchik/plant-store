@@ -1,12 +1,13 @@
 import { useForm } from '@inertiajs/vue3';
-import { useImageUploads } from '@/composables/useImageUploads';
+import { useImageUploads } from '@/composables/useImageUploads.ts';
 import AdminProduct from '@/routes/admin/products';
-import { useNotificationStore } from '@/stores/useNotificationStore';
-import type {
+import { useNotificationStore } from '@/stores/useNotificationStore.ts';
+import type  {
     OfferPayload,
     ProductFormState,
     ProductPayload,
-} from '@/types/form/product';
+    MediaSortedItemPayload,
+} from '@/types/product.ts';
 
 export function useProductForm() {
     const form = useForm<ProductFormState>({
@@ -18,7 +19,6 @@ export function useProductForm() {
         categories: [],
         tags: [],
         images: [],
-        videos: [],
         offers: [],
     });
     const uploads = useImageUploads();
@@ -28,9 +28,15 @@ export function useProductForm() {
         try {
             const [productImages, offerImages] = await Promise.all([
                 uploads.upload(form.images),
-                Promise.all(form.offers.map((offer) => uploads.upload(offer.images))),
+                Promise.all(
+                    form.offers.map((offer) => uploads.upload(offer.images)),
+                ),
             ]);
-            const payload = serializeProduct(form.data(), productImages, offerImages);
+            const payload = serializeProduct(
+                form.data(),
+                productImages,
+                offerImages,
+            );
 
             form.transform(() => payload).post(AdminProduct.store.url(), {
                 preserveScroll: true,
@@ -40,14 +46,18 @@ export function useProductForm() {
                 },
                 onError: (errors) => {
                     void uploads.rollback();
-                    Object.values(errors).map(error => {
+                    Object.values(errors).map((error) => {
                         notifications.add(error, 'error', 5000);
                     });
                 },
             });
         } catch {
             await uploads.rollback();
-            notifications.add('Не удалось загрузить изображения', 'error', 5000);
+            notifications.add(
+                'Не удалось загрузить изображения',
+                'error',
+                5000,
+            );
         }
     };
 
@@ -56,8 +66,8 @@ export function useProductForm() {
 
 function serializeProduct(
     form: ProductFormState,
-    images: { id: string; sort: number }[],
-    offerImages: { id: string; sort: number }[][],
+    images: string[],
+    offerImages: string[][],
 ): ProductPayload {
     return {
         name: form.name,
@@ -67,12 +77,23 @@ function serializeProduct(
         description: form.description,
         categories: form.categories,
         tags: form.tags,
-        videos: form.videos,
-        images,
+        images: getSortedItems(images),
+        videos: [],
         offers: form.offers.map((offer, index): OfferPayload => {
             const { clientKey: _clientKey, images: _images, ...fields } = offer;
 
-            return { ...fields, images: offerImages[index] };
+            return {
+                ...fields,
+                images: getSortedItems(offerImages[index]),
+                videos: [],
+            };
         }),
     };
+}
+
+function getSortedItems(itemId: string[]): MediaSortedItemPayload[] {
+    return itemId.map((imageId, index) => ({
+        id: imageId,
+        sort: index,
+    }));
 }

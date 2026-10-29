@@ -76,18 +76,18 @@ export type StockFormState = {
 };
 
 // Requests
-export type SortedMediaPayload = {
+export type MediaSortedItemPayload = {
     id: string;
     sort: number;
 };
 
 export type ProductPayload = Omit<ProductFormState, 'id' | 'images' | 'videos' | 'offers'> & {
-    images: SortedMediaPayload[];
-    videos: SortedMediaPayload[];
+    images: MediaSortedItemPayload[];
+    videos: MediaSortedItemPayload[];
     offers: OfferPayload[];
 };
 
 export type OfferPayload = Omit<OfferFormState, 'clientKey' | 'images' | 'videos'> & {
-    images: SortedMediaPayload[];
-    videos: SortedMediaPayload[];
+    images: MediaSortedItemPayload[];
+    videos: MediaSortedItemPayload[];
 };

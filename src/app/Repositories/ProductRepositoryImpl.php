@@ -7,12 +7,12 @@ namespace App\Repositories;
 use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Product\Criteria\ProductSearchCriteria;
 use App\Domain\Product\Model\Offer;
-use App\Domain\Product\Model\Product;
+use App\Domain\Product\Model\Product as DomainProduct;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\SortedItem\SortedItem;
-use App\Models\Product as ProductModel;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
@@ -21,18 +21,18 @@ use Override;
 class ProductRepositoryImpl implements ProductRepository
 {
     #[Override]
-    public function create(Product $product): string
+    public function create(DomainProduct $product): string
     {
-        ProductModel::create($this->attributes($product));
+        Product::create($this->attributes($product));
         $this->syncRelations($product);
 
         return $product->id->value;
     }
 
     #[Override]
-    public function update(Product $product): void
+    public function update(DomainProduct $product): void
     {
-        $model = ProductModel::findOrFail($product->id->value);
+        $model = Product::findOrFail($product->id->value);
 
         $model->update($this->attributes($product));
         $this->syncRelations($product);
@@ -41,11 +41,11 @@ class ProductRepositoryImpl implements ProductRepository
     #[Override]
     public function delete(string $id): void
     {
-        ProductModel::findOrFail($id)->delete();
+        Product::findOrFail($id)->delete();
     }
 
     #[Override]
-    public function findById(string $id): ?Product
+    public function findById(string $id): ?DomainProduct
     {
         return $this->query()->find($id)?->toDomain();
     }
@@ -57,7 +57,7 @@ class ProductRepositoryImpl implements ProductRepository
             ->whereIn('id', $ids)
             ->orderBy('sort')
             ->get()
-            ->map(fn (ProductModel $product): Product => $product->toDomain())
+            ->map(fn (Product $product): DomainProduct => $product->toDomain())
             ->all();
     }
 
@@ -70,12 +70,12 @@ class ProductRepositoryImpl implements ProductRepository
 
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
-            mapper: fn (ProductModel $product): Product => $product->toDomain(),
+            mapper: fn (Product $product): DomainProduct => $product->toDomain(),
         );
     }
 
     #[Override]
-    public function findByAlias(string $alias): ?Product
+    public function findByAlias(string $alias): ?DomainProduct
     {
         return $this->query()->firstWhere('alias', $alias)?->toDomain();
     }
@@ -123,22 +123,22 @@ class ProductRepositoryImpl implements ProductRepository
 
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
-            mapper: fn (ProductModel $product): Product => $product->toDomain(),
+            mapper: fn (Product $product): DomainProduct => $product->toDomain(),
         );
     }
 
     /**
-     * @return Builder<ProductModel>
+     * @return Builder<Product>
      */
     private function query(): Builder
     {
-        return ProductModel::query()->with('offers');
+        return Product::query()->with('offers');
     }
 
     /**
      * @return array<string, mixed>
      */
-    private function attributes(Product $product): array
+    private function attributes(DomainProduct $product): array
     {
         return [
             'id' => $product->id->value,
@@ -150,7 +150,7 @@ class ProductRepositoryImpl implements ProductRepository
         ];
     }
 
-    private function syncRelations(Product $product): void
+    private function syncRelations(DomainProduct $product): void
     {
         $productId = $product->id->value;
 

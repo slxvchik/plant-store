@@ -97,14 +97,14 @@ import Checkbox from '@/components/Checkbox.vue';
 import Input from '@/components/Input.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Popup from '@/components/Popup.vue';
-import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
+import { useAdminCrudForm } from '@/composables/useAdminCrudForm.ts';
 import AdminTags from '@/routes/admin/tags';
-import type { Pagination } from '@/types/page-response';
-import type { Tag } from '@/types/tag';
+import type { Page } from '@/types/pagination.ts';
+import type { Tag } from '@/types/tag.ts';
 import { validate } from '@/utils/validator.ts';
 
 defineOptions({ layout: AdminLayout });
-defineProps<{ tagsPage: Pagination<Tag> }>();
+defineProps<{ tagsPage: Page<Tag> }>();
 
 type TagForm = Omit<Tag, 'id'>;
 const createData = (): TagForm => ({
@@ -120,7 +120,11 @@ const tagValidator = (field: keyof TagForm, value: any) => {
         case 'alias':
             return validate(value, 'required', 'Алиас обязателен');
         case 'sort':
-            return validate(value, 'required', 'Сортировка для тега обязательна');
+            return validate(
+                value,
+                'required',
+                'Сортировка для тега обязательна',
+            );
         default:
             return null;
     }

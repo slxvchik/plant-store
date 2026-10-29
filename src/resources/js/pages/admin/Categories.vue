@@ -111,15 +111,15 @@ import Input from '@/components/Input.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Popup from '@/components/Popup.vue';
 import Select from '@/components/Select.vue';
-import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
+import { useAdminCrudForm } from '@/composables/useAdminCrudForm.ts';
 import AdminCategories from '@/routes/admin/categories';
-import type { Category } from '@/types/category';
-import type { Pagination } from '@/types/page-response';
+import type { Category } from '@/types/category.ts';
+import type { Page } from '@/types/pagination.ts';
 import { validate } from '@/utils/validator.ts';
 
 defineOptions({ layout: AdminLayout });
 const props = defineProps<{
-    categoriesPage: Pagination<Category>;
+    categoriesPage: Page<Category>;
     categories: Category[];
 }>();
 

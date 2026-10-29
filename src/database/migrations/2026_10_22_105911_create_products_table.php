@@ -16,7 +16,7 @@ return new class extends Migration
             $table->boolean('active');
             $table->integer('sort');
             $table->string('name', 255);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 
@@ -25,12 +25,12 @@ return new class extends Migration
             $table->boolean('active');
             $table->string('sku', 100);
             $table->integer('sort');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('price');
-            $table->string('form_factor', 512);
-            $table->string('size', 512);
-            $table->integer('age_in_months');
-            $table->date('sowing_date');
+            $table->string('form_factor', 512)->nullable();
+            $table->string('size', 512)->nullable();
+            $table->integer('age_in_months')->nullable();
+            $table->date('sowing_date')->nullable();
             $table->timestamps();
         });
 

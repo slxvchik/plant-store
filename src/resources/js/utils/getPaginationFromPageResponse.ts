@@ -1,7 +1,7 @@
-import type { Pagination, Pagination } from '@/types/page-response';
+import type { Page, Pagination } from '@/types/pagination.ts';
 
 export function getPaginationFromPageResponse(
-    pageResponse: Pagination<unknown>,
+    pageResponse: Page<unknown>,
 ): Pagination {
     const { items: _items, perPage: _perPage, ...pagination } = pageResponse;
 
