@@ -59,11 +59,11 @@ import Button from '@/components/Button.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Link from '@/components/Link.vue';
 import PaginationList from '@/components/PaginationList.vue';
+import AdminRoutes from '@/routes/admin';
 import AdminProducts from '@/routes/admin/products';
 import type { Product } from '@/types';
 import type { Page } from '@/types/pagination.ts';
 import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse.ts';
-import AdminRoutes from '@/routes/admin';
 
 defineOptions({
     layout: AdminLayout,

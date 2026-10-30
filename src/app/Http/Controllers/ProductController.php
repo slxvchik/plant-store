@@ -7,9 +7,12 @@ namespace App\Http\Controllers;
 use App\Adapters\Pagination\PageResponseDto;
 use App\Application\Category\GetAllCategories\GetAllCategoriesUseCase;
 use App\Application\Product\CreateProduct\CreateProductUseCase;
+use App\Application\Product\DeleteProduct\DeleteProductUseCase;
+use App\Application\Product\GetDetailProduct\GetDetailProductRequestDto;
+use App\Application\Product\GetDetailProduct\GetDetailProductUseCase;
+use App\Application\Product\GetProducts\GetProductsUseCase;
 use App\Application\Product\UpdateProduct\UpdateProductUseCase;
 use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesUseCase;
-use App\Domain\Shared\Pagination\Page;
 use App\Http\Requests\PaginationRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
@@ -23,14 +26,19 @@ class ProductController extends Controller
     public function __construct(
         private readonly GetAllCategoriesUseCase $getAllCategoriesUseCase,
         private readonly GetAllWarehousesUseCase $getAllWarehousesUseCase,
+        private readonly GetProductsUseCase $getProductsUseCase,
+        private readonly GetDetailProductUseCase $getDetailProductUseCase,
         private readonly CreateProductUseCase $createProductUseCase,
         private readonly UpdateProductUseCase $updateProductUseCase,
+        private readonly DeleteProductUseCase $deleteProductUseCase,
     ) {}
 
     public function index(PaginationRequest $request): Response
     {
+        $productPage = $this->getProductsUseCase->execute($request->toPageable());
+
         return Inertia::render('admin/products/ProductsIndex', [
-            'productsPage' => new PageResponseDto(Page::empty(), $request->fullUrl()),
+            'productsPage' => new PageResponseDto($productPage, $request->fullUrl()),
         ]);
     }
 
@@ -53,7 +61,11 @@ class ProductController extends Controller
 
     public function show(string $id): Response
     {
-        return Inertia::render('admin/products/ShowProduct');
+        $product = $this->getDetailProductUseCase->execute(new GetDetailProductRequestDto($id, null));
+
+        return Inertia::render('admin/products/ShowProduct', [
+            'product' => $product,
+        ]);
     }
 
     public function update(UpdateProductRequest $request, string $id): RedirectResponse
@@ -63,8 +75,12 @@ class ProductController extends Controller
         return redirect()->back()->with(Notification::flash('Продукт обновлён.'));
     }
 
-    public function destroy(string $id): void
+    public function destroy(string $id): RedirectResponse
     {
-        // Product deletion is not implemented yet.
+        $this->deleteProductUseCase->execute($id);
+
+        return redirect()->back()->with([
+            Notification::flash('Продукт удалён'),
+        ]);
     }
 }

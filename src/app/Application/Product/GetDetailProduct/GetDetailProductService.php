@@ -17,15 +17,24 @@ readonly class GetDetailProductService implements GetDetailProductUseCase
         private ProductDetailsFetcher $productDetailsFetcher
     ) {}
 
+    /**
+     * @throws ProductNotFoundException
+     */
     #[Override]
-    public function execute(string $alias): ProductResponseDto
+    public function execute(GetDetailProductRequestDto $detailProductRequestDto): ProductResponseDto
     {
-        $product = $this->productRepository->findByAlias($alias);
+        $product = null;
+        if ($detailProductRequestDto->id !== null) {
+            $product = $this->productRepository->findById($detailProductRequestDto->id);
+        } else if ($detailProductRequestDto->alias !== null) {
+            $product = $this->productRepository->findByAlias($detailProductRequestDto->alias);
+        }
+
         if ($product === null) {
             throw new ProductNotFoundException;
         }
 
-        $productDtoList = $this->productDetailsFetcher->getByIds([$product->id->value]);
+        $productDtoList = $this->productDetailsFetcher->execute([$product]);
 
         return $productDtoList[0];
     }

@@ -8,13 +8,14 @@ use App\Application\Product\Shared\Port\ProductDetailsFetcher;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
+use Illuminate\Support\Facades\Log;
 use Override;
 
 readonly class GetProductsService implements GetProductsUseCase
 {
     public function __construct(
         private ProductRepository $productRepository,
-        private ProductDetailsFetcher $productDetailsFetcher
+        private ProductDetailsFetcher $productDetailsFetcher,
     ) {}
 
     #[Override]
@@ -22,12 +23,7 @@ readonly class GetProductsService implements GetProductsUseCase
     {
         $page = $this->productRepository->findPage($pageable);
 
-        $productIds = [];
-        foreach ($page->items as $item) {
-            $productIds[] = $item->id->value;
-        }
-
-        $productDtos = $this->productDetailsFetcher->getByIds($productIds);
+        $productDtos = $this->productDetailsFetcher->execute($page->items);
 
         return $page->changeItems($productDtos);
     }

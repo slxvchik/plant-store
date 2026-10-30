@@ -6,7 +6,6 @@ use App\Domain\Product\Model\Offer as DomainOfferModel;
 use App\Domain\Product\Model\Stock;
 use App\Domain\Shared\SortedItem\SortedItem;
 use DateMalformedStringException;
-use DateTimeImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +17,19 @@ class Offer extends Model
     use HasUuids;
 
     public $incrementing = false;
+
+    public $fillable = [
+        'id',
+        'active',
+        'sku',
+        'sort',
+        'description',
+        'price',
+        'form_factor',
+        'size',
+        'age_in_months',
+        'sowing_date',
+    ];
 
     protected $casts = [
         'active' => 'boolean',

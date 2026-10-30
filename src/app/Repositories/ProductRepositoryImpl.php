@@ -6,25 +6,33 @@ namespace App\Repositories;
 
 use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Product\Criteria\ProductSearchCriteria;
-use App\Domain\Product\Model\Offer;
+use App\Domain\Product\Model\Offer as DomainOffer;
 use App\Domain\Product\Model\Product as DomainProduct;
+use App\Domain\Product\Model\Stock;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\SortedItem\SortedItem;
+use App\Models\Offer;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
 use Override;
+use Throwable;
 
 class ProductRepositoryImpl implements ProductRepository
 {
     #[Override]
     public function create(DomainProduct $product): string
     {
-        Product::create($this->attributes($product));
-        $this->syncRelations($product);
+        DB::transaction(function () use ($product) {
+            Product::create($this->productAttributes($product));
+            $this->syncOffers($product);
+            $this->syncProductRelations($product);
+        });
 
         return $product->id->value;
     }
@@ -32,10 +40,12 @@ class ProductRepositoryImpl implements ProductRepository
     #[Override]
     public function update(DomainProduct $product): void
     {
-        $model = Product::findOrFail($product->id->value);
-
-        $model->update($this->attributes($product));
-        $this->syncRelations($product);
+        DB::transaction(function () use ($product) {
+            $model = Product::findOrFail($product->id->value);
+            $model->update($this->productAttributes($product));
+            $this->syncOffers($product);
+            $this->syncProductRelations($product);
+        });
     }
 
     #[Override]
@@ -80,6 +90,9 @@ class ProductRepositoryImpl implements ProductRepository
         return $this->query()->firstWhere('alias', $alias)?->toDomain();
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Override]
     public function search(ProductSearchCriteria $criteria, Pageable $pageable): Page
     {
@@ -138,7 +151,7 @@ class ProductRepositoryImpl implements ProductRepository
     /**
      * @return array<string, mixed>
      */
-    private function attributes(DomainProduct $product): array
+    private function productAttributes(DomainProduct $product): array
     {
         return [
             'id' => $product->id->value,
@@ -150,49 +163,152 @@ class ProductRepositoryImpl implements ProductRepository
         ];
     }
 
-    private function syncRelations(DomainProduct $product): void
+    private function offerAttributes(DomainOffer $offer): array
+    {
+        return [
+            'id' => $offer->id->value,
+            'active' => $offer->active,
+            'sku' => $offer->sku,
+            'sort' => $offer->sort,
+            'description' => $offer->description,
+            'price' => $offer->price,
+            'form_factor' => $offer->formFactor,
+            'size' => $offer->size,
+            'age_in_months' => $offer->age,
+            'sowing_date' => $offer->sowingDate,
+        ];
+    }
+
+    private function syncOffers(DomainProduct $product): void
+    {
+        $productId = $product->id->value;
+        $offers = $product->getOffers();
+
+        $newOfferIds = array_map(fn (DomainOffer $o) => $o->id->value, $offers);
+
+        $offersToDelete = DB::table('product_offers')
+            ->where('product_id', $productId)
+            ->whereNotIn('offer_id', $newOfferIds)
+            ->pluck('offer_id')
+            ->toArray();
+
+        if (! empty($offersToDelete)) {
+            DB::table('offers')->whereIn('id', $offersToDelete)->delete();
+        }
+
+        if (empty($offers)) {
+            return;
+        }
+
+        $offersData = array_map(fn (DomainOffer $o) => $this->offerAttributes($o), $offers);
+
+        Offer::upsert($offersData, ['id'], [
+            'id',
+            'active',
+            'sku',
+            'sort',
+            'description',
+            'price',
+            'form_factor',
+            'size',
+            'age_in_months',
+            'sowing_date',
+            'updated_at',
+        ]);
+
+        $offerPivotData = [];
+        foreach ($offers as $offer) {
+            $offerId = $offer->id->value;
+
+            $offerPivotData[] = ['product_id' => $productId, 'offer_id' => $offerId];
+
+            $this->syncRelationships('offer_stocks', 'offer_id', $offerId, $offer->stocks, function (Stock $stock) {
+                return [
+                    'warehouse_id' => $stock->warehouseId,
+                    'quantity' => $stock->quantity,
+                    'reserved' => $stock->reserved,
+                ];
+            });
+            $this->syncRelationships('offer_images', 'offer_id', $offerId, $offer->imageIds, function (SortedItem $sortedImage) {
+                return [
+                    'image_id' => $sortedImage->id,
+                    'sort' => $sortedImage->sort,
+                ];
+            });
+            $this->syncRelationships('offer_videos', 'offer_id', $offerId, $offer->videoIds, function (SortedItem $sortedVideo) {
+                return [
+                    'video_id' => $sortedVideo->id,
+                    'sort' => $sortedVideo->sort,
+                ];
+            });
+        }
+
+        DB::table('product_offers')->where('product_id', $productId)->delete();
+        DB::table('product_offers')->insert($offerPivotData);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function syncProductRelations(DomainProduct $product): void
     {
         $productId = $product->id->value;
 
-        $this->syncIds('product_categories', $productId, 'category_id', $product->categoryIds);
-        $this->syncIds('product_tags', $productId, 'tag_id', $product->tagIds);
-        $this->syncIds('product_offers', $productId, 'offer_id', array_map(
-            fn (Offer $offer): string => $offer->id->value,
-            $product->getOffers(),
-        ));
-
-        $this->syncSortedIds('product_images', $productId, 'image_id', $product->imageIds);
-        $this->syncSortedIds('product_videos', $productId, 'video_id', $product->videoIds);
+        $this->syncRelationships('product_categories', 'product_id', $productId, $product->categoryIds, function (string $categoryId) {
+            return [
+                'category_id' => $categoryId,
+            ];
+        });
+        $this->syncRelationships('product_tags', 'product_id', $productId, $product->tagIds, function (string $tagId) {
+            return [
+                'tag_id' => $tagId,
+            ];
+        });
+        $this->syncRelationships('product_offers', 'product_id', $productId, $product->getOffers(), function (DomainOffer $offer) {
+            return [
+                'offer_id' => $offer->id->value,
+            ];
+        });
+        $this->syncRelationships('product_images', 'product_id', $productId, $product->imageIds, function (SortedItem $sortedImage) {
+            return [
+                'image_id' => $sortedImage->id,
+                'sort' => $sortedImage->sort,
+            ];
+        });
+        $this->syncRelationships('product_videos', 'product_id', $productId, $product->videoIds, function (SortedItem $sortedVideo) {
+            return [
+                'video_id' => $sortedVideo->id,
+                'sort' => $sortedVideo->sort,
+            ];
+        });
     }
 
     /**
-     * @param  string[]  $ids
+     * @throws Throwable
      */
-    private function syncIds(string $table, string $productId, string $relatedColumn, array $ids): void
-    {
-        DB::table($table)->where('product_id', $productId)->delete();
+    private function syncRelationships(
+        string $table,
+        string $entityIdColumn,
+        string $entityId,
+        array $items,
+        callable $mapCallback,
+    ): void {
+        DB::table($table)->where($entityIdColumn, $entityId)->delete();
 
-        foreach ($ids as $id) {
-            DB::table($table)->insert([
-                'product_id' => $productId,
-                $relatedColumn => $id,
-            ]);
+        if (empty($items)) {
+            return;
         }
-    }
 
-    /**
-     * @param  SortedItem<string>[]  $sortedIds
-     */
-    private function syncSortedIds(string $table, string $productId, string $relatedColumn, array $sortedIds): void
-    {
-        DB::table($table)->where('product_id', $productId)->delete();
+        $insertData = [];
+        foreach ($items as $item) {
+            $insertData[] = array_merge(
+                [$entityIdColumn => $entityId],
+                $mapCallback($item)
+            );
+        }
 
-        foreach ($sortedIds as $sortedId) {
-            DB::table($table)->insert([
-                'product_id' => $productId,
-                $relatedColumn => $sortedId->id,
-                'sort' => $sortedId->sort,
-            ]);
+        if (! empty($insertData)) {
+            DB::table($table)->insert($insertData);
         }
     }
 

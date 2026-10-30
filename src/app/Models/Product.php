@@ -31,12 +31,14 @@ class Product extends Model
     public $fillable = [
         'id',
         'active',
+        'alias',
         'sort',
         'name',
         'description',
     ];
 
     protected $casts = [
+        'alias' => 'string',
         'active' => 'boolean',
         'sort' => 'integer',
     ];
