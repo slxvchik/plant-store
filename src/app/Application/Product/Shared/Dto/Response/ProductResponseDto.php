@@ -47,8 +47,8 @@ readonly class ProductResponseDto implements JsonSerializable
         array $offers,
         array $categories,
         array $tags,
-        array $videos,
         array $images,
+        array $videos,
     ): self {
         return new self(
             id: $product->id->value,

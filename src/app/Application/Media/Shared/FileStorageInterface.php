@@ -15,7 +15,7 @@ interface FileStorageInterface
      * @param  string  $localFilePath  Абсолютный путь к файлу на сервере
      * @param  string  $targetPath  Относительный путь в хранилище (папка)
      */
-    public function putFile(string $localFilePath, string $targetPath): string|false;
+    public function putFileAs(string $localFilePath, string $targetPath, string $fileName): string|false;
 
     /**
      * Получить контент файла в виде строки.

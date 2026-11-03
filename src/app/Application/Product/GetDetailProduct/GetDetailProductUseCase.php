@@ -8,5 +8,5 @@ use App\Application\Product\Shared\Dto\Response\ProductResponseDto;
 
 interface GetDetailProductUseCase
 {
-    public function execute(string $alias): ProductResponseDto;
+    public function execute(GetDetailProductRequestDto $detailProductRequestDto): ProductResponseDto;
 }

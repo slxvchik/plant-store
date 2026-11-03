@@ -30,6 +30,10 @@ return Application::configure(basePath: dirname(__DIR__))
         );
 
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json(['error' => 'Страница не найдена.'], 404);
+            }
+
             return Inertia::render('Error', [
                 'status' => 404,
                 'message' => 'Страница не найдена.',
@@ -37,7 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (AppException $e, Request $request) {
-            if (! $request->hasSession()) {
+            if ($request->is('api/*') || $request->expectsJson()) {
                 $httpCode = match ($e->appExceptionStatus) {
                     AppExceptionStatus::INVALID_ARGUMENT => 400,
                     AppExceptionStatus::NOT_FOUND => 404,

@@ -27,7 +27,7 @@ readonly class UpdateImageService implements UpdateImageUseCase
 
         $image->update(
             titleText: $updateImageRequestDto->titleText,
-            altText: $updateImageRequestDto->altText
+            altText: $updateImageRequestDto->altText,
         );
 
         $this->imageRepository->update($image);

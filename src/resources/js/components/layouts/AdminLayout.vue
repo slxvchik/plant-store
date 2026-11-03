@@ -1,6 +1,6 @@
 <template>
     <div class="flex min-h-screen w-full bg-bg-surface">
-        <SideBar />
+        <AdminSideBar />
         <div class="flex min-h-screen flex-1 flex-col bg-bg-surface p-5 pl-85">
             <slot />
         </div>
@@ -10,5 +10,5 @@
 
 <script setup lang="ts">
 import NotificationList from '@/components/NotificationList.vue';
-import SideBar from '@/components/SideBar.vue';
+import AdminSideBar from '@/components/AdminSideBar.vue';
 </script>

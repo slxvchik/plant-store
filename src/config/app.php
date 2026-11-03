@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://dev.deulino-sad.ru:7205'),
+    'url' => env('APP_URL', 'http://localhost:8000'),
 
     /*
     |--------------------------------------------------------------------------

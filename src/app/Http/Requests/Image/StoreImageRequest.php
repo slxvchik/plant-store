@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Image;
 
 use App\Application\Media\CreateImage\CreateImageRequestDto;
+use App\Application\Media\Shared\MediaFolder;
 use App\Domain\Media\Model\Media;
 use App\Domain\Shared\AppException\AppException;
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,6 +24,7 @@ class StoreImageRequest extends FormRequest
             'file' => ['required', 'file', 'image', 'mimes:jpeg,png,webp', 'max:5120'],
             'altText' => ['sometimes', 'nullable', 'string', 'max:255'],
             'titleText' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'type' => ['sometimes', 'string'],
         ];
     }
 
@@ -66,6 +68,15 @@ class StoreImageRequest extends FormRequest
             media: $media,
             altText: $data['altText'] ?? null,
             titleText: $data['titleText'] ?? null,
+            folder: $this->toMediaFolder($data['type']),
         );
+    }
+
+    private function toMediaFolder(string $type): MediaFolder
+    {
+        return match ($type) {
+            'product' => MediaFolder::PRODUCT_IMAGES,
+            default => MediaFolder::OTHER,
+        };
     }
 }

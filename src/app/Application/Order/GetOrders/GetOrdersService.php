@@ -76,7 +76,7 @@ readonly class GetOrdersService implements GetOrdersUseCase
                 user: $usersMap[$orderItem->userId],
                 productsMap: $productsMap,
                 imagesMap: $imagesMap,
-                warehouseAddress: $warehouse->getAddress()
+                warehouseAddress: $warehouse->address
             );
         }
 

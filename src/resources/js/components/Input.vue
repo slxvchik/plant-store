@@ -22,6 +22,7 @@
             "
             v-maska
             :data-maska="type === 'tel' ? '+7 (###) ###-##-##' : null"
+            :disabled="disabled"
         />
         <p v-if="error" class="text-red-400">
             {{ error }}
@@ -38,6 +39,7 @@ interface Props {
     placeholder?: string;
     label?: string;
     error?: string;
+    disabled?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {

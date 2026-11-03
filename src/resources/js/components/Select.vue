@@ -15,7 +15,7 @@
                     ? 'border-text-muted/50 bg-white text-text-muted placeholder:text-text-muted/50 focus:border-text-muted active:border-text-muted'
                     : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:placeholder:text-red-400/50 active:border-red-400 active:placeholder:text-red-400/50',
             ]"
-            @click.prevent="isOpen = !isOpen"
+            @click.prevent="toggle"
         >
             <p class="relative top-px truncate font-sans text-slate-700">
                 {{ displayValue }}
@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import ChevronIcon from '@/components/icons/ChevronIcon.vue';
-import type { SelectItem } from '@/types/selectItem';
+import type { SelectItem } from '@/types/select-item.ts';
 
 type SelectValue = SelectItem['value'];
 type SelectModel = SelectValue | SelectValue[] | null;
@@ -74,6 +74,7 @@ interface Props {
     label?: string;
     nullable?: boolean;
     error?: string;
+    disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -81,12 +82,23 @@ const props = withDefaults(defineProps<Props>(), {
     placeholder: 'Выберите значение',
     nullable: false,
 });
+
 const modelValue = defineModel<SelectModel>({ default: null });
+
 const isOpen = ref(false);
 
 const selectedValues = computed<SelectValue[]>(() =>
     Array.isArray(modelValue.value) ? modelValue.value : [],
 );
+
+const toggle = () => {
+    if (props.disabled) {
+        return;
+    }
+
+    isOpen.value = !isOpen.value;
+};
+
 const isSelected = (value: SelectValue): boolean => {
     if (props.multiple) {
         return selectedValues.value.some((selected) => selected === value);
@@ -94,7 +106,12 @@ const isSelected = (value: SelectValue): boolean => {
 
     return modelValue.value === value;
 };
+
 const selectItem = (item: SelectItem): void => {
+    if (props.disabled) {
+        return;
+    }
+
     if (props.multiple) {
         modelValue.value = isSelected(item.value)
             ? selectedValues.value.filter((value) => value !== item.value)
@@ -107,6 +124,7 @@ const selectItem = (item: SelectItem): void => {
         props.nullable && modelValue.value === item.value ? null : item.value;
     isOpen.value = false;
 };
+
 const displayValue = computed(() => {
     if (props.multiple) {
         return (

@@ -6,6 +6,7 @@
                 type="checkbox"
                 v-model="modelValue"
                 class="border-default-medium h-4 w-4 rounded-xs border bg-primary"
+                :disabled="disabled"
             />
             <label
                 :for="id"
@@ -26,6 +27,7 @@ interface Props {
     id: string;
     text?: string;
     error?: string;
+    disabled?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {

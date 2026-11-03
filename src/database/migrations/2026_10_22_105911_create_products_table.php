@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->boolean('active');
+            $table->string('alias', 128);
             $table->integer('sort');
             $table->string('name', 255);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 
@@ -25,63 +26,65 @@ return new class extends Migration
             $table->boolean('active');
             $table->string('sku', 100);
             $table->integer('sort');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('price');
-            $table->string('form_factor', 512);
-            $table->string('size', 512);
-            $table->integer('age_in_months');
-            $table->date('sowing_date');
+            $table->string('form_factor', 512)->nullable();
+            $table->string('size', 512)->nullable();
+            $table->integer('age_in_months')->nullable();
+            $table->date('sowing_date')->nullable();
             $table->timestamps();
         });
 
         Schema::create('offer_stocks', function (Blueprint $table) {
-            $table->foreignUuid('offer_id')->constrained();
-            $table->foreignUuid('warehouse_id')->constrained();
+            $table->foreignUuid('offer_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('warehouse_id')->constrained()->cascadeOnDelete();
             $table->integer('quantity');
             $table->integer('reserved');
             $table->primary(['offer_id', 'warehouse_id']);
         });
 
         Schema::create('offer_images', function (Blueprint $table) {
-            $table->foreignUuid('offer_id')->constrained();
-            $table->foreignUuid('image_id')->constrained();
+            $table->foreignUuid('offer_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('image_id')->constrained()->cascadeOnDelete();
+            $table->integer('sort');
             $table->primary(['offer_id', 'image_id']);
         });
 
         Schema::create('offer_videos', function (Blueprint $table) {
-            $table->foreignUuid('offer_id')->constrained();
-            $table->foreignUuid('video_id')->constrained();
+            $table->foreignUuid('offer_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('video_id')->constrained()->cascadeOnDelete();
+            $table->integer('sort');
             $table->primary(['offer_id', 'video_id']);
         });
 
         Schema::create('product_offers', function (Blueprint $table) {
-            $table->foreignUuid('product_id')->constrained();
-            $table->foreignUuid('offer_id')->constrained();
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('offer_id')->constrained()->cascadeOnDelete();
             $table->primary(['product_id', 'offer_id']);
         });
 
         Schema::create('product_tags', function (Blueprint $table) {
-            $table->foreignUuid('product_id')->constrained();
-            $table->foreignUuid('tag_id')->constrained();
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('tag_id')->constrained()->cascadeOnDelete();
             $table->primary(['product_id', 'tag_id']);
         });
 
         Schema::create('product_categories', function (Blueprint $table) {
-            $table->foreignUuid('product_id')->constrained();
-            $table->foreignUuid('category_id')->constrained();
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('category_id')->constrained()->cascadeOnDelete();
             $table->primary(['product_id', 'category_id']);
         });
 
         Schema::create('product_images', function (Blueprint $table) {
-            $table->foreignUuid('product_id')->constrained();
-            $table->foreignUuid('image_id')->constrained();
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('image_id')->constrained()->cascadeOnDelete();
             $table->integer('sort');
             $table->primary(['product_id', 'image_id']);
         });
 
         Schema::create('product_videos', function (Blueprint $table) {
-            $table->foreignUuid('product_id')->constrained();
-            $table->foreignUuid('video_id')->constrained();
+            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('video_id')->constrained()->cascadeOnDelete();
             $table->integer('sort');
             $table->primary(['product_id', 'video_id']);
         });

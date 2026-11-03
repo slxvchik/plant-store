@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Application\Product\Shared\Port;
 
 use App\Application\Product\Shared\Dto\Response\ProductResponseDto;
+use App\Domain\Product\Model\Product;
 
 interface ProductDetailsFetcher
 {
-    public function getByAlias(string $alias): ?ProductResponseDto;
-
     /**
-     * @param  string[]  $ids
+     * @param  Product[]  $products
      * @return ProductResponseDto[]
      */
-    public function getByIds(array $ids): array;
+    public function execute(array $products): array;
 }

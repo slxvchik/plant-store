@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('height')->nullable();
             $table->string('title_text', 256)->nullable();
             $table->string('alt_text', 256)->nullable();
+            $table->string('folder', 128);
             $table->timestamps();
         });
     }
