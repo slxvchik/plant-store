@@ -1,16 +1,76 @@
 <template>
     <div class="flex flex-col gap-5">
         <p v-if="form.id">#{{ form.id }}</p>
-        <Input id="offer_id" v-model="form.sku" label="Артикул" required />
-        <Checkbox id="offer_active" v-model="form.active" text="Активность" />
-        <Input id="offer_sort" v-model.number="form.sort" label="Сортировка" type="number" required />
-        <Textarea id="offer_description" v-model="form.description" label="Описание" />
-        <Input id="offer_price" v-model.number="form.price" label="Цена" type="number" required />
-        <Input id="offer_form_factor" v-model="form.formFactor" label="Фактор" type="text" />
-        <Input id="offer_size" v-model="form.size" label="Размер" type="text" />
-        <Input id="offer_age" v-model.number="form.age" label="Возраст" type="number" />
-        <Input id="offer_sowing_date" v-model="form.sowingDate" label="Дата" type="date" />
-        <FileUpload id="offer_images" v-model="form.images" type="image" label="Изображения" />
+        <Input
+            id="offer_id"
+            v-model="form.sku"
+            label="Артикул"
+            rules="required"
+            :disabled="disabled"
+        />
+        <Checkbox
+            id="offer_active"
+            v-model="form.active"
+            text="Активность"
+            :disabled="disabled"
+        />
+        <Input
+            id="offer_sort"
+            v-model.number="form.sort"
+            label="Сортировка"
+            type="number"
+            rules="required"
+            :disabled="disabled"
+        />
+        <Textarea
+            id="offer_description"
+            v-model="form.description"
+            label="Описание"
+            :disabled="disabled"
+        />
+        <Input
+            id="offer_price"
+            v-model.number="form.price"
+            label="Цена"
+            type="number"
+            rules="required|positiveNumber"
+            :disabled="disabled"
+        />
+        <Input
+            id="offer_form_factor"
+            v-model="form.formFactor"
+            label="Фактор"
+            type="text"
+            :disabled="disabled"
+        />
+        <Input
+            id="offer_size"
+            v-model="form.size"
+            label="Размер"
+            type="text"
+            :disabled="disabled"
+        />
+        <Input
+            id="offer_age"
+            v-model.number="form.age"
+            label="Возраст"
+            type="number"
+            :disabled="disabled"
+        />
+        <Input
+            id="offer_sowing_date"
+            v-model="form.sowingDate"
+            label="Дата"
+            type="date"
+            :disabled="disabled"
+        />
+        <FileUpload
+            id="offer_images"
+            v-model="form.images"
+            type="image"
+            label="Изображения"
+            :disabled="disabled"
+        />
         <div v-if="warehouses.length" class="flex flex-col gap-4">
             <h2 class="text-2xl text-text-title">Наличие на складах</h2>
             <div
@@ -18,7 +78,9 @@
                 :key="warehouse.id"
                 class="mb-4 grid grid-cols-3 gap-5"
             >
-                <div class="w-full self-center text-sm font-medium text-gray-700">
+                <div
+                    class="w-full self-center text-sm font-medium text-gray-700"
+                >
                     {{ warehouse.address }}
                 </div>
                 <template v-for="stock in form.stocks" :key="stock.warehouseId">
@@ -28,12 +90,14 @@
                             v-model.number="stock.quantity"
                             label="Доступное кол-во для покупки"
                             type="number"
+                            :disabled="disabled"
                         />
                         <Input
                             :id="`${warehouse.id}-reserved`"
                             v-model.number="stock.reserved"
                             label="Зарезервированное кол-во товара"
                             type="number"
+                            :disabled="disabled"
                         />
                     </template>
                 </template>
@@ -53,6 +117,7 @@ import type { Warehouse } from '@/types/warehouse.ts';
 
 interface Props {
     warehouses: Warehouse[];
+    disabled?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -66,11 +131,13 @@ watch(
                 (stock) => stock.warehouseId === warehouse.id,
             );
 
-            return existing ?? {
-                warehouseId: warehouse.id,
-                quantity: 0,
-                reserved: 0,
-            };
+            return (
+                existing ?? {
+                    warehouseId: warehouse.id,
+                    quantity: 0,
+                    reserved: 0,
+                }
+            );
         });
     },
     { immediate: true, deep: true },

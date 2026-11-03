@@ -63,8 +63,10 @@ class ProductController extends Controller
     {
         $product = $this->getDetailProductUseCase->execute(new GetDetailProductRequestDto($id, null));
 
-        return Inertia::render('admin/products/ShowProduct', [
+        return Inertia::render('admin/products/EditProduct', [
             'product' => $product,
+            'categories' => $this->getAllCategoriesUseCase->execute(),
+            'warehouses' => $this->getAllWarehousesUseCase->execute(),
         ]);
     }
 

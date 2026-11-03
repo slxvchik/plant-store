@@ -22,13 +22,15 @@ class FileStorageImpl implements FileStorageInterface
     /**
      * @throws FileNotFoundException
      */
-    public function putFile(string $localFilePath, string $targetPath): string|false
+    public function putFileAs(string $localFilePath, string $targetPath, string $fileName): string|false
     {
         if (! file_exists($localFilePath)) {
             return false;
         }
 
-        return Storage::disk($this->disk)->putFile($targetPath, new File($localFilePath));
+        $file = new File($localFilePath);
+
+        return Storage::disk($this->disk)->putFileAs($targetPath, $file, $fileName);
     }
 
     public function get(string $path): string

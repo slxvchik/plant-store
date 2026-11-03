@@ -1,35 +1,85 @@
 import { useForm } from '@inertiajs/vue3';
+import { onMounted, ref } from 'vue';
 import { useImageUploads } from '@/composables/useImageUploads.ts';
 import AdminProduct from '@/routes/admin/products';
 import { useNotificationStore } from '@/stores/useNotificationStore.ts';
-import type  {
+import type {
+    MediaSortedItemPayload,
     OfferPayload,
+    Product,
     ProductFormState,
     ProductPayload,
-    MediaSortedItemPayload,
 } from '@/types/product.ts';
+import { ImageType } from '@/types';
 
-export function useProductForm() {
+type FormMode = 'create' | 'edit';
+
+export function useProductForm(formMode: FormMode, product?: Product) {
     const form = useForm<ProductFormState>({
-        name: '',
-        active: false,
-        alias: '',
-        sort: 500,
-        description: '',
-        categories: [],
-        tags: [],
+        name: product?.name ?? '',
+        active: product?.active ?? false,
+        alias: product?.alias ?? '',
+        sort: product?.sort ?? 500,
+        description: product?.description ?? '',
+        categories: product?.categories.map((category) => category.id) ?? [],
+        tags: product?.tags.map((tag) => tag.id) ?? [],
         images: [],
-        offers: [],
+        offers:
+            product?.offers.map((offer) => ({
+                clientKey: offer.id,
+                id: offer.id,
+                active: offer.active,
+                sku: offer.sku,
+                sort: offer.sort,
+                description: offer.description ?? '',
+                price: offer.price,
+                stocks: offer?.stocks.map((stock) => ({
+                    warehouseId: stock.warehouse.id,
+                    quantity: stock.quantity,
+                    reserved: stock.reserved,
+                })),
+                formFactor: offer.formFactor ?? '',
+                size: offer.size ?? '',
+                age: offer.age,
+                sowingDate: offer.sowingDate ?? '',
+                images: [],
+            })) ?? [],
     });
     const uploads = useImageUploads();
     const notifications = useNotificationStore();
+    const isInitializing = ref(false);
+
+    onMounted(async () => {
+        if (product?.images && product.images.length > 0) {
+            isInitializing.value = true;
+
+            try {
+                form.images = await Promise.all(
+                    product.images.map((image) =>
+                        uploads.toImageFormState(image),
+                    ),
+                );
+            } catch (error) {
+                notifications.add(
+                    'Не удалось загрузить существующие изображения',
+                    'error',
+                    5000,
+                );
+                console.error(error);
+            } finally {
+                isInitializing.value = false;
+            }
+        }
+    });
 
     const submit = async (): Promise<void> => {
         try {
             const [productImages, offerImages] = await Promise.all([
-                uploads.upload(form.images),
+                uploads.upload(form.images, ImageType.Product),
                 Promise.all(
-                    form.offers.map((offer) => uploads.upload(offer.images)),
+                    form.offers.map((offer) =>
+                        uploads.upload(offer.images, ImageType.Product),
+                    ),
                 ),
             ]);
             const payload = serializeProduct(
@@ -38,11 +88,18 @@ export function useProductForm() {
                 offerImages,
             );
 
-            form.transform(() => payload).post(AdminProduct.store.url(), {
+            const isEdit = formMode === 'edit';
+            const url =
+                isEdit && product
+                    ? AdminProduct.update.url(product.id)
+                    : AdminProduct.store.url();
+            const requestAction = isEdit ? form.put : form.post;
+
+            form.transform(() => payload);
+            requestAction(url, {
                 preserveScroll: true,
                 onSuccess: () => {
                     uploads.confirm();
-                    notifications.add('Товар успешно создан', 'success', 3000);
                 },
                 onError: (errors) => {
                     void uploads.rollback();
@@ -51,7 +108,8 @@ export function useProductForm() {
                     });
                 },
             });
-        } catch {
+        } catch (e) {
+            console.error(e);
             await uploads.rollback();
             notifications.add(
                 'Не удалось загрузить изображения',

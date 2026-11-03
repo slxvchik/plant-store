@@ -12,7 +12,7 @@ use App\Http\Requests\Image\UpdateImageRequest;
 use App\Notification\Notification;
 use Illuminate\Http\JsonResponse;
 
-class ImageController extends Controller
+class AdminImageController extends Controller
 {
     public function __construct(
         private readonly CreateImageUseCase $createImageUseCase,

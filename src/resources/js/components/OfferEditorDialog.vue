@@ -1,7 +1,20 @@
 <template>
-    <Popup v-model:open="isOpen" :title="isEditMode ? 'Редактирование ТП' : 'Создание ТП'">
-        <OfferForm v-model="offerForm" :warehouses="warehouses" />
-        <Button type="button" :text="isEditMode ? 'Сохранить' : 'Создать'" secondary @click="save" />
+    <Popup
+        v-model:open="isOpen"
+        :title="!disabled && isEditMode ? 'Редактирование ТП' : 'Создание ТП'"
+    >
+        <OfferForm
+            v-model="offerForm"
+            :warehouses="warehouses"
+            :disabled="disabled"
+        />
+        <Button
+            type="button"
+            :text="isEditMode ? 'Сохранить' : 'Создать'"
+            secondary
+            @click="save"
+            v-if="!disabled"
+        />
     </Popup>
 </template>
 
@@ -13,7 +26,10 @@ import Popup from '@/components/Popup.vue';
 import type { OfferFormState } from '@/types/product.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 
-const props = defineProps<{ warehouses: Warehouse[] }>();
+const props = defineProps<{
+    warehouses: Warehouse[];
+    disabled?: boolean;
+}>();
 const offers = defineModel<OfferFormState[]>('offers', { required: true });
 const isOpen = ref(false);
 const isEditMode = ref(false);
@@ -43,7 +59,11 @@ function createEmptyOffer(): OfferFormState {
 function copyOffer(offer: OfferFormState): OfferFormState {
     return {
         ...offer,
-        stocks: offer.stocks.map((stock) => ({ ...stock })),
+        stocks: offer.stocks.map((stock) => ({
+            warehouseId: stock.warehouseId,
+            quantity: stock.quantity,
+            reserved: stock.reserved,
+        })),
         images: offer.images.map((image) => ({ ...image })),
     };
 }

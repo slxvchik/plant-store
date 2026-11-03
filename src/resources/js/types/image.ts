@@ -18,6 +18,7 @@ export type ImageFormState = {
     previewUrl: string;
     titleText: string;
     altText: string;
+    updated: boolean;
 };
 
 // Requests
@@ -25,6 +26,11 @@ export type CreateImagePayload = {
     file: File;
     titleText?: string;
     altText?: string;
+    type?: ImageType;
 };
 
-export type UpdateImagePayload = Omit<CreateImagePayload, 'file'>;
+export type UpdateImagePayload = Omit<CreateImagePayload, 'file' | 'folder'>;
+
+export enum ImageType {
+    Product = "product",
+}

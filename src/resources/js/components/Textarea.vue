@@ -18,6 +18,7 @@
                     ? 'border-text-muted/50 bg-white text-text-muted placeholder:text-text-muted/50 focus:border-text-muted active:border-text-muted'
                     : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:border-red-400 focus:placeholder:text-red-400 active:border-red-400 active:placeholder:text-red-400'
             "
+            :disabled="disabled"
         />
         <p v-if="error" class="text-red-400">
             {{ error }}
@@ -32,6 +33,7 @@ interface Props {
     label?: string;
     error?: string;
     rules?: string;
+    disabled?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {

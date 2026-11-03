@@ -169,7 +169,7 @@ class Product
      */
     public function saveOffers(array $saveOffers, UuidGeneratorInterface $uuidGeneratorInterface): void
     {
-        $newOfferIds = [];
+        $actualOfferIds = [];
         foreach ($saveOffers as $saveOffer) {
             $id = $saveOffer->id;
 
@@ -190,7 +190,7 @@ class Product
                     videoIds: $saveOffer->videoIds
                 );
                 $this->offers[$newOffer->id->value] = $newOffer;
-                $newOfferIds[] = $newOffer->id->value;
+                $actualOfferIds[] = $newOffer->id->value;
 
                 continue;
             }
@@ -213,9 +213,10 @@ class Product
                 imageIds: $saveOffer->imageIds,
                 videoIds: $saveOffer->videoIds
             );
+            $actualOfferIds[] = $id;
         }
 
-        $idsToDelete = array_diff(array_keys($this->offers), $newOfferIds);
+        $idsToDelete = array_diff(array_keys($this->offers), $actualOfferIds);
 
         foreach ($idsToDelete as $idToDelete) {
             unset($this->offers[$idToDelete]);

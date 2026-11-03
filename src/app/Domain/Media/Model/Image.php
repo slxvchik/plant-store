@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Media\Model;
 
+use App\Application\Media\Shared\MediaFolder;
 use App\Domain\Media\Exception\InvalidMimeTypeException;
+use App\Domain\Shared\Exception\InternalException;
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 
@@ -33,13 +35,14 @@ class Image extends MediaDB
         int $width,
         int $height,
         ?string $titleText,
-        ?string $altText
+        ?string $altText,
+        MediaFolder $folder,
     ) {
         if (! in_array($mimeType, self::ACCEPTABLE_TYPES)) {
             throw new InvalidMimeTypeException($mimeType, self::ACCEPTABLE_TYPES);
         }
 
-        parent::__construct($id, $mimeType, $sizeInBytes);
+        parent::__construct($id, $mimeType, $sizeInBytes, $folder);
 
         $this->width = $width;
         $this->height = $height;
@@ -54,7 +57,8 @@ class Image extends MediaDB
         int $width,
         int $height,
         ?string $titleText,
-        ?string $altText
+        ?string $altText,
+        MediaFolder $folder,
     ): self {
         return new self(
             id: new Uuid($id),
@@ -63,7 +67,8 @@ class Image extends MediaDB
             width: $width,
             height: $height,
             titleText: $titleText,
-            altText: $altText
+            altText: $altText,
+            folder: $folder,
         );
     }
 
@@ -77,7 +82,8 @@ class Image extends MediaDB
         int $width,
         int $height,
         ?string $titleText,
-        ?string $altText
+        ?string $altText,
+        MediaFolder $folder,
     ): self {
         $uuidStr = $uuidGeneratorInterface->generate();
 
@@ -88,7 +94,8 @@ class Image extends MediaDB
             width: $width,
             height: $height,
             titleText: $titleText,
-            altText: $altText
+            altText: $altText,
+            folder: $folder,
         );
     }
 
@@ -96,5 +103,40 @@ class Image extends MediaDB
     {
         $this->titleText = $titleText;
         $this->altText = $altText;
+    }
+
+    /**
+     * @throws InternalException
+     */
+    public function getExtension(): string
+    {
+        $mimeMap = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            'image/gif' => 'gif',
+        ];
+
+        if (! isset($mimeMap[$this->mimeType])) {
+            throw new InternalException("Неподдерживаемый MIME-тип: {$this->mimeType}");
+        }
+
+        return $mimeMap[$this->mimeType];
+    }
+
+    /**
+     * @throws InternalException
+     */
+    public function getFilename(): string
+    {
+        return $this->id->value.'.'.$this->getExtension();
+    }
+
+    /**
+     * @throws InternalException
+     */
+    public function getFilePath(): string
+    {
+        return $this->folder->value.$this->getFilename();
     }
 }

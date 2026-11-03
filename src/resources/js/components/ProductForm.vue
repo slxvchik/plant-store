@@ -6,6 +6,7 @@
             v-model="form.name"
             label="Название"
             :error="errors?.name"
+            :disabled="disabled"
             rules="required"
         />
         <Checkbox
@@ -13,6 +14,7 @@
             v-model="form.active"
             text="Активность"
             :error="errors?.active"
+            :disabled="disabled"
         />
         <Input
             id="alias"
@@ -20,6 +22,7 @@
             label="Алиас"
             :error="errors?.alias"
             rules="required|min:4"
+            :disabled="disabled"
         />
         <Input
             id="sort"
@@ -28,12 +31,14 @@
             type="number"
             :error="errors?.sort"
             rules="required|positiveNumber"
+            :disabled="disabled"
         />
         <Textarea
             id="description"
             v-model="form.description"
             label="Описание"
             :error="errors?.description"
+            :disabled="disabled"
         />
         <Select
             v-model="form.categories"
@@ -41,12 +46,14 @@
             label="Категории"
             placeholder="Выберите категории"
             multiple
+            :disabled="disabled"
         />
         <FileUpload
             id="images"
             v-model="form.images"
             label="Изображения товара"
             type="image"
+            :disabled="disabled"
         />
     </div>
 </template>
@@ -62,6 +69,7 @@ import type { SelectItem } from '@/types/select-item.ts';
 
 interface Props {
     allCategories: SelectItem[];
+    disabled?: boolean;
     errors?: Record<string, string | undefined>;
 }
 

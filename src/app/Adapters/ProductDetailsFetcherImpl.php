@@ -3,7 +3,7 @@
 namespace App\Adapters;
 
 use App\Application\Category\Shared\Dto\Response\CategoryResponseDto;
-use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
+use App\Application\Media\GetImagesByIds\GetImagesByIdsUseCase;
 use App\Application\Media\Shared\FileStorageInterface;
 use App\Application\Product\Shared\Dto\Response\OfferResponseDto;
 use App\Application\Product\Shared\Dto\Response\ProductResponseDto;
@@ -12,11 +12,11 @@ use App\Application\Product\Shared\Port\ProductDetailsFetcher;
 use App\Application\Tag\Shared\Dto\Response\TagResponseDto;
 use App\Application\Warehouse\Shared\Dto\Response\WarehouseResponseDto;
 use App\Domain\Category\Repository\CategoryRepository;
-use App\Domain\Media\Repository\ImageRepository;
 use App\Domain\Product\Model\Offer;
 use App\Domain\Product\Model\Product;
 use App\Domain\Tag\Repository\TagRepository;
 use App\Domain\Warehouse\Repository\WarehouseRepository;
+use Illuminate\Support\Facades\Log;
 
 readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
 {
@@ -24,7 +24,7 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
         private FileStorageInterface $fileStorage,
         private TagRepository $tagRepository,
         private CategoryRepository $categoryRepository,
-        private ImageRepository $imageRepository,
+        private GetImagesByIdsUseCase $getImagesByIdsUseCase,
         private WarehouseRepository $warehouseRepository,
         //        private readonly VideoRepository $videoRepository,
     ) {}
@@ -93,12 +93,11 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
                 ...array_map(fn ($images) => array_column($images, 'id'), array_column($products, 'imageIds'))
             )
         );
-        $images = $this->imageRepository->findByIds($ids);
+        $images = $this->getImagesByIdsUseCase->execute($ids);
 
         $map = [];
         foreach ($images as $image) {
-            $webPath = $this->fileStorage->url($image->id->value);
-            $map[$image->id->value] = ImageResponseDto::fromDomain($image, $webPath);
+            $map[$image->id] = $image;
         }
 
         return $map;

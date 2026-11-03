@@ -42,12 +42,14 @@ readonly class CreateImageService implements CreateImageUseCase
             width: $createImageRequestDto->width,
             height: $createImageRequestDto->height,
             titleText: $createImageRequestDto->titleText,
-            altText: $createImageRequestDto->altText
+            altText: $createImageRequestDto->altText,
+            folder: $createImageRequestDto->folder,
         );
 
-        $isStored = $this->fileStorage->putFile(
+        $isStored = $this->fileStorage->putFileAs(
             $createImageRequestDto->media->tmpName,
-            $image->id->value
+            $image->folder->value,
+            $image->getFilename(),
         );
 
         if (! $isStored) {

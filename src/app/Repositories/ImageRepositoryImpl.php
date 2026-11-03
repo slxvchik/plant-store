@@ -25,6 +25,7 @@ class ImageRepositoryImpl implements ImageRepository
             'height' => $image->height,
             'title_text' => $image->titleText,
             'alt_text' => $image->altText,
+            'folder' => $image->folder->value,
         ]);
 
         return $created->id;

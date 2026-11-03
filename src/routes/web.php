@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ImageController;
+use App\Http\Controllers\AdminImageController;
 use App\Http\Controllers\MainPageGalleryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrderController;
@@ -30,9 +30,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::inertia('/', 'admin/Home')->name('home');
 
     Route::prefix('image')->name('image.')->group(function () {
-        Route::post('/', [ImageController::class, 'store'])->name('create');
-        Route::put('/{id}', [ImageController::class, 'update'])->name('update');
-        Route::delete('/{id}', [ImageController::class, 'destroy'])->name('destroy');
+        Route::post('/', [AdminImageController::class, 'store'])->name('create');
+        Route::put('/{id}', [AdminImageController::class, 'update'])->name('update');
+        Route::delete('/{id}', [AdminImageController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('products')->name('products.')->group(function () {

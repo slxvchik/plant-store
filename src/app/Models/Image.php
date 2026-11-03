@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Application\Media\Shared\MediaFolder;
 use App\Domain\Media\Model\Image as DomainImageModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ class Image extends Model
 
     public $incrementing = false;
 
-    public $fillable = ['id', 'mime_type', 'size_in_bytes', 'width', 'height', 'title_text', 'alt_text'];
+    public $fillable = ['id', 'mime_type', 'size_in_bytes', 'width', 'height', 'title_text', 'alt_text', 'folder'];
 
     public function toDomain(): DomainImageModel
     {
@@ -24,6 +25,7 @@ class Image extends Model
             height: (int) $this->height,
             titleText: $this->title_text,
             altText: $this->alt_text,
+            folder: MediaFolder::tryFrom($this->folder),
         );
     }
 }

@@ -7,6 +7,8 @@ use App\Application\Media\CreateImage\CreateImageService;
 use App\Application\Media\CreateImage\CreateImageUseCase;
 use App\Application\Media\DeleteImage\DeleteImageService;
 use App\Application\Media\DeleteImage\DeleteImageUseCase;
+use App\Application\Media\GetImagesByIds\GetImagesByIdsService;
+use App\Application\Media\GetImagesByIds\GetImagesByIdsUseCase;
 use App\Application\Media\Shared\FileStorageInterface;
 use App\Application\Media\UpdateImage\UpdateImageService;
 use App\Application\Media\UpdateImage\UpdateImageUseCase;
@@ -45,6 +47,11 @@ class ImageProvider extends ServiceProvider
         $this->app->singleton(
             DeleteImageUseCase::class,
             DeleteImageService::class,
+        );
+
+        $this->app->singleton(
+            GetImagesByIdsUseCase::class,
+            GetImagesByIdsService::class,
         );
     }
 

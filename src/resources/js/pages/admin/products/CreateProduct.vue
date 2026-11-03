@@ -68,12 +68,16 @@ const props = defineProps<{
     categories: Category[];
     warehouses: Warehouse[];
 }>();
-const { form, submit } = useProductForm();
+
+const { form, submit } = useProductForm('create');
+
 const offerDialog = ref<InstanceType<typeof OfferEditorDialog> | null>(null);
+
 const tabs = [
     { id: 'product', label: 'Товар' },
     { id: 'offers', label: 'Торговые предложения' },
 ];
+
 const categoryOptions = computed(() =>
     props.categories.map((category) => ({
         label: category.name,

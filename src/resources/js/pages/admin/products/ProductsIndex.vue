@@ -31,18 +31,22 @@
                 <div class="p-4 whitespace-nowrap">{{ product.name }}</div>
                 <div class="p-4">{{ product.active }}</div>
                 <div class="flex gap-2 p-4">
-                    <Link
-                        text="Смотреть"
-                        class="bg-green-400 hover:bg-green-500"
-                        :href="AdminRoutes.products.show.url(product.id)"
-                    />
-                    <Button
-                        type="button"
-                        text="Удалить"
-                        class="w-fit bg-red-400 hover:bg-red-500"
-                        styleType="link"
-                        @click="deleteProduct(product.id)"
-                    />
+                    <div class="w-fit">
+                        <Link
+                            text="Смотреть"
+                            styleType="button"
+                            secondary
+                            :href="AdminRoutes.products.show.url(product.id)"
+                        />
+                    </div>
+                    <div class="w-fit">
+                        <Button
+                            type="button"
+                            text="Удалить"
+                            class="w-fit bg-red-400 hover:bg-red-500"
+                            @click="deleteProduct(product.id)"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
