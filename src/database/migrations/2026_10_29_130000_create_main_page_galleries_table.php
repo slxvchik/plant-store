@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('main_page_galleries', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->boolean('active');
             $table->integer('sort');
             $table->foreignUuid('image_id')->constrained();
             $table->string('pre_title', 256)->nullable();

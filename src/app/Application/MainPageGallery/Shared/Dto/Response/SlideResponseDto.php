@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\MainPageGallery\Shared\Dto\Response;
 
+use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
 use App\Domain\MainPageGallery\Model\MainPageGallery;
 use JsonSerializable;
 use Override;
@@ -13,7 +14,7 @@ readonly class SlideResponseDto implements JsonSerializable
     public function __construct(
         public string $id,
         public int $sort,
-        public string $imageId,
+        public ?ImageResponseDto $image,
         public ?string $preTitle,
         public ?string $title,
         public ?string $description,
@@ -21,12 +22,12 @@ readonly class SlideResponseDto implements JsonSerializable
         public ?string $buttonText,
     ) {}
 
-    public static function fromDomain(MainPageGallery $slide): self
+    public static function fromDomain(MainPageGallery $slide, ImageResponseDto $imageResponseDto): self
     {
         return new self(
             id: $slide->id->value,
             sort: $slide->sort,
-            imageId: $slide->imageId,
+            image: $imageResponseDto,
             preTitle: $slide->preTitle,
             title: $slide->title,
             description: $slide->description,
@@ -44,7 +45,7 @@ readonly class SlideResponseDto implements JsonSerializable
         return [
             'id' => $this->id,
             'sort' => $this->sort,
-            'imageId' => $this->imageId,
+            'image' => $this->image,
             'preTitle' => $this->preTitle,
             'title' => $this->title,
             'description' => $this->description,

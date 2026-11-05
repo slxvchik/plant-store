@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useImageUploads } from '@/composables/useImageUploads.ts';
 import AdminProduct from '@/routes/admin/products';
 import { useNotificationStore } from '@/stores/useNotificationStore.ts';
+import { ImageType } from '@/types/image.ts';
 import type {
     MediaSortedItemPayload,
     OfferPayload,
@@ -10,7 +11,7 @@ import type {
     ProductFormState,
     ProductPayload,
 } from '@/types/product.ts';
-import { ImageType } from '@/types';
+import { toImageFormState } from '@/utils/imageMapper.ts';
 
 type FormMode = 'create' | 'edit';
 
@@ -56,7 +57,7 @@ export function useProductForm(formMode: FormMode, product?: Product) {
             try {
                 form.images = await Promise.all(
                     product.images.map((image) =>
-                        uploads.toImageFormState(image),
+                        toImageFormState(image),
                     ),
                 );
             } catch (error) {

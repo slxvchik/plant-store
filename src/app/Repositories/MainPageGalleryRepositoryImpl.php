@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\MainPageGallery\Model\MainPageGallery;
 use App\Domain\MainPageGallery\Repository\MainPageGalleryRepository;
+use App\Domain\Shared\Pagination\Page;
+use App\Domain\Shared\Pagination\Pageable;
 use App\Models\MainPageGallery as MainPageGalleryModel;
+use Illuminate\Support\Facades\Log;
 use Override;
 
 class MainPageGalleryRepositoryImpl implements MainPageGalleryRepository
@@ -38,7 +42,21 @@ class MainPageGalleryRepositoryImpl implements MainPageGalleryRepository
     }
 
     #[Override]
-    public function findAll(): array
+    public function findPage(Pageable $pageable): Page
+    {
+        $page = MainPageGalleryModel::query()->paginate(
+            perPage: $pageable->perPage,
+            page: $pageable->page,
+        );
+
+        return PaginationAdapter::toDomainPage(
+            paginator: $page,
+            mapper: fn (MainPageGalleryModel $model) => $model->toDomain(),
+        );
+    }
+
+    #[Override]
+    public function search(?bool $active = null): array
     {
         return MainPageGalleryModel::orderBy('sort')
             ->get()
@@ -53,6 +71,7 @@ class MainPageGalleryRepositoryImpl implements MainPageGalleryRepository
     {
         return [
             'id' => $slide->id->value,
+            'active' => $slide->active,
             'sort' => $slide->sort,
             'image_id' => $slide->imageId,
             'pre_title' => $slide->preTitle,

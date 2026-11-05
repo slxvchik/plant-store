@@ -31,7 +31,7 @@
         <Input
             id="offer_price"
             v-model.number="form.price"
-            label="Цена"
+            label="Цена (в копейках)"
             type="number"
             rules="required|positiveNumber"
             :disabled="disabled"
@@ -64,12 +64,13 @@
             type="date"
             :disabled="disabled"
         />
-        <FileUpload
+        <ImageUpload
             id="offer_images"
             v-model="form.images"
             type="image"
             label="Изображения"
             :disabled="disabled"
+            multiple
         />
         <div v-if="warehouses.length" class="flex flex-col gap-4">
             <h2 class="text-2xl text-text-title">Наличие на складах</h2>
@@ -109,7 +110,7 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 import Checkbox from '@/components/Checkbox.vue';
-import FileUpload from '@/components/FileUpload.vue';
+import ImageUpload from '@/components/ImageUpload.vue';
 import Input from '@/components/Input.vue';
 import Textarea from '@/components/Textarea.vue';
 import type { OfferFormState } from '@/types/product.ts';

@@ -56,7 +56,8 @@ export function useImageUploads() {
         fetch(AdminImage.update.url(id), {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest',
             },
             body: JSON.stringify({
@@ -113,23 +114,7 @@ export function useImageUploads() {
         createdIds = [];
     };
 
-    const toImageFormState = async (image: Image): Promise<ImageFormState> => {
-        const imageResponse = await fetch(image.webPathToFile);
-        const imageData = await imageResponse.blob();
-        const file = new File([imageData], image.id, { type: image.mimeType });
-
-        return {
-            id: image.id,
-            pseudoId: `${image.id}-${image.sizeInBytes}`,
-            file: file,
-            previewUrl: image.webPathToFile,
-            titleText: image.titleText ?? '',
-            altText: image.altText ?? '',
-            updated: false,
-        };
-    }
-
-    return { upload, rollback, confirm, toImageFormState };
+    return { upload, rollback, confirm };
 }
 
 function isCreatedImageResponse(value: unknown): value is CreatedImageResponse {

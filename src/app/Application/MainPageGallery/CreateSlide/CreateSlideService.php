@@ -21,6 +21,7 @@ readonly class CreateSlideService implements CreateSlideUseCase
     {
         $slide = MainPageGallery::createNew(
             uuidGeneratorInterface: $this->uuidGenerator,
+            active: $createSlideRequestDto->active,
             sort: $createSlideRequestDto->sort,
             imageId: $createSlideRequestDto->imageId,
             preTitle: $createSlideRequestDto->preTitle,

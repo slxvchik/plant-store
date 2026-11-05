@@ -1,6 +1,6 @@
 import type { FormDataType } from '@inertiajs/core';
 import { router, useForm } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useNotificationStore } from '@/stores/useNotificationStore';
 
 type CrudRoutes = {
@@ -13,9 +13,12 @@ type CrudOptions<TForm, TItem> = {
     // default values for form
     createData: () => TForm;
     // values for item edit
-    editData: (item: TItem) => TForm;
+    editData: (item: TItem) => TForm | Promise<TForm>;
     routes: CrudRoutes;
     validator?: (field: keyof TForm, value: any) => string | null;
+    preSubmitAction?: () => void | Promise<void>;
+    onSubmitError?: (errors: Record<string, string>) => void;
+    formTransform?: (data: TForm) => any;
 };
 
 export function useAdminCrudForm<
@@ -28,11 +31,17 @@ export function useAdminCrudForm<
     const isEditMode = computed(() => editingId.value !== null);
     const notifications = useNotificationStore();
 
+    onMounted(() => {
+        if (options.formTransform) {
+            form.transform(options.formTransform);
+        }
+    });
+
     const validateField = (field: keyof TForm, value: any): string | null => {
         const error = options.validator?.(field, value) ?? null;
 
         if (error) {
-            form.setError(field as any, error)
+            form.setError(field as any, error);
         } else {
             form.clearErrors(field as any);
         }
@@ -60,11 +69,24 @@ export function useAdminCrudForm<
 
     const openCreateModal = (): void => openModal(options.createData(), null);
 
-    const openEditModal = (item: TItem): void =>
-        openModal(options.editData(item), item.id);
+    const openEditModal = async (item: TItem): Promise<void> => {
+        try {
+            const formData = await options.editData(item);
+            openModal(formData, item.id);
+        } catch (error) {
+            console.error('Не удалось подготовить данные для формы:', error);
+        } finally {
+        }
+    };
 
-    const submit = (): void => {
+    const submit = async () => {
         if (options.validator && !validateForm()) {
+            return;
+        }
+
+        try {
+            await options.preSubmitAction?.();
+        } catch {
             return;
         }
 
@@ -76,6 +98,7 @@ export function useAdminCrudForm<
                 form.clearErrors();
             },
             onError: (errors: Record<string, string>) => {
+                options.onSubmitError?.(errors);
                 Object.values(errors).forEach((error) =>
                     notifications.add(error, 'error', 5000),
                 );
@@ -96,6 +119,7 @@ export function useAdminCrudForm<
     return {
         form,
         validateField,
+        validateForm,
         isFormPopupOpen,
         isEditMode,
         editingId,

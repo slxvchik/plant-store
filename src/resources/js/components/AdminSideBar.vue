@@ -76,7 +76,7 @@ import AdminRoutes from '@/routes/admin';
 
 const menuTabs = ref([
     { name: 'Заказы', href: AdminRoutes.orders.list.url(), active: false },
-    { name: 'Заявки', href: '/admin/callback', active: false },
+    { name: 'Заявки', href: AdminRoutes.requests.index.url(), active: false },
     {
         name: 'Каталог',
         isOpen: false,

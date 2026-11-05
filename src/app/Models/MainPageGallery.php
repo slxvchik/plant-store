@@ -26,6 +26,7 @@ class MainPageGallery extends Model
 
     public $fillable = [
         'id',
+        'active',
         'sort',
         'image_id',
         'pre_title',
@@ -37,12 +38,14 @@ class MainPageGallery extends Model
 
     protected $casts = [
         'sort' => 'integer',
+        'active' => 'boolean',
     ];
 
     public function toDomain(): DomainMainPageGalleryModel
     {
         return DomainMainPageGalleryModel::fromDb(
             id: $this->id,
+            active: $this->active,
             sort: $this->sort,
             imageId: $this->image_id,
             preTitle: $this->pre_title,

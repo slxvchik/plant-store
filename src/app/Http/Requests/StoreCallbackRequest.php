@@ -28,10 +28,10 @@ class StoreCallbackRequest extends FormRequest
         $data = $this->validated();
 
         return new SaveFormRequestDto(
-            formId: 'callback-form',
             FIO: $data['fio'],
-            email: $data['email'] ?? null,
             phone: $data['phone'],
+            formName: 'callback-form',
+            email: $data['email'] ?? null,
             comment: $data['comment'] ?? null,
         );
     }

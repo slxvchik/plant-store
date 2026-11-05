@@ -32,7 +32,7 @@
                 label="ФИО"
                 class="mb-2.5"
             />
-            <div class="mb-4 flex flex-col gap-2.5 md:flex-row xl:mb-6">
+            <div class="mb-4 flex flex-col gap-2.5 md:grid md:grid-cols-2 xl:mb-6">
                 <Input
                     id="callback_email"
                     type="email"

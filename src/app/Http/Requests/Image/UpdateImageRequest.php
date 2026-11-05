@@ -6,6 +6,7 @@ namespace App\Http\Requests\Image;
 
 use App\Application\Media\UpdateImage\UpdateImageRequestDto;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class UpdateImageRequest extends FormRequest
 {

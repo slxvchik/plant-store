@@ -9,6 +9,8 @@ class MainPageGallery
 {
     public private(set) Uuid $id;
 
+    public private(set) bool $active;
+
     public private(set) int $sort;
 
     public private(set) string $imageId;
@@ -23,9 +25,10 @@ class MainPageGallery
 
     public private(set) ?string $buttonText;
 
-    private function __construct(Uuid $id, int $sort, string $imageId, ?string $preTitle, ?string $title, ?string $description, ?string $buttonLink, ?string $buttonText)
+    private function __construct(Uuid $id, bool $active, int $sort, string $imageId, ?string $preTitle, ?string $title, ?string $description, ?string $buttonLink, ?string $buttonText)
     {
         $this->id = $id;
+        $this->active = $active;
         $this->sort = $sort;
         $this->imageId = $imageId;
         $this->preTitle = $preTitle;
@@ -35,12 +38,13 @@ class MainPageGallery
         $this->buttonText = $buttonText;
     }
 
-    public static function fromDb(string $id, int $sort, string $imageId, ?string $preTitle, ?string $title, ?string $description, ?string $buttonLink, ?string $buttonText): self
+    public static function fromDb(string $id, bool $active, int $sort, string $imageId, ?string $preTitle, ?string $title, ?string $description, ?string $buttonLink, ?string $buttonText): self
     {
         $uuid = new Uuid($id);
 
         return new self(
             id: $uuid,
+            active: $active,
             sort: $sort,
             imageId: $imageId,
             preTitle: $preTitle,
@@ -51,13 +55,14 @@ class MainPageGallery
         );
     }
 
-    public static function createNew(UuidGeneratorInterface $uuidGeneratorInterface, int $sort, string $imageId, ?string $preTitle, ?string $title, ?string $description, ?string $buttonLink, ?string $buttonText): self
+    public static function createNew(UuidGeneratorInterface $uuidGeneratorInterface, bool $active, int $sort, string $imageId, ?string $preTitle, ?string $title, ?string $description, ?string $buttonLink, ?string $buttonText): self
     {
         $id = $uuidGeneratorInterface->generate();
         $uuid = new Uuid($id);
 
         return new self(
             id: $uuid,
+            active: $active,
             sort: $sort,
             imageId: $imageId,
             preTitle: $preTitle,
@@ -68,8 +73,9 @@ class MainPageGallery
         );
     }
 
-    public function update(int $sort, string $imageId, ?string $preTitle, ?string $title, ?string $description, ?string $buttonLink, ?string $buttonText): void
+    public function update(bool $active, int $sort, string $imageId, ?string $preTitle, ?string $title, ?string $description, ?string $buttonLink, ?string $buttonText): void
     {
+        $this->active = $active;
         $this->sort = $sort;
         $this->imageId = $imageId;
         $this->preTitle = $preTitle;

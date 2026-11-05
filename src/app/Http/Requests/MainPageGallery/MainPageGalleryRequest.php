@@ -14,6 +14,7 @@ abstract class MainPageGalleryRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'active' => 'required|boolean',
             'sort' => ['required', 'integer'],
             'imageId' => ['sometimes', 'nullable', 'uuid', 'exists:images,id'],
             'preTitle' => ['sometimes', 'nullable', 'string', 'max:256'],
@@ -33,6 +34,7 @@ abstract class MainPageGalleryRequest extends FormRequest
         $data = $this->validated();
 
         return [
+            'active' => $data['active'],
             'sort' => $data['sort'],
             'imageId' => $data['imageId'] ?? null,
             'preTitle' => $data['preTitle'] ?? null,

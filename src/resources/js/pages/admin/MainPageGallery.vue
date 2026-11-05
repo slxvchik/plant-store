@@ -9,25 +9,27 @@
         class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
     >
         <div
-            class="grid grid-cols-5 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
+            class="grid grid-cols-6 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
         >
+            <div class="p-4">Изображение</div>
+            <div class="p-4">Активность</div>
             <div class="p-4">Сортировка</div>
             <div class="p-4">Заголовок</div>
             <div class="p-4">Подзаголовок</div>
-            <div class="p-4">Текст кнопки</div>
             <div class="p-4">Действие</div>
         </div>
         <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
             <div
-                v-for="slide in slides"
+                v-for="slide in slidesPage.items"
                 :key="slide.id"
                 class="grid grid-cols-6 transition-colors hover:bg-gray-50"
             >
-                <div class="h-auto w-80">
+                <div class="flex h-full w-full items-center justify-center p-2">
                     <img
                         :src="slide.image.webPathToFile"
                         :alt="slide.image.altText ?? undefined"
                         :title="slide.image.titleText ?? undefined"
+                        class="h-40 w-40 object-cover"
                         v-bind="
                             slide.image.width && slide.image.height
                                 ? {
@@ -39,12 +41,14 @@
                     />
                 </div>
                 <div class="p-4 font-medium text-gray-900">
+                    {{ slide.active }}
+                </div>
+                <div class="p-4 font-medium text-gray-900">
                     {{ slide.sort }}
                 </div>
                 <div class="truncate p-4">{{ slide.title ?? '—' }}</div>
                 <div class="truncate p-4">{{ slide.preTitle ?? '—' }}</div>
-                <div class="truncate p-4">{{ slide.buttonText ?? '—' }}</div>
-                <div class="flex gap-2 p-4">
+                <div class="flex flex-col items-center gap-2 p-4">
                     <Button
                         text="Редактировать"
                         class="w-fit bg-yellow-400 hover:bg-yellow-500"
@@ -64,6 +68,7 @@
         :title="isEditMode ? 'Редактировать слайд' : 'Создать слайд'"
     >
         <form class="flex w-full flex-col gap-5" @submit.prevent="submit">
+            <Checkbox id="active" v-model="form.active" text="Активность" />
             <Input
                 id="sort"
                 v-model.number="form.sort"
@@ -74,16 +79,12 @@
                 @update:modelValue="validateField('sort', form.sort)"
             />
             <div class="flex flex-col gap-1">
-                <FileUpload
+                <ImageUpload
                     id="image"
                     v-model="form.images"
                     label="Изображение"
                     type="image"
                 />
-                <p v-if="isEditMode" class="text-xs text-gray-500">
-                    Текущее изображение: {{ editingImageId }}. Загрузите новое,
-                    чтобы заменить.
-                </p>
                 <p v-if="form.errors.images" class="text-red-400">
                     {{ form.errors.images }}
                 </p>
@@ -134,9 +135,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import Button from '@/components/Button.vue';
-import FileUpload from '@/components/FileUpload.vue';
+import ImageUpload from '@/components/ImageUpload.vue';
 import Input from '@/components/Input.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Popup from '@/components/Popup.vue';
@@ -144,18 +144,24 @@ import Textarea from '@/components/Textarea.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
 import { useImageUploads } from '@/composables/useImageUploads';
 import AdminMainPageGallery from '@/routes/admin/main-page/gallery';
-import { useNotificationStore } from '@/stores/useNotificationStore';
+import { ImageType } from '@/types/image.ts';
 import type {
     MainPageGallerySlide,
     SlideFormState,
     SlidePayload,
 } from '@/types/main-page-gallery.ts';
+import type { Page } from '@/types/pagination.ts';
+import { toImageFormState } from '@/utils/imageMapper.ts';
 import { validate } from '@/utils/validator.ts';
+import Checkbox from '@/components/Checkbox.vue';
 
 defineOptions({ layout: AdminLayout });
-defineProps<{ slides: MainPageGallerySlide[] }>();
+defineProps<{ slidesPage: Page<MainPageGallerySlide> }>();
+
+const uploads = useImageUploads();
 
 const createData = (): SlideFormState => ({
+    active: false,
     sort: 500,
     images: [],
     preTitle: '',
@@ -177,7 +183,7 @@ const slideValidator = (field: keyof SlideFormState, value: any) => {
                 value,
                 'required',
                 'Изображение для слайда галлереи обязательно',
-            )
+            );
         default:
             return null;
     }
@@ -185,106 +191,63 @@ const slideValidator = (field: keyof SlideFormState, value: any) => {
 const {
     form,
     validateField,
-    validateForm,
     isFormPopupOpen,
     isEditMode,
-    editingId,
     openCreateModal,
     openEditModal,
     destroy,
+    submit,
 } = useAdminCrudForm<SlideFormState, MainPageGallerySlide>({
     createData,
-    editData: (slide) => ({
-        sort: slide.sort,
-        images: [],
-        preTitle: slide.preTitle ?? '',
-        title: slide.title ?? '',
-        description: slide.description ?? '',
-        buttonLink: slide.buttonLink ?? '',
-        buttonText: slide.buttonText ?? '',
-    }),
+    editData: async (slide) => {
+        const uploadedImage = await toImageFormState(slide.image);
+
+        return {
+            active: slide.active,
+            sort: slide.sort,
+            images: Array(uploadedImage),
+            preTitle: slide.preTitle ?? '',
+            title: slide.title ?? '',
+            description: slide.description ?? '',
+            buttonLink: slide.buttonLink ?? '',
+            buttonText: slide.buttonText ?? '',
+        };
+    },
     routes: {
         store: () => AdminMainPageGallery.store.url(),
         update: (id) => AdminMainPageGallery.update.url(id),
         destroy: (id) => AdminMainPageGallery.destroy.url(id),
     },
     validator: slideValidator,
+    onSubmitError: async () => {
+        await uploads.rollback();
+    },
+    preSubmitAction: async () => {
+        if (form.images.length === 0) {
+            throw Error('Изображение обязательно');
+        }
+
+        const imageId = await uploads.upload(
+            [form.images[0]],
+            ImageType.MainPageGallery,
+        );
+        form.images[0].id = imageId[0];
+    },
+    formTransform: (slide: SlideFormState): SlidePayload => ({
+        active: slide.active,
+        sort: slide.sort,
+        imageId: slide.images[0]?.id ?? '',
+        preTitle: slide.preTitle,
+        title: slide.title,
+        description: slide.description,
+        buttonLink: slide.buttonLink,
+        buttonText: slide.buttonText,
+    }),
 });
-
-const uploads = useImageUploads();
-const notifications = useNotificationStore();
-const editingImageId = ref<string | null>(null);
-
 const openCreate = (): void => {
-    editingImageId.value = null;
     openCreateModal();
 };
 const openEdit = (slide: MainPageGallerySlide): void => {
-    editingImageId.value = slide.image.id;
     openEditModal(slide);
-};
-
-const emptyToNull = (value: string): string | null =>
-    value.trim() === '' ? null : value;
-
-const submit = async (): Promise<void> => {
-    const frontendErrors = validateForm(form);
-
-    if (Object.keys(frontendErrors).length > 0) {
-        Object.values(frontendErrors).forEach((error) => {
-            if (error) {
-                notifications.add(error, 'error');
-            }
-        });
-
-        return;
-    }
-
-    if (!isEditMode.value && form.images.length === 0) {
-        form.setError('images' as never, 'Изображение обязательно');
-        notifications.add('Изображение обязательно', 'error');
-
-        return;
-    }
-
-    try {
-        const images = await uploads.upload(form.images);
-        const payload: SlidePayload = {
-            sort: form.sort,
-            imageId: images[0]?.id ?? null,
-            preTitle: emptyToNull(form.preTitle),
-            title: emptyToNull(form.title),
-            description: emptyToNull(form.description),
-            buttonLink: emptyToNull(form.buttonLink),
-            buttonText: emptyToNull(form.buttonText),
-        };
-
-        form.transform(() => payload);
-
-        const id = editingId.value;
-        const request = id === null ? form.post : form.put;
-        request(
-            id === null
-                ? AdminMainPageGallery.store.url()
-                : AdminMainPageGallery.update.url(id),
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    uploads.confirm();
-                    isFormPopupOpen.value = false;
-                    form.clearErrors();
-                },
-                onError: (errors) => {
-                    void uploads.rollback();
-                    Object.values(errors).forEach((error) => {
-                        notifications.add(error, 'error', 5000);
-                    });
-                },
-            },
-        );
-    } catch {
-        await uploads.rollback();
-        notifications.add('Не удалось загрузить изображение', 'error', 5000);
-    }
 };
 </script>

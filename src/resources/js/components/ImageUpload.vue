@@ -8,7 +8,7 @@
             {{ label }}
         </div>
         <div
-            v-if="modelValue.length && type === 'image'"
+            v-if="modelValue.length"
             class="flex flex-row flex-wrap gap-2"
         >
             <div
@@ -57,8 +57,8 @@
             :id="id"
             ref="fileInput"
             type="file"
-            multiple
-            :accept="acceptTypes"
+            :multiple="multiple"
+            accept="image/jpeg,image/png,image/webp"
             @change="handleFileChange"
             :disabled="disabled"
         />
@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 import TrashBasket from '@/components/icons/TrashBasket.vue';
 import Input from '@/components/Input.vue';
 import type { ImageFormState } from '@/types/image';
@@ -77,27 +77,15 @@ import type { ImageFormState } from '@/types/image';
 interface Props {
     id: string;
     label?: string;
-    type?: 'image' | 'video';
     error?: string;
     rules?: string;
     disabled?: boolean;
+    multiple?: boolean;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const modelValue = defineModel<ImageFormState[]>({ default: () => [] });
 const fileInput = ref<HTMLInputElement | null>(null);
-
-const acceptTypes = computed(() => {
-    if (props.type === 'image') {
-        return 'image/jpeg,image/png,image/webp';
-    }
-
-    if (props.type === 'video') {
-        return 'video/mp4,video/webm';
-    }
-
-    return undefined;
-});
 
 const handleFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement;

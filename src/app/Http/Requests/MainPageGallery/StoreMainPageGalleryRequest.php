@@ -21,7 +21,7 @@ class StoreMainPageGalleryRequest extends MainPageGalleryRequest
 
     public function toDto(): CreateSlideRequestDto
     {
-        /** @var array{sort: int, imageId: string, preTitle: ?string, title: ?string, description: ?string, buttonLink: ?string, buttonText: ?string} $data */
+        /** @var array{active: bool, sort: int, imageId: string, preTitle: ?string, title: ?string, description: ?string, buttonLink: ?string, buttonText: ?string} $data */
         $data = $this->slideData();
 
         return new CreateSlideRequestDto(...$data);

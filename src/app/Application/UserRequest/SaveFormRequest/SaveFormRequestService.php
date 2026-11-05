@@ -17,7 +17,7 @@ readonly class SaveFormRequestService implements SaveFormRequestUseCase
     {
         $userRequest = UserRequest::createNew(
             uuidGenerator: $this->uuidGenerator,
-            formId: $saveFormRequestDto->formId,
+            formName: $saveFormRequestDto->formName,
             FIO: $saveFormRequestDto->FIO,
             email: $saveFormRequestDto->email,
             phone: $saveFormRequestDto->phone,

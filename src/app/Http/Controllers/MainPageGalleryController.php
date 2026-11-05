@@ -6,10 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Application\MainPageGallery\CreateSlide\CreateSlideUseCase;
 use App\Application\MainPageGallery\DeleteSlide\DeleteSlideUseCase;
+use App\Application\MainPageGallery\GetActiveSlides\GetActiveSlidesUseCase;
 use App\Application\MainPageGallery\GetSlides\GetSlidesUseCase;
 use App\Application\MainPageGallery\UpdateSlide\UpdateSlideUseCase;
 use App\Http\Requests\MainPageGallery\StoreMainPageGalleryRequest;
 use App\Http\Requests\MainPageGallery\UpdateMainPageGalleryRequest;
+use App\Http\Requests\PaginationRequest;
 use App\Notification\Notification;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -24,10 +26,10 @@ final class MainPageGalleryController extends Controller
         private readonly DeleteSlideUseCase $deleteSlideUseCase,
     ) {}
 
-    public function index(): Response
+    public function index(PaginationRequest $request): Response
     {
         return Inertia::render('admin/MainPageGallery', [
-            'slides' => $this->getSlidesUseCase->execute(),
+            'slidesPage' => $this->getSlidesUseCase->execute($request->toPageable()),
         ]);
     }
 

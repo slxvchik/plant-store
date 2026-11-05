@@ -8,6 +8,7 @@ readonly class UpdateSlideRequestDto
 {
     public function __construct(
         public string $id,
+        public bool $active,
         public int $sort,
         public ?string $imageId,
         public ?string $preTitle,

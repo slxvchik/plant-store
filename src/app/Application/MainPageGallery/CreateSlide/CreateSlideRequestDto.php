@@ -7,6 +7,7 @@ namespace App\Application\MainPageGallery\CreateSlide;
 readonly class CreateSlideRequestDto
 {
     public function __construct(
+        public bool $active,
         public int $sort,
         public string $imageId,
         public ?string $preTitle,

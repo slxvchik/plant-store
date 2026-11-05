@@ -6,10 +6,14 @@ use App\Application\MainPageGallery\CreateSlide\CreateSlideService;
 use App\Application\MainPageGallery\CreateSlide\CreateSlideUseCase;
 use App\Application\MainPageGallery\DeleteSlide\DeleteSlideService;
 use App\Application\MainPageGallery\DeleteSlide\DeleteSlideUseCase;
+use App\Application\MainPageGallery\GetActiveSlides\GetActiveSlidesService;
+use App\Application\MainPageGallery\GetActiveSlides\GetActiveSlidesUseCase;
 use App\Application\MainPageGallery\GetSlides\GetSlidesService;
 use App\Application\MainPageGallery\GetSlides\GetSlidesUseCase;
 use App\Application\MainPageGallery\UpdateSlide\UpdateSlideService;
 use App\Application\MainPageGallery\UpdateSlide\UpdateSlideUseCase;
+use App\Application\Media\GetImages\GetImagesService;
+use App\Application\Media\GetImages\GetImagesUseCase;
 use App\Domain\MainPageGallery\Repository\MainPageGalleryRepository;
 use App\Repositories\MainPageGalleryRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
@@ -32,8 +36,13 @@ class MainPageGalleryProvider extends ServiceProvider
         );
 
         $this->app->singleton(
+            GetActiveSlidesUseCase::class,
+            GetActiveSlidesService::class
+        );
+
+        $this->app->singleton(
             GetSlidesUseCase::class,
-            GetSlidesService::class
+            GetSlidesService::class,
         );
 
         $this->app->singleton(

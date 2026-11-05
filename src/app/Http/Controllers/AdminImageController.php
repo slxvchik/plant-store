@@ -11,6 +11,7 @@ use App\Http\Requests\Image\StoreImageRequest;
 use App\Http\Requests\Image\UpdateImageRequest;
 use App\Notification\Notification;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class AdminImageController extends Controller
 {

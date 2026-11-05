@@ -10,6 +10,7 @@ use App\Domain\Media\Repository\ImageRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Models\Image;
+use Illuminate\Support\Facades\Log;
 use Override;
 
 class ImageRepositoryImpl implements ImageRepository

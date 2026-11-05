@@ -48,19 +48,20 @@
             multiple
             :disabled="disabled"
         />
-        <FileUpload
+        <ImageUpload
             id="images"
             v-model="form.images"
             label="Изображения товара"
             type="image"
             :disabled="disabled"
+            multiple
         />
     </div>
 </template>
 
 <script setup lang="ts">
 import Checkbox from '@/components/Checkbox.vue';
-import FileUpload from '@/components/FileUpload.vue';
+import ImageUpload from '@/components/ImageUpload.vue';
 import Input from '@/components/Input.vue';
 import Select from '@/components/Select.vue';
 import Textarea from '@/components/Textarea.vue';

@@ -26,6 +26,7 @@ readonly class UpdateSlideService implements UpdateSlideUseCase
         }
 
         $slide->update(
+            active: $updateSlideRequestDto->active,
             sort: $updateSlideRequestDto->sort,
             imageId: $updateSlideRequestDto->imageId ?? $slide->imageId,
             preTitle: $updateSlideRequestDto->preTitle,

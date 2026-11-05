@@ -33,4 +33,5 @@ export type UpdateImagePayload = Omit<CreateImagePayload, 'file' | 'folder'>;
 
 export enum ImageType {
     Product = "product",
+    MainPageGallery = "main_page_gallery"
 }
