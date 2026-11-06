@@ -1,6 +1,6 @@
 <template>
     <section
-        class="bg-bg-surface px-3 py-8 md:px-8 md:py-20 xl:mb-12 xl:flex xl:flex-row xl:justify-between xl:px-20 xl:py-25"
+        class="bg-bg-surface px-3 py-8 md:px-8 md:py-20 xl:flex xl:flex-row xl:justify-between xl:px-20 xl:py-25"
     >
         <div
             class="h-45 w-full overflow-hidden rounded-tl-2xl rounded-tr-[64px] rounded-br-2xl rounded-bl-[64px] md:h-80 md:rounded-tl-3xl md:rounded-tr-[100px] md:rounded-br-3xl md:rounded-bl-[100px] xl:h-125 xl:w-[48%] xl:rounded-tl-4xl xl:rounded-tr-[140px] xl:rounded-br-4xl xl:rounded-bl-[140px]"

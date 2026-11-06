@@ -1,9 +1,11 @@
 <template>
     <header
-        class="bg-moss-50/90 sticky top-0 z-40"
-        :class="isBurgerMenuOpen ? 'bg-white' : 'bg-white/50 backdrop-blur'"
+        class="sticky top-0 z-40 flex justify-center"
+        :class="
+            isBurgerMenuOpen ? 'bg-moss-50/90' : 'bg-white/50 backdrop-blur'
+        "
     >
-        <div class="mx-auto flex items-center justify-between px-4 py-3">
+        <div class="mx-auto flex w-full items-center justify-between py-3">
             <a href="/" class="flex items-center gap-2.5">
                 <div class="h-10 w-10">
                     <LogoIcon />
@@ -66,7 +68,7 @@
         <div
             v-show="isBurgerMenuOpen"
             id="mobile-menu"
-            class="absolute min-h-screen w-full border-t bg-white px-4 py-3 md:hidden"
+            class="absolute min-h-screen w-full border-t bg-white py-3 md:hidden"
         >
             <ul class="text-moss-700 flex flex-col gap-3 text-sm font-medium">
                 <li

@@ -5,9 +5,24 @@
                 :id="id"
                 type="checkbox"
                 v-model="modelValue"
-                class="border-default-medium h-4 w-4 rounded-xs border bg-primary"
+                class="hidden"
                 :disabled="disabled"
             />
+            <span :class="checkboxClassesResult">
+                <svg
+                    fill="currentColor"
+                    viewBox="0 0 1920 1920"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    v-if="modelValue"
+                >
+                    <path
+                        d="M1743.858 267.012 710.747 1300.124 176.005 765.382 0 941.387l710.747 710.871 1209.24-1209.116z"
+                        fill-rule="evenodd"
+                    />
+                </svg>
+            </span>
             <label
                 :for="id"
                 class="text-heading ms-2 cursor-pointer font-medium select-none"
@@ -23,6 +38,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 interface Props {
     id: string;
     text?: string;
@@ -30,9 +47,28 @@ interface Props {
     disabled?: boolean;
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
     text: '',
 });
 
 const modelValue = defineModel<boolean>({ default: false });
+
+const checkboxClasses =
+    'border-default-medium h-4 w-4 rounded-sm border flex items-center justify-center text-white transition-bg duration-300';
+
+const checkboxClassesResult = computed(() => {
+    if (modelValue.value && !props.disabled) {
+        return [checkboxClasses, 'bg-secondary border-secondary'].join(' ');
+    } else if (!modelValue.value && !props.disabled) {
+        return [checkboxClasses, 'bg-white border-[#DCE3DB]'].join(' ');
+    } else if (props.disabled && modelValue.value) {
+        return [checkboxClasses, 'bg-secondary/50 border-secondary/50'].join(
+            ' ',
+        );
+    } else if (props.disabled && !modelValue.value) {
+        return [checkboxClasses, 'border-secondary/50'].join(' ');
+    }
+
+    return checkboxClasses;
+});
 </script>

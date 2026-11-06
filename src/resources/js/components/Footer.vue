@@ -1,8 +1,8 @@
 <template>
     <footer
-        class="bg-bg-base px-3 pt-8 pb-3 sm:px-8 sm:pt-16 xl:px-20 xl:pt-20"
+        class="flex flex-col justify-center bg-bg-base pt-8 pb-3 sm:pt-16 xl:pt-20"
     >
-        <div class="mb-6 flex flex-col justify-between sm:flex-row">
+        <div class="mb-6 flex flex-row flex-wrap justify-between">
             <div class="mb-4 flex max-w-70 flex-col md:max-w-120">
                 <div class="mb-4 flex flex-row gap-2">
                     <div class="h-10 w-10">
