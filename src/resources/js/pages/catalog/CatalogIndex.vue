@@ -281,7 +281,7 @@ import { computed, ref } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
 import CatalogFilters from '@/components/CatalogFilters.vue';
 import Layout from '@/components/layouts/Layout.vue';
-import ProductCard from '@/components/ProductCard.vue';
+import ProductCard from '@/components/product/ProductCard.vue';
 import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
 import { storefrontProducts } from '@/data/products';
 

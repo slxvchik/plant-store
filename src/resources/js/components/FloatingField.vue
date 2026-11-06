@@ -56,14 +56,15 @@
             enter-to-class="translate-y-0 opacity-100"
             leave-active-class="transition-all duration-200"
             leave-to-class="opacity-0"
-            ><p
+        >
+            <p
                 v-if="error"
                 :id="`${id}-error`"
                 class="mt-1.5 pl-2 text-xs text-red-600 dark:text-red-400"
             >
                 {{ error }}
-            </p></Transition
-        >
+            </p>
+        </Transition>
     </div>
 </template>
 

@@ -9,7 +9,7 @@
             <Reveal direction="right">
                 <div class="relative">
                     <div
-                        class="aspect-[4/5] max-h-[640px] overflow-hidden rounded-[28px] rounded-tr-[100px] md:rounded-tr-[160px]"
+                        class="aspect-[4/5] max-h-[640px] overflow-hidden rounded-[28px]"
                     >
                         <img
                             src="/images/water_lily.png"

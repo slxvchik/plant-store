@@ -6,17 +6,16 @@
             :loop="true"
             :effect="'fade'"
             :speed="900"
-            :pagination="{ clickable: true, el: '.hero-pagination' }"
             :modules="swiperModules"
             class="hero-gallery relative overflow-hidden rounded-[28px] lg:rounded-none"
             @slide-change="onSlideChange"
         >
             <swiper-slide v-for="slide in slides" :key="slide.title">
                 <div
-                    class="grid bg-bg-elevated lg:min-h-[680px] lg:grid-cols-2 lg:bg-bg-dark dark:bg-bg-night-soft"
+                    class="grid bg-bg-elevated lg:h-[680px] lg:grid-cols-2 lg:bg-bg-dark dark:bg-bg-night-soft"
                 >
                     <div
-                        class="relative order-1 h-[340px] overflow-hidden md:h-[480px] lg:order-2 lg:h-auto lg:min-h-[680px]"
+                        class="relative order-1 h-[340px] overflow-hidden md:h-[480px] lg:order-2 lg:h-full"
                     >
                         <img
                             :src="slide.image"
@@ -24,14 +23,6 @@
                             class="h-full w-full scale-105 object-cover"
                             fetchpriority="high"
                         />
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-bg-dark/20 to-transparent lg:bg-gradient-to-r lg:from-bg-dark/15 lg:to-transparent"
-                        />
-                        <div
-                            class="absolute right-5 bottom-5 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-medium tracking-wide text-white backdrop-blur-md md:right-8 md:bottom-8"
-                        >
-                            {{ slide.caption }}
-                        </div>
                     </div>
                     <div
                         class="relative order-2 flex items-center overflow-hidden px-5 py-8 md:px-10 md:py-12 lg:order-1 lg:px-[max(3rem,calc((100vw-1440px)/2+3rem))] lg:py-20"
@@ -49,9 +40,10 @@
                             <p
                                 class="mb-4 flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-primary uppercase md:text-xs lg:text-secondary dark:text-secondary"
                             >
-                                <span class="h-4 w-4"
-                                    ><AppIcon name="leaf" /></span
-                                >{{ slide.eyebrow }}
+                                <span class="h-4 w-4">
+                                    <AppIcon name="leaf" />
+                                </span>
+                                {{ slide.eyebrow }}
                             </p>
                             <h1
                                 class="font-serif text-[40px] leading-[1.04] font-medium tracking-[-0.035em] text-text-title md:text-6xl lg:text-[64px] lg:text-linen xl:text-[72px] dark:text-linen"
@@ -63,21 +55,23 @@
                                 >
                             </h1>
                             <p
-                                class="mt-5 max-w-md text-[15px] leading-7 text-text-muted md:text-lg md:leading-8 lg:text-white/60 dark:text-white/60"
+                                class="mt-5 max-w-md text-[15px] leading-7 text-text-muted md:text-lg md:leading-8 lg:line-clamp-7 lg:text-white/60 dark:text-white/60"
                             >
                                 {{ slide.description }}
                             </p>
                             <div
-                                class="mt-7 flex flex-col gap-3 min-[420px]:flex-row md:mt-9"
+                                class="mt-7 mb-4 grid grid-cols-2 gap-3 min-[420px]:flex-row md:mt-9"
                             >
                                 <Link
                                     href="/catalog"
                                     class="group flex min-h-12 items-center justify-center gap-3 rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-primary-hover hover:shadow-xl lg:bg-secondary lg:text-bg-dark lg:hover:bg-linen"
                                 >
-                                    Выбрать растение<span
+                                    Выбрать растение
+                                    <span
                                         class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                                        ><AppIcon name="arrow"
-                                    /></span>
+                                    >
+                                        <AppIcon name="arrow" />
+                                    </span>
                                 </Link>
                                 <a
                                     href="#mission"
@@ -85,32 +79,19 @@
                                     >Наша философия</a
                                 >
                             </div>
-                            <div
-                                class="mt-8 flex items-center gap-5 text-xs text-text-muted md:mt-10 lg:text-white/45 dark:text-white/45"
-                            >
-                                <span class="flex items-center gap-2"
-                                    ><span
-                                        class="h-4 w-4 text-primary lg:text-secondary"
-                                        ><AppIcon name="shield" /></span
-                                    >Гарантия 30 дней</span
-                                >
-                                <span
-                                    class="h-4 w-px bg-text-title/15 lg:bg-white/15"
-                                />
-                                <span>Доставка по всей России</span>
-                            </div>
                         </div>
                     </div>
                 </div>
             </swiper-slide>
             <div
-                class="absolute bottom-5 left-5 z-10 flex items-center gap-4 md:bottom-8 md:left-10 lg:bottom-10 lg:left-[max(3rem,calc((100vw-1440px)/2+3rem))]"
+                class="absolute bottom-5 left-[50%] z-10 flex translate-x-[-50%] items-center lg:bottom-5 lg:left-5 lg:translate-x-0"
             >
-                <div class="hero-pagination flex items-center gap-2" />
                 <span
-                    class="text-xs font-medium tracking-widest text-text-muted lg:text-white/45"
-                    >0{{ activeSlide + 1 }} / 0{{ slides.length }}</span
+                    class="text-xs font-medium tracking-widest text-nowrap text-text-muted lg:text-white/45"
                 >
+                    {{ addZeroNumber(activeSlide + 1) }} /
+                    {{ addZeroNumber(slides.length) }}
+                </span>
             </div>
         </swiper>
     </section>
@@ -119,7 +100,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import type { Swiper as SwiperInstance } from 'swiper';
-import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
+import { Autoplay, EffectFade } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { ref } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
@@ -128,7 +109,7 @@ import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
 
 const activeSlide = ref(0);
-const swiperModules = [EffectFade, Autoplay, Pagination];
+const swiperModules = [EffectFade, Autoplay];
 const slides = [
     {
         eyebrow: 'Питомник растений полного цикла',
@@ -145,41 +126,20 @@ const slides = [
         title: 'Ваш дом. Ваш ритм.',
         accent: 'Ваш сад',
         description:
-            'От первого компактного фикуса до зелёной коллекции — подберём растения под ваш свет, пространство и образ жизни.',
+            'От первого компактного фикуса до зелёной коллекции — подберём растения под ваш свет, пространство и образ жизни.От первого компактного фикуса до зелёной коллекции — подберём растения под ваш свет, пространство и образ жизни.От первого компактного фикуса до зелёной коллекции — подберём растения под ваш свет, пространство и образ жизни.',
         image: '/images/slide_2.avif',
         imageAlt: 'Зелёные растения в светлой оранжерее',
         caption: 'Новая весенняя коллекция',
     },
 ];
+const addZeroNumber = (num: number): string => {
+    if (num < 10) {
+        return `0${num}`;
+    }
 
+    return `${num}`;
+};
 const onSlideChange = (swiper: SwiperInstance): void => {
     activeSlide.value = swiper.realIndex;
 };
 </script>
-
-<style>
-.hero-pagination .swiper-pagination-bullet {
-    width: 6px;
-    height: 6px;
-    margin: 0 !important;
-    border-radius: 999px;
-    background: var(--color-primary);
-    opacity: 0.3;
-    transition: all 0.4s ease;
-}
-
-.dark .hero-pagination .swiper-pagination-bullet {
-    background: var(--color-linen);
-}
-
-.hero-pagination .swiper-pagination-bullet-active {
-    width: 28px;
-    opacity: 1;
-}
-
-@media (min-width: 1024px) {
-    .hero-pagination .swiper-pagination-bullet {
-        background: var(--color-linen);
-    }
-}
-</style>

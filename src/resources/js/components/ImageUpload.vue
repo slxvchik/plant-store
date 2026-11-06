@@ -30,7 +30,7 @@
                         :id="`${image.id}-title`"
                         v-model="image.titleText"
                         type="text"
-                        placeholder="Title текст"
+                        label="Title текст"
                         :disabled="disabled"
                         @change="imageChange(image)"
                     />
@@ -38,7 +38,7 @@
                         :id="`${image.id}-alt`"
                         v-model="image.altText"
                         type="text"
-                        placeholder="Alt текст"
+                        label="Alt текст"
                         :disabled="disabled"
                         @change="imageChange(image)"
                     />
@@ -78,7 +78,6 @@ interface Props {
     id: string;
     label?: string;
     error?: string;
-    rules?: string;
     disabled?: boolean;
     multiple?: boolean;
 }

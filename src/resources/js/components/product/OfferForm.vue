@@ -5,36 +5,38 @@
             id="offer_id"
             v-model="form.sku"
             label="Артикул"
-            rules="required"
             :disabled="disabled"
+            :error="form.errors.sku"
         />
-        <Checkbox
-            id="offer_active"
-            v-model="form.active"
-            text="Активность"
-            :disabled="disabled"
-        />
+        <div class="w-fit">
+            <Checkbox
+                id="offer_active"
+                v-model="form.active"
+                text="Активность"
+                :disabled="disabled"
+            />
+        </div>
         <Input
             id="offer_sort"
             v-model.number="form.sort"
             label="Сортировка"
             type="number"
-            rules="required"
             :disabled="disabled"
         />
-        <Textarea
+        <Input
             id="offer_description"
             v-model="form.description"
             label="Описание"
             :disabled="disabled"
+            multiline
         />
         <Input
             id="offer_price"
             v-model.number="form.price"
             label="Цена (в копейках)"
             type="number"
-            rules="required|positiveNumber"
             :disabled="disabled"
+            :error="form.errors.price"
         />
         <Input
             id="offer_form_factor"
@@ -108,11 +110,11 @@
 </template>
 
 <script setup lang="ts">
+import type { InertiaForm } from '@inertiajs/vue3';
 import { watch } from 'vue';
 import Checkbox from '@/components/Checkbox.vue';
 import ImageUpload from '@/components/ImageUpload.vue';
 import Input from '@/components/Input.vue';
-import Textarea from '@/components/Textarea.vue';
 import type { OfferFormState } from '@/types/product.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 
@@ -122,13 +124,13 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const form = defineModel<OfferFormState>({ required: true });
+const form = defineModel<InertiaForm<OfferFormState>>('form', { required: true });
 
 watch(
     () => props.warehouses,
     (warehouses) => {
         form.value.stocks = warehouses.map((warehouse) => {
-            const existing = form.value.stocks.find(
+            const existing = form.value.stocks?.find(
                 (stock) => stock.warehouseId === warehouse.id,
             );
 

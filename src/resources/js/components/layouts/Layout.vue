@@ -19,17 +19,6 @@
         <MobileNavigation />
         <CartDrawer />
         <NotificationList />
-        <Transition
-            enter-active-class="transition-opacity duration-200"
-            enter-from-class="opacity-0"
-            leave-active-class="transition-opacity duration-300"
-            leave-to-class="opacity-0"
-        >
-            <div
-                v-if="isThemeTransitioning"
-                class="pointer-events-none fixed inset-0 z-[100] bg-bg-base dark:bg-bg-night"
-            />
-        </Transition>
     </div>
 </template>
 
@@ -40,8 +29,6 @@ import Footer from '@/components/Footer.vue';
 import Header from '@/components/Header.vue';
 import MobileNavigation from '@/components/MobileNavigation.vue';
 import NotificationList from '@/components/NotificationList.vue';
-import { useTheme } from '@/composables/useTheme';
 
 const page = usePage();
-const { isThemeTransitioning } = useTheme();
 </script>

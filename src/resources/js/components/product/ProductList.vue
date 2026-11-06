@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import ProductCard from '@/components/ProductCard.vue';
-import { storefrontProducts } from '@/data/products';
+import ProductCard from '@/components/product/ProductCard.vue';
+import { storefrontProducts } from '@/data/products.ts';
 
 withDefaults(defineProps<{ products?: typeof storefrontProducts }>(), {
     products: () => storefrontProducts,

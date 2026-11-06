@@ -6,7 +6,7 @@
             >
                 <div class="relative min-h-72 overflow-hidden lg:min-h-[560px]">
                     <img
-                        src="/images/water-lily.png"
+                        src="/images/lily_in_hands.png"
                         alt="Цветущая лилия в питомнике"
                         loading="lazy"
                         class="absolute inset-0 h-full w-full object-cover"
@@ -48,64 +48,87 @@
                         рабочих часов.
                     </p>
                     <div class="mt-7 space-y-4">
-                        <FloatingField
+                        <Input
                             id="callback-fio"
-                            v-model="form.fio"
+                            v-model="callbackForm.fio"
                             label="Ваше имя *"
                             autocomplete="name"
-                            :error="form.errors.fio"
+                            :error="callbackForm.errors.fio"
+                            @update:model-value="
+                                formValidator.validateField(
+                                    'fio',
+                                    callbackForm.fio,
+                                )
+                            "
                         />
                         <div class="grid gap-4 md:grid-cols-2">
-                            <FloatingField
+                            <Input
                                 id="callback-email"
-                                v-model="form.email"
+                                v-model="callbackForm.email"
                                 type="email"
                                 label="Почта"
                                 autocomplete="email"
-                                :error="form.errors.email"
-                            /><FloatingField
+                                :error="callbackForm.errors.email"
+                                @update:model-value="
+                                    formValidator.validateField(
+                                        'email',
+                                        callbackForm.email,
+                                    )
+                                "
+                            />
+                            <Input
                                 id="callback-phone"
-                                v-model="form.phone"
+                                v-model="callbackForm.phone"
                                 type="tel"
                                 label="Телефон *"
                                 autocomplete="tel"
-                                :error="form.errors.phone"
+                                :error="callbackForm.errors.phone"
+                                @update:model-value="
+                                    formValidator.validateField(
+                                        'phone',
+                                        callbackForm.phone,
+                                    )
+                                "
                             />
                         </div>
-                        <FloatingField
+                        <Input
                             id="callback-comment"
-                            v-model="form.comment"
+                            v-model="callbackForm.comment"
                             label="Что вас интересует?"
                             multiline
-                            :error="form.errors.comment"
+                            :error="callbackForm.errors.comment"
                         />
                     </div>
                     <button
                         type="submit"
                         class="mt-6 flex min-h-13 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-6 font-semibold text-white shadow-lg shadow-primary/10 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover disabled:opacity-60"
-                        :disabled="form.processing"
+                        :disabled="callbackForm.processing"
                     >
                         {{
-                            form.processing
+                            callbackForm.processing
                                 ? 'Отправляем…'
                                 : 'Запросить консультацию'
-                        }}<span v-if="!form.processing" class="h-4 w-4"
-                            ><AppIcon name="arrow"
-                        /></span>
+                        }}
+                        <span v-if="!callbackForm.processing" class="h-4 w-4">
+                            <AppIcon name="arrow" />
+                        </span>
                     </button>
                     <Transition
                         enter-active-class="transition-all duration-300"
                         enter-from-class="translate-y-2 opacity-0"
                         leave-to-class="opacity-0"
-                        ><p
+                    >
+                        <p
                             v-if="submitted"
                             class="mt-4 flex items-center gap-2 text-sm text-primary dark:text-secondary"
                             role="status"
                         >
-                            <span class="h-4 w-4"><AppIcon name="check" /></span
-                            >Спасибо! Скоро свяжемся с вами.
-                        </p></Transition
-                    >
+                            <span class="h-4 w-4">
+                                <AppIcon name="check" />
+                            </span>
+                            Спасибо! Скоро свяжемся с вами.
+                        </p>
+                    </Transition>
                 </form>
             </div>
         </Reveal>
@@ -116,17 +139,41 @@
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
-import FloatingField from '@/components/FloatingField.vue';
+import Input from '@/components/Input.vue';
 import Reveal from '@/components/Reveal.vue';
+import { useFormValidator } from '@/composables/useFormValidator.ts';
+import type { UserRequest } from '@/types/user-request.ts';
+import { validate } from '@/utils/validator.ts';
 
-const form = useForm({ fio: '', phone: '', email: '', comment: '' });
+type CallbackForm = Omit<UserRequest, 'id'>;
+
+const callbackForm = useForm<CallbackForm>();
 const submitted = ref(false);
+const validator = (field: keyof CallbackForm, value: any): string | null => {
+    switch (field) {
+        case 'phone':
+            return validate(value, 'required|phone');
+        case 'email':
+            return validate(value, 'email');
+        case 'fio':
+            return validate(value, 'required');
+        default:
+            return null;
+    }
+};
+const formValidator = useFormValidator(validator, callbackForm);
 const submit = (): void => {
     submitted.value = false;
-    form.post('/callback', {
+
+    console.log('error');
+    if (!formValidator.validateForm()) {
+        return;
+    }
+
+    callbackForm.post('/callback', {
         preserveScroll: true,
         onSuccess: () => {
-            form.reset();
+            callbackForm.reset();
             submitted.value = true;
         },
     });

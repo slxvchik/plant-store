@@ -45,8 +45,8 @@
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import AppIcon from '@/components/AppIcon.vue';
-import ProductCard from '@/components/ProductCard.vue';
-import { storefrontProducts } from '@/data/products';
+import ProductCard from '@/components/product/ProductCard.vue';
+import { storefrontProducts } from '@/data/products.ts';
 import 'swiper/css';
 import 'swiper/css/navigation';
 

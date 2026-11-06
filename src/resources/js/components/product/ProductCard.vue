@@ -27,19 +27,9 @@
                 ><span class="h-4 w-4"><AppIcon name="arrow" /></span
             ></span>
         </Link>
-        <button
-            type="button"
-            class="absolute top-2.5 right-2.5 z-10 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full text-text-title transition-all duration-300 hover:scale-110 hover:bg-white/80 md:top-3 md:right-3 dark:text-white dark:hover:bg-bg-night/70"
-            :aria-label="
-                favorite ? 'Убрать из избранного' : 'Добавить в избранное'
-            "
-            :aria-pressed="favorite"
-            @click.prevent="favorite = !favorite"
-        >
-            <span class="h-5 w-5" :class="favorite ? 'text-accent' : ''"
-                ><AppIcon name="heart"
-            /></span>
-        </button>
+        <div class="absolute top-2.5 right-2.5 z-10">
+            <FavoriteButton v-model="favorite" />
+        </div>
         <div class="flex flex-1 flex-col p-3 md:p-5">
             <p
                 class="truncate text-[10px] font-medium tracking-[0.12em] text-text-muted uppercase md:text-xs dark:text-white/40"
@@ -117,8 +107,9 @@
 import { Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
-import { useCartDrawer } from '@/composables/useCartDrawer';
-import { storefrontProducts } from '@/data/products';
+import FavoriteButton from '@/components/FavoriteButton.vue';
+import { useCartDrawer } from '@/composables/useCartDrawer.ts';
+import { storefrontProducts } from '@/data/products.ts';
 
 const props = defineProps<{ product?: (typeof storefrontProducts)[number] }>();
 const item = computed(() => props.product ?? storefrontProducts[0]!);

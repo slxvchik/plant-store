@@ -114,15 +114,7 @@
                     >
                         {{ item.category }}
                     </p>
-                    <button
-                        type="button"
-                        class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-text-title/10 text-text-title transition-all duration-300 hover:scale-105 hover:border-accent hover:text-accent dark:border-white/15 dark:text-white"
-                        :aria-pressed="favorite"
-                        aria-label="Добавить в избранное"
-                        @click="favorite = !favorite"
-                    >
-                        <span class="h-5 w-5"><AppIcon name="heart" /></span>
-                    </button>
+                    <FavoriteButton v-model="favorite" />
                 </div>
                 <h1
                     class="mt-3 font-serif text-4xl leading-[1.08] text-text-title md:text-5xl xl:text-6xl dark:text-linen"
@@ -391,11 +383,12 @@ import { computed, ref } from 'vue';
 import AccordionItem from '@/components/AccordionItem.vue';
 import AppIcon from '@/components/AppIcon.vue';
 import Layout from '@/components/layouts/Layout.vue';
-import ProductSlider from '@/components/ProductSlider.vue';
+import ProductSlider from '@/components/product/ProductSlider.vue';
 import Reveal from '@/components/Reveal.vue';
 import { useCartDrawer } from '@/composables/useCartDrawer';
 import { storefrontProducts } from '@/data/products';
 import type { StorefrontProduct } from '@/data/products';
+import FavoriteButton from '@/components/FavoriteButton.vue';
 
 defineOptions({ layout: Layout });
 const props = defineProps<{ product?: StorefrontProduct }>();

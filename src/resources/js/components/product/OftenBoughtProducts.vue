@@ -47,6 +47,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import AppIcon from '@/components/AppIcon.vue';
-import ProductSlider from '@/components/ProductSlider.vue';
+import ProductSlider from '@/components/product/ProductSlider.vue';
 import Reveal from '@/components/Reveal.vue';
 </script>

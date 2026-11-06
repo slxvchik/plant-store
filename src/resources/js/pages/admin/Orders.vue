@@ -55,10 +55,11 @@
             <Input
                 id="userId"
                 v-model="form.userId"
-                placeholder="Id пользователя"
                 label="Id пользователя"
                 :error="form.errors.userId"
-                @update:modelValue="validateField('userId', form.userId)"
+                @update:modelValue="
+                    validateField && validateField('userId', form.userId)
+                "
             />
             <p class="text-xs text-gray-500">
                 Заказ будет создан из корзины пользователя.
@@ -86,12 +87,12 @@ import Popup from '@/components/Popup.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
 import AdminOrders from '@/routes/admin/orders';
 import type { Order } from '@/types/order';
+import type { Page } from '@/types/pagination.ts';
 import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse';
 import { validate } from '@/utils/validator.ts';
-import type { PageResponse } from '@/types/pageResponse';
 
 defineOptions({ layout: AdminLayout });
-const props = defineProps<{ ordersPage: PageResponse<Order> }>();
+const props = defineProps<{ ordersPage: Page<Order> }>();
 const pagination = computed(() =>
     getPaginationFromPageResponse(props.ordersPage),
 );
@@ -108,7 +109,7 @@ const orderValidator = (field: keyof OrderForm, value: any) => {
 };
 const {
     form,
-    validateField,
+    formValidator,
     isFormPopupOpen,
     openCreateModal,
     submit,
@@ -123,4 +124,5 @@ const {
     },
     validator: orderValidator,
 });
+const validateField = formValidator?.validateField;
 </script>

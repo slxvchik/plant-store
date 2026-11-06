@@ -1,5 +1,7 @@
 <template>
-    <div class="border-b border-text-title/10 dark:border-white/10">
+    <div
+        class="[&:not(:last-of-type)]:border-b border-text-title/10 dark:border-white/10"
+    >
         <button
             type="button"
             class="flex min-h-14 w-full cursor-pointer items-center justify-between gap-4 py-4 text-left text-text-title transition-all duration-300 ease-in-out hover:text-primary dark:text-linen dark:hover:text-secondary"

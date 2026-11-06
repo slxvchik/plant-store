@@ -38,33 +38,36 @@
             <Input
                 id="name"
                 v-model="form.name"
-                placeholder="Название новости"
                 label="Название"
                 :error="form.errors.name"
-                @update:modelValue="validateField('name', form.name)"
+                @update:modelValue="
+                    validateField && validateField('name', form.name)
+                "
             />
             <Input
                 id="alias"
                 v-model="form.alias"
-                placeholder="news-1"
                 label="Алиас"
                 :error="form.errors.alias"
-                @update:modelValue="validateField('alias', form.alias)"
+                @update:modelValue="
+                    validateField && validateField('alias', form.alias)
+                "
             />
             <Input
                 id="sort"
                 v-model.number="form.sort"
-                placeholder="500"
                 label="Сортировка"
                 type="number"
                 :error="form.errors.sort"
-                @update:modelValue="validateField('sort', form.sort)"
+                @update:modelValue="
+                    validateField && validateField('sort', form.sort)
+                "
             />
-            <Textarea
+            <Input
                 id="description"
                 v-model="form.description"
-                placeholder="Текст новости"
                 label="Описание"
+                type="number"
                 :error="form.errors.description"
             />
             <Checkbox
@@ -91,7 +94,6 @@ import Input from '@/components/Input.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Link from '@/components/Link.vue';
 import Popup from '@/components/Popup.vue';
-import Textarea from '@/components/Textarea.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
 import AdminNews from '@/routes/admin/news';
 import type { News } from '@/types/news';
@@ -130,7 +132,7 @@ const newsValidator = (field: keyof NewsForm, value: any) => {
             return null;
     }
 };
-const { form, validateField, isFormPopupOpen, openEditModal, submit } =
+const { form, formValidator, isFormPopupOpen, openEditModal, submit } =
     useAdminCrudForm<NewsForm, News>({
         createData,
         editData: ({ alias, sort, name, active, description }) => ({
@@ -147,4 +149,5 @@ const { form, validateField, isFormPopupOpen, openEditModal, submit } =
         },
         validator: newsValidator,
     });
+const validateField = formValidator?.validateField;
 </script>

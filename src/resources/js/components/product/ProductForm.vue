@@ -7,21 +7,21 @@
             label="Название"
             :error="errors?.name"
             :disabled="disabled"
-            rules="required"
         />
-        <Checkbox
-            id="active"
-            v-model="form.active"
-            text="Активность"
-            :error="errors?.active"
-            :disabled="disabled"
-        />
+        <div class="w-fit">
+            <Checkbox
+                id="active"
+                v-model="form.active"
+                text="Активность"
+                :error="errors?.active"
+                :disabled="disabled"
+            />
+        </div>
         <Input
             id="alias"
             v-model="form.alias"
             label="Алиас"
             :error="errors?.alias"
-            rules="required|min:4"
             :disabled="disabled"
         />
         <Input
@@ -30,21 +30,20 @@
             label="Сортировка"
             type="number"
             :error="errors?.sort"
-            rules="required|positiveNumber"
             :disabled="disabled"
         />
-        <Textarea
+        <Input
             id="description"
             v-model="form.description"
             label="Описание"
             :error="errors?.description"
             :disabled="disabled"
+            multiline
         />
         <Select
             v-model="form.categories"
             :items="allCategories"
             label="Категории"
-            placeholder="Выберите категории"
             multiple
             :disabled="disabled"
         />
@@ -64,7 +63,6 @@ import Checkbox from '@/components/Checkbox.vue';
 import ImageUpload from '@/components/ImageUpload.vue';
 import Input from '@/components/Input.vue';
 import Select from '@/components/Select.vue';
-import Textarea from '@/components/Textarea.vue';
 import type { ProductFormState } from '@/types/product.ts';
 import type { SelectItem } from '@/types/select-item.ts';
 
