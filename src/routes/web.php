@@ -18,6 +18,8 @@ Route::pattern('id', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4
 
 Route::inertia('/', 'Home')->name('home');
 Route::inertia('/catalog', 'catalog/CatalogIndex')->name('catalog');
+Route::inertia('/catalog/{alias}', 'catalog/ProductDetail')->name('catalog.product');
+Route::inertia('/contacts', 'Contacts')->name('contacts');
 
 Route::post('/callback', [UserRequestController::class, 'store'])->name('callback');
 

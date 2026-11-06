@@ -1,6 +1,6 @@
 <template>
     <svg
-        fill="#364D3E"
+        fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 444.244 444.244"
         xml:space="preserve"

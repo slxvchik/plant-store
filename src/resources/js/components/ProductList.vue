@@ -1,11 +1,18 @@
 <template>
-    <!-- Product list -->
-    <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-5">
-        <ProductCard v-for="n in 6" :key="n" />
+    <div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
+        <ProductCard
+            v-for="product in products"
+            :key="product.id"
+            :product="product"
+        />
     </div>
-    <!-- !Product list -->
 </template>
 
 <script setup lang="ts">
 import ProductCard from '@/components/ProductCard.vue';
+import { storefrontProducts } from '@/data/products';
+
+withDefaults(defineProps<{ products?: typeof storefrontProducts }>(), {
+    products: () => storefrontProducts,
+});
 </script>

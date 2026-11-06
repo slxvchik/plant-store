@@ -1,59 +1,54 @@
 <template>
-    <div class="relative w-full px-12">
+    <div class="relative w-full lg:px-12">
         <swiper
-            :loop="true"
             :navigation="{
                 prevEl: '.product-slider-prev',
                 nextEl: '.product-slider-next',
             }"
-            :autoplay="{
-                delay: 3000,
-                disableOnInteraction: true,
-            }"
-            :spaceBetween="20"
+            :space-between="16"
             :breakpoints="{
-                320: { slidesPerView: 1 },
-                768: { slidesPerView: 2 },
+                320: { slidesPerView: 1.25 },
+                540: { slidesPerView: 2 },
+                768: { slidesPerView: 2.5 },
                 1024: { slidesPerView: 3 },
-                1440: { slidesPerView: 4 },
-                1920: { slidesPerView: 5 },
+                1280: { slidesPerView: 4 },
             }"
             :modules="swiperOptions"
-            class="product-slider w-full"
+            class="product-slider w-full !overflow-visible lg:!overflow-hidden"
         >
-            <swiper-slide v-for="n in 8" :key="n" class="w-80">
-                <ProductCard />
+            <swiper-slide
+                v-for="product in storefrontProducts"
+                :key="product.id"
+                class="h-auto pb-8"
+            >
+                <ProductCard :product="product" />
             </swiper-slide>
         </swiper>
-        <div
-            class="product-slider-nav absolute top-1/2 left-0 flex h-10 w-full -translate-y-1/2 flex-row justify-between"
+        <button
+            type="button"
+            class="product-slider-prev absolute top-[35%] left-0 z-10 hidden h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-text-title/10 bg-bg-elevated text-text-title shadow-lg transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white lg:flex dark:border-white/10 dark:bg-bg-night-soft dark:text-white"
+            aria-label="Предыдущие растения"
         >
-            <button
-                class="product-slider-prev left-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-primary text-white backdrop-blur-sm transition-all duration-300 ease-in hover:bg-primary-hover"
-            >
-                <span class="relative right-px h-6 w-6 rotate-180">
-                    <ChevronIcon />
-                </span>
-            </button>
-            <button
-                class="product-slider-next right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-primary text-white backdrop-blur-sm transition-all duration-300 ease-in hover:bg-primary-hover"
-            >
-                <span class="relative left-px h-6 w-6">
-                    <ChevronIcon />
-                </span>
-            </button>
-        </div>
+            <span class="h-5 w-5 rotate-180"><AppIcon name="chevron" /></span>
+        </button>
+        <button
+            type="button"
+            class="product-slider-next absolute top-[35%] right-0 z-10 hidden h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-text-title/10 bg-bg-elevated text-text-title shadow-lg transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white lg:flex dark:border-white/10 dark:bg-bg-night-soft dark:text-white"
+            aria-label="Следующие растения"
+        >
+            <span class="h-5 w-5"><AppIcon name="chevron" /></span>
+        </button>
     </div>
 </template>
 
 <script setup lang="ts">
-import { Autoplay, Navigation } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import ChevronIcon from '@/components/icons/ChevronIcon.vue';
+import AppIcon from '@/components/AppIcon.vue';
 import ProductCard from '@/components/ProductCard.vue';
-
+import { storefrontProducts } from '@/data/products';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const swiperOptions = [Autoplay, Navigation];
+const swiperOptions = [Navigation];
 </script>

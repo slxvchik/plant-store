@@ -1,22 +1,52 @@
 <template>
-    <section class="w-full bg-bg-surface px-3 py-8 md:px-8 md:py-20 xl:px-20 xl:py-25">
-        <h2 class="text font-serif font-bold text-accent uppercase">
-            Наша тщательно подобранная теплица
-        </h2>
-        <p
-            class="mt-3 font-sans text-4xl leading-[1.1] font-light whitespace-pre-line text-text-title sm:text-5xl lg:text-6xl"
-        >
-            Часто покупаемые
-        </p>
-        <p class="mt-3 mb-10 font-sans text-text-muted sm:text-lg">
-            Каждый саженец отбирается по таким критериям, как здоровые корни,
-            яркая листва и сбалансированный рост, и только после этого попадает
-            к вам.
-        </p>
-        <ProductSlider />
+    <section
+        class="overflow-hidden bg-bg-base px-4 py-16 md:px-8 md:py-24 lg:py-28 dark:bg-bg-night"
+    >
+        <div class="mx-auto max-w-[1440px]">
+            <Reveal>
+                <div
+                    class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
+                >
+                    <div>
+                        <p
+                            class="text-xs font-semibold tracking-[0.2em] text-accent uppercase"
+                        >
+                            Выбор наших садоводов
+                        </p>
+                        <h2
+                            class="mt-3 font-serif text-3xl leading-tight text-text-title md:text-4xl lg:text-5xl dark:text-linen"
+                        >
+                            Растения, которые<br class="hidden md:block" />
+                            легко полюбить
+                        </h2>
+                    </div>
+                    <div class="max-w-md">
+                        <p
+                            class="text-sm leading-6 text-text-muted md:text-base dark:text-white/50"
+                        >
+                            Здоровая корневая система, выразительная листва и
+                            адаптация к домашним условиям.
+                        </p>
+                        <Link
+                            href="/catalog"
+                            class="group mt-4 flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary"
+                            >Смотреть весь каталог<span
+                                class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                                ><AppIcon name="arrow" /></span
+                        ></Link>
+                    </div>
+                </div>
+            </Reveal>
+            <Reveal :delay="120" class="mt-8 md:mt-12"
+                ><ProductSlider
+            /></Reveal>
+        </div>
     </section>
 </template>
 
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+import AppIcon from '@/components/AppIcon.vue';
 import ProductSlider from '@/components/ProductSlider.vue';
+import Reveal from '@/components/Reveal.vue';
 </script>
