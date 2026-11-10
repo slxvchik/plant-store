@@ -2,7 +2,7 @@
     <section
         class="overflow-hidden bg-bg-base px-4 py-16 md:px-8 md:py-24 lg:py-28 dark:bg-bg-night"
     >
-        <div class="mx-auto max-w-[1440px]">
+        <Container>
             <Reveal>
                 <div
                     class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
@@ -16,7 +16,8 @@
                         <h2
                             class="mt-3 font-serif text-3xl leading-tight text-text-title md:text-4xl lg:text-5xl dark:text-linen"
                         >
-                            Растения, которые<br class="hidden md:block" />
+                            Растения, которые
+                            <br class="hidden md:block" />
                             легко полюбить
                         </h2>
                     </div>
@@ -28,25 +29,30 @@
                             адаптация к домашним условиям.
                         </p>
                         <Link
-                            href="/catalog"
                             class="group mt-4 flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary"
-                            >Смотреть весь каталог<span
+                            href="/catalog"
+                        >
+                            Смотреть весь каталог
+                            <span
                                 class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                                ><AppIcon name="arrow" /></span
-                        ></Link>
+                            >
+                                <AppIcon name="arrow" />
+                            </span>
+                        </Link>
                     </div>
                 </div>
             </Reveal>
-            <Reveal :delay="120" class="mt-8 md:mt-12"
-                ><ProductSlider
-            /></Reveal>
-        </div>
+            <Reveal :delay="120" class="mt-8 md:mt-12">
+                <ProductSlider />
+            </Reveal>
+        </Container>
     </section>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import AppIcon from '@/components/AppIcon.vue';
 import ProductSlider from '@/components/product/ProductSlider.vue';
 import Reveal from '@/components/Reveal.vue';
+import Container from '@/components/Container.vue';
 </script>

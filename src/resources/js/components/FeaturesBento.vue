@@ -3,7 +3,7 @@
         id="delivery"
         class="bg-bg-surface px-4 py-16 md:px-8 md:py-24 dark:bg-bg-night-soft"
     >
-        <div class="mx-auto max-w-[1440px]">
+        <Container>
             <Reveal>
                 <div class="max-w-2xl">
                     <p
@@ -14,7 +14,9 @@
                     <h2
                         class="mt-3 font-serif text-3xl leading-tight text-text-title md:text-4xl lg:text-5xl dark:text-linen"
                     >
-                        Забота продолжается<br />и после покупки
+                        Забота продолжается
+                        <br />
+                        и после покупки
                     </h2>
                 </div>
             </Reveal>
@@ -26,10 +28,10 @@
                         class="group relative h-full min-h-[420px] overflow-hidden rounded-[28px] lg:min-h-full"
                     >
                         <img
-                            src="/images/slide_1.avif"
                             alt="Садовод заботится о растениях"
-                            loading="lazy"
                             class="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                            loading="lazy"
+                            src="/images/slide_1.avif"
                         />
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-bg-dark/90 via-bg-dark/20 to-transparent"
@@ -39,9 +41,11 @@
                         >
                             <span
                                 class="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 backdrop-blur"
-                                ><span class="h-5 w-5"
-                                    ><AppIcon name="leaf" /></span
-                            ></span>
+                            >
+                                <span class="h-5 w-5">
+                                    <AppIcon name="leaf" />
+                                </span>
+                            </span>
                             <h3 class="mt-5 font-serif text-3xl md:text-4xl">
                                 Подбор с пониманием
                             </h3>
@@ -61,16 +65,17 @@
                     >
                         <span
                             class="flex h-11 w-11 items-center justify-center rounded-full bg-white/10"
-                            ><span class="h-5 w-5"
-                                ><AppIcon name="truck" /></span
-                        ></span>
+                        >
+                            <span class="h-5 w-5">
+                                <AppIcon name="truck" />
+                            </span>
+                        </span>
                         <div class="mt-8">
                             <p class="font-serif text-2xl md:text-3xl">
                                 Бережная доставка
                             </p>
                             <p class="mt-2 text-sm leading-6 text-white/65">
-                                Авторская упаковка защищает листья и грунт.
-                                Отправляем по всей России.
+                                Отправляем по всей Московской области.
                             </p>
                         </div>
                     </article>
@@ -81,20 +86,24 @@
                     >
                         <span
                             class="text-xs font-semibold tracking-widest text-accent uppercase"
-                            >Нам доверяют</span
                         >
+                            Нам доверяют
+                        </span>
                         <div>
                             <p
                                 class="font-serif text-5xl text-text-title dark:text-linen"
                             >
-                                12<span class="text-primary dark:text-secondary"
-                                    >+</span
-                                >
+                                12
+                                <span class="text-primary dark:text-secondary">
+                                    +
+                                </span>
                             </p>
                             <p
                                 class="mt-1 text-sm text-text-muted dark:text-white/50"
                             >
-                                лет выращиваем<br />с любовью
+                                лет выращиваем
+                                <br />
+                                с любовью
                             </p>
                         </div>
                     </article>
@@ -105,23 +114,26 @@
                     >
                         <span
                             class="flex h-11 w-11 items-center justify-center rounded-full bg-white/35"
-                            ><span class="h-5 w-5"
-                                ><AppIcon name="shield" /></span
-                        ></span>
+                        >
+                            <span class="h-5 w-5">
+                                <AppIcon name="shield" />
+                            </span>
+                        </span>
                         <div>
                             <p class="font-serif text-2xl">30 дней гарантии</p>
                             <p class="mt-2 text-sm leading-6 opacity-70">
-                                Остаёмся на связи и помогаем с адаптацией.
+                                Остаёмся на связи.
                             </p>
                         </div>
                     </article>
                 </Reveal>
             </div>
-        </div>
+        </Container>
     </section>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import AppIcon from '@/components/AppIcon.vue';
 import Reveal from '@/components/Reveal.vue';
+import Container from '@/components/Container.vue';
 </script>

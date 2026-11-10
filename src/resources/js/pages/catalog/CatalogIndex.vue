@@ -1,22 +1,15 @@
 <template>
-    <div class="bg-bg-base dark:bg-bg-night">
+    <Container class="bg-bg-base dark:bg-bg-night">
         <section
-            class="border-b border-text-title/5 px-4 py-9 md:px-8 md:py-14 dark:border-white/10"
+            class="border-b border-text-title/5 py-9 md:py-14 dark:border-white/10"
         >
-            <div class="mx-auto max-w-[1440px]">
-                <nav
-                    class="flex items-center gap-2 text-xs text-text-muted dark:text-white/40"
-                    aria-label="Хлебные крошки"
-                >
-                    <Link
-                        href="/"
-                        class="flex min-h-8 items-center transition-colors hover:text-primary"
-                        >Главная</Link
-                    ><span>/</span
-                    ><span class="text-text-title dark:text-white/65"
-                        >Каталог</span
-                    >
-                </nav>
+            <div>
+                <Breadcrumbs
+                    :items="[
+                        { url: home.url(), name: 'Главная' },
+                        { url: home.url(), name: 'Каталог' },
+                    ]"
+                />
                 <div
                     class="mt-5 flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
                 >
@@ -30,9 +23,9 @@
                             class="mt-3 font-serif text-4xl leading-tight text-text-title md:text-5xl lg:text-6xl dark:text-linen"
                         >
                             Найдите своё
-                            <em class="text-primary dark:text-secondary"
-                                >растение</em
-                            >
+                            <em class="text-primary dark:text-secondary">
+                                растение
+                            </em>
                         </h1>
                     </div>
                     <p
@@ -45,16 +38,17 @@
             </div>
         </section>
 
-        <div class="mx-auto max-w-[1440px] px-4 py-6 md:px-8 md:py-10">
+        <div class="py-6 md:py-10">
             <div
                 class="mb-6 flex flex-col gap-3 md:mb-8 md:flex-row md:items-center"
             >
                 <label class="relative flex-1">
-                    <span class="sr-only">Поиск по каталогу</span
-                    ><span
+                    <span class="sr-only">Поиск по каталогу</span>
+                    <span
                         class="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-text-muted dark:text-white/40"
-                        ><AppIcon name="search"
-                    /></span>
+                    >
+                        <AppIcon name="search" />
+                    </span>
                     <input
                         v-model="searchQuery"
                         type="search"
@@ -62,9 +56,9 @@
                         class="h-12 w-full rounded-full border border-text-title/10 bg-bg-elevated pr-4 pl-12 text-sm text-text-title transition-all duration-300 placeholder:text-text-muted/60 focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none dark:border-white/10 dark:bg-bg-night-soft dark:text-white dark:placeholder:text-white/30"
                     />
                 </label>
-                <label class="relative md:w-72"
-                    ><span class="sr-only">Сортировка товаров</span
-                    ><select
+                <label class="relative md:w-72">
+                    <span class="sr-only">Сортировка товаров</span>
+                    <select
                         v-model="productsSort"
                         class="h-12 w-full cursor-pointer appearance-none rounded-full border border-text-title/10 bg-bg-elevated px-5 pr-11 text-sm font-medium text-text-title transition-all duration-300 focus:border-primary focus:outline-none dark:border-white/10 dark:bg-bg-night-soft dark:text-white"
                     >
@@ -74,11 +68,14 @@
                             :value="item.value"
                         >
                             {{ item.label }}
-                        </option></select
-                    ><span
+                        </option>
+                    </select>
+                    <span
                         class="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 rotate-90 text-text-muted dark:text-white/40"
-                        ><AppIcon name="chevron" /></span
-                ></label>
+                    >
+                        <AppIcon name="chevron" />
+                    </span>
+                </label>
             </div>
 
             <div
@@ -97,8 +94,9 @@
                             <span
                                 v-if="activeFiltersCount"
                                 class="rounded-full bg-sage-soft px-2.5 py-1 text-xs font-semibold text-primary dark:bg-primary/25 dark:text-secondary"
-                                >{{ activeFiltersCount }}</span
                             >
+                                {{ activeFiltersCount }}
+                            </span>
                         </div>
                         <CatalogFilters
                             id-prefix="desktop"
@@ -115,8 +113,9 @@
                         <p class="text-text-muted dark:text-white/45">
                             <span
                                 class="font-semibold text-text-title dark:text-white"
-                                >{{ filteredProducts.length }}</span
                             >
+                                {{ filteredProducts.length }}
+                            </span>
                             {{ resultLabel }}
                         </p>
                         <p
@@ -126,21 +125,24 @@
                             <Link
                                 href="/contacts"
                                 class="text-primary underline decoration-primary/30 underline-offset-4 dark:text-secondary"
-                                >Поможем выбрать</Link
                             >
+                                Поможем выбрать
+                            </Link>
                         </p>
                     </div>
                     <TransitionGroup
                         v-if="filteredProducts.length"
                         tag="div"
                         name="products"
-                        class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4"
+                        class="relative grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4"
+                        @before-leave="beforeRemoveProduct"
                     >
-                        <ProductCard
+                        <div
                             v-for="product in filteredProducts"
                             :key="product.id"
-                            :product="product"
-                        />
+                        >
+                            <ProductCard :product="product" />
+                        </div>
                     </TransitionGroup>
                     <div
                         v-else
@@ -148,9 +150,11 @@
                     >
                         <span
                             class="flex h-16 w-16 items-center justify-center rounded-full bg-sage-soft text-primary dark:bg-primary/20 dark:text-secondary"
-                            ><span class="h-7 w-7"
-                                ><AppIcon name="search" /></span
-                        ></span>
+                        >
+                            <span class="h-7 w-7">
+                                <AppIcon name="search" />
+                            </span>
+                        </span>
                         <h2
                             class="mt-5 font-serif text-2xl text-text-title dark:text-linen"
                         >
@@ -185,12 +189,14 @@
                 class="flex min-h-12 cursor-pointer items-center gap-2 rounded-full bg-bg-dark px-6 text-sm font-semibold text-white shadow-[0_12px_35px_rgba(30,41,36,0.3)] transition-all duration-300 hover:scale-105 active:scale-95 dark:bg-secondary dark:text-bg-dark"
                 @click="filtersOpen = true"
             >
-                <span class="h-5 w-5"><AppIcon name="filter" /></span
-                >Фильтры<span
+                <span class="h-5 w-5"><AppIcon name="filter" /></span>
+                Фильтры
+                <span
                     v-if="activeFiltersCount"
                     class="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] text-white"
-                    >{{ activeFiltersCount }}</span
                 >
+                    {{ activeFiltersCount }}
+                </span>
             </button>
         </div>
 
@@ -200,11 +206,13 @@
                 enter-from-class="opacity-0"
                 leave-active-class="transition-opacity duration-300"
                 leave-to-class="opacity-0"
-                ><div
+            >
+                <div
                     v-if="filtersOpen"
                     class="fixed inset-0 z-[60] bg-bg-dark/45 backdrop-blur-sm lg:hidden"
                     @click="filtersOpen = false"
-            /></Transition>
+                />
+            </Transition>
             <Transition
                 enter-active-class="transform-gpu transition-transform duration-500 ease-out"
                 enter-from-class="translate-y-full"
@@ -243,9 +251,9 @@
                             aria-label="Закрыть фильтры"
                             @click="filtersOpen = false"
                         >
-                            <span class="h-5 w-5"
-                                ><AppIcon name="close"
-                            /></span>
+                            <span class="h-5 w-5">
+                                <AppIcon name="close" />
+                            </span>
                         </button>
                     </div>
                     <div class="flex-1 overflow-y-auto px-5 py-6">
@@ -272,18 +280,21 @@
                 </section>
             </Transition>
         </Teleport>
-    </div>
+    </Container>
 </template>
 
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import CatalogFilters from '@/components/CatalogFilters.vue';
+import Container from '@/components/Container.vue';
 import Layout from '@/components/layouts/Layout.vue';
 import ProductCard from '@/components/product/ProductCard.vue';
 import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
 import { storefrontProducts } from '@/data/products';
+import { home } from '@/routes';
 
 defineOptions({ layout: Layout });
 
@@ -378,6 +389,16 @@ const resetFilters = (): void => {
     onlyInStock.value = true;
 };
 
+const beforeRemoveProduct = (el: Element) => {
+    const htmlEl = el as HTMLElement;
+    const rect = htmlEl.getBoundingClientRect();
+
+    htmlEl.style.width = `${rect.width}px`;
+    htmlEl.style.height = `${rect.height}px`;
+    htmlEl.style.left = `${htmlEl.offsetLeft}px`;
+    htmlEl.style.top = `${htmlEl.offsetTop}px`;
+};
+
 useBodyScrollLock(filtersOpen);
 </script>
 
@@ -385,14 +406,19 @@ useBodyScrollLock(filtersOpen);
 .products-enter-active,
 .products-leave-active,
 .products-move {
-    transition: all 0.4s ease;
+    transition: all 10s cubic-bezier(0.25, 1, 0.5, 1);
 }
-.products-enter-from,
+
+.products-enter-from {
+    opacity: 0;
+    transform: translateY(6px);
+}
 .products-leave-to {
     opacity: 0;
-    transform: translateY(16px) scale(0.98);
+    transform: translateY(6px);
 }
 .products-leave-active {
+    pointer-events: none;
     position: absolute;
 }
 </style>

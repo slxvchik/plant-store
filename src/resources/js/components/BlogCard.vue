@@ -1,20 +1,20 @@
 <template>
-    <a href="#journal" class="group block h-full">
+    <a class="group block h-full" href="#journal">
         <div
             class="aspect-[4/3] overflow-hidden rounded-[24px] bg-bg-base dark:bg-bg-night"
         >
             <img
-                :src="article.image"
                 :alt="article.title"
-                loading="lazy"
+                :src="article.image"
                 class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                loading="lazy"
             />
         </div>
         <div
             class="mt-4 flex items-center gap-2 text-xs text-text-muted dark:text-white/45"
         >
-            <time>{{ article.date }}</time
-            ><span class="text-accent">·</span>
+            <time>{{ article.date }}</time>
+            <span class="text-accent">·</span>
             <p>{{ article.readTime }} чтения</p>
         </div>
         <h3
@@ -27,14 +27,18 @@
         </p>
         <span
             class="mt-4 flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary"
-            >Читать статью<span
+        >
+            Читать статью
+            <span
                 class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                ><AppIcon name="arrow" /></span
-        ></span>
+            >
+                <AppIcon name="arrow" />
+            </span>
+        </span>
     </a>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import AppIcon from '@/components/AppIcon.vue';
 
 type Article = {

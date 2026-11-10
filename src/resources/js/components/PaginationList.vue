@@ -1,9 +1,12 @@
 <template>
-    <div class="flex h-8 w-full items-center justify-center gap-2" v-if="pagination.totalPages > 1">
+    <div
+        v-if="pagination.totalPages > 1"
+        class="flex h-8 w-full items-center justify-center gap-2"
+    >
         <Link
             v-if="pagination.firstUrl && pagination.currentPage > 3"
-            :href="pagination.firstUrl"
             :class="linkClasses"
+            :href="pagination.firstUrl"
         >
             1
         </Link>
@@ -17,7 +20,7 @@
             <div v-if="page.isActive" :class="linkActiveClasses">
                 {{ page.number }}
             </div>
-            <Link v-else-if="page.url" :href="page.url" :class="linkClasses">
+            <Link v-else-if="page.url" :class="linkClasses" :href="page.url">
                 {{ page.number }}
             </Link>
         </template>
@@ -35,15 +38,15 @@
                 pagination.lastUrl &&
                 pagination.currentPage < pagination.totalPages - 2
             "
-            :href="pagination.lastUrl"
             :class="linkClasses"
+            :href="pagination.lastUrl"
         >
             {{ pagination.totalPages }}
         </Link>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import type { Pagination } from '@/types/page-response.ts';

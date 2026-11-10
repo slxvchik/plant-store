@@ -1,12 +1,12 @@
 <template>
     <section class="bg-bg-base px-3 pt-3 md:px-6 md:pt-6 lg:bg-bg-dark lg:p-0">
         <swiper
-            :slides-per-view="1"
             :autoplay="{ delay: 6500, disableOnInteraction: false }"
-            :loop="true"
             :effect="'fade'"
-            :speed="900"
+            :loop="true"
             :modules="swiperModules"
+            :slides-per-view="1"
+            :speed="900"
             class="hero-gallery relative overflow-hidden rounded-[28px] lg:rounded-none"
             @slide-change="onSlideChange"
         >
@@ -18,25 +18,25 @@
                         class="relative order-1 h-[340px] overflow-hidden md:h-[480px] lg:order-2 lg:h-full"
                     >
                         <img
-                            :src="slide.image"
                             :alt="slide.imageAlt"
+                            :src="slide.image"
                             class="h-full w-full scale-105 object-cover"
                             fetchpriority="high"
                         />
                     </div>
                     <div
-                        class="relative order-2 flex items-center overflow-hidden px-5 py-8 md:px-10 md:py-12 lg:order-1 lg:px-[max(3rem,calc((100vw-1440px)/2+3rem))] lg:py-20"
+                        class="relative order-2 flex flex-start overflow-hidden px-5 py-8 md:p-10 lg:order-1 lg:p-20"
                     >
                         <div
                             class="pointer-events-none absolute -bottom-20 -left-24 h-72 w-72 rounded-full border border-primary/10 lg:border-white/5"
                         />
                         <div
-                            class="pointer-events-none absolute -right-20 -bottom-28 h-80 w-80 rounded-full border border-primary/10 transition-transform duration-1000 lg:border-white/5"
                             :style="{
                                 transform: `rotate(${activeSlide * 20}deg)`,
                             }"
+                            class="pointer-events-none absolute -right-20 -bottom-28 h-80 w-80 rounded-full border border-primary/10 transition-transform duration-1000 lg:border-white/5"
                         />
-                        <div class="relative z-10 max-w-xl">
+                        <div class="relative z-10">
                             <p
                                 class="mb-4 flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-primary uppercase md:text-xs lg:text-secondary dark:text-secondary"
                             >
@@ -49,10 +49,12 @@
                                 class="font-serif text-[40px] leading-[1.04] font-medium tracking-[-0.035em] text-text-title md:text-6xl lg:text-[64px] lg:text-linen xl:text-[72px] dark:text-linen"
                             >
                                 {{ slide.title }}
+                                <br />
                                 <em
                                     class="font-normal text-primary lg:text-secondary"
-                                    >{{ slide.accent }}</em
                                 >
+                                    {{ slide.accent }}
+                                </em>
                             </h1>
                             <p
                                 class="mt-5 max-w-md text-[15px] leading-7 text-text-muted md:text-lg md:leading-8 lg:line-clamp-7 lg:text-white/60 dark:text-white/60"
@@ -63,8 +65,8 @@
                                 class="mt-7 mb-4 grid grid-cols-2 gap-3 min-[420px]:flex-row md:mt-9"
                             >
                                 <Link
-                                    href="/catalog"
                                     class="group flex min-h-12 items-center justify-center gap-3 rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-primary-hover hover:shadow-xl lg:bg-secondary lg:text-bg-dark lg:hover:bg-linen"
+                                    href="/catalog"
                                 >
                                     Выбрать растение
                                     <span
@@ -74,10 +76,11 @@
                                     </span>
                                 </Link>
                                 <a
-                                    href="#mission"
                                     class="flex min-h-12 items-center justify-center rounded-full border border-text-title/15 px-6 text-sm font-semibold text-text-title transition-all duration-300 hover:border-primary hover:bg-sage-soft/50 lg:border-white/20 lg:text-white lg:hover:border-white/40 lg:hover:bg-white/5 dark:text-linen"
-                                    >Наша философия</a
+                                    href="#mission"
                                 >
+                                    Наша философия
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -97,7 +100,7 @@
     </section>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import type { Swiper as SwiperInstance } from 'swiper';
 import { Autoplay, EffectFade } from 'swiper/modules';

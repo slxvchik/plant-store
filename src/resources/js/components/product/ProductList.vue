@@ -8,7 +8,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import ProductCard from '@/components/product/ProductCard.vue';
 import { storefrontProducts } from '@/data/products.ts';
 

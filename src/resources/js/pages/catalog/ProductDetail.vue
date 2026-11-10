@@ -5,17 +5,20 @@
                 class="flex items-center gap-2 overflow-hidden text-xs whitespace-nowrap text-text-muted dark:text-white/40"
                 aria-label="Хлебные крошки"
             >
-                <Link href="/" class="transition-colors hover:text-primary"
-                    >Главная</Link
-                ><span>/</span
-                ><Link
+                <Link href="/" class="transition-colors hover:text-primary">
+                    Главная
+                </Link>
+                <span>/</span>
+                <Link
                     href="/catalog"
                     class="transition-colors hover:text-primary"
-                    >Каталог</Link
-                ><span>/</span
-                ><span class="truncate text-text-title dark:text-white/65">{{
-                    item.name
-                }}</span>
+                >
+                    Каталог
+                </Link>
+                <span>/</span>
+                <span class="truncate text-text-title dark:text-white/65">
+                    {{ item.name }}
+                </span>
             </nav>
         </div>
         <section
@@ -56,9 +59,9 @@
                             "
                         />
                     </div>
-                    <span class="text-xs text-text-muted dark:text-white/40"
-                        >{{ activeImage + 1 }} / {{ gallery.length }}</span
-                    >
+                    <span class="text-xs text-text-muted dark:text-white/40">
+                        {{ activeImage + 1 }} / {{ gallery.length }}
+                    </span>
                 </div>
 
                 <div class="hidden gap-4 lg:flex">
@@ -93,16 +96,19 @@
                             enter-to-class="opacity-100"
                             leave-active-class="transition-opacity duration-200"
                             leave-to-class="opacity-0"
-                            ><img
+                        >
+                            <img
                                 :key="gallery[activeImage]"
                                 :src="gallery[activeImage]"
                                 :alt="item.name"
                                 class="absolute inset-0 h-full w-full object-cover"
-                        /></Transition>
+                            />
+                        </Transition>
                         <span
                             class="absolute top-5 left-5 rounded-full bg-bg-elevated/90 px-4 py-2 text-xs font-semibold text-primary backdrop-blur dark:bg-bg-night/80 dark:text-secondary"
-                            >Фото живого растения</span
                         >
+                            Фото живого растения
+                        </span>
                     </div>
                 </div>
             </div>
@@ -127,20 +133,24 @@
                     {{ item.latinName }}
                 </p>
                 <div class="mt-4 flex items-center gap-2 text-sm">
-                    <span class="text-accent">★</span
-                    ><span
-                        class="font-semibold text-text-title dark:text-white"
-                        >{{ item.rating }}</span
-                    ><a
+                    <span class="text-accent">★</span>
+                    <span class="font-semibold text-text-title dark:text-white">
+                        {{ item.rating }}
+                    </span>
+                    <a
                         href="#reviews"
                         class="text-text-muted underline decoration-text-muted/30 underline-offset-4 dark:text-white/45"
-                        >{{ item.reviews }} отзывов</a
-                    ><span
-                        class="ml-auto flex items-center gap-1.5 text-xs font-medium text-primary dark:text-secondary"
-                        ><span
-                            class="h-2 w-2 rounded-full bg-primary dark:bg-secondary"
-                        />В наличии</span
                     >
+                        {{ item.reviews }} отзывов
+                    </a>
+                    <span
+                        class="ml-auto flex items-center gap-1.5 text-xs font-medium text-primary dark:text-secondary"
+                    >
+                        <span
+                            class="h-2 w-2 rounded-full bg-primary dark:bg-secondary"
+                        />
+                        В наличии
+                    </span>
                 </div>
                 <p
                     class="mt-6 text-[15px] leading-7 text-text-muted md:text-base dark:text-white/55"
@@ -196,12 +206,12 @@
                             "
                             @click="selectedSize = option.name"
                         >
-                            <span class="block font-semibold">{{
-                                option.name
-                            }}</span
-                            ><span class="mt-0.5 block opacity-60">{{
-                                option.height
-                            }}</span>
+                            <span class="block font-semibold">
+                                {{ option.name }}
+                            </span>
+                            <span class="mt-0.5 block opacity-60">
+                                {{ option.height }}
+                            </span>
                         </button>
                     </div>
                 </fieldset>
@@ -213,12 +223,15 @@
                         <div class="flex items-baseline gap-3">
                             <span
                                 class="font-serif text-4xl font-semibold text-text-title dark:text-linen"
-                                >{{ formatPrice(currentPrice) }}</span
-                            ><span
+                            >
+                                {{ formatPrice(currentPrice) }}
+                            </span>
+                            <span
                                 v-if="item.oldPrice"
                                 class="text-sm text-text-muted line-through dark:text-white/35"
-                                >{{ formatPrice(item.oldPrice) }}</span
                             >
+                                {{ formatPrice(item.oldPrice) }}
+                            </span>
                         </div>
                         <p
                             class="mt-1 text-xs text-text-muted dark:text-white/40"
@@ -236,21 +249,22 @@
                                 aria-label="Уменьшить количество"
                                 @click="quantity = Math.max(1, quantity - 1)"
                             >
-                                <span class="h-4 w-4"
-                                    ><AppIcon name="minus"
-                                /></span></button
-                            ><span
-                                class="w-5 text-center text-sm font-semibold"
-                                >{{ quantity }}</span
-                            ><button
+                                <span class="h-4 w-4">
+                                    <AppIcon name="minus" />
+                                </span>
+                            </button>
+                            <span class="w-5 text-center text-sm font-semibold">
+                                {{ quantity }}
+                            </span>
+                            <button
                                 type="button"
                                 class="flex h-11 w-11 cursor-pointer items-center justify-center text-text-title dark:text-white"
                                 aria-label="Увеличить количество"
                                 @click="quantity += 1"
                             >
-                                <span class="h-4 w-4"
-                                    ><AppIcon name="plus"
-                                /></span>
+                                <span class="h-4 w-4">
+                                    <AppIcon name="plus" />
+                                </span>
                             </button>
                         </div>
                         <button
@@ -258,8 +272,8 @@
                             class="flex min-h-12 cursor-pointer items-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover"
                             @click="addSelectedToCart"
                         >
-                            <span class="h-5 w-5"><AppIcon name="cart" /></span
-                            >В корзину
+                            <span class="h-5 w-5"><AppIcon name="cart" /></span>
+                            В корзину
                         </button>
                     </div>
                 </div>
@@ -270,16 +284,18 @@
                     <p
                         class="flex items-center gap-3 text-sm text-text-muted dark:text-white/55"
                     >
-                        <span class="h-5 w-5 text-primary dark:text-secondary"
-                            ><AppIcon name="truck" /></span
-                        >Доставим по Москве завтра, по России — от 2 дней
+                        <span class="h-5 w-5 text-primary dark:text-secondary">
+                            <AppIcon name="truck" />
+                        </span>
+                        Доставим по Москве завтра, по России — от 2 дней
                     </p>
                     <p
                         class="flex items-center gap-3 text-sm text-text-muted dark:text-white/55"
                     >
-                        <span class="h-5 w-5 text-primary dark:text-secondary"
-                            ><AppIcon name="shield" /></span
-                        >30 дней гарантии и поддержка садовода
+                        <span class="h-5 w-5 text-primary dark:text-secondary">
+                            <AppIcon name="shield" />
+                        </span>
+                        30 дней гарантии и поддержка садовода
                     </p>
                 </div>
 
@@ -292,16 +308,17 @@
                         :question="care.question"
                         :is-open="openCare === index"
                         @toggle="openCare = openCare === index ? null : index"
-                        >{{ care.answer }}</AccordionItem
                     >
+                        {{ care.answer }}
+                    </AccordionItem>
                 </div>
             </div>
         </section>
 
         <section class="overflow-hidden px-4 py-14 md:px-8 md:py-20">
             <div class="mx-auto max-w-[1440px]">
-                <Reveal
-                    ><div class="flex items-end justify-between gap-4">
+                <Reveal>
+                    <div class="flex items-end justify-between gap-4">
                         <div>
                             <p
                                 class="text-xs font-semibold tracking-[0.18em] text-accent uppercase"
@@ -317,10 +334,15 @@
                         <Link
                             href="/catalog"
                             class="hidden min-h-11 items-center gap-2 text-sm font-semibold text-primary md:flex dark:text-secondary"
-                            >Весь каталог<span class="h-4 w-4"
-                                ><AppIcon name="arrow" /></span
-                        ></Link></div></Reveal
-                ><Reveal :delay="100" class="mt-8"><ProductSlider /></Reveal>
+                        >
+                            Весь каталог
+                            <span class="h-4 w-4">
+                                <AppIcon name="arrow" />
+                            </span>
+                        </Link>
+                    </div>
+                </Reveal>
+                <Reveal :delay="100" class="mt-8"><ProductSlider /></Reveal>
             </div>
         </section>
 
@@ -349,13 +371,14 @@
                         aria-label="Уменьшить количество"
                         @click="quantity = Math.max(1, quantity - 1)"
                     >
-                        <span class="h-4 w-4"
-                            ><AppIcon name="minus"
-                        /></span></button
-                    ><span
+                        <span class="h-4 w-4"><AppIcon name="minus" /></span>
+                    </button>
+                    <span
                         class="w-4 text-center text-sm font-semibold dark:text-white"
-                        >{{ quantity }}</span
-                    ><button
+                    >
+                        {{ quantity }}
+                    </span>
+                    <button
                         type="button"
                         class="flex h-11 w-9 cursor-pointer items-center justify-center dark:text-white"
                         aria-label="Увеличить количество"
@@ -369,8 +392,8 @@
                     class="flex min-h-11 cursor-pointer items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-white transition-all duration-300 active:scale-95"
                     @click="addSelectedToCart"
                 >
-                    <span class="h-4 w-4"><AppIcon name="cart" /></span
-                    ><span class="hidden min-[390px]:inline">В корзину</span>
+                    <span class="h-4 w-4"><AppIcon name="cart" /></span>
+                    <span class="hidden min-[390px]:inline">В корзину</span>
                 </button>
             </div>
         </div>
@@ -382,13 +405,13 @@ import { Link, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import AccordionItem from '@/components/AccordionItem.vue';
 import AppIcon from '@/components/AppIcon.vue';
+import FavoriteButton from '@/components/FavoriteButton.vue';
 import Layout from '@/components/layouts/Layout.vue';
 import ProductSlider from '@/components/product/ProductSlider.vue';
 import Reveal from '@/components/Reveal.vue';
 import { useCartDrawer } from '@/composables/useCartDrawer';
-import { storefrontProducts } from '@/data/products';
 import type { StorefrontProduct } from '@/data/products';
-import FavoriteButton from '@/components/FavoriteButton.vue';
+import { storefrontProducts } from '@/data/products';
 
 defineOptions({ layout: Layout });
 const props = defineProps<{ product?: StorefrontProduct }>();

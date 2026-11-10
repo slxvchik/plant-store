@@ -3,7 +3,7 @@
         id="journal"
         class="scroll-mt-24 bg-bg-surface px-4 py-16 md:px-8 md:py-24 dark:bg-bg-night-soft"
     >
-        <div class="mx-auto max-w-[1440px]">
+        <Container>
             <Reveal>
                 <div
                     class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
@@ -17,17 +17,22 @@
                         <h2
                             class="mt-3 font-serif text-3xl text-text-title md:text-4xl lg:text-5xl dark:text-linen"
                         >
-                            Знания, которые растут<br class="hidden md:block" />
+                            Знания, которые растут
+                            <br class="hidden md:block" />
                             вместе с вами
                         </h2>
                     </div>
                     <a
-                        href="#journal"
                         class="group flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary"
-                        >Все статьи<span
+                        href="#journal"
+                    >
+                        Все статьи
+                        <span
                             class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                            ><AppIcon name="arrow" /></span
-                    ></a>
+                        >
+                            <AppIcon name="arrow" />
+                        </span>
+                    </a>
                 </div>
             </Reveal>
             <div
@@ -37,17 +42,19 @@
                     v-for="(article, index) in articles"
                     :key="article.title"
                     :delay="index * 100"
-                    ><BlogCard :article="article"
-                /></Reveal>
+                >
+                    <BlogCard :article="article" />
+                </Reveal>
             </div>
-        </div>
+        </Container>
     </section>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import AppIcon from '@/components/AppIcon.vue';
 import BlogCard from '@/components/BlogCard.vue';
 import Reveal from '@/components/Reveal.vue';
+import Container from '@/components/Container.vue';
 
 const articles = [
     {

@@ -4,75 +4,75 @@
         <Input
             id="offer_id"
             v-model="form.sku"
-            label="Артикул"
             :disabled="disabled"
             :error="form.errors.sku"
+            label="Артикул"
         />
         <div class="w-fit">
             <Checkbox
                 id="offer_active"
                 v-model="form.active"
-                text="Активность"
                 :disabled="disabled"
+                text="Активность"
             />
         </div>
         <Input
             id="offer_sort"
             v-model.number="form.sort"
+            :disabled="disabled"
             label="Сортировка"
             type="number"
-            :disabled="disabled"
         />
         <Input
             id="offer_description"
             v-model="form.description"
-            label="Описание"
             :disabled="disabled"
+            label="Описание"
             multiline
         />
         <Input
             id="offer_price"
             v-model.number="form.price"
-            label="Цена (в копейках)"
-            type="number"
             :disabled="disabled"
             :error="form.errors.price"
+            label="Цена (в копейках)"
+            type="number"
         />
         <Input
             id="offer_form_factor"
             v-model="form.formFactor"
+            :disabled="disabled"
             label="Фактор"
             type="text"
-            :disabled="disabled"
         />
         <Input
             id="offer_size"
             v-model="form.size"
+            :disabled="disabled"
             label="Размер"
             type="text"
-            :disabled="disabled"
         />
         <Input
             id="offer_age"
             v-model.number="form.age"
+            :disabled="disabled"
             label="Возраст"
             type="number"
-            :disabled="disabled"
         />
         <Input
             id="offer_sowing_date"
             v-model="form.sowingDate"
+            :disabled="disabled"
             label="Дата"
             type="date"
-            :disabled="disabled"
         />
         <ImageUpload
             id="offer_images"
             v-model="form.images"
-            type="image"
-            label="Изображения"
             :disabled="disabled"
+            label="Изображения"
             multiple
+            type="image"
         />
         <div v-if="warehouses.length" class="flex flex-col gap-4">
             <h2 class="text-2xl text-text-title">Наличие на складах</h2>
@@ -91,16 +91,16 @@
                         <Input
                             :id="`${warehouse.id}-quantity`"
                             v-model.number="stock.quantity"
+                            :disabled="disabled"
                             label="Доступное кол-во для покупки"
                             type="number"
-                            :disabled="disabled"
                         />
                         <Input
                             :id="`${warehouse.id}-reserved`"
                             v-model.number="stock.reserved"
+                            :disabled="disabled"
                             label="Зарезервированное кол-во товара"
                             type="number"
-                            :disabled="disabled"
                         />
                     </template>
                 </template>
@@ -109,7 +109,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { InertiaForm } from '@inertiajs/vue3';
 import { watch } from 'vue';
 import Checkbox from '@/components/Checkbox.vue';
@@ -124,7 +124,9 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const form = defineModel<InertiaForm<OfferFormState>>('form', { required: true });
+const form = defineModel<InertiaForm<OfferFormState>>('form', {
+    required: true,
+});
 
 watch(
     () => props.warehouses,

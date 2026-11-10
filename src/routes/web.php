@@ -17,11 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::pattern('id', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
 
 Route::inertia('/', 'Home')->name('home');
-Route::inertia('/catalog', 'catalog/CatalogIndex')->name('catalog');
-Route::inertia('/catalog/{alias}', 'catalog/ProductDetail')->name('catalog.product');
 Route::inertia('/contacts', 'Contacts')->name('contacts');
 
 Route::post('/callback', [UserRequestController::class, 'store'])->name('callback');
+
+Route::prefix('catalog')->name('catalog.')->group(function () {
+//    Route::get('/', )
+    Route::inertia('/', 'catalog/CatalogIndex')->name('catalog');
+    Route::inertia('/{alias}', 'catalog/ProductDetail')->name('catalog.product');
+});
 
 Route::prefix('user')->name('user.')->group(function () {
     Route::prefix('cart')->name('cart.')->group(function () {

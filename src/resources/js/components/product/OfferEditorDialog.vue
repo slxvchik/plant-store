@@ -5,20 +5,20 @@
     >
         <OfferForm
             v-model:form="offerForm"
-            :warehouses="warehouses"
             :disabled="disabled"
+            :warehouses="warehouses"
         />
         <Button
-            type="button"
+            v-if="!disabled"
             :text="isEditMode ? 'Сохранить' : 'Создать'"
             secondary
+            type="button"
             @click="save"
-            v-if="!disabled"
         />
     </Popup>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Button from '@/components/Button.vue';

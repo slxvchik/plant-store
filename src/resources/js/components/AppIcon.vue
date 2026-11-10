@@ -1,13 +1,13 @@
 <template>
     <svg
-        viewBox="0 0 24 24"
         :fill="fill ? 'currentColor' : 'none'"
-        stroke="currentColor"
-        stroke-width="1.7"
-        stroke-linecap="round"
-        stroke-linejoin="round"
         aria-hidden="true"
         class="h-full w-full"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.7"
+        viewBox="0 0 24 24"
     >
         <path
             v-if="name === 'home'"
@@ -81,7 +81,7 @@
     </svg>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 defineProps<{
     name:
         | 'home'

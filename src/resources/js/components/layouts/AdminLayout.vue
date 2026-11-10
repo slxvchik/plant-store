@@ -8,7 +8,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import NotificationList from '@/components/NotificationList.vue';
+<script lang="ts" setup>
 import AdminSideBar from '@/components/AdminSideBar.vue';
+import NotificationList from '@/components/NotificationList.vue';
 </script>

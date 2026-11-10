@@ -3,53 +3,53 @@
         <Input
             id="firstName"
             v-model="form.firstName"
-            label="Имя"
             :error="errors?.firstName"
+            label="Имя"
         />
         <Input
             id="lastName"
             v-model="form.lastName"
-            label="Фамилия"
             :error="errors?.lastName"
+            label="Фамилия"
         />
         <Input
             id="email"
             v-model="form.email"
-            type="email"
-            label="Email"
             :error="errors?.email"
+            label="Email"
+            type="email"
         />
         <Input
             id="phone"
             v-model="form.phone"
-            type="tel"
-            label="Телефон"
             :error="errors?.phone"
+            label="Телефон"
+            type="tel"
         />
         <Input
             id="password"
             v-model="form.password"
-            type="password"
-            label="Пароль (оставьте пустым, чтобы не менять)"
             :error="errors?.password"
+            label="Пароль (оставьте пустым, чтобы не менять)"
+            type="password"
         />
         <Select
             v-model="form.roles"
+            :error="errors?.roles"
             :items="roleOptions"
             label="Роли"
             multiple
-            :error="errors?.roles"
         />
         <Checkbox
             id="emailConfirmed"
             v-model="form.emailConfirmed"
-            text="Email подтверждён"
             :error="errors?.emailConfirmed"
+            text="Email подтверждён"
         />
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import Checkbox from '@/components/Checkbox.vue';
 import Input from '@/components/Input.vue';
 import Select from '@/components/Select.vue';

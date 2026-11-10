@@ -5,38 +5,36 @@
                 v-if="multiline"
                 :id="id"
                 v-model="modelValue"
-                :aria-invalid="Boolean(error)"
                 :aria-describedby="error ? `${id}-error` : undefined"
-                rows="5"
-                class="peer min-h-32 w-full resize-none rounded-2xl border bg-bg-elevated px-4 pt-6 pb-3 text-[15px] text-text-title transition-all duration-300 focus:outline-none dark:bg-bg-night dark:text-white"
+                :aria-invalid="Boolean(error)"
                 :class="
                     error
                         ? 'border-red-500 focus:ring-4 focus:ring-red-500/10'
                         : 'border-text-title/15 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-white/15'
                 "
-                @focus="focused = true"
+                class="peer min-h-32 w-full resize-none rounded-2xl border bg-bg-elevated px-4 pt-6 pb-3 text-[15px] text-text-title transition-all duration-300 focus:outline-none dark:bg-bg-night dark:text-white"
+                rows="5"
                 @blur="focused = false"
+                @focus="focused = true"
             />
             <input
                 v-else
                 :id="id"
                 v-model="modelValue"
-                :type="type"
-                :autocomplete="autocomplete"
-                :aria-invalid="Boolean(error)"
                 :aria-describedby="error ? `${id}-error` : undefined"
-                class="peer h-15 w-full rounded-2xl border bg-bg-elevated px-4 pt-5 pb-1 text-[15px] text-text-title transition-all duration-300 focus:outline-none dark:bg-bg-night dark:text-white"
+                :aria-invalid="Boolean(error)"
+                :autocomplete="autocomplete"
                 :class="
                     error
                         ? 'border-red-500 focus:ring-4 focus:ring-red-500/10'
                         : 'border-text-title/15 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-white/15'
                 "
-                @focus="focused = true"
+                :type="type"
+                class="peer h-15 w-full rounded-2xl border bg-bg-elevated px-4 pt-5 pb-1 text-[15px] text-text-title transition-all duration-300 focus:outline-none dark:bg-bg-night dark:text-white"
                 @blur="focused = false"
+                @focus="focused = true"
             />
             <label
-                :for="id"
-                class="pointer-events-none absolute left-4 origin-left text-text-muted transition-all duration-300 ease-in-out dark:text-white/40"
                 :class="[
                     multiline ? 'top-5' : 'top-1/2 -translate-y-1/2',
                     floated
@@ -47,8 +45,11 @@
                     focused ? 'text-primary dark:text-secondary' : '',
                     error ? 'text-red-500' : '',
                 ]"
-                >{{ label }}</label
+                :for="id"
+                class="pointer-events-none absolute left-4 origin-left text-text-muted transition-all duration-300 ease-in-out dark:text-white/40"
             >
+                {{ label }}
+            </label>
         </div>
         <Transition
             enter-active-class="transition-all duration-300"
@@ -68,7 +69,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, ref } from 'vue';
 
 withDefaults(

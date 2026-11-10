@@ -2,15 +2,12 @@
     <div class="flex flex-col gap-2">
         <div
             v-if="label"
-            class="mb-1.5 select-none"
             :class="!error ? 'text-text-muted' : 'text-red-400'"
+            class="mb-1.5 select-none"
         >
             {{ label }}
         </div>
-        <div
-            v-if="modelValue.length"
-            class="flex flex-row flex-wrap gap-2"
-        >
+        <div v-if="modelValue.length" class="flex flex-row flex-wrap gap-2">
             <div
                 v-for="image in modelValue"
                 :key="image.pseudoId"
@@ -18,36 +15,36 @@
             >
                 <div class="h-50">
                     <img
-                        :src="image.previewUrl"
                         :alt="image.file.name"
-                        width="200"
-                        height="200"
+                        :src="image.previewUrl"
                         class="h-full w-full rounded object-cover"
+                        height="200"
+                        width="200"
                     />
                 </div>
                 <div class="flex flex-col gap-2">
                     <Input
                         :id="`${image.id}-title`"
                         v-model="image.titleText"
-                        type="text"
-                        label="Title текст"
                         :disabled="disabled"
+                        label="Title текст"
+                        type="text"
                         @change="imageChange(image)"
                     />
                     <Input
                         :id="`${image.id}-alt`"
                         v-model="image.altText"
-                        type="text"
-                        label="Alt текст"
                         :disabled="disabled"
+                        label="Alt текст"
+                        type="text"
                         @change="imageChange(image)"
                     />
                 </div>
                 <button
-                    type="button"
-                    class="absolute top-1 right-1 h-10 w-10 cursor-pointer rounded-lg bg-white text-secondary transition-colors duration-300 hover:text-secondary-hover"
-                    @click="removeFile(image)"
                     v-if="!disabled"
+                    class="absolute top-1 right-1 h-10 w-10 cursor-pointer rounded-lg bg-white text-secondary transition-colors duration-300 hover:text-secondary-hover"
+                    type="button"
+                    @click="removeFile(image)"
                 >
                     <TrashBasket />
                 </button>
@@ -56,11 +53,11 @@
         <input
             :id="id"
             ref="fileInput"
-            type="file"
+            :disabled="disabled"
             :multiple="multiple"
             accept="image/jpeg,image/png,image/webp"
+            type="file"
             @change="handleFileChange"
-            :disabled="disabled"
         />
         <p v-if="error" class="text-red-400">
             {{ error }}
@@ -68,7 +65,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onBeforeUnmount, ref } from 'vue';
 import TrashBasket from '@/components/icons/TrashBasket.vue';
 import Input from '@/components/Input.vue';

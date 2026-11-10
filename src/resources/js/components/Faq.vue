@@ -1,6 +1,6 @@
 <template>
     <section class="bg-bg-base px-4 py-16 md:px-8 md:py-24 dark:bg-bg-night">
-        <div class="mx-auto max-w-[1280px]">
+        <Container>
             <div
                 id="faq"
                 class="grid scroll-mt-28 gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20"
@@ -14,7 +14,9 @@
                     <h2
                         class="mt-3 font-serif text-3xl leading-tight text-text-title md:text-4xl dark:text-linen"
                     >
-                        Всё, что важно<br />знать до покупки
+                        Всё, что важно
+                        <br />
+                        знать до покупки
                     </h2>
                     <p
                         class="mt-4 text-sm leading-6 text-text-muted dark:text-white/50"
@@ -22,8 +24,8 @@
                         Не нашли ответ? Наши садоводы помогут разобраться.
                     </p>
                     <Link
-                        href="/contacts"
                         class="group mt-5 flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary"
+                        href="/contacts"
                     >
                         Задать вопрос
                         <span
@@ -37,24 +39,25 @@
                     <AccordionItem
                         v-for="(item, index) in faq"
                         :key="item.question"
-                        :question="item.question"
                         :is-open="openFaq === index"
+                        :question="item.question"
                         @toggle="openFaq = openFaq === index ? null : index"
                     >
                         {{ item.answer }}
                     </AccordionItem>
                 </Reveal>
             </div>
-        </div>
+        </Container>
     </section>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import AccordionItem from '@/components/AccordionItem.vue';
 import AppIcon from '@/components/AppIcon.vue';
 import Reveal from '@/components/Reveal.vue';
+import Container from '@/components/Container.vue';
 
 const openFaq = ref<number | null>(0);
 const faq = [
