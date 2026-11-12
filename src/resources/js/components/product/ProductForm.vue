@@ -45,7 +45,6 @@
             :disabled="disabled"
             :items="allCategories"
             label="Категории"
-            multiple
         />
         <ImageUpload
             id="images"

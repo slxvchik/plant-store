@@ -17,7 +17,7 @@
                 </Link>
                 <span>/</span>
                 <span class="truncate text-text-title dark:text-white/65">
-                    {{ item.name }}
+                    {{ product?.name }}
                 </span>
             </nav>
         </div>
@@ -28,88 +28,8 @@
                 <div
                     class="hide-scrollbar -mx-4 flex snap-x snap-mandatory overflow-x-scroll md:-mx-8 lg:hidden"
                     aria-label="Галерея растения"
-                    @scroll.passive="onGalleryScroll"
                 >
-                    <div
-                        v-for="(image, index) in gallery"
-                        :key="image"
-                        class="w-full shrink-0 snap-center px-4 md:px-8"
-                    >
-                        <div
-                            class="aspect-[4/5] max-h-[640px] overflow-hidden rounded-[24px] bg-bg-surface dark:bg-bg-night-soft"
-                        >
-                            <img
-                                :src="image"
-                                :alt="`${item.name}, фотография ${index + 1}`"
-                                class="h-full w-full object-cover"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-3 flex items-center justify-between lg:hidden">
-                    <div class="flex gap-1.5">
-                        <span
-                            v-for="(_, index) in gallery"
-                            :key="index"
-                            class="h-1.5 rounded-full transition-all duration-300"
-                            :class="
-                                activeImage === index
-                                    ? 'w-6 bg-primary'
-                                    : 'w-1.5 bg-text-title/15 dark:bg-white/20'
-                            "
-                        />
-                    </div>
-                    <span class="text-xs text-text-muted dark:text-white/40">
-                        {{ activeImage + 1 }} / {{ gallery.length }}
-                    </span>
-                </div>
-
-                <div class="hidden gap-4 lg:flex">
-                    <div class="flex w-20 shrink-0 flex-col gap-3 xl:w-24">
-                        <button
-                            v-for="(image, index) in gallery"
-                            :key="image"
-                            type="button"
-                            class="aspect-[4/5] cursor-pointer overflow-hidden rounded-2xl border-2 bg-bg-surface transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/50 dark:bg-bg-night-soft"
-                            :class="
-                                activeImage === index
-                                    ? 'border-primary dark:border-secondary'
-                                    : 'border-transparent opacity-60 hover:opacity-100'
-                            "
-                            :aria-label="`Показать фотографию ${index + 1}`"
-                            @click="activeImage = index"
-                        >
-                            <img
-                                :src="image"
-                                alt=""
-                                class="h-full w-full object-cover"
-                            />
-                        </button>
-                    </div>
-                    <div
-                        class="relative aspect-[4/5] min-w-0 flex-1 overflow-hidden rounded-[28px] bg-bg-surface dark:bg-bg-night-soft"
-                    >
-                        <Transition
-                            mode="out-in"
-                            enter-active-class="transition-opacity duration-300"
-                            enter-from-class="opacity-0"
-                            enter-to-class="opacity-100"
-                            leave-active-class="transition-opacity duration-200"
-                            leave-to-class="opacity-0"
-                        >
-                            <img
-                                :key="gallery[activeImage]"
-                                :src="gallery[activeImage]"
-                                :alt="item.name"
-                                class="absolute inset-0 h-full w-full object-cover"
-                            />
-                        </Transition>
-                        <span
-                            class="absolute top-5 left-5 rounded-full bg-bg-elevated/90 px-4 py-2 text-xs font-semibold text-primary backdrop-blur dark:bg-bg-night/80 dark:text-secondary"
-                        >
-                            Фото живого растения
-                        </span>
-                    </div>
+                    TODO: Product slider
                 </div>
             </div>
 
@@ -118,31 +38,30 @@
                     <p
                         class="text-xs font-semibold tracking-[0.18em] text-primary uppercase dark:text-secondary"
                     >
-                        {{ item.category }}
+                        {{ product?.category }}
                     </p>
                     <FavoriteButton v-model="favorite" />
                 </div>
                 <h1
                     class="mt-3 font-serif text-4xl leading-[1.08] text-text-title md:text-5xl xl:text-6xl dark:text-linen"
                 >
-                    {{ item.name }}
+                    {{ product?.name }}
                 </h1>
-                <p
-                    class="mt-2 font-serif text-lg text-text-muted italic dark:text-white/40"
-                >
-                    {{ item.latinName }}
-                </p>
                 <div class="mt-4 flex items-center gap-2 text-sm">
-                    <span class="text-accent">★</span>
-                    <span class="font-semibold text-text-title dark:text-white">
-                        {{ item.rating }}
-                    </span>
-                    <a
-                        href="#reviews"
-                        class="text-text-muted underline decoration-text-muted/30 underline-offset-4 dark:text-white/45"
-                    >
-                        {{ item.reviews }} отзывов
-                    </a>
+                    <div v-if="false" class="flex gap-2">
+                        <span class="text-accent">★</span>
+                        <span
+                            class="font-semibold text-text-title dark:text-white"
+                        >
+                            1
+                        </span>
+                        <a
+                            href="#reviews"
+                            class="text-text-muted underline decoration-text-muted/30 underline-offset-4 dark:text-white/45"
+                        >
+                            5 отзывов
+                        </a>
+                    </div>
                     <span
                         class="ml-auto flex items-center gap-1.5 text-xs font-medium text-primary dark:text-secondary"
                     >
@@ -155,9 +74,7 @@
                 <p
                     class="mt-6 text-[15px] leading-7 text-text-muted md:text-base dark:text-white/55"
                 >
-                    {{ item.description }} Растение адаптировано в нашей
-                    оранжерее и готово к переезду. Перед отправкой пришлём
-                    фотографии именно вашего экземпляра.
+                    {{ product?.description }}
                 </p>
 
                 <div class="mt-7 grid grid-cols-2 gap-3">
@@ -170,7 +87,7 @@
                         <p
                             class="mt-1 text-sm font-semibold text-text-title dark:text-white"
                         >
-                            {{ item.light }}
+                            Освещение
                         </p>
                     </div>
                     <div
@@ -224,20 +141,14 @@
                             <span
                                 class="font-serif text-4xl font-semibold text-text-title dark:text-linen"
                             >
-                                {{ formatPrice(currentPrice) }}
+                                {{ currentPrice }}
                             </span>
                             <span
-                                v-if="item.oldPrice"
                                 class="text-sm text-text-muted line-through dark:text-white/35"
                             >
-                                {{ formatPrice(item.oldPrice) }}
+                                Старая цена
                             </span>
                         </div>
-                        <p
-                            class="mt-1 text-xs text-text-muted dark:text-white/40"
-                        >
-                            Кашпо и грунт можно добавить отдельно
-                        </p>
                     </div>
                     <div class="flex items-center gap-3">
                         <div
@@ -280,6 +191,7 @@
 
                 <div
                     class="mt-8 space-y-3 border-t border-text-title/10 pt-6 dark:border-white/10"
+                    v-if="false"
                 >
                     <p
                         class="flex items-center gap-3 text-sm text-text-muted dark:text-white/55"
@@ -342,7 +254,9 @@
                         </Link>
                     </div>
                 </Reveal>
-                <Reveal :delay="100" class="mt-8"><ProductSlider /></Reveal>
+                <Reveal :delay="100" class="mt-8">
+                    <ProductSlider :items="[]" />
+                </Reveal>
             </div>
         </section>
 
@@ -359,7 +273,7 @@
                     <p
                         class="font-serif text-xl font-semibold text-text-title dark:text-linen"
                     >
-                        {{ formatPrice(currentPrice * quantity) }}
+                        {{ currentPrice * quantity }}
                     </p>
                 </div>
                 <div
@@ -401,7 +315,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import AccordionItem from '@/components/AccordionItem.vue';
 import AppIcon from '@/components/AppIcon.vue';
@@ -409,44 +323,22 @@ import FavoriteButton from '@/components/FavoriteButton.vue';
 import Layout from '@/components/layouts/Layout.vue';
 import ProductSlider from '@/components/product/ProductSlider.vue';
 import Reveal from '@/components/Reveal.vue';
-import { useCartDrawer } from '@/composables/useCartDrawer';
-import type { StorefrontProduct } from '@/data/products';
-import { storefrontProducts } from '@/data/products';
+import type { Product } from '@/types/product.ts';
 
 defineOptions({ layout: Layout });
-const props = defineProps<{ product?: StorefrontProduct }>();
-const page = usePage();
-const item = computed(() => {
-    const alias = page.url.split('/').filter(Boolean).pop()?.split('?')[0];
+defineProps<{ product: Product }>();
 
-    return (
-        props.product ??
-        storefrontProducts.find((product) => product.id === alias) ??
-        storefrontProducts[0]!
-    );
-});
-const gallery = computed(() => [
-    item.value.image,
-    '/images/slide_1.avif',
-    '/images/water_lily.png',
-]);
 const activeImage = ref(0);
 const favorite = ref(false);
 const quantity = ref(1);
 const selectedSize = ref('Среднее');
 const openCare = ref<number | null>(0);
-const { addToCart, formatPrice } = useCartDrawer();
 const sizeOptions = [
     { name: 'Компактное', height: '30–45 см', extra: 0 },
     { name: 'Среднее', height: '50–70 см', extra: 900 },
     { name: 'Крупное', height: '80–110 см', extra: 1800 },
 ];
-const currentPrice = computed(
-    () =>
-        item.value.price +
-        (sizeOptions.find((option) => option.name === selectedSize.value)
-            ?.extra ?? 0),
-);
+const currentPrice = computed(() => 0);
 const careItems = [
     {
         question: 'Освещение и размещение',
@@ -474,13 +366,6 @@ const onGalleryScroll = (event: Event): void => {
 };
 
 const addSelectedToCart = (): void => {
-    for (let index = 0; index < quantity.value; index += 1) {
-        addToCart({
-            id: `${item.value.id}-${selectedSize.value}`,
-            name: `${item.value.name} · ${selectedSize.value}`,
-            price: currentPrice.value,
-            image: item.value.image,
-        });
-    }
+    console.log('В корзину');
 };
 </script>

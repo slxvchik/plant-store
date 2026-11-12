@@ -42,17 +42,17 @@
                     </div>
                 </div>
             </Reveal>
-            <Reveal :delay="120" class="mt-8 md:mt-12">
-                <ProductSlider />
-            </Reveal>
         </Container>
+        <Reveal :delay="120" class="mt-8 md:mt-12">
+            <ProductSlider />
+        </Reveal>
     </section>
 </template>
 
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import AppIcon from '@/components/AppIcon.vue';
+import Container from '@/components/Container.vue';
 import ProductSlider from '@/components/product/ProductSlider.vue';
 import Reveal from '@/components/Reveal.vue';
-import Container from '@/components/Container.vue';
 </script>

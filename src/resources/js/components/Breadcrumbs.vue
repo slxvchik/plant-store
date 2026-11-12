@@ -1,6 +1,6 @@
 <template>
     <nav
-        class="flex items-center gap-2 text-xs text-text-muted dark:text-white/40"
+        class="flex items-center gap-2 text-xs py-4 lg:py-6 text-text-muted dark:text-white/40"
         aria-label="Хлебные крошки"
     >
         <template v-for="(item, index) in items" :key="item.url">

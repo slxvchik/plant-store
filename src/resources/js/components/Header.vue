@@ -1,6 +1,6 @@
 <template>
     <header
-        class="sticky top-0 z-40 border-b border-text-title/5 bg-bg-base/90 backdrop-blur-xl transition-colors duration-300 dark:border-white/10 dark:bg-bg-night/90"
+        class="sticky top-0 z-60 border-b border-text-title/5 bg-bg-base/90 backdrop-blur-xl transition-colors duration-300 dark:border-white/10 dark:bg-bg-night/90"
     >
         <Container>
             <div class="flex h-18 w-full items-center justify-between lg:h-22">
@@ -99,14 +99,15 @@
                 </nav>
 
                 <div class="flex items-center gap-1 md:gap-2">
-                    <button
+                    <Link
                         aria-label="Поиск по каталогу"
                         class="hidden h-11 w-11 cursor-pointer items-center justify-center rounded-full text-text-muted transition-all duration-300 hover:rotate-6 hover:bg-bg-surface hover:text-primary md:flex dark:text-white/65 dark:hover:bg-white/5"
-                        type="button"
-                        @click="router.visit('/catalog')"
+                        :href="CatalogIndex.catalog.url()"
                     >
-                        <span class="h-5 w-5"><AppIcon name="search" /></span>
-                    </button>
+                        <span class="flex h-5 w-5 shrink-0">
+                            <AppIcon name="search" />
+                        </span>
+                    </Link>
                     <button
                         :aria-label="
                             isDark
@@ -121,20 +122,13 @@
                             <AppIcon :name="isDark ? 'sun' : 'moon'" />
                         </span>
                     </button>
-                    <button
-                        aria-label="Открыть корзину"
-                        class="relative hidden h-11 w-11 cursor-pointer items-center justify-center rounded-full text-text-muted transition-all duration-300 hover:bg-bg-surface hover:text-primary lg:flex dark:text-white/65 dark:hover:bg-white/5"
-                        type="button"
-                        @click="isCartOpen = true"
+                    <Link
+                        aria-label="Поиск по каталогу"
+                        class="hidden h-11 w-11 cursor-pointer items-center justify-center rounded-full text-text-muted transition-all duration-300 hover:rotate-6 hover:bg-bg-surface hover:text-primary md:flex dark:text-white/65 dark:hover:bg-white/5"
+                        :href="'/user/cart'"
                     >
                         <span class="h-5 w-5"><AppIcon name="cart" /></span>
-                        <span
-                            v-if="itemCount"
-                            class="absolute top-0.5 right-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-white"
-                        >
-                            {{ itemCount }}
-                        </span>
-                    </button>
+                    </Link>
                     <Link
                         class="ml-2 hidden min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg xl:flex"
                         href="/contacts"
@@ -148,19 +142,18 @@
 </template>
 
 <script lang="ts" setup>
-import { Link, router, usePage } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
 import Container from '@/components/Container.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
-import { useCartDrawer } from '@/composables/useCartDrawer';
 import { useTheme } from '@/composables/useTheme';
 import { clickOutside as vClickOutside } from '@/directives/clickOutside';
+import CatalogIndex from '@/routes/catalog';
 
 const page = usePage();
 const openMenu = ref<string | null>(null);
 const { isDark, toggleTheme } = useTheme();
-const { isCartOpen, itemCount } = useCartDrawer();
 
 const navigation = [
     {

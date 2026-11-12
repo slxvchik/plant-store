@@ -23,28 +23,6 @@
                 </span>
                 {{ item.label }}
             </Link>
-            <button
-                :class="
-                    isCartOpen
-                        ? 'text-primary dark:text-secondary'
-                        : 'text-text-muted dark:text-white/50'
-                "
-                aria-label="Открыть корзину"
-                class="relative flex min-h-12 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-medium transition-all duration-300 ease-in-out active:scale-95"
-                type="button"
-                @click="isCartOpen = true"
-            >
-                <span class="relative h-5 w-5">
-                    <AppIcon name="cart" />
-                    <span
-                        v-if="itemCount"
-                        class="absolute -top-2 -right-3 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-white"
-                    >
-                        {{ itemCount }}
-                    </span>
-                </span>
-                Корзина
-            </button>
         </div>
     </nav>
 </template>
@@ -52,14 +30,13 @@
 <script lang="ts" setup>
 import { Link, usePage } from '@inertiajs/vue3';
 import AppIcon from '@/components/AppIcon.vue';
-import { useCartDrawer } from '@/composables/useCartDrawer';
 
 const page = usePage();
-const { isCartOpen, itemCount } = useCartDrawer();
 const items = [
     { label: 'Главная', href: '/', icon: 'home' as const },
     { label: 'Каталог', href: '/catalog', icon: 'catalog' as const },
     { label: 'Контакты', href: '/contacts', icon: 'mail' as const },
+    { label: 'Корзина', href: '/user/cart', icon: 'cart' as const },
 ];
 
 const isActive = (href: string): boolean =>

@@ -12,7 +12,7 @@
             :class="modelValue ? 'text-red-400' : 'text-secondary'"
             class="h-5 w-5"
         >
-            <AppIcon :fill="modelValue" name="heart" />
+            <AppIcon name="heart" />
         </span>
     </button>
 </template>

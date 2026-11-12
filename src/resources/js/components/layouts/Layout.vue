@@ -17,14 +17,12 @@
         </Transition>
         <Footer />
         <MobileNavigation />
-        <CartDrawer />
         <NotificationList />
     </div>
 </template>
 
 <script lang="ts" setup>
 import { usePage } from '@inertiajs/vue3';
-import CartDrawer from '@/components/CartDrawer.vue';
 import Footer from '@/components/Footer.vue';
 import Header from '@/components/Header.vue';
 import MobileNavigation from '@/components/MobileNavigation.vue';

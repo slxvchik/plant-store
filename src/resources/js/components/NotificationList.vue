@@ -1,6 +1,6 @@
 <template>
     <TransitionGroup
-        class="fixed top-4 left-1/2 z-50 flex w-full max-w-sm -translate-x-1/2 flex-col gap-3"
+        class="fixed top-4 left-1/2 z-999 flex w-full max-w-sm -translate-x-1/2 flex-col gap-3"
         name="notification"
         tag="div"
     >

@@ -23,6 +23,15 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+@layer base {
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration {
+        display: none;
+    }
+}
+
 @theme inline {
     --font-serif: 'PlayfairDisplay', Georgia, serif;
     --font-sans: 'SofiaSans', ui-sans-serif, sans-serif;

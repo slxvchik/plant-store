@@ -6,15 +6,16 @@
                     class="flex items-center gap-2 text-xs text-text-muted dark:text-white/40"
                     aria-label="Хлебные крошки"
                 >
-                    <Link href="/" class="transition-colors hover:text-primary"
-                        >Главная</Link
-                    ><span>/</span
-                    ><span class="text-text-title dark:text-white/65"
-                        >Контакты</span
-                    >
+                    <Link href="/" class="transition-colors hover:text-primary">
+                        Главная
+                    </Link>
+                    <span>/</span>
+                    <span class="text-text-title dark:text-white/65">
+                        Контакты
+                    </span>
                 </nav>
-                <Reveal
-                    ><div class="mt-7 max-w-3xl">
+                <Reveal>
+                    <div class="mt-7 max-w-3xl">
                         <p
                             class="text-xs font-semibold tracking-[0.2em] text-accent uppercase"
                         >
@@ -23,10 +24,11 @@
                         <h1
                             class="mt-3 font-serif text-4xl leading-tight text-text-title md:text-5xl lg:text-6xl dark:text-linen"
                         >
-                            Давайте вырастим<br /><em
-                                class="text-primary dark:text-secondary"
-                                >что-то прекрасное</em
-                            >
+                            Давайте вырастим
+                            <br />
+                            <em class="text-primary dark:text-secondary">
+                                что-то прекрасное
+                            </em>
                         </h1>
                         <p
                             class="mt-5 max-w-xl text-sm leading-7 text-text-muted md:text-base dark:text-white/50"
@@ -35,8 +37,8 @@
                             разобраться в уходе. Напишите нам — отвечает живой
                             человек, а не бот.
                         </p>
-                    </div></Reveal
-                >
+                    </div>
+                </Reveal>
 
                 <div
                     class="mt-10 grid gap-6 md:mt-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10"
@@ -72,45 +74,59 @@
                                 <a
                                     href="tel:+74951284567"
                                     class="group flex min-h-12 items-center gap-4"
-                                    ><span
-                                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white dark:bg-white/5 dark:text-secondary"
-                                        ><span class="h-5 w-5"
-                                            ><AppIcon
-                                                name="phone" /></span></span
-                                    ><span
-                                        ><span
-                                            class="block text-xs text-text-muted dark:text-white/40"
-                                            >Позвонить</span
-                                        ><span
-                                            class="font-semibold text-text-title dark:text-linen"
-                                            >+7 (495) 128-45-67</span
-                                        ></span
-                                    ></a
                                 >
+                                    <span
+                                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white dark:bg-white/5 dark:text-secondary"
+                                    >
+                                        <span class="h-5 w-5">
+                                            <AppIcon name="phone" />
+                                        </span>
+                                    </span>
+                                    <span>
+                                        <span
+                                            class="block text-xs text-text-muted dark:text-white/40"
+                                        >
+                                            Позвонить
+                                        </span>
+                                        <span
+                                            class="font-semibold text-text-title dark:text-linen"
+                                        >
+                                            +7 (495) 128-45-67
+                                        </span>
+                                    </span>
+                                </a>
                                 <a
                                     href="mailto:hello@deulino.garden"
                                     class="group flex min-h-12 items-center gap-4"
-                                    ><span
-                                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white dark:bg-white/5 dark:text-secondary"
-                                        ><span class="h-5 w-5"
-                                            ><AppIcon
-                                                name="mail" /></span></span
-                                    ><span
-                                        ><span
-                                            class="block text-xs text-text-muted dark:text-white/40"
-                                            >Написать</span
-                                        ><span
-                                            class="font-semibold break-all text-text-title dark:text-linen"
-                                            >hello@deulino.garden</span
-                                        ></span
-                                    ></a
                                 >
+                                    <span
+                                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white dark:bg-white/5 dark:text-secondary"
+                                    >
+                                        <span class="h-5 w-5">
+                                            <AppIcon name="mail" />
+                                        </span>
+                                    </span>
+                                    <span>
+                                        <span
+                                            class="block text-xs text-text-muted dark:text-white/40"
+                                        >
+                                            Написать
+                                        </span>
+                                        <span
+                                            class="font-semibold break-all text-text-title dark:text-linen"
+                                        >
+                                            hello@deulino.garden
+                                        </span>
+                                    </span>
+                                </a>
                                 <div class="flex gap-4">
                                     <span
                                         class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary dark:bg-white/5 dark:text-secondary"
-                                        ><span class="h-5 w-5"
-                                            ><AppIcon name="pin" /></span
-                                    ></span>
+                                    >
+                                        <span class="h-5 w-5">
+                                            <AppIcon name="pin" />
+                                        </span>
+                                    </span>
                                     <div>
                                         <p
                                             class="text-xs text-text-muted dark:text-white/40"
@@ -120,17 +136,20 @@
                                         <p
                                             class="mt-1 text-sm leading-6 font-semibold text-text-title dark:text-linen"
                                         >
-                                            Московская область, Рузский
-                                            район,<br />деревня Деулино
+                                            Московская область, Рузский район,
+                                            <br />
+                                            деревня Деулино
                                         </p>
                                     </div>
                                 </div>
                                 <div class="flex gap-4">
                                     <span
                                         class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary dark:bg-white/5 dark:text-secondary"
-                                        ><span class="h-5 w-5"
-                                            ><AppIcon name="clock" /></span
-                                    ></span>
+                                    >
+                                        <span class="h-5 w-5">
+                                            <AppIcon name="clock" />
+                                        </span>
+                                    </span>
                                     <div>
                                         <p
                                             class="text-xs text-text-muted dark:text-white/40"
@@ -170,7 +189,7 @@
                                 Ответим в течение двух рабочих часов.
                             </p>
                             <div class="mt-7 space-y-4">
-                                <FloatingField
+                                <Input
                                     id="contact-name"
                                     v-model="form.fio"
                                     label="Ваше имя *"
@@ -178,7 +197,7 @@
                                     :error="clientErrors.fio || form.errors.fio"
                                 />
                                 <div class="grid gap-4 md:grid-cols-2">
-                                    <FloatingField
+                                    <Input
                                         id="contact-phone"
                                         v-model="form.phone"
                                         type="tel"
@@ -188,7 +207,8 @@
                                             clientErrors.phone ||
                                             form.errors.phone
                                         "
-                                    /><FloatingField
+                                    />
+                                    <Input
                                         id="contact-email"
                                         v-model="form.email"
                                         type="email"
@@ -200,7 +220,7 @@
                                         "
                                     />
                                 </div>
-                                <FloatingField
+                                <Input
                                     id="contact-message"
                                     v-model="form.comment"
                                     label="Ваш вопрос *"
@@ -219,9 +239,11 @@
                                 <span
                                     v-if="form.processing"
                                     class="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"
-                                /><span v-else class="h-5 w-5"
-                                    ><AppIcon name="arrow" /></span
-                                >{{
+                                />
+                                <span v-else class="h-5 w-5">
+                                    <AppIcon name="arrow" />
+                                </span>
+                                {{
                                     form.processing
                                         ? 'Отправляем…'
                                         : 'Отправить сообщение'
@@ -239,17 +261,19 @@
                                 enter-to-class="translate-y-0 opacity-100"
                                 leave-active-class="transition-all duration-200"
                                 leave-to-class="opacity-0"
-                                ><div
+                            >
+                                <div
                                     v-if="submitted"
                                     class="mt-5 flex items-center gap-3 rounded-2xl bg-sage-soft p-4 text-sm text-primary dark:bg-primary/20 dark:text-secondary"
                                     role="status"
                                 >
-                                    <span class="h-5 w-5 shrink-0"
-                                        ><AppIcon name="check" /></span
-                                    >Спасибо! Мы получили сообщение и скоро
+                                    <span class="h-5 w-5 shrink-0">
+                                        <AppIcon name="check" />
+                                    </span>
+                                    Спасибо! Мы получили сообщение и скоро
                                     свяжемся с вами.
-                                </div></Transition
-                            >
+                                </div>
+                            </Transition>
                         </form>
                     </Reveal>
                 </div>
@@ -262,9 +286,9 @@
 import { Link, useForm } from '@inertiajs/vue3';
 import { reactive, ref } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
-import FloatingField from '@/components/FloatingField.vue';
 import Layout from '@/components/layouts/Layout.vue';
 import Reveal from '@/components/Reveal.vue';
+import Input from '@/components/Input.vue';
 
 defineOptions({ layout: Layout });
 const form = useForm({ fio: '', phone: '', email: '', comment: '' });

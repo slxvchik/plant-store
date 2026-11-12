@@ -31,62 +31,51 @@
                 </label>
             </div>
         </fieldset>
-        <fieldset
-            class="border-t border-text-title/10 pt-6 dark:border-white/10"
-        >
-            <legend
-                class="pt-6 font-serif text-xl text-text-title dark:text-linen"
-            >
-                Освещение
-            </legend>
-            <div class="mt-3 flex flex-wrap gap-2">
-                <label
-                    v-for="light in lightOptions"
-                    :key="light"
-                    class="cursor-pointer"
-                >
-                    <input
-                        v-model="selectedLight"
-                        :value="light"
-                        class="peer sr-only"
-                        type="checkbox"
-                    />
-                    <span
-                        class="flex min-h-11 items-center rounded-full border border-text-title/10 px-3.5 text-xs font-medium text-text-muted transition-all duration-300 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-primary/30 dark:border-white/15 dark:text-white/55 dark:peer-checked:text-white"
-                    >
-                        {{ light }}
-                    </span>
-                </label>
-            </div>
-        </fieldset>
         <div class="border-t border-text-title/10 pt-6 dark:border-white/10">
             <div class="flex items-center justify-between gap-3">
-                <label
-                    :for="`${idPrefix}-price`"
-                    class="font-serif text-xl text-text-title dark:text-linen"
-                >
-                    Цена до
-                </label>
-                <span
+                <p class="font-serif text-xl text-text-title dark:text-linen">
+                    Цена от - до
+                </p>
+                <p
                     class="text-sm font-semibold text-primary dark:text-secondary"
                 >
-                    {{ formatPrice(maxPrice) }}
-                </span>
+                    {{ minPrice }} - {{ maxPrice }}
+                </p>
             </div>
-            <input
-                :id="`${idPrefix}-price`"
-                v-model.number="maxPrice"
-                class="mt-5 h-11 w-full cursor-pointer accent-primary"
-                max="7000"
-                min="1500"
-                step="1"
-                type="range"
-            />
+            <div
+                class="relative mt-5 grid h-11 w-full cursor-pointer accent-primary"
+            >
+                <div
+                    class="absolute top-[50%] left-0 z-0 h-2 w-full -translate-y-[50%] rounded bg-bg-surface"
+                />
+                <div
+                    class="absolute top-[50%] h-2 -translate-y-[50%] rounded bg-primary"
+                    :style="rangeStyle"
+                />
+                <input
+                    :id="`${idPrefix}-price-min`"
+                    v-model.number="minPrice"
+                    class="pointer-events-none z-1 col-start-1 row-start-1 w-full cursor-pointer appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:pointer-events-auto"
+                    :min="minPriceBase"
+                    :max="maxPriceBase"
+                    step="1"
+                    type="range"
+                />
+                <input
+                    :id="`${idPrefix}-price-max`"
+                    v-model.number="maxPrice"
+                    class="pointer-events-none z-1 col-start-1 row-start-1 w-full cursor-pointer appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:pointer-events-auto"
+                    :min="minPriceBase"
+                    :max="maxPriceBase"
+                    step="1"
+                    type="range"
+                />
+            </div>
             <div
                 class="flex justify-between text-xs text-text-muted dark:text-white/40"
             >
-                <span>1 500 ₽</span>
-                <span>7 000 ₽</span>
+                <span>{{ minPriceBase }} ₽</span>
+                <span>{{ maxPriceBase }} ₽</span>
             </div>
         </div>
         <label
@@ -109,23 +98,45 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
-import { useCartDrawer } from '@/composables/useCartDrawer';
 
-defineProps<{ idPrefix: string }>();
+interface Props {
+    idPrefix: string;
+    minPriceBase: number;
+    maxPriceBase: number;
+}
+
+const props = defineProps<Props>();
+
 defineEmits<{ reset: [] }>();
 const selectedCategories = defineModel<string[]>('categories', {
     required: true,
 });
-const selectedLight = defineModel<string[]>('lights', { required: true });
+
+const rangeStyle = computed(() => {
+    const total = props.maxPriceBase - props.minPriceBase;
+
+    if (total <= 0) {
+        return { left: '0%', width: '0%' };
+    }
+
+    const left = ((minPrice.value - props.minPriceBase) / total) * 100;
+    const width = ((maxPrice.value - minPrice.value) / total) * 100;
+
+    return {
+        left: `${Math.max(0, Math.min(100, left))}%`,
+        width: `${Math.max(0, Math.min(100, width))}%`,
+    };
+});
+
+const minPrice = defineModel<number>('minPrice', { required: true });
 const maxPrice = defineModel<number>('maxPrice', { required: true });
 const onlyInStock = defineModel<boolean>('inStock', { required: true });
-const { formatPrice } = useCartDrawer();
 const categories = [
     'Комнатные растения',
     'Декоративно-лиственные',
     'Деревья',
     'Ампельные растения',
 ];
-const lightOptions = ['Тень', 'Полутень', 'Яркий свет'];
 </script>

@@ -3,8 +3,8 @@
         <div class="relative">
             <div
                 v-if="floated && multiline"
-                class="pointer-events-none absolute top-px right-px left-px z-10 h-7 rounded-t-[15px] bg-bg-elevated dark:bg-bg-night"
-            ></div>
+                class="pointer-events-none absolute top-px right-px left-px z-10 h-7 rounded-t-[15px] bg-bg-elevated dark:bg-bg-night-soft"
+            />
 
             <label
                 v-if="label"
@@ -36,7 +36,7 @@
                         ? 'border-red-500 focus:ring-4 focus:ring-red-500/10'
                         : 'border-text-title/15 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-white/15'
                 "
-                class="peer min-h-32 w-full resize-none rounded-2xl border bg-bg-elevated px-4 pt-6 pb-3 text-[15px] text-text-title transition-all duration-300 focus:outline-none dark:bg-bg-night dark:text-white"
+                class="peer min-h-32 w-full resize-none rounded-2xl border bg-bg-elevated px-4 pt-6 pb-3 text-[15px] text-text-title transition-all duration-300 focus:outline-none dark:bg-bg-night-soft dark:text-white"
                 rows="5"
                 @blur="focused = false"
                 @focus="focused = true"
@@ -57,7 +57,7 @@
                 :data-maska="maska"
                 :disabled="disabled"
                 :type="type"
-                class="peer h-15 w-full rounded-2xl border bg-bg-elevated px-4 pt-5 pb-1 text-[15px] text-text-title transition-all duration-300 focus:outline-none dark:bg-bg-night dark:text-white"
+                class="peer h-12 w-full rounded-2xl border bg-bg-elevated px-4 pt-5 pb-1 text-[15px] text-text-title transition-all duration-300 focus:outline-none dark:bg-bg-night-soft dark:text-white"
                 @blur="focused = false"
                 @focus="focused = true"
             />

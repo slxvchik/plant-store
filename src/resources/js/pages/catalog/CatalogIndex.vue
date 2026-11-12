@@ -1,81 +1,20 @@
 <template>
     <Container class="bg-bg-base dark:bg-bg-night">
-        <section
-            class="border-b border-text-title/5 py-9 md:py-14 dark:border-white/10"
-        >
-            <div>
-                <Breadcrumbs
-                    :items="[
-                        { url: home.url(), name: 'Главная' },
-                        { url: home.url(), name: 'Каталог' },
-                    ]"
-                />
-                <div
-                    class="mt-5 flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
-                >
-                    <div>
-                        <p
-                            class="text-xs font-semibold tracking-[0.2em] text-accent uppercase"
-                        >
-                            Коллекция питомника
-                        </p>
-                        <h1
-                            class="mt-3 font-serif text-4xl leading-tight text-text-title md:text-5xl lg:text-6xl dark:text-linen"
-                        >
-                            Найдите своё
-                            <em class="text-primary dark:text-secondary">
-                                растение
-                            </em>
-                        </h1>
-                    </div>
-                    <p
-                        class="max-w-md text-sm leading-6 text-text-muted md:text-base dark:text-white/50"
-                    >
-                        Живые растения для дома, террасы и сада. Каждый
-                        экземпляр проверен нашими садоводами.
-                    </p>
-                </div>
-            </div>
-        </section>
-
+        <Breadcrumbs
+            :items="[
+                { url: home.url(), name: 'Главная' },
+                { url: home.url(), name: 'Каталог' },
+            ]"
+        />
+        <CatalogHero />
         <div class="py-6 md:py-10">
             <div
                 class="mb-6 flex flex-col gap-3 md:mb-8 md:flex-row md:items-center"
             >
-                <label class="relative flex-1">
-                    <span class="sr-only">Поиск по каталогу</span>
-                    <span
-                        class="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-text-muted dark:text-white/40"
-                    >
-                        <AppIcon name="search" />
-                    </span>
-                    <input
-                        v-model="searchQuery"
-                        type="search"
-                        placeholder="Название или сорт растения"
-                        class="h-12 w-full rounded-full border border-text-title/10 bg-bg-elevated pr-4 pl-12 text-sm text-text-title transition-all duration-300 placeholder:text-text-muted/60 focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none dark:border-white/10 dark:bg-bg-night-soft dark:text-white dark:placeholder:text-white/30"
-                    />
-                </label>
-                <label class="relative md:w-72">
-                    <span class="sr-only">Сортировка товаров</span>
-                    <select
-                        v-model="productsSort"
-                        class="h-12 w-full cursor-pointer appearance-none rounded-full border border-text-title/10 bg-bg-elevated px-5 pr-11 text-sm font-medium text-text-title transition-all duration-300 focus:border-primary focus:outline-none dark:border-white/10 dark:bg-bg-night-soft dark:text-white"
-                    >
-                        <option
-                            v-for="item in sortItems"
-                            :key="item.value"
-                            :value="item.value"
-                        >
-                            {{ item.label }}
-                        </option>
-                    </select>
-                    <span
-                        class="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 rotate-90 text-text-muted dark:text-white/40"
-                    >
-                        <AppIcon name="chevron" />
-                    </span>
-                </label>
+                <SearchInput v-model="searchQuery" id="catalog-search-input" />
+                <div class="w-full max-w-62.5">
+                    <Select v-model="productsSort" :items="sortItems" />
+                </div>
             </div>
 
             <div
@@ -101,9 +40,11 @@
                         <CatalogFilters
                             id-prefix="desktop"
                             v-model:categories="selectedCategories"
-                            v-model:lights="selectedLight"
+                            v-model:min-price="minPrice"
                             v-model:max-price="maxPrice"
                             v-model:in-stock="onlyInStock"
+                            :min-price-base="0"
+                            :max-price-base="7000"
                             @reset="resetFilters"
                         />
                     </div>
@@ -134,7 +75,7 @@
                         v-if="filteredProducts.length"
                         tag="div"
                         name="products"
-                        class="relative grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4"
+                        class="lg:grid-cols-auto relative grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4"
                         @before-leave="beforeRemoveProduct"
                     >
                         <div
@@ -189,7 +130,9 @@
                 class="flex min-h-12 cursor-pointer items-center gap-2 rounded-full bg-bg-dark px-6 text-sm font-semibold text-white shadow-[0_12px_35px_rgba(30,41,36,0.3)] transition-all duration-300 hover:scale-105 active:scale-95 dark:bg-secondary dark:text-bg-dark"
                 @click="filtersOpen = true"
             >
-                <span class="h-5 w-5"><AppIcon name="filter" /></span>
+                <span class="h-5 w-5">
+                    <AppIcon name="filter" />
+                </span>
                 Фильтры
                 <span
                     v-if="activeFiltersCount"
@@ -260,9 +203,11 @@
                         <CatalogFilters
                             id-prefix="mobile"
                             v-model:categories="selectedCategories"
-                            v-model:lights="selectedLight"
+                            v-model:min-price="minPrice"
                             v-model:max-price="maxPrice"
                             v-model:in-stock="onlyInStock"
+                            :min-price-base="0"
+                            :max-price-base="7000"
                             @reset="resetFilters"
                         />
                     </div>
@@ -288,19 +233,21 @@ import { Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
-import CatalogFilters from '@/components/CatalogFilters.vue';
+import CatalogFilters from '@/components/catalog/CatalogFilters.vue';
+import CatalogHero from '@/components/catalog/CatalogHero.vue';
 import Container from '@/components/Container.vue';
 import Layout from '@/components/layouts/Layout.vue';
 import ProductCard from '@/components/product/ProductCard.vue';
+import SearchInput from '@/components/SearchInput.vue';
+import Select from '@/components/Select.vue';
 import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
-import { storefrontProducts } from '@/data/products';
 import { home } from '@/routes';
+import type { ProductListItem } from '@/types/product.ts';
 
 defineOptions({ layout: Layout });
 
 const sortItems = [
     { label: 'Сначала популярные', value: 'popularity' },
-    { label: 'По дате поступления', value: 'date' },
     { label: 'Цена: по возрастанию', value: 'price-big' },
     { label: 'Цена: по убыванию', value: 'price-small' },
 ];
@@ -308,61 +255,17 @@ const productsSort = ref('popularity');
 const searchQuery = ref('');
 const filtersOpen = ref(false);
 const selectedCategories = ref<string[]>([]);
-const selectedLight = ref<string[]>([]);
+const minPrice = ref(0);
 const maxPrice = ref(7000);
 const onlyInStock = ref(true);
 
 const activeFiltersCount = computed(
     () =>
         selectedCategories.value.length +
-        selectedLight.value.length +
         (maxPrice.value < 7000 ? 1 : 0) +
         (onlyInStock.value ? 1 : 0),
 );
-const filteredProducts = computed(() => {
-    const query = searchQuery.value.trim().toLocaleLowerCase('ru');
-    const result = storefrontProducts.filter((product) => {
-        const matchesQuery =
-            !query ||
-            `${product.name} ${product.latinName}`
-                .toLocaleLowerCase('ru')
-                .includes(query);
-        const matchesCategory =
-            !selectedCategories.value.length ||
-            selectedCategories.value.includes(product.category);
-        const matchesLight =
-            !selectedLight.value.length ||
-            selectedLight.value.includes(product.light);
-        const matchesStock = !onlyInStock.value || product.inStock !== false;
-
-        return (
-            matchesQuery &&
-            matchesCategory &&
-            matchesLight &&
-            matchesStock &&
-            product.price <= maxPrice.value
-        );
-    });
-
-    return [...result].sort((a, b) => {
-        if (productsSort.value === 'price-big') {
-            return a.price - b.price;
-        }
-
-        if (productsSort.value === 'price-small') {
-            return b.price - a.price;
-        }
-
-        if (productsSort.value === 'date') {
-            return (
-                Number(Boolean(b.tag === 'Новинка')) -
-                Number(Boolean(a.tag === 'Новинка'))
-            );
-        }
-
-        return b.rating * b.reviews - a.rating * a.reviews;
-    });
-});
+const filteredProducts = ref<ProductListItem[]>([]);
 const resultLabel = computed(() => {
     const count = filteredProducts.value.length;
     const lastTwo = count % 100;
@@ -384,7 +287,7 @@ const resultLabel = computed(() => {
 
 const resetFilters = (): void => {
     selectedCategories.value = [];
-    selectedLight.value = [];
+    minPrice.value = 0;
     maxPrice.value = 7000;
     onlyInStock.value = true;
 };
@@ -406,7 +309,7 @@ useBodyScrollLock(filtersOpen);
 .products-enter-active,
 .products-leave-active,
 .products-move {
-    transition: all 10s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .products-enter-from {
