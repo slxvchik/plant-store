@@ -50,19 +50,21 @@
             <Input
                 id="address"
                 v-model="form.address"
-                placeholder="Адрес склада"
                 label="Адрес"
                 :error="form.errors.address"
-                @update:modelValue="validateField('address', form.address)"
+                @update:modelValue="
+                    validateField && validateField('address', form.address)
+                "
             />
             <Input
                 id="phone"
                 v-model="form.phone"
-                placeholder="+7 999 999 99 99"
                 type="tel"
                 label="Номер телефона"
                 :error="form.errors.phone"
-                @update:modelValue="validateField('phone', form.phone)"
+                @update:modelValue="
+                    validateField && validateField('phone', form.phone)
+                "
             />
             <Button
                 type="submit"
@@ -102,7 +104,7 @@ const warehouseValidator = (field: keyof WarehouseForm, value: any) => {
 };
 const {
     form,
-    validateField,
+    formValidator,
     isFormPopupOpen,
     isEditMode,
     openCreateModal,
@@ -119,4 +121,5 @@ const {
     },
     validator: warehouseValidator,
 });
+const validateField = formValidator?.validateField;
 </script>

@@ -81,15 +81,15 @@ import { computed } from 'vue';
 import Button from '@/components/Button.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Link from '@/components/Link.vue';
-import UserFormFields from '@/components/UserFormFields.vue';
 import PaginationList from '@/components/PaginationList.vue';
 import Popup from '@/components/Popup.vue';
+import UserFormFields from '@/components/UserFormFields.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
 import AdminUsers from '@/routes/admin/users';
-import type { UserFormState } from '@/types/form/user';
 import type { User } from '@/types/user';
 import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse';
 import { validate } from '@/utils/validator.ts';
+import type { UserFormState } from '@/types/form/user';
 import type { PageResponse } from '@/types/pageResponse';
 
 defineOptions({ layout: AdminLayout });

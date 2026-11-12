@@ -1,50 +1,70 @@
 <template>
-    <div class="relative w-full">
-        <div
+    <div
+        class="relative h-full w-full"
+        v-click-outside="() => (isOpen = false)"
+    >
+        <span
             v-if="label"
+            :class="
+                !error ? 'text-text-muted dark:text-white/40' : 'text-red-400'
+            "
             class="mb-1.5 select-none"
-            :class="!error ? 'text-text-muted' : 'text-red-400'"
         >
             {{ label }}
-        </div>
+        </span>
         <div
-            class="flex h-11 cursor-pointer items-center justify-between border border-text-muted bg-white px-4 py-3.5 select-none"
             :class="[
-                isOpen ? 'rounded-t-lg border-b-transparent' : 'rounded-lg',
+                isOpen
+                    ? 'rounded-t-2xl !border-primary border-b-transparent ring-4 ring-primary/10'
+                    : 'rounded-2xl',
                 !error
-                    ? 'border-text-muted/50 bg-white text-text-muted placeholder:text-text-muted/50 focus:border-text-muted active:border-text-muted'
-                    : 'border-red-400/50 bg-red-400/25 text-red-400 placeholder:text-red-400/50 focus:placeholder:text-red-400/50 active:border-red-400 active:placeholder:text-red-400/50',
+                    ? 'border-text-title/15 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-white/15'
+                    : 'border-red-500 focus:ring-4 focus:ring-red-500/10',
             ]"
-            @click.prevent="toggle"
+            class="flex h-12 cursor-pointer items-center justify-between border bg-bg-elevated px-4 py-3.5 focus:outline-none dark:bg-bg-night-soft"
+            @click.prevent="toggleDropdown"
+            tabindex="0"
+            @keydown.space.prevent="toggleDropdown"
+            @keydown.enter.prevent="toggleDropdown"
+            @keydown.esc="isOpen = false"
         >
-            <p class="relative top-px truncate font-sans text-slate-700">
+            <p
+                class="relative top-px truncate font-sans text-text-title dark:text-white"
+            >
                 {{ displayValue }}
             </p>
             <span
-                class="flex h-5 w-2.75 cursor-pointer items-center justify-between transition-transform duration-300"
                 :class="isOpen ? 'rotate-270' : 'rotate-90'"
+                class="flex h-5 w-5 cursor-pointer items-center justify-between transition-transform duration-300"
             >
-                <ChevronIcon />
+                <AppIcon name="chevron" />
             </span>
         </div>
         <p v-if="error" class="text-red-400">
             {{ error }}
         </p>
         <div
-            class="absolute top-[calc(100%-1px)] left-0 z-50 w-full overflow-hidden rounded-b-lg border border-text-muted bg-white shadow-lg"
-            :class="isOpen ? 'block' : 'hidden'"
+            :class="[isOpen ? 'block' : 'hidden']"
+            class="absolute top-[calc(100%+5px)] left-0 z-50 w-full overflow-hidden rounded-b-2xl shadow-lg"
         >
             <ul class="flex max-h-60 flex-1 flex-col overflow-y-auto">
                 <li
-                    v-for="item in items"
+                    v-for="(item, index) in items"
                     :key="item.value"
-                    class="cursor-pointer px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-100"
+                    ref="itemRefs"
                     :class="
                         isSelected(item.value)
-                            ? 'bg-slate-100 text-secondary'
-                            : 'bg-white'
+                            ? 'bg-slate-200 dark:text-secondary'
+                            : 'bg-bg-elevated dark:bg-bg-night-soft dark:text-white'
                     "
+                    class="cursor-pointer px-4 py-2 text-sm font-semibold text-text-title transition-colors outline-none hover:bg-slate-100 focus:bg-slate-300 dark:focus:text-secondary"
                     @click="selectItem(item)"
+                    tabindex="-1"
+                    @keydown.space.prevent="selectItem(item)"
+                    @keydown.enter.prevent="selectItem(item)"
+                    @keydown.esc="isOpen = false"
+                    @keydown.down.prevent="moveFocus(index, 1)"
+                    @keydown.up.prevent="moveFocus(index, -1)"
                 >
                     {{ item.label }}
                 </li>
@@ -59,9 +79,10 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import { computed, ref } from 'vue';
-import ChevronIcon from '@/components/icons/ChevronIcon.vue';
+<script lang="ts" setup>
+import { computed, nextTick, ref } from 'vue';
+import AppIcon from '@/components/AppIcon.vue';
+import { clickOutside as vClickOutside } from '@/directives/clickOutside';
 import type { SelectItem } from '@/types/select-item.ts';
 
 type SelectValue = SelectItem['value'];
@@ -84,19 +105,47 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const modelValue = defineModel<SelectModel>({ default: null });
-
+const itemRefs = ref<HTMLLIElement[]>([]);
 const isOpen = ref(false);
 
 const selectedValues = computed<SelectValue[]>(() =>
     Array.isArray(modelValue.value) ? modelValue.value : [],
 );
 
-const toggle = () => {
+const moveFocus = (currentIndex: number, step: number) => {
+    const count = props.items.length;
+
+    if (!count) {
+        return;
+    }
+
+    const nextIndex = (currentIndex + step + count) % count;
+    const nextElement = itemRefs.value[nextIndex];
+
+    if (nextElement) {
+        nextElement.focus();
+        nextElement.scrollIntoView({ block: 'nearest' });
+    }
+};
+
+const toggleDropdown = async () => {
     if (props.disabled) {
         return;
     }
 
     isOpen.value = !isOpen.value;
+    await nextTick();
+
+    if (isOpen.value) {
+        const selectedIndex = props.items.findIndex((item) =>
+            props.multiple
+                ? selectedValues.value.includes(item.value)
+                : modelValue.value === item.value,
+        );
+
+        const targetIndex = selectedIndex >= 0 ? selectedIndex : 0;
+        itemRefs.value[targetIndex]?.focus();
+    }
 };
 
 const isSelected = (value: SelectValue): boolean => {

@@ -1,35 +1,85 @@
-<script setup lang="ts">
-import BlogCard from '@/components/BlogCard.vue';
-</script>
-
 <template>
-    <section class="bg-bg-base px-3 py-8 md:px-8 md:py-20 xl:px-20 xl:py-25">
-        <h2 class="text font-serif font-bold text-accent uppercase">
-            Садовый журнал
-        </h2>
-        <p
-            class="mt-3 font-sans text-4xl leading-[1.1] font-light whitespace-pre-line text-text-title sm:text-5xl lg:text-6xl"
-        >
-            Воплощение мудрости и заботы
-        </p>
-        <p class="mt-3 font-sans text-text-muted sm:text-lg">
-            Ознакомьтесь с нашими ежемесячными публикациями о садоводстве, в
-            которых наши ботаники делятся накопленными знаниями и практическими
-            рекомендациями.
-        </p>
-
-        <a
-            href="/blog"
-            class="mt-6 ml-auto flex w-fit text-text-muted transition-all duration-300 hover:text-secondary"
-        >
-            Читать все
-        </a>
-
-        <!-- only 3 element -->
-        <div class="mt-2 grid w-full grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
-            <BlogCard v-for="n in 3" :key="n" />
-        </div>
+    <section
+        id="journal"
+        class="scroll-mt-24 bg-bg-surface px-4 py-16 md:px-8 md:py-24 dark:bg-bg-night-soft"
+    >
+        <Container>
+            <Reveal>
+                <div
+                    class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
+                >
+                    <div>
+                        <p
+                            class="text-xs font-semibold tracking-[0.2em] text-accent uppercase"
+                        >
+                            Садовый журнал
+                        </p>
+                        <h2
+                            class="mt-3 font-serif text-3xl text-text-title md:text-4xl lg:text-5xl dark:text-linen"
+                        >
+                            Знания, которые растут
+                            <br class="hidden md:block" />
+                            вместе с вами
+                        </h2>
+                    </div>
+                    <a
+                        class="group flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary"
+                        href="#journal"
+                    >
+                        Все статьи
+                        <span
+                            class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                        >
+                            <AppIcon name="arrow" />
+                        </span>
+                    </a>
+                </div>
+            </Reveal>
+            <div
+                class="mt-9 grid gap-8 md:mt-12 md:grid-cols-3 md:gap-5 lg:gap-8"
+            >
+                <Reveal
+                    v-for="(article, index) in articles"
+                    :key="article.title"
+                    :delay="index * 100"
+                >
+                    <BlogCard :article="article" />
+                </Reveal>
+            </div>
+        </Container>
     </section>
 </template>
 
-<style scoped></style>
+<script lang="ts" setup>
+import AppIcon from '@/components/AppIcon.vue';
+import BlogCard from '@/components/BlogCard.vue';
+import Reveal from '@/components/Reveal.vue';
+import Container from '@/components/Container.vue';
+
+const articles = [
+    {
+        title: 'Когда растению пора переселяться?',
+        excerpt:
+            'Пять ненавязчивых сигналов, которые подаёт корневая система, и как выбрать новый горшок.',
+        date: '21 октября 2026',
+        readTime: '4 мин',
+        image: '/images/blog_1.png',
+    },
+    {
+        title: 'Мягкий свет для зелёных любимцев',
+        excerpt:
+            'Разбираемся в рассеянном свете и находим подходящее место даже в тёмной квартире.',
+        date: '12 октября 2026',
+        readTime: '6 мин',
+        image: '/images/slide_1.avif',
+    },
+    {
+        title: 'Полив без расписания и тревоги',
+        excerpt:
+            'Почему важнее наблюдать за растением, чем следовать календарю, и с чего начать.',
+        date: '3 октября 2026',
+        readTime: '5 мин',
+        image: '/images/water-lily.png',
+    },
+];
+</script>

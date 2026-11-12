@@ -4,12 +4,12 @@
             class="flex flex-row rounded-lg shadow-[0_0_25px_var(--color-secondary)]"
         >
             <button
-                type="button"
-                class="flex cursor-pointer p-2"
                 v-for="item in items"
                 :key="item.id"
-                @click="activeId = item.id"
                 :class="{ 'font-bold text-secondary': activeId === item.id }"
+                class="flex cursor-pointer p-2"
+                type="button"
+                @click="activeId = item.id"
             >
                 {{ item.label }}
             </button>
@@ -19,12 +19,12 @@
             <div
                 v-for="item in items"
                 :key="item.id"
-                class="grid transition-all duration-300 ease-in-out"
                 :class="
                     activeId === item.id
                         ? 'grid-rows-[1fr] opacity-100'
                         : 'grid-rows-[0fr] opacity-0'
                 "
+                class="grid transition-all duration-300 ease-in-out"
                 @transitionend="handleTransitionEnd(item.id)"
             >
                 <div :class="{ 'overflow-hidden': fullyOpenId !== item.id }">
@@ -37,7 +37,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, watch } from 'vue';
 
 type TabItem = {

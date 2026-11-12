@@ -8,10 +8,10 @@
     >
         <div
             id="dialog"
+            :aria-labelledby="title ? 'dialogTitle' : undefined"
+            aria-modal="true"
             class="relative mx-auto w-full max-w-4xl rounded-lg bg-white p-6 shadow-xl focus:outline-none"
             role="dialog"
-            aria-modal="true"
-            :aria-labelledby="title ? 'dialogTitle' : undefined"
         >
             <button
                 class="group absolute right-6 flex h-6 w-6 cursor-pointer items-center justify-center"
@@ -40,7 +40,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
 
 const isOpen = defineModel<boolean>('open', { default: false });

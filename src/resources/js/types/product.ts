@@ -1,5 +1,5 @@
 import type { Category } from '@/types/category';
-import type  { Image, ImageFormState } from '@/types/image';
+import type { Image, ImageFormState } from '@/types/image';
 import type { Tag } from '@/types/tag';
 import type { Video } from '@/types/video';
 import type { Warehouse } from '@/types/warehouse';
@@ -13,7 +13,7 @@ export type Product = {
     sort: number;
     description: string | null;
     offers: Offer[];
-    categories: Category[];
+    category: Category;
     tags: Tag[];
     videos: Video[];
     images: Image[];
@@ -37,6 +37,20 @@ export type Stock = {
     warehouse: Warehouse;
     quantity: number;
     reserved: number;
+};
+
+export type ProductListItem = {
+    id: string;
+    active: boolean;
+    alias: string;
+    name: string;
+    sort: number;
+    oldPrice?: number;
+    minPrice: number;
+    inStock: boolean;
+    category: Category;
+    tags: Tag[];
+    image: Image;
 };
 
 // Form state
@@ -81,13 +95,19 @@ export type MediaSortedItemPayload = {
     sort: number;
 };
 
-export type ProductPayload = Omit<ProductFormState, 'id' | 'images' | 'videos' | 'offers'> & {
+export type ProductPayload = Omit<
+    ProductFormState,
+    'id' | 'images' | 'videos' | 'offers'
+> & {
     images: MediaSortedItemPayload[];
     videos: MediaSortedItemPayload[];
     offers: OfferPayload[];
 };
 
-export type OfferPayload = Omit<OfferFormState, 'clientKey' | 'images' | 'videos'> & {
+export type OfferPayload = Omit<
+    OfferFormState,
+    'clientKey' | 'images' | 'videos'
+> & {
     images: MediaSortedItemPayload[];
     videos: MediaSortedItemPayload[];
 };

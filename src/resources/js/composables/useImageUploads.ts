@@ -1,7 +1,6 @@
 import AdminImage from '@/routes/admin/image';
 import type {
     CreateImagePayload,
-    Image,
     ImageType,
     ImageFormState,
     UpdateImagePayload,

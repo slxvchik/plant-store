@@ -3,63 +3,53 @@
         <Input
             id="firstName"
             v-model="form.firstName"
-            placeholder="Иван"
-            label="Имя"
             :error="errors?.firstName"
+            label="Имя"
         />
         <Input
             id="lastName"
             v-model="form.lastName"
-            placeholder="Иванов"
-            label="Фамилия"
             :error="errors?.lastName"
+            label="Фамилия"
         />
         <Input
             id="email"
             v-model="form.email"
-            placeholder="user@example.com"
-            type="email"
-            label="Email"
             :error="errors?.email"
+            label="Email"
+            type="email"
         />
         <Input
             id="phone"
             v-model="form.phone"
-            placeholder="+7 999 999 99 99"
-            type="tel"
-            label="Телефон"
             :error="errors?.phone"
+            label="Телефон"
+            type="tel"
         />
         <Input
             id="password"
             v-model="form.password"
-            :placeholder="
-                isEditMode
-                    ? 'Оставьте пустым, чтобы не менять'
-                    : 'Минимум 8 символов'
-            "
-            type="password"
-            label="Пароль"
             :error="errors?.password"
+            label="Пароль (оставьте пустым, чтобы не менять)"
+            type="password"
         />
         <Select
             v-model="form.roles"
+            :error="errors?.roles"
             :items="roleOptions"
             label="Роли"
-            placeholder="Выберите роли"
             multiple
-            :error="errors?.roles"
         />
         <Checkbox
             id="emailConfirmed"
             v-model="form.emailConfirmed"
-            text="Email подтверждён"
             :error="errors?.emailConfirmed"
+            text="Email подтверждён"
         />
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import Checkbox from '@/components/Checkbox.vue';
 import Input from '@/components/Input.vue';
 import Select from '@/components/Select.vue';

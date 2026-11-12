@@ -1,17 +1,22 @@
 <template>
-    <div class="relative flex flex-col h-4 w-5 cursor-pointer">
-        <span class="absolute top-0 h-0.5 w-full bg-bg-dark rounded transition-all duration-300"
-            :class="{ 'rotate-45 top-[50%] translate-y-[-50%]': props.isOpen }"></span>
+    <div class="relative flex h-4 w-5 cursor-pointer flex-col">
+        <span
+            :class="{ 'top-[50%] translate-y-[-50%] rotate-45': props.isOpen }"
+            class="absolute top-0 h-0.5 w-full rounded bg-bg-dark transition-all duration-300"
+        ></span>
 
         <span
-            class="absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] h-0.5 bg-bg-dark rounded transition-all duration-300"
-            :class="props.isOpen ? 'opacity-0 w-0' : 'w-full'"></span>
+            :class="props.isOpen ? 'w-0 opacity-0' : 'w-full'"
+            class="absolute top-[50%] left-[50%] h-0.5 translate-x-[-50%] translate-y-[-50%] rounded bg-bg-dark transition-all duration-300"
+        ></span>
 
-        <span class="absolute bottom-0 h-0.5 w-full bg-bg-dark rounded transition-all duration-300"
-            :class="{ '-rotate-45 top-[50%] translate-y-[-50%]': props.isOpen }"></span>
+        <span
+            :class="{ 'top-[50%] translate-y-[-50%] -rotate-45': props.isOpen }"
+            class="absolute bottom-0 h-0.5 w-full rounded bg-bg-dark transition-all duration-300"
+        ></span>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps(['isOpen']);
 </script>

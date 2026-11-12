@@ -60,13 +60,13 @@
 import Button from '@/components/Button.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Link from '@/components/Link.vue';
-import UserFormFields from '@/components/UserFormFields.vue';
 import Popup from '@/components/Popup.vue';
+import UserFormFields from '@/components/UserFormFields.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
 import AdminUsers from '@/routes/admin/users';
-import type { UserFormState } from '@/types/form/user';
 import type { User } from '@/types/user';
 import { validate } from '@/utils/validator.ts';
+import type { UserFormState } from '@/types/form/user';
 
 defineOptions({ layout: AdminLayout });
 defineProps<{ user: User }>();

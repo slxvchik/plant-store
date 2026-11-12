@@ -72,11 +72,12 @@
             <Input
                 id="sort"
                 v-model.number="form.sort"
-                placeholder="500"
                 type="number"
                 label="Сортировка"
                 :error="form.errors.sort"
-                @update:modelValue="validateField('sort', form.sort)"
+                @update:modelValue="
+                    validateField && validateField('sort', form.sort)
+                "
             />
             <div class="flex flex-col gap-1">
                 <ImageUpload
@@ -92,18 +93,16 @@
             <Input
                 id="preTitle"
                 v-model="form.preTitle"
-                placeholder="Подзаголовок"
                 label="Подзаголовок"
                 :error="form.errors.preTitle"
             />
             <Input
                 id="title"
                 v-model="form.title"
-                placeholder="Заголовок"
                 label="Заголовок"
                 :error="form.errors.title"
             />
-            <Textarea
+            <Input
                 id="description"
                 v-model="form.description"
                 label="Описание"
@@ -112,14 +111,12 @@
             <Input
                 id="buttonLink"
                 v-model="form.buttonLink"
-                placeholder="Ссылка кнопки"
                 label="Ссылка кнопки"
                 :error="form.errors.buttonLink"
             />
             <Input
                 id="buttonText"
                 v-model="form.buttonText"
-                placeholder="Текст кнопки"
                 label="Текст кнопки"
                 :error="form.errors.buttonText"
             />
@@ -136,11 +133,11 @@
 
 <script setup lang="ts">
 import Button from '@/components/Button.vue';
+import Checkbox from '@/components/Checkbox.vue';
 import ImageUpload from '@/components/ImageUpload.vue';
 import Input from '@/components/Input.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Popup from '@/components/Popup.vue';
-import Textarea from '@/components/Textarea.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
 import { useImageUploads } from '@/composables/useImageUploads';
 import AdminMainPageGallery from '@/routes/admin/main-page/gallery';
@@ -153,7 +150,6 @@ import type {
 import type { Page } from '@/types/pagination.ts';
 import { toImageFormState } from '@/utils/imageMapper.ts';
 import { validate } from '@/utils/validator.ts';
-import Checkbox from '@/components/Checkbox.vue';
 
 defineOptions({ layout: AdminLayout });
 defineProps<{ slidesPage: Page<MainPageGallerySlide> }>();
@@ -190,7 +186,7 @@ const slideValidator = (field: keyof SlideFormState, value: any) => {
 };
 const {
     form,
-    validateField,
+    formValidator,
     isFormPopupOpen,
     isEditMode,
     openCreateModal,
@@ -244,6 +240,7 @@ const {
         buttonText: slide.buttonText,
     }),
 });
+const validateField = formValidator?.validateField;
 const openCreate = (): void => {
     openCreateModal();
 };

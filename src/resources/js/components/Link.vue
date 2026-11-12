@@ -1,9 +1,9 @@
 <template>
     <component
         :is="computedType"
+        :class="computedClasses"
         :href="props.href"
         v-bind="attrs"
-        :class="computedClasses"
     >
         <slot name="before-text" />
         {{ props.text }}
@@ -11,7 +11,7 @@
     </component>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import { computed, useAttrs } from 'vue';
 import { twClassMerge } from '@/utils/twClassMerge';

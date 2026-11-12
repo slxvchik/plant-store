@@ -1,12 +1,12 @@
 <template>
-    <button v-bind="attrs" :class="computedClasses">
+    <button :class="computedClasses" v-bind="attrs">
         <slot name="before-text" />
         {{ props.text }}
         <slot name="after-text" />
     </button>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, useAttrs } from 'vue';
 import { twClassMerge } from '@/utils/twClassMerge';
 

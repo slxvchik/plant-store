@@ -64,26 +64,29 @@
             <Input
                 id="alias"
                 v-model="form.alias"
-                placeholder="category-1"
                 label="Алиас"
-                @update:modelValue="validateField('alias', form.alias)"
+                @update:modelValue="
+                    validateField && validateField('alias', form.alias)
+                "
                 :error="form.errors.alias"
             />
             <Input
                 id="name"
                 v-model="form.name"
-                placeholder="Категория 1"
                 label="Название"
-                @update:modelValue="validateField('name', form.name)"
+                @update:modelValue="
+                    validateField && validateField('name', form.name)
+                "
                 :error="form.errors.name"
             />
             <Input
                 id="sort"
                 v-model.number="form.sort"
-                placeholder="500"
                 label="Сортировка"
                 type="number"
-                @update:modelValue="validateField('sort', form.sort)"
+                @update:modelValue="
+                    validateField && validateField('sort', form.sort)
+                "
                 :error="form.errors.sort"
             />
             <Checkbox
@@ -159,7 +162,7 @@ const categoryValidator = (field: keyof CategoryForm, value: any) => {
 };
 const {
     form,
-    validateField,
+    formValidator,
     isFormPopupOpen,
     isEditMode,
     editingId,
@@ -183,6 +186,7 @@ const {
     },
     validator: categoryValidator,
 });
+const validateField = formValidator?.validateField;
 const categoriesSelect = computed(() =>
     props.categories
         .filter((category) => category.id !== editingId.value)

@@ -1,6 +1,7 @@
 import type { FormDataType } from '@inertiajs/core';
 import { router, useForm } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
+import { useFormValidator } from '@/composables/useFormValidator.ts';
 import { useNotificationStore } from '@/stores/useNotificationStore';
 
 type CrudRoutes = {
@@ -30,36 +31,15 @@ export function useAdminCrudForm<
     const editingId = ref<string | null>(null);
     const isEditMode = computed(() => editingId.value !== null);
     const notifications = useNotificationStore();
+    const formValidator = options.validator
+        ? useFormValidator(options.validator, form)
+        : null;
 
     onMounted(() => {
         if (options.formTransform) {
             form.transform(options.formTransform);
         }
     });
-
-    const validateField = (field: keyof TForm, value: any): string | null => {
-        const error = options.validator?.(field, value) ?? null;
-
-        if (error) {
-            form.setError(field as any, error);
-        } else {
-            form.clearErrors(field as any);
-        }
-
-        return error;
-    };
-
-    const validateForm = (): boolean => {
-        let valid = true;
-
-        for (const key of Object.keys(form.data()) as (keyof TForm)[]) {
-            if (validateField(key, form[key])) {
-                valid = false;
-            }
-        }
-
-        return valid;
-    };
 
     const openModal = (data: TForm, id: string | null): void => {
         editingId.value = id;
@@ -80,7 +60,7 @@ export function useAdminCrudForm<
     };
 
     const submit = async () => {
-        if (options.validator && !validateForm()) {
+        if (options.validator && formValidator !== null && !formValidator.validateForm()) {
             return;
         }
 
@@ -118,8 +98,7 @@ export function useAdminCrudForm<
 
     return {
         form,
-        validateField,
-        validateForm,
+        formValidator,
         isFormPopupOpen,
         isEditMode,
         editingId,

@@ -52,27 +52,30 @@
             <Input
                 id="alias"
                 v-model="form.alias"
-                placeholder="tag-1"
                 label="Алиас"
                 :error="form.errors.alias"
-                @update:modelValue="validateField('alias', form.alias)"
+                @update:modelValue="
+                    validateField && validateField('alias', form.alias)
+                "
             />
             <Input
                 id="name"
                 v-model="form.name"
-                placeholder="Тег 1"
                 label="Название"
                 :error="form.errors.name"
-                @update:modelValue="validateField('name', form.name)"
+                @update:modelValue="
+                    validateField && validateField('name', form.name)
+                "
             />
             <Input
                 id="sort"
                 v-model.number="form.sort"
-                placeholder="500"
                 label="Сортировка"
                 type="number"
                 :error="form.errors.sort"
-                @update:modelValue="validateField('sort', form.sort)"
+                @update:modelValue="
+                    validateField && validateField('sort', form.sort)
+                "
             />
             <Checkbox
                 id="active"
@@ -131,7 +134,7 @@ const tagValidator = (field: keyof TagForm, value: any) => {
 };
 const {
     form,
-    validateField,
+    formValidator,
     isFormPopupOpen,
     isEditMode,
     openCreateModal,
@@ -153,4 +156,5 @@ const {
     },
     validator: tagValidator,
 });
+const validateField = formValidator?.validateField;
 </script>

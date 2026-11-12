@@ -20,24 +20,24 @@
                 <template v-for="tab in menuTabs" :key="tab.href">
                     <Link
                         v-if="!tab.children"
+                        :class="{ 'bg-secondary': tab.active }"
                         :href="tab.href"
                         class="flex items-center rounded-sm px-2 py-1.5 text-white transition-all hover:bg-secondary-hover"
-                        :class="{ 'bg-secondary': tab.active }"
                     >
                         {{ tab.name }}
                     </Link>
                     <div v-else>
                         <button
-                            type="button"
                             class="flex w-full cursor-pointer items-center rounded-sm px-2 py-1.5 text-white transition-all hover:bg-secondary-hover"
+                            type="button"
                             @click="tab.isOpen = !tab.isOpen"
                         >
-                            <span class="flex-1 text-left whitespace-nowrap"
-                                >{{ tab.name }}
+                            <span class="flex-1 text-left whitespace-nowrap">
+                                {{ tab.name }}
                             </span>
                             <span
-                                class="h-3 w-3 transition-all"
                                 :class="tab.isOpen ? '-rotate-90' : 'rotate-90'"
+                                class="h-3 w-3 transition-all"
                             >
                                 <ChevronIcon />
                             </span>
@@ -45,10 +45,10 @@
                         <template v-if="tab.isOpen">
                             <Link
                                 v-for="childTab in tab.children"
-                                :href="childTab.href"
                                 :key="childTab.href"
-                                class="flex items-center rounded-sm px-2 py-1.5 pl-5 text-white transition-all hover:bg-secondary-hover"
                                 :class="{ 'bg-secondary': childTab.active }"
+                                :href="childTab.href"
+                                class="flex items-center rounded-sm px-2 py-1.5 pl-5 text-white transition-all hover:bg-secondary-hover"
                             >
                                 {{ childTab.name }}
                             </Link>
@@ -67,7 +67,7 @@
     </aside>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Link, usePage } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import ChevronIcon from '@/components/icons/ChevronIcon.vue';

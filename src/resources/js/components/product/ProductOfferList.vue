@@ -29,17 +29,17 @@
                 </div>
                 <div class="flex flex-col p-3 text-center">
                     <Button
-                        style-type="link"
                         :text="disabled ? 'Смотреть' : 'Редактировать'"
                         class="cursor-pointer text-yellow-400 hover:text-yellow-600"
+                        style-type="link"
                         @click="emit('edit', offer)"
                     />
                     <Button
+                        v-if="!disabled"
+                        class="cursor-pointer text-red-400 hover:text-red-600"
                         style-type="link"
                         text="Удалить"
-                        class="cursor-pointer text-red-400 hover:text-red-600"
                         @click="emit('remove', offer.clientKey)"
-                        v-if="!disabled"
                     />
                 </div>
             </div>
@@ -53,7 +53,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import Button from '@/components/Button.vue';
 import type { OfferFormState } from '@/types/product.ts';
 

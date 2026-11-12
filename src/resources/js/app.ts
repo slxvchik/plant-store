@@ -1,9 +1,9 @@
 import { createInertiaApp, router } from '@inertiajs/vue3';
+import { vMaska } from 'maska/vue';
 import { createPinia } from 'pinia';
 import { createApp, h } from 'vue';
 import { useNotificationStore } from '@/stores/useNotificationStore';
 import type { Flash } from '@/types/flash';
-import { vMaska } from 'maska/vue';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 const pinia = createPinia();

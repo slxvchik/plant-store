@@ -61,32 +61,34 @@
             <Input
                 id="name"
                 v-model="form.name"
-                placeholder="Название новости"
-                label="Название"
+                label="Название новости"
                 :error="form.errors.name"
-                @update:modelValue="validateField('name', form.name)"
+                @update:modelValue="
+                    validateField && validateField('name', form.name)
+                "
             />
             <Input
                 id="alias"
                 v-model="form.alias"
-                placeholder="news-1"
                 label="Алиас"
                 :error="form.errors.alias"
-                @update:modelValue="validateField('alias', form.alias)"
+                @update:modelValue="
+                    validateField && validateField('alias', form.alias)
+                "
             />
             <Input
                 id="sort"
                 v-model.number="form.sort"
-                placeholder="500"
                 label="Сортировка"
                 type="number"
                 :error="form.errors.sort"
-                @update:modelValue="validateField('sort', form.sort)"
+                @update:modelValue="
+                    validateField && validateField('sort', form.sort)
+                "
             />
-            <Textarea
+            <Input
                 id="description"
                 v-model="form.description"
-                placeholder="Текст новости"
                 label="Описание"
                 :error="form.errors.description"
             />
@@ -116,16 +118,15 @@ import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Link from '@/components/Link.vue';
 import PaginationList from '@/components/PaginationList.vue';
 import Popup from '@/components/Popup.vue';
-import Textarea from '@/components/Textarea.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
 import AdminNews from '@/routes/admin/news';
 import type { News } from '@/types/news';
-import type { Pagination } from '@/types/page-response';
+import type { Page } from '@/types/pagination.ts';
 import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse';
 import { validate } from '@/utils/validator.ts';
 
 defineOptions({ layout: AdminLayout });
-const props = defineProps<{ newsPage: Pagination<News> }>();
+const props = defineProps<{ newsPage: Page<News> }>();
 const pagination = computed(() =>
     getPaginationFromPageResponse(props.newsPage),
 );
@@ -162,7 +163,7 @@ const newsValidator = (field: keyof NewsForm, value: any) => {
 };
 const {
     form,
-    validateField,
+    formValidator,
     isFormPopupOpen,
     isEditMode,
     openCreateModal,
@@ -185,4 +186,5 @@ const {
     },
     validator: newsValidator,
 });
+const validateField = formValidator?.validateField;
 </script>

@@ -4,27 +4,30 @@
         :title="!disabled && isEditMode ? 'Редактирование ТП' : 'Создание ТП'"
     >
         <OfferForm
-            v-model="offerForm"
-            :warehouses="warehouses"
+            v-model:form="offerForm"
             :disabled="disabled"
+            :warehouses="warehouses"
         />
         <Button
-            type="button"
+            v-if="!disabled"
             :text="isEditMode ? 'Сохранить' : 'Создать'"
             secondary
+            type="button"
             @click="save"
-            v-if="!disabled"
         />
     </Popup>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Button from '@/components/Button.vue';
-import OfferForm from '@/components/OfferForm.vue';
 import Popup from '@/components/Popup.vue';
+import OfferForm from '@/components/product/OfferForm.vue';
+import { useFormValidator } from '@/composables/useFormValidator.ts';
 import type { OfferFormState } from '@/types/product.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
+import { validate } from '@/utils/validator.ts';
 
 const props = defineProps<{
     warehouses: Warehouse[];
@@ -33,7 +36,7 @@ const props = defineProps<{
 const offers = defineModel<OfferFormState[]>('offers', { required: true });
 const isOpen = ref(false);
 const isEditMode = ref(false);
-const offerForm = ref<OfferFormState>(createEmptyOffer());
+const offerForm = useForm<OfferFormState>(createEmptyOffer());
 
 function createEmptyOffer(): OfferFormState {
     return {
@@ -70,21 +73,26 @@ function copyOffer(offer: OfferFormState): OfferFormState {
 
 const openCreate = () => {
     isEditMode.value = false;
-    offerForm.value = createEmptyOffer();
+    offerForm.reset();
     isOpen.value = true;
 };
 
 const openEdit = (offer: OfferFormState) => {
     isEditMode.value = true;
-    offerForm.value = copyOffer(offer);
+    offerForm.reset();
+    Object.assign(offerForm, copyOffer(offer));
     isOpen.value = true;
 };
 
 const save = () => {
+    if (!validateForm()) {
+        return;
+    }
+
     const index = offers.value.findIndex(
-        (offer) => offer.clientKey === offerForm.value.clientKey,
+        (offer) => offer.clientKey === offerForm.clientKey,
     );
-    const savedOffer = copyOffer(offerForm.value);
+    const savedOffer = copyOffer(offerForm.data());
 
     if (index === -1) {
         offers.value.push(savedOffer);
@@ -94,6 +102,19 @@ const save = () => {
 
     isOpen.value = false;
 };
+
+const validator = (field: keyof OfferFormState, value: any): string | null => {
+    switch (field) {
+        case 'sku':
+            return validate(value, 'required');
+        case 'price':
+            return validate(value, 'number|positive');
+        default:
+            return null;
+    }
+};
+
+const { validateForm } = useFormValidator(validator, offerForm);
 
 defineExpose({ openCreate, openEdit });
 </script>
