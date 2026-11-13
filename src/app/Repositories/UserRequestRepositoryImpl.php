@@ -5,8 +5,8 @@ namespace App\Repositories;
 use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Domain\UserRequest\Model\UserRequest as DomainUserRequest;
-use App\Domain\UserRequest\Repository\UserRequestRepository;
+use App\Domain\UserRequest\UserRequestModel as DomainUserRequest;
+use App\Domain\UserRequest\UserRequestRepository;
 use App\Models\UserRequest;
 
 class UserRequestRepositoryImpl implements UserRequestRepository

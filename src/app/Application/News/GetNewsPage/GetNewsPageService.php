@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\News\GetNewsPage;
 
 use App\Application\News\Shared\Dto\Response\NewsResponseDto;
-use App\Domain\News\Repository\NewsRepository;
+use App\Domain\News\NewsRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use Override;

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Application\Media\Shared\MediaFolder;
-use App\Domain\Media\Model\Image as DomainImageModel;
+use App\Domain\Media\Model\ImageModel as DomainImageModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 

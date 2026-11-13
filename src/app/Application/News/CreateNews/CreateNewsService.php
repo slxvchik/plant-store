@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Application\News\CreateNews;
 
 use App\Application\News\Shared\Exception\NewsAliasExistsException;
-use App\Domain\News\Model\News;
-use App\Domain\News\Repository\NewsRepository;
+use App\Domain\News\NewsModel;
+use App\Domain\News\NewsRepository;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Override;
 
@@ -29,7 +29,7 @@ readonly class CreateNewsService implements CreateNewsUseCase
             throw new NewsAliasExistsException($createNewsRequestDto->alias);
         }
 
-        $news = News::createNew(
+        $news = NewsModel::createNew(
             uuidIdentityGenerator: $this->uuidGeneratorInterface,
             alias: $createNewsRequestDto->alias,
             sort: $createNewsRequestDto->sort,

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Domain\Warehouse\Model\Warehouse as DomainWarehouse;
-use App\Domain\Warehouse\Repository\WarehouseRepository;
+use App\Domain\Warehouse\WarehouseModel as DomainWarehouse;
+use App\Domain\Warehouse\WarehouseRepository;
 use App\Models\Warehouse;
 use Override;
 

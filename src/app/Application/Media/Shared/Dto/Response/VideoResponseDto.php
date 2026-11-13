@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Media\Shared\Dto\Response;
 
-use App\Domain\Media\Model\Video;
+use App\Domain\Media\Model\VideoModel;
 use JsonSerializable;
 use Override;
 
@@ -24,7 +24,7 @@ readonly class VideoResponseDto implements JsonSerializable
         public ?string $thumbnailId,
     ) {}
 
-    public static function fromDomain(Video $video, string $webPathToFile): self
+    public static function fromDomain(VideoModel $video, string $webPathToFile): self
     {
         return new self(
             id: $video->id->value,

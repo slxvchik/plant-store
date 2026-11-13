@@ -6,7 +6,7 @@ namespace App\Application\User\AuthorizeUser;
 
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use App\Domain\User\Exception\UserInvalidCredentialsException;
-use App\Domain\User\Model\Session;
+use App\Domain\User\Model\SessionModel;
 use App\Domain\User\Repository\SessionRepository;
 use App\Domain\User\Repository\UserRepository;
 use Override;
@@ -31,7 +31,7 @@ readonly class AuthorizeUserService implements AuthorizeUserUseCase
             throw new UserInvalidCredentialsException;
         }
 
-        $session = Session::createNew(
+        $session = SessionModel::createNew(
             uuidGeneratorInterface: $this->uuidGeneratorInterface,
             userId: $user->id->value
         );

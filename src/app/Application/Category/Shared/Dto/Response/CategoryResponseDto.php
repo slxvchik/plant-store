@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Category\Shared\Dto\Response;
 
-use App\Domain\Category\Model\Category;
+use App\Domain\Category\CategoryModel;
 use JsonSerializable;
 use Override;
 
@@ -19,7 +19,7 @@ readonly class CategoryResponseDto implements JsonSerializable
         public bool $active,
     ) {}
 
-    public static function fromDomain(Category $category, ?Category $parent): self
+    public static function fromDomain(CategoryModel $category, ?CategoryModel $parent): self
     {
         return new self(
             id: $category->id->value,

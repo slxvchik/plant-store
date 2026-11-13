@@ -6,7 +6,7 @@ namespace App\Application\Product\CreateProduct;
 
 use App\Application\Product\Shared\Exception\ProductAliasExistsException;
 use App\Application\Product\Shared\Mapper\SaveOfferMapper;
-use App\Domain\Product\Model\Product;
+use App\Domain\Product\Model\ProductModel;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Override;
@@ -24,7 +24,7 @@ readonly class CreateProductService implements CreateProductUseCase
     #[Override]
     public function execute(CreateProductRequestDto $createProductRequestDto): string
     {
-        $product = Product::createNew(
+        $product = ProductModel::createNew(
             uuidIdentityGenerator: $this->uuidGeneratorInterface,
             active: $createProductRequestDto->active,
             alias: $createProductRequestDto->alias,

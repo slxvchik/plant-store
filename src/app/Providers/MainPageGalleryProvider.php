@@ -12,9 +12,7 @@ use App\Application\MainPageGallery\GetSlides\GetSlidesService;
 use App\Application\MainPageGallery\GetSlides\GetSlidesUseCase;
 use App\Application\MainPageGallery\UpdateSlide\UpdateSlideService;
 use App\Application\MainPageGallery\UpdateSlide\UpdateSlideUseCase;
-use App\Application\Media\GetImages\GetImagesService;
-use App\Application\Media\GetImages\GetImagesUseCase;
-use App\Domain\MainPageGallery\Repository\MainPageGalleryRepository;
+use App\Domain\MainPageGallery\MainPageGalleryRepository;
 use App\Repositories\MainPageGalleryRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
 

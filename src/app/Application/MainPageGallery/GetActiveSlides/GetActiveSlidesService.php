@@ -6,8 +6,8 @@ namespace App\Application\MainPageGallery\GetActiveSlides;
 
 use App\Application\MainPageGallery\Shared\Dto\Response\SlideResponseDto;
 use App\Application\Media\GetImagesByIds\GetImagesByIdsUseCase;
-use App\Domain\MainPageGallery\Model\MainPageGallery;
-use App\Domain\MainPageGallery\Repository\MainPageGalleryRepository;
+use App\Domain\MainPageGallery\MainPageGalleryModel;
+use App\Domain\MainPageGallery\MainPageGalleryRepository;
 use Override;
 
 readonly class GetActiveSlidesService implements GetActiveSlidesUseCase
@@ -24,7 +24,7 @@ readonly class GetActiveSlidesService implements GetActiveSlidesUseCase
             active: true
         );
 
-        $imageIds = array_map(fn (MainPageGallery $slide) => $slide->imageId, $slides);
+        $imageIds = array_map(fn (MainPageGalleryModel $slide) => $slide->imageId, $slides);
 
         $images = $this->getImagesByIdsUseCase->execute($imageIds);
         $imagesMap = [];
@@ -33,7 +33,7 @@ readonly class GetActiveSlidesService implements GetActiveSlidesUseCase
         }
 
         return array_map(
-            function (MainPageGallery $slide) use ($imagesMap) {
+            function (MainPageGalleryModel $slide) use ($imagesMap) {
                 return $imagesMap[$slide->imageId] ? SlideResponseDto::fromDomain($slide, $imagesMap[$slide->imageId]) : null;
             },
             $slides,

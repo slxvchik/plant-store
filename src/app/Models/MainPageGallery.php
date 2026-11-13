@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Domain\MainPageGallery\Model\MainPageGallery as DomainMainPageGalleryModel;
+use App\Domain\MainPageGallery\MainPageGalleryModel as DomainMainPageGalleryModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 

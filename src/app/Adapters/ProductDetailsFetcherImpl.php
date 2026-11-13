@@ -11,12 +11,11 @@ use App\Application\Product\Shared\Dto\Response\StockResponseDto;
 use App\Application\Product\Shared\Port\ProductDetailsFetcher;
 use App\Application\Tag\Shared\Dto\Response\TagResponseDto;
 use App\Application\Warehouse\Shared\Dto\Response\WarehouseResponseDto;
-use App\Domain\Category\Repository\CategoryRepository;
-use App\Domain\Product\Model\Offer;
-use App\Domain\Product\Model\Product;
-use App\Domain\Tag\Repository\TagRepository;
-use App\Domain\Warehouse\Repository\WarehouseRepository;
-use Illuminate\Support\Facades\Log;
+use App\Domain\Category\CategoryRepository;
+use App\Domain\Product\Model\OfferModel;
+use App\Domain\Product\Model\ProductModel;
+use App\Domain\Tag\TagRepository;
+use App\Domain\Warehouse\WarehouseRepository;
 
 readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
 {
@@ -30,7 +29,7 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
     ) {}
 
     /**
-     * @param  Product[]  $products
+     * @param  ProductModel[]  $products
      * @return ProductResponseDto[]
      */
     public function execute(array $products): array
@@ -40,7 +39,7 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
         $imageMap = $this->buildImageMap($products);
         $warehouseMap = $this->buildWarehouseMap($products);
 
-        return array_map(function (Product $product) use ($warehouseMap, $categoryMap, $tagMap, $imageMap) {
+        return array_map(function (ProductModel $product) use ($warehouseMap, $categoryMap, $tagMap, $imageMap) {
             $sortedImageObjects = $product->imageIds;
 
             usort($sortedImageObjects, fn ($a, $b) => $a->sort <=> $b->sort);
@@ -50,10 +49,10 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
             return ProductResponseDto::fromDomain(
                 product: $product,
                 offers: array_map(
-                    fn (Offer $offer) => $this->buildOfferDto($offer, $warehouseMap),
+                    fn (OfferModel $offer) => $this->buildOfferDto($offer, $warehouseMap),
                     $product->getOffers()
                 ),
-                categories: array_filter(array_map(fn ($id) => $categoryMap[$id] ?? null, $product->categoryIds)),
+                categories: array_filter(array_map(fn ($id) => $categoryMap[$id] ?? null, $product->categoryId)),
                 tags: array_filter(array_map(fn ($id) => $tagMap[$id] ?? null, $product->tagIds)),
                 images: array_filter(array_map(fn ($id) => $imageMap[$id] ?? null, $sortedImageIds)),
                 videos: [],
@@ -123,7 +122,7 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
         return $map;
     }
 
-    private function buildOfferDto(Offer $offer, array $warehouseMap): OfferResponseDto
+    private function buildOfferDto(OfferModel $offer, array $warehouseMap): OfferResponseDto
     {
         $stockDtos = [];
         foreach ($offer->stocks as $stock) {

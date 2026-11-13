@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Adapters\Pagination\PaginationAdapter;
-use App\Domain\MainPageGallery\Model\MainPageGallery;
-use App\Domain\MainPageGallery\Repository\MainPageGalleryRepository;
+use App\Domain\MainPageGallery\MainPageGalleryModel;
+use App\Domain\MainPageGallery\MainPageGalleryRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Models\MainPageGallery as MainPageGalleryModel;
-use Illuminate\Support\Facades\Log;
 use Override;
 
 class MainPageGalleryRepositoryImpl implements MainPageGalleryRepository
 {
     #[Override]
-    public function create(MainPageGallery $slide): string
+    public function create(MainPageGalleryModel $slide): string
     {
         MainPageGalleryModel::create($this->attributes($slide));
 
@@ -24,7 +23,7 @@ class MainPageGalleryRepositoryImpl implements MainPageGalleryRepository
     }
 
     #[Override]
-    public function update(MainPageGallery $slide): void
+    public function update(MainPageGalleryModel $slide): void
     {
         MainPageGalleryModel::findOrFail($slide->id->value)->update($this->attributes($slide));
     }
@@ -36,7 +35,7 @@ class MainPageGalleryRepositoryImpl implements MainPageGalleryRepository
     }
 
     #[Override]
-    public function findById(string $id): ?MainPageGallery
+    public function findById(string $id): ?MainPageGalleryModel
     {
         return MainPageGalleryModel::find($id)?->toDomain();
     }
@@ -60,14 +59,14 @@ class MainPageGalleryRepositoryImpl implements MainPageGalleryRepository
     {
         return MainPageGalleryModel::orderBy('sort')
             ->get()
-            ->map(fn (MainPageGalleryModel $slide): MainPageGallery => $slide->toDomain())
+            ->map(fn (MainPageGalleryModel $slide): MainPageGalleryModel => $slide->toDomain())
             ->all();
     }
 
     /**
      * @return array<string, mixed>
      */
-    private function attributes(MainPageGallery $slide): array
+    private function attributes(MainPageGalleryModel $slide): array
     {
         return [
             'id' => $slide->id->value,

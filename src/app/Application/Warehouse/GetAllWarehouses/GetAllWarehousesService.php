@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Warehouse\GetAllWarehouses;
 
 use App\Application\Warehouse\Shared\Dto\Response\WarehouseResponseDto;
-use App\Domain\Warehouse\Repository\WarehouseRepository;
+use App\Domain\Warehouse\WarehouseRepository;
 use Override;
 
 readonly class GetAllWarehousesService implements GetAllWarehousesUseCase

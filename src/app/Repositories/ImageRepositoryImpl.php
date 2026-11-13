@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Adapters\Pagination\PaginationAdapter;
-use App\Domain\Media\Model\Image as DomainImage;
+use App\Domain\Media\Model\ImageModel as DomainImage;
 use App\Domain\Media\Repository\ImageRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;

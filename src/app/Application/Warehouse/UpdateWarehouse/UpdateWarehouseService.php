@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Warehouse\UpdateWarehouse;
 
 use App\Application\Warehouse\Shared\Exception\WarehouseNotFoundException;
-use App\Domain\Warehouse\Repository\WarehouseRepository;
+use App\Domain\Warehouse\WarehouseRepository;
 use Override;
 
 readonly class UpdateWarehouseService implements UpdateWarehouseUseCase

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\Tag\Model\Tag as DomainTagModel;
+use App\Domain\Tag\TagModel as DomainTagModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 

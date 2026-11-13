@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UserRequest\GetUserRequests;
 
-use App\Domain\UserRequest\Model\UserRequest;
+use App\Domain\UserRequest\UserRequestModel;
 use JsonSerializable;
 use Override;
 
@@ -18,7 +18,7 @@ readonly class GetUserRequestsResponseDto implements JsonSerializable
         public ?string $comment,
     ) {}
 
-    public static function fromDomain(UserRequest $userRequest): self
+    public static function fromDomain(UserRequestModel $userRequest): self
     {
         return new self(
             id: $userRequest->id->value,

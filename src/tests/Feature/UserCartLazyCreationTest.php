@@ -4,10 +4,10 @@ namespace Tests\Feature;
 
 use App\Application\Cart\CreateCart\CreateCartUseCase;
 use App\Domain\Product\Criteria\ProductSearchCriteria;
-use App\Domain\Product\Model\Offer;
-use App\Domain\Product\Model\Product;
-use App\Domain\Product\Model\Stock;
+use App\Domain\Product\Model\OfferModel;
+use App\Domain\Product\Model\ProductModel;
 use App\Domain\Product\Repository\ProductRepository;
+use App\Domain\ProductUnit\ProductUnitModel;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
@@ -53,14 +53,14 @@ class UserCartLazyCreationTest extends TestCase
 
         $this->app->instance(ProductRepository::class, new class($product) implements ProductRepository
         {
-            public function __construct(private readonly Product $product) {}
+            public function __construct(private readonly ProductModel $product) {}
 
-            public function create(Product $product): string
+            public function create(ProductModel $product): string
             {
                 throw new LogicException('Not used.');
             }
 
-            public function update(Product $product): void
+            public function update(ProductModel $product): void
             {
                 throw new LogicException('Not used.');
             }
@@ -70,7 +70,7 @@ class UserCartLazyCreationTest extends TestCase
                 throw new LogicException('Not used.');
             }
 
-            public function findById(string $id): ?Product
+            public function findById(string $id): ?ProductModel
             {
                 return $id === $this->product->id->value ? $this->product : null;
             }
@@ -85,7 +85,7 @@ class UserCartLazyCreationTest extends TestCase
                 throw new LogicException('Not used.');
             }
 
-            public function findByAlias(string $alias): ?Product
+            public function findByAlias(string $alias): ?ProductModel
             {
                 throw new LogicException('Not used.');
             }
@@ -212,16 +212,16 @@ class UserCartLazyCreationTest extends TestCase
         return $cartId;
     }
 
-    private function makeProduct(): Product
+    private function makeProduct(): ProductModel
     {
-        $offer = new Offer(
+        $offer = new OfferModel(
             id: self::OFFER_ID,
             active: true,
             sku: 'SKU-1',
             sort: 1,
             description: null,
             price: 1000,
-            stocks: [new Stock(warehouseId: '9f0b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4e', quantity: 10, reserved: 0)],
+            stocks: [new ProductUnitModel(warehouseId: '9f0b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4e', quantity: 10, reserved: 0)],
             formFactor: null,
             size: null,
             age: null,
@@ -230,7 +230,7 @@ class UserCartLazyCreationTest extends TestCase
             videoIds: [],
         );
 
-        return Product::fromDb(
+        return ProductModel::fromDb(
             id: self::PRODUCT_ID,
             active: true,
             alias: 'test-product',

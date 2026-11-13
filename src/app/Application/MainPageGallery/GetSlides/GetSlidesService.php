@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Application\MainPageGallery\GetSlides;
 
 use App\Application\MainPageGallery\Shared\Dto\Response\SlideResponseDto;
-use App\Application\Media\GetImages\GetImagesUseCase;
 use App\Application\Media\GetImagesByIds\GetImagesByIdsUseCase;
-use App\Domain\MainPageGallery\Model\MainPageGallery;
-use App\Domain\MainPageGallery\Repository\MainPageGalleryRepository;
+use App\Domain\MainPageGallery\MainPageGalleryModel;
+use App\Domain\MainPageGallery\MainPageGalleryRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use Override;
@@ -26,7 +25,7 @@ readonly class GetSlidesService implements GetSlidesUseCase
         $slidesPage = $this->mainPageGalleryRepository->findPage($pageable);
         $slides = $slidesPage->items;
 
-        $imageIds = array_map(fn (MainPageGallery $slide) => $slide->imageId, $slides);
+        $imageIds = array_map(fn (MainPageGalleryModel $slide) => $slide->imageId, $slides);
 
         $images = $this->getImagesByIdsUseCase->execute($imageIds);
         $imagesMap = [];
@@ -35,7 +34,7 @@ readonly class GetSlidesService implements GetSlidesUseCase
         }
 
         $slideResponses = array_map(
-            function (MainPageGallery $slide) use ($imagesMap) {
+            function (MainPageGalleryModel $slide) use ($imagesMap) {
                 return SlideResponseDto::fromDomain($slide, $imagesMap[$slide->imageId] ?? null);
             },
             $slides,

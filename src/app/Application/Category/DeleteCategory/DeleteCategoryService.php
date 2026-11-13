@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Category\DeleteCategory;
 
 use App\Application\Category\Shared\Exception\CategoryNotFoundException;
-use App\Domain\Category\Repository\CategoryRepository;
+use App\Domain\Category\CategoryRepository;
 use Override;
 
 class DeleteCategoryService implements DeleteCategoryUseCase

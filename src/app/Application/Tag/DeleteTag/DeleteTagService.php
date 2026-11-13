@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Tag\DeleteTag;
 
 use App\Application\Tag\Shared\Exception\TagNotFoundException;
-use App\Domain\Tag\Repository\TagRepository;
+use App\Domain\Tag\TagRepository;
 use Override;
 
 readonly class DeleteTagService implements DeleteTagUseCase

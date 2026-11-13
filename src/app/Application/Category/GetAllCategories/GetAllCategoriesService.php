@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Category\GetAllCategories;
 
 use App\Application\Category\Shared\Dto\Response\CategoryResponseDto;
-use App\Domain\Category\Repository\CategoryRepository;
+use App\Domain\Category\CategoryRepository;
 use Override;
 
 readonly class GetAllCategoriesService implements GetAllCategoriesUseCase

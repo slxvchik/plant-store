@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\MainPageGallery\UpdateSlide;
 
 use App\Application\MainPageGallery\Shared\Exception\SlideNotFoundException;
-use App\Domain\MainPageGallery\Repository\MainPageGalleryRepository;
+use App\Domain\MainPageGallery\MainPageGalleryRepository;
 use Override;
 
 readonly class UpdateSlideService implements UpdateSlideUseCase

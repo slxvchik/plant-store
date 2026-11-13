@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\UserRequest\Model\UserRequest as DomainUserRequest;
+use App\Domain\UserRequest\UserRequestModel as DomainUserRequest;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 

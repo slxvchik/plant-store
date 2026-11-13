@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\News\Shared\Dto\Response;
 
-use App\Domain\News\Model\News;
+use App\Domain\News\NewsModel;
 use JsonSerializable;
 use Override;
 
@@ -19,7 +19,7 @@ readonly class NewsResponseDto implements JsonSerializable
         public ?string $description,
     ) {}
 
-    public static function fromDomain(News $news): self
+    public static function fromDomain(NewsModel $news): self
     {
         return new self(
             id: $news->id->value,

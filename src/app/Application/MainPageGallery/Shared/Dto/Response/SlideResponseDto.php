@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\MainPageGallery\Shared\Dto\Response;
 
 use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
-use App\Domain\MainPageGallery\Model\MainPageGallery;
+use App\Domain\MainPageGallery\MainPageGalleryModel;
 use JsonSerializable;
 use Override;
 
@@ -22,7 +22,7 @@ readonly class SlideResponseDto implements JsonSerializable
         public ?string $buttonText,
     ) {}
 
-    public static function fromDomain(MainPageGallery $slide, ImageResponseDto $imageResponseDto): self
+    public static function fromDomain(MainPageGalleryModel $slide, ImageResponseDto $imageResponseDto): self
     {
         return new self(
             id: $slide->id->value,

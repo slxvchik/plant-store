@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\Warehouse\Model\Warehouse as DomainWarehouseModel;
+use App\Domain\Warehouse\WarehouseModel as DomainWarehouseModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Override;

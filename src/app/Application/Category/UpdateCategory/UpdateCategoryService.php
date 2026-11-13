@@ -6,7 +6,7 @@ namespace App\Application\Category\UpdateCategory;
 
 use App\Application\Category\Shared\Exception\CategoryAliasExistsException;
 use App\Application\Category\Shared\Exception\CategoryNotFoundException;
-use App\Domain\Category\Repository\CategoryRepository;
+use App\Domain\Category\CategoryRepository;
 use App\Domain\Shared\Exception\InternalException;
 use Override;
 

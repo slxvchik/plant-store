@@ -6,7 +6,7 @@ namespace App\Application\Product\Shared\Mapper;
 
 use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
 use App\Domain\Product\Model\SaveOffer;
-use App\Domain\Product\Model\Stock;
+use App\Domain\ProductUnit\ProductUnitModel;
 
 final class SaveOfferMapper
 {
@@ -29,7 +29,7 @@ final class SaveOfferMapper
             description: $offer->description,
             price: $offer->price,
             stocks: array_map(
-                fn ($stock): Stock => new Stock(
+                fn ($stock): ProductUnitModel => new ProductUnitModel(
                     warehouseId: $stock->warehouseId,
                     quantity: $stock->quantity,
                     reserved: $stock->reserved,

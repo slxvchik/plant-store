@@ -6,7 +6,7 @@ namespace App\Application\News\UpdateNews;
 
 use App\Application\News\Shared\Exception\NewsAliasExistsException;
 use App\Application\News\Shared\Exception\NewsNotFoundException;
-use App\Domain\News\Repository\NewsRepository;
+use App\Domain\News\NewsRepository;
 use Override;
 
 readonly class UpdateNewsService implements UpdateNewsUseCase

@@ -6,8 +6,8 @@ namespace App\Application\Tag\CreateTag;
 
 use App\Application\Tag\Shared\Exception\TagAliasExistsException;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
-use App\Domain\Tag\Model\Tag;
-use App\Domain\Tag\Repository\TagRepository;
+use App\Domain\Tag\TagModel;
+use App\Domain\Tag\TagRepository;
 use Override;
 
 readonly class CreateTagService implements CreateTagUseCase
@@ -26,7 +26,7 @@ readonly class CreateTagService implements CreateTagUseCase
             throw new TagAliasExistsException($createTagRequestDto->alias);
         }
 
-        $tag = Tag::createNew(
+        $tag = TagModel::createNew(
             uuidIdentityGenerator: $this->uuidGeneratorInterface,
             alias: $createTagRequestDto->alias,
             sort: $createTagRequestDto->sort,

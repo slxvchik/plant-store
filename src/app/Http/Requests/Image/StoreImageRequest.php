@@ -6,7 +6,7 @@ namespace App\Http\Requests\Image;
 
 use App\Application\Media\CreateImage\CreateImageRequestDto;
 use App\Application\Media\Shared\MediaFolder;
-use App\Domain\Media\Model\Media;
+use App\Domain\Media\Model\MediaData;
 use App\Domain\Shared\AppException\AppException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
@@ -53,7 +53,7 @@ class StoreImageRequest extends FormRequest
             throw new AppException(errorMessage: 'Неправильный формат загружаемого файла');
         }
 
-        $media = new Media(
+        $media = new MediaData(
             name: $file->getClientOriginalName(),
             mimeType: $file->getMimeType(),
             tmpName: $file->getPathname(),

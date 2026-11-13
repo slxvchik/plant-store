@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Application\Warehouse\CreateWarehouse;
 
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
-use App\Domain\Warehouse\Model\Warehouse;
-use App\Domain\Warehouse\Repository\WarehouseRepository;
+use App\Domain\Warehouse\WarehouseModel;
+use App\Domain\Warehouse\WarehouseRepository;
 use Override;
 
 readonly class CreateWarehouseService implements CreateWarehouseUseCase
@@ -19,7 +19,7 @@ readonly class CreateWarehouseService implements CreateWarehouseUseCase
     #[Override]
     public function execute(CreateWarehouseRequestDto $createWarehouseRequestDto): string
     {
-        $newWareHouse = Warehouse::createNew(
+        $newWareHouse = WarehouseModel::createNew(
             uuidGeneratorInterface: $this->uuidGeneratorInterface,
             address: $createWarehouseRequestDto->address,
             phoneNumber: $createWarehouseRequestDto->phoneNumber

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Warehouse\Shared\Dto\Response;
 
-use App\Domain\Warehouse\Model\Warehouse;
+use App\Domain\Warehouse\WarehouseModel;
 use JsonSerializable;
 use Override;
 
@@ -16,7 +16,7 @@ readonly class WarehouseResponseDto implements JsonSerializable
         public ?string $phoneNumber,
     ) {}
 
-    public static function fromDomain(Warehouse $warehouse): self
+    public static function fromDomain(WarehouseModel $warehouse): self
     {
         return new self(
             id: $warehouse->id->value,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Product\Shared\Dto\Response;
 
-use App\Domain\Product\Model\Offer;
+use App\Domain\Product\Model\OfferModel;
 use DateTimeImmutable;
 use JsonSerializable;
 use Override;
@@ -31,7 +31,7 @@ readonly class OfferResponseDto implements JsonSerializable
     /**
      * @param  StockResponseDto[]  $stockResponseDtos
      */
-    public static function fromDomain(Offer $offer, array $stockResponseDtos): self
+    public static function fromDomain(OfferModel $offer, array $stockResponseDtos): self
     {
         return new self(
             id: $offer->id->value,

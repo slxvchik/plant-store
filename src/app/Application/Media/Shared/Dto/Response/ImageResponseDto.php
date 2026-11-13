@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Media\Shared\Dto\Response;
 
-use App\Domain\Media\Model\Image;
+use App\Domain\Media\Model\ImageModel;
 use JsonSerializable;
 use Override;
 
@@ -21,7 +21,7 @@ readonly class ImageResponseDto implements JsonSerializable
         public ?string $altText,
     ) {}
 
-    public static function fromDomain(Image $image, string $webPathToFile): self
+    public static function fromDomain(ImageModel $image, string $webPathToFile): self
     {
         return new self(
             id: $image->id->value,

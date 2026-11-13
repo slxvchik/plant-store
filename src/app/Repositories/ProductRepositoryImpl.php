@@ -6,10 +6,10 @@ namespace App\Repositories;
 
 use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Product\Criteria\ProductSearchCriteria;
-use App\Domain\Product\Model\Offer as DomainOffer;
-use App\Domain\Product\Model\Product as DomainProduct;
-use App\Domain\Product\Model\Stock;
+use App\Domain\Product\Model\OfferModel as DomainOffer;
+use App\Domain\Product\Model\ProductModel as DomainProduct;
 use App\Domain\Product\Repository\ProductRepository;
+use App\Domain\ProductUnit\ProductUnitModel;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\SortedItem\SortedItem;
@@ -18,7 +18,6 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use Override;
 use Throwable;
@@ -222,7 +221,7 @@ class ProductRepositoryImpl implements ProductRepository
 
             $offerPivotData[] = ['product_id' => $productId, 'offer_id' => $offerId];
 
-            $this->syncRelationships('offer_stocks', 'offer_id', $offerId, $offer->stocks, function (Stock $stock) {
+            $this->syncRelationships('offer_stocks', 'offer_id', $offerId, $offer->stocks, function (ProductUnitModel $stock) {
                 return [
                     'warehouse_id' => $stock->warehouseId,
                     'quantity' => $stock->quantity,
@@ -254,7 +253,7 @@ class ProductRepositoryImpl implements ProductRepository
     {
         $productId = $product->id->value;
 
-        $this->syncRelationships('product_categories', 'product_id', $productId, $product->categoryIds, function (string $categoryId) {
+        $this->syncRelationships('product_categories', 'product_id', $productId, $product->categoryId, function (string $categoryId) {
             return [
                 'category_id' => $categoryId,
             ];

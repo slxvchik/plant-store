@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Domain\User\Model\User;
+use App\Domain\User\Model\UserModel;
 use App\Domain\User\Repository\UserRepository;
 use App\Models\User as UserModel;
 use Override;
@@ -15,7 +15,7 @@ use Override;
 class UserRepositoryImpl implements UserRepository
 {
     #[Override]
-    public function create(User $user): string
+    public function create(UserModel $user): string
     {
         UserModel::create($this->attributes($user));
 
@@ -23,7 +23,7 @@ class UserRepositoryImpl implements UserRepository
     }
 
     #[Override]
-    public function update(User $user): void
+    public function update(UserModel $user): void
     {
         UserModel::findOrFail($user->id->value)->update($this->attributes($user));
     }
@@ -35,7 +35,7 @@ class UserRepositoryImpl implements UserRepository
     }
 
     #[Override]
-    public function findById(string $id): ?User
+    public function findById(string $id): ?UserModel
     {
         return UserModel::find($id)?->toDomain();
     }
@@ -45,7 +45,7 @@ class UserRepositoryImpl implements UserRepository
     {
         return UserModel::whereIn('id', $ids)
             ->get()
-            ->map(fn (UserModel $user): User => $user->toDomain())
+            ->map(fn (UserModel $user): UserModel => $user->toDomain())
             ->all();
     }
 
@@ -58,24 +58,24 @@ class UserRepositoryImpl implements UserRepository
 
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
-            mapper: fn (UserModel $user): User => $user->toDomain(),
+            mapper: fn (UserModel $user): UserModel => $user->toDomain(),
         );
     }
 
     #[Override]
-    public function findByPhone(string $phone): ?User
+    public function findByPhone(string $phone): ?UserModel
     {
         return UserModel::firstWhere('phone', $phone)?->toDomain();
     }
 
     #[Override]
-    public function findByEmail(string $email): ?User
+    public function findByEmail(string $email): ?UserModel
     {
         return UserModel::firstWhere('email', $email)?->toDomain();
     }
 
     #[Override]
-    public function findByEmailConfirmToken(string $confirmToken): ?User
+    public function findByEmailConfirmToken(string $confirmToken): ?UserModel
     {
         return UserModel::firstWhere('email_confirm_token', $confirmToken)?->toDomain();
     }
@@ -83,7 +83,7 @@ class UserRepositoryImpl implements UserRepository
     /**
      * @return array<string, mixed>
      */
-    private function attributes(User $user): array
+    private function attributes(UserModel $user): array
     {
         $roles = [];
         foreach ($user->roles as $role) {

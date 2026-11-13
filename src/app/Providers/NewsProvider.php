@@ -12,7 +12,7 @@ use App\Application\News\GetNewsPage\GetNewsPageService;
 use App\Application\News\GetNewsPage\GetNewsPageUseCase;
 use App\Application\News\UpdateNews\UpdateNewsService;
 use App\Application\News\UpdateNews\UpdateNewsUseCase;
-use App\Domain\News\Repository\NewsRepository;
+use App\Domain\News\NewsRepository;
 use App\Repositories\NewsRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
 

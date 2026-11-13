@@ -7,7 +7,7 @@ namespace App\Application\User\RegisterUser;
 use App\Application\User\Shared\Exception\UserEmailAlreadyExistsException;
 use App\Application\User\Shared\Exception\UserPhoneAlreadyExistsException;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
-use App\Domain\User\Model\User;
+use App\Domain\User\Model\UserModel;
 use App\Domain\User\Repository\UserRepository;
 use Override;
 
@@ -21,7 +21,7 @@ readonly class RegisterUserService implements RegisterUserUseCase
     #[Override]
     public function execute(RegisterUserRequestDto $registerUserDto): string
     {
-        $user = User::createNew(
+        $user = UserModel::createNew(
             uuidGenerator: $this->uuidGeneratorInterface,
             phone: $registerUserDto->phone,
             password: $registerUserDto->password,

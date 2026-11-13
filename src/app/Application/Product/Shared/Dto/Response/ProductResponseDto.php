@@ -8,7 +8,7 @@ use App\Application\Category\Shared\Dto\Response\CategoryResponseDto;
 use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
 use App\Application\Media\Shared\Dto\Response\VideoResponseDto;
 use App\Application\Tag\Shared\Dto\Response\TagResponseDto;
-use App\Domain\Product\Model\Product;
+use App\Domain\Product\Model\ProductModel;
 use JsonSerializable;
 use Override;
 
@@ -43,12 +43,12 @@ readonly class ProductResponseDto implements JsonSerializable
      * @param  ImageResponseDto[]  $images
      */
     public static function fromDomain(
-        Product $product,
-        array $offers,
-        array $categories,
-        array $tags,
-        array $images,
-        array $videos,
+        ProductModel $product,
+        array        $offers,
+        array        $categories,
+        array        $tags,
+        array        $images,
+        array        $videos,
     ): self {
         return new self(
             id: $product->id->value,

@@ -1,0 +1,128 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Media\Model;
+
+use App\Domain\Media\Exception\InvalidMimeTypeException;
+use App\Domain\Shared\Uuid\Uuid;
+use App\Domain\Shared\Uuid\UuidGeneratorInterface;
+
+class VideoModel extends MediaModel
+{
+    public private(set) ?int $width;
+
+    public private(set) ?int $height;
+
+    public private(set) bool $loop;
+
+    public private(set) bool $muted;
+
+    public private(set) ?int $durationSec;
+
+    public private(set) ?string $codec;
+
+    public private(set) ?string $thumbnailId;
+
+    /**
+     * @var string[]
+     */
+    private const array ACCEPTABLE_TYPES = ['video/mp4', 'video/webm'];
+
+    /**
+     * @throws InvalidMimeTypeException
+     */
+    private function __construct(
+        Uuid $id,
+        string $mimeType,
+        int $sizeInBytes,
+        ?int $width,
+        ?int $height,
+        bool $loop,
+        bool $muted,
+        ?int $durationSec,
+        ?string $codec,
+        ?string $thumbnailId
+    ) {
+        if (! in_array($mimeType, self::ACCEPTABLE_TYPES)) {
+            throw new InvalidMimeTypeException($mimeType, self::ACCEPTABLE_TYPES);
+        }
+
+        parent::__construct($id, $mimeType, $sizeInBytes);
+
+        $this->width = $width;
+        $this->height = $height;
+        $this->loop = $loop;
+        $this->muted = $muted;
+        $this->durationSec = $durationSec;
+        $this->codec = $codec;
+        $this->thumbnailId = $thumbnailId;
+    }
+
+    /**
+     * @throws InvalidMimeTypeException
+     */
+    public static function fromDb(
+        string $id,
+        string $mimeType,
+        int $sizeInBytes,
+        ?int $width,
+        ?int $height,
+        bool $loop,
+        bool $muted,
+        ?int $durationSec,
+        ?string $codec,
+        ?string $thumbnailId
+    ): self {
+        return new self(
+            id: new Uuid($id),
+            mimeType: $mimeType,
+            sizeInBytes: $sizeInBytes,
+            width: $width,
+            height: $height,
+            loop: $loop,
+            muted: $muted,
+            durationSec: $durationSec,
+            codec: $codec,
+            thumbnailId: $thumbnailId
+        );
+    }
+
+    /**
+     * @throws InvalidMimeTypeException
+     */
+    public static function createNew(
+        UuidGeneratorInterface $uuidGeneratorInterface,
+        string $mimeType,
+        int $sizeInBytes,
+        ?int $width,
+        ?int $height,
+        bool $loop,
+        bool $muted,
+        ?int $durationSec,
+        ?string $codec,
+        ?string $thumbnailId
+    ): self {
+        $uuidStr = $uuidGeneratorInterface->generate();
+
+        return new self(
+            id: new Uuid($uuidStr),
+            mimeType: $mimeType,
+            sizeInBytes: $sizeInBytes,
+            width: $width,
+            height: $height,
+            loop: $loop,
+            muted: $muted,
+            durationSec: $durationSec,
+            codec: $codec,
+            thumbnailId: $thumbnailId
+        );
+    }
+
+    public function update(?string $thumbnailId, bool $loop, bool $muted): void
+    {
+        $this->thumbnailId = $thumbnailId;
+        $this->loop = $loop;
+        $this->muted = $muted;
+    }
+}

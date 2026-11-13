@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Adapters\Pagination\PaginationAdapter;
-use App\Domain\News\Model\News;
-use App\Domain\News\Repository\NewsRepository;
+use App\Domain\News\NewsModel;
+use App\Domain\News\NewsRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Models\News as NewsModel;
@@ -15,7 +15,7 @@ use Override;
 class NewsRepositoryImpl implements NewsRepository
 {
     #[Override]
-    public function create(News $news): string
+    public function create(NewsModel $news): string
     {
         NewsModel::create($this->attributes($news));
 
@@ -23,7 +23,7 @@ class NewsRepositoryImpl implements NewsRepository
     }
 
     #[Override]
-    public function update(News $news): void
+    public function update(NewsModel $news): void
     {
         NewsModel::findOrFail($news->id->value)->update($this->attributes($news));
     }
@@ -35,13 +35,13 @@ class NewsRepositoryImpl implements NewsRepository
     }
 
     #[Override]
-    public function findById(string $id): ?News
+    public function findById(string $id): ?NewsModel
     {
         return NewsModel::find($id)?->toDomain();
     }
 
     #[Override]
-    public function findByAlias(string $alias): ?News
+    public function findByAlias(string $alias): ?NewsModel
     {
         return NewsModel::firstWhere('alias', $alias)?->toDomain();
     }
@@ -55,14 +55,14 @@ class NewsRepositoryImpl implements NewsRepository
 
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
-            mapper: fn (NewsModel $news): News => $news->toDomain(),
+            mapper: fn (NewsModel $news): NewsModel => $news->toDomain(),
         );
     }
 
     /**
      * @return array<string, mixed>
      */
-    private function attributes(News $news): array
+    private function attributes(NewsModel $news): array
     {
         return [
             'id' => $news->id->value,

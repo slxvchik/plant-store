@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Domain\Product\Model\Product as DomainProduct;
+use App\Domain\Product\Model\ProductModel as DomainProduct;
 use App\Domain\Shared\SortedItem\SortedItem;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
