@@ -237,7 +237,7 @@ class UserCartLazyCreationTest extends TestCase
             sort: 1,
             name: 'Test product',
             description: null,
-            categories: [],
+            categoryId: [],
             tags: [],
             videoIds: [],
             imageIds: [],

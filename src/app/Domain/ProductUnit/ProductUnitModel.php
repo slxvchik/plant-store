@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\ProductUnit;
 
 use App\Domain\Product\Exception\ProductShipReserveException;
-use App\Domain\ProductStatusHistory\ProductUnitStatusHistoryItemModel;
+use App\Domain\ProductUnitStatus\Model\ProductUnitStatusHistoryItemModel;
 use App\Domain\Shared\Uuid\Uuid;
 use DateTimeImmutable;
 
@@ -16,7 +16,7 @@ class ProductUnitModel
 {
     public private(set) Uuid $id;
 
-    public private(set) string $offerId;
+    public private(set) ?string $offerId;
 
     public private(set) string $warehouseId;
 

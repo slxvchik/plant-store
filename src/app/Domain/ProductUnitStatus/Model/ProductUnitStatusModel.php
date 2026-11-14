@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\ProductUnitStatus;
+namespace App\Domain\ProductUnitStatus\Model;
 
 use App\Domain\Shared\Uuid\Uuid;
 

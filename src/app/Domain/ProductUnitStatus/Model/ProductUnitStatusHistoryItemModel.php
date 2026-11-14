@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\ProductStatusHistory;
+namespace App\Domain\ProductUnitStatus\Model;
 
 use App\Domain\Shared\Uuid\Uuid;
 use DateTimeImmutable;

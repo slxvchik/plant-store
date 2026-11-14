@@ -20,7 +20,7 @@ class SupplierModel
 
     public private(set) ?string $address;
 
-    public private(set) string $comment;
+    public private(set) ?string $comment;
 
     /**
      * @param string $id
@@ -30,7 +30,7 @@ class SupplierModel
      * @param string|null $address
      * @param string $comment
      */
-    private function __construct(string $id, string $name, ?string $phone, ?string $email, ?string $address, string $comment)
+    private function __construct(string $id, string $name, ?string $phone, ?string $email, ?string $address, ?string $comment)
     {
         $uuid = new Uuid($id);
         $this->id = $uuid;
@@ -41,17 +41,17 @@ class SupplierModel
         $this->comment = $comment;
     }
 
-    public static function createNew(UuidGeneratorInterface $uuidGenerator, string $name, ?string $phone, ?string $email, ?string $address, string $comment): self
+    public static function createNew(UuidGeneratorInterface $uuidGenerator, string $name, ?string $phone, ?string $email, ?string $address, ?string $comment): self
     {
         return new self($uuidGenerator->generate(), $name, $phone, $email, $address, $comment);
     }
 
-    public static function fromDb(string $id, string $name, ?string $phone, ?string $email, ?string $address, string $comment): self
+    public static function fromDb(string $id, string $name, ?string $phone, ?string $email, ?string $address, ?string $comment): self
     {
         return new self($id, $name, $phone, $email, $address, $comment);
     }
 
-    public function update(string $name, ?string $phone, ?string $email, ?string $address, string $comment): void
+    public function update(string $name, ?string $phone, ?string $email, ?string $address, ?string $comment): void
     {
         $this->name = $name;
         $this->phone = $phone;

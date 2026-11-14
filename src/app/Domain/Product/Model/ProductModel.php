@@ -70,13 +70,12 @@ class ProductModel
     public private(set) array $imageIds;
 
     /**
-     * @param  string[]  $categories
      * @param  string[]  $tags
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
      * @param  OfferModel[]  $offers
      */
-    private function __construct(Uuid $id, bool $active, string $alias, int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers)
+    private function __construct(Uuid $id, bool $active, string $alias, int $sort, string $name, ?string $description, ?string $categoryId, array $tags, array $videoIds, array $imageIds, array $offers)
     {
         $this->id = $id;
         $this->active = $active;
@@ -84,7 +83,7 @@ class ProductModel
         $this->sort = $sort;
         $this->name = $name;
         $this->description = $description;
-        $this->categoryId = $categories;
+        $this->categoryId = $categoryId;
         $this->tagIds = $tags;
         $this->videoIds = $videoIds;
         $this->imageIds = $imageIds;
@@ -92,13 +91,12 @@ class ProductModel
     }
 
     /**
-     * @param  string[]  $categories
      * @param  string[]  $tags
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
      * @param  OfferModel[]  $offers
      */
-    public static function fromDb(string $id, bool $active, string $alias, int $sort, string $name, ?string $description, array $categories, array $tags, array $videoIds, array $imageIds, array $offers): self
+    public static function fromDb(string $id, bool $active, string $alias, int $sort, string $name, ?string $description, ?string $categoryId, array $tags, array $videoIds, array $imageIds, array $offers): self
     {
         $uuid = new Uuid($id);
 
@@ -109,7 +107,7 @@ class ProductModel
             sort: $sort,
             name: $name,
             description: $description,
-            categories: $categories,
+            categoryId: $categoryId,
             tags: $tags,
             videoIds: $videoIds,
             imageIds: $imageIds,
@@ -118,12 +116,11 @@ class ProductModel
     }
 
     /**
-     * @param  string[]  $categories
      * @param  string[]  $tags
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, int $sort, string $name, array $categories, array $tags, array $videoIds, array $imageIds, ?string $description): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, int $sort, string $name, ?string $categoryId, array $tags, array $videoIds, array $imageIds, ?string $description): self
     {
         $uuidValue = $uuidIdentityGenerator->generate();
         $newUuid = new Uuid($uuidValue);
@@ -135,7 +132,7 @@ class ProductModel
             sort: $sort,
             name: $name,
             description: $description,
-            categories: $categories,
+            categoryId: $categoryId,
             tags: $tags,
             videoIds: $videoIds,
             imageIds: $imageIds,
@@ -144,19 +141,18 @@ class ProductModel
     }
 
     /**
-     * @param  string[]  $categoryIds
      * @param  string[]  $tagIds
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
      */
-    public function update(string $alias, int $sort, string $name, bool $active, ?string $description, array $categoryIds, array $tagIds, array $videoIds, array $imageIds): void
+    public function update(string $alias, int $sort, string $name, bool $active, ?string $description, ?string $categoryId, array $tagIds, array $videoIds, array $imageIds): void
     {
         $this->alias = $alias;
         $this->sort = $sort;
         $this->name = $name;
         $this->active = $active;
         $this->description = $description;
-        $this->categoryId = $categoryIds;
+        $this->categoryId = $categoryId;
         $this->tagIds = $tagIds;
         $this->videoIds = $videoIds;
         $this->imageIds = $imageIds;
@@ -251,19 +247,5 @@ class ProductModel
     public function offerExists(string $offerId): bool
     {
         return isset($this->offers[$offerId]);
-    }
-
-    /**
-     * @throws OfferNotFoundException
-     */
-    public function getOfferAvailableQuantity(string $offerId): int
-    {
-        $availableCount = 0;
-        $offer = $this->getOffer($offerId);
-        foreach ($offer->stocks as $stock) {
-            $availableCount += $stock->getAvailableQuantity();
-        }
-
-        return $availableCount;
     }
 }

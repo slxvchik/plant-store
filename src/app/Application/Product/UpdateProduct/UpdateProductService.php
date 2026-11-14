@@ -37,7 +37,7 @@ readonly class UpdateProductService implements UpdateProductUseCase
             name: $updateProductRequestDto->name,
             active: $updateProductRequestDto->active,
             description: $updateProductRequestDto->description,
-            categoryIds: $updateProductRequestDto->categoryIds,
+            categoryId: $updateProductRequestDto->categoryIds,
             tagIds: $updateProductRequestDto->tagIds,
             videoIds: $updateProductRequestDto->videoIds,
             imageIds: $updateProductRequestDto->imageIds,

@@ -10,7 +10,7 @@ class ProductSupplyModel
 {
     public private(set) Uuid $id;
 
-    public private(set) string $supplierId;
+    public private(set) ?string $supplierId;
 
     public private(set) ?string $offerId;
 

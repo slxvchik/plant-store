@@ -73,7 +73,7 @@ class Product extends Model
             sort: $this->sort,
             name: $this->name,
             description: $this->description,
-            categories: $categoryIds,
+            categoryId: $categoryIds,
             tags: $tagIds,
             videoIds: $videoIds,
             imageIds: $imageIds,

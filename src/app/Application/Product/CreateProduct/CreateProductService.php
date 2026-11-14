@@ -30,7 +30,7 @@ readonly class CreateProductService implements CreateProductUseCase
             alias: $createProductRequestDto->alias,
             sort: $createProductRequestDto->sort,
             name: $createProductRequestDto->name,
-            categories: $createProductRequestDto->categoryIds,
+            categoryId: $createProductRequestDto->categoryIds,
             tags: $createProductRequestDto->tagIds,
             videoIds: $createProductRequestDto->videoIds,
             imageIds: $createProductRequestDto->imageIds,
