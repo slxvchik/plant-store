@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Supplier;
 
 use App\Domain\Shared\Pagination\Page;
@@ -14,7 +16,7 @@ interface SupplierRepository
 
     public function findById(string $id): ?SupplierModel;
 
-    public function create(SupplierModel $supplier): void;
+    public function create(SupplierModel $supplier): string;
 
     public function update(SupplierModel $supplier): void;
 

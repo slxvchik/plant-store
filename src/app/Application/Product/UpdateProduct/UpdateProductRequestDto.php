@@ -10,7 +10,6 @@ use App\Domain\Shared\SortedItem\SortedItem;
 readonly class UpdateProductRequestDto
 {
     /**
-     * @param  string[]  $categoryIds
      * @param  string[]  $tagIds
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
@@ -23,7 +22,7 @@ readonly class UpdateProductRequestDto
         public string $name,
         public int $sort,
         public ?string $description,
-        public array $categoryIds,
+        public ?string $categoryId,
         public array $tagIds,
         public array $videoIds,
         public array $imageIds,

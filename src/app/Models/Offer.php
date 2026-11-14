@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Domain\Product\Model\OfferModel as DomainOfferModel;
-use App\Domain\ProductUnit\ProductUnitModel;
+use App\Domain\ProductUnit\Model\ProductStockModel;
 use App\Domain\Shared\SortedItem\SortedItem;
 use DateMalformedStringException;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -47,7 +47,7 @@ class Offer extends Model
     {
         $stocks = DB::table('offer_stocks')
             ->get()
-            ->map(fn (stdClass $stock) => new ProductUnitModel(
+            ->map(fn (stdClass $stock) => new ProductStockModel(
                 warehouseId: $stock->warehouse_id,
                 quantity: $stock->quantity,
                 reserved: $stock->reserved,

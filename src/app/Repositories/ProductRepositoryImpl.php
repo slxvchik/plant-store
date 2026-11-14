@@ -9,7 +9,7 @@ use App\Domain\Product\Criteria\ProductSearchCriteria;
 use App\Domain\Product\Model\OfferModel as DomainOffer;
 use App\Domain\Product\Model\ProductModel as DomainProduct;
 use App\Domain\Product\Repository\ProductRepository;
-use App\Domain\ProductUnit\ProductUnitModel;
+use App\Domain\ProductUnit\Model\ProductStockModel;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\SortedItem\SortedItem;
@@ -221,7 +221,7 @@ class ProductRepositoryImpl implements ProductRepository
 
             $offerPivotData[] = ['product_id' => $productId, 'offer_id' => $offerId];
 
-            $this->syncRelationships('offer_stocks', 'offer_id', $offerId, $offer->stocks, function (ProductUnitModel $stock) {
+            $this->syncRelationships('offer_stocks', 'offer_id', $offerId, $offer->stocks, function (ProductStockModel $stock) {
                 return [
                     'warehouse_id' => $stock->warehouseId,
                     'quantity' => $stock->quantity,

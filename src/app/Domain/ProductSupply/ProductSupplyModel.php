@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\ProductSupply;
 
 use App\Domain\Shared\Uuid\Uuid;
@@ -38,10 +40,21 @@ class ProductSupplyModel
     /**
      * @param  string[]  $productUnitIds
      */
-    private function __construct(string $id, string $supplierId, ?string $offerId, array $productUnitIds, int $declaredQuantity, int $actualQuantity, ?int $unitPurchasePriceInKopecks, ?int $totalPurchasePriceInKopecks, string $comment, bool $misGraded, DateTimeImmutable $createdAt)
-    {
-        $uuid = new Uuid($id);
-        $this->id = $uuid;
+    private function __construct(
+        Uuid $id,
+        ?string $supplierId,
+        ?string $offerId,
+        array $productUnitIds,
+        int $declaredQuantity,
+        int $actualQuantity,
+        ?int $unitPurchasePriceInKopecks,
+        ?int $totalPurchasePriceInKopecks,
+        string $comment,
+        bool $misGraded,
+        DateTimeImmutable $createdAt,
+        ?DateTimeImmutable $updatedAt,
+    ) {
+        $this->id = $id;
         $this->supplierId = $supplierId;
         $this->offerId = $offerId;
         $this->productUnitIds = $productUnitIds;
@@ -52,52 +65,91 @@ class ProductSupplyModel
         $this->comment = $comment;
         $this->misGraded = $misGraded;
         $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
-    public static function createNew(UuidGeneratorInterface $uuidGenerator, string $supplierId, ?string $offerId, array $productUnitIds, int $declaredQuantity, int $actualQuantity, ?int $unitPurchasePriceInKopecks, ?int $totalPurchasePriceInKopecks, string $comment, bool $misGraded): self
-    {
+    /**
+     * @param  string[]  $productUnitIds
+     */
+    public static function createNew(
+        UuidGeneratorInterface $uuidGenerator,
+        string $supplierId,
+        ?string $offerId,
+        array $productUnitIds,
+        int $declaredQuantity,
+        int $actualQuantity,
+        ?int $unitPurchasePriceInKopecks,
+        ?int $totalPurchasePriceInKopecks,
+        string $comment,
+        bool $misGraded,
+    ): self {
         return new self(
-            $uuidGenerator->generate(),
-            $supplierId,
-            $offerId,
-            $productUnitIds,
-            $declaredQuantity,
-            $actualQuantity,
-            $unitPurchasePriceInKopecks,
-            $totalPurchasePriceInKopecks,
-            $comment,
-            $misGraded,
-            new DateTimeImmutable,
+            id: new Uuid($uuidGenerator->generate()),
+            supplierId: $supplierId,
+            offerId: $offerId,
+            productUnitIds: $productUnitIds,
+            declaredQuantity: $declaredQuantity,
+            actualQuantity: $actualQuantity,
+            unitPurchasePriceInKopecks: $unitPurchasePriceInKopecks,
+            totalPurchasePriceInKopecks: $totalPurchasePriceInKopecks,
+            comment: $comment,
+            misGraded: $misGraded,
+            createdAt: new DateTimeImmutable,
+            updatedAt: null,
         );
     }
 
-    public static function fromDb(string $id, string $supplierId, ?string $offerId, array $productUnitIds, int $declaredQuantity, int $actualQuantity, ?int $unitPurchasePriceInKopecks, ?int $totalPurchasePriceInKopecks, string $comment, bool $misGraded, DateTimeImmutable $createdAt): self
-    {
+    /**
+     * @param  string[]  $productUnitIds
+     */
+    public static function fromDb(
+        string $id,
+        ?string $supplierId,
+        ?string $offerId,
+        array $productUnitIds,
+        int $declaredQuantity,
+        int $actualQuantity,
+        ?int $unitPurchasePriceInKopecks,
+        ?int $totalPurchasePriceInKopecks,
+        string $comment,
+        bool $misGraded,
+        DateTimeImmutable $createdAt,
+        ?DateTimeImmutable $updatedAt,
+    ): self {
         return new self(
-            $id,
-            $supplierId,
-            $offerId,
-            $productUnitIds,
-            $declaredQuantity,
-            $actualQuantity,
-            $unitPurchasePriceInKopecks,
-            $totalPurchasePriceInKopecks,
-            $comment,
-            $misGraded,
-            $createdAt,
+            id: new Uuid($id),
+            supplierId: $supplierId,
+            offerId: $offerId,
+            productUnitIds: $productUnitIds,
+            declaredQuantity: $declaredQuantity,
+            actualQuantity: $actualQuantity,
+            unitPurchasePriceInKopecks: $unitPurchasePriceInKopecks,
+            totalPurchasePriceInKopecks: $totalPurchasePriceInKopecks,
+            comment: $comment,
+            misGraded: $misGraded,
+            createdAt: $createdAt,
+            updatedAt: $updatedAt,
         );
     }
 
-    public function update(string $supplierId, ?string $offerId, array $productUnitIds, int $declaredQuantity, int $actualQuantity, ?int $unitPurchasePriceInKopecks, ?int $totalPurchasePriceInKopecks, string $comment, bool $misGraded): void
-    {
+    public function update(
+        string $supplierId,
+        ?string $offerId,
+        int $declaredQuantity,
+        int $actualQuantity,
+        ?int $unitPurchasePriceInKopecks,
+        ?int $totalPurchasePriceInKopecks,
+        string $comment,
+        bool $misGraded,
+    ): void {
         $this->supplierId = $supplierId;
         $this->offerId = $offerId;
-        $this->productUnitIds = $productUnitIds;
         $this->declaredQuantity = $declaredQuantity;
         $this->actualQuantity = $actualQuantity;
         $this->unitPurchasePriceInKopecks = $unitPurchasePriceInKopecks;
         $this->totalPurchasePriceInKopecks = $totalPurchasePriceInKopecks;
         $this->comment = $comment;
         $this->misGraded = $misGraded;
+        $this->updatedAt = new DateTimeImmutable;
     }
 }

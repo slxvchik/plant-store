@@ -7,6 +7,7 @@ namespace App\Http\Requests\Product;
 use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
 use App\Application\Product\Shared\Dto\Request\SaveStockRequestDto;
 use App\Domain\Shared\SortedItem\SortedItem;
+use DateMalformedStringException;
 use DateTimeImmutable;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,8 +24,7 @@ abstract class ProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'sort' => ['required', 'integer'],
             'description' => ['sometimes', 'nullable', 'string'],
-            'categories' => ['sometimes', 'array'],
-            'categories.*' => ['uuid', 'exists:categories,id'],
+            'category.*' => ['uuid', 'exists:categories,id'],
             'tags' => ['sometimes', 'array'],
             'tags.*' => ['uuid', 'exists:tags,id'],
             'images' => ['sometimes', 'array'],
@@ -70,6 +70,7 @@ abstract class ProductRequest extends FormRequest
      *     imageIds: SortedItem<string>[],
      *     offers: SaveOfferRequestDto[]
      * }
+     * @throws DateMalformedStringException
      */
     protected function productData(): array
     {
@@ -138,7 +139,7 @@ abstract class ProductRequest extends FormRequest
 
     /**
      * @param  array<int, array{id: string, sort?: int}>  $items
-     * @return SortedItem
+     * @return SortedItem[]
      */
     private function sortedItems(array $items): array
     {

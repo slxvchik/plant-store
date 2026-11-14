@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Product\Shared\Dto\Response;
 
 use App\Application\Warehouse\Shared\Dto\Response\WarehouseResponseDto;
-use App\Domain\ProductUnit\ProductUnitModel;
+use App\Domain\ProductUnit\Model\ProductStockModel;
 use JsonSerializable;
 use Override;
 
@@ -17,7 +17,7 @@ readonly class StockResponseDto implements JsonSerializable
         public int $reserved,
     ) {}
 
-    public static function fromDomain(ProductUnitModel $stock, WarehouseResponseDto $warehouse): self
+    public static function fromDomain(ProductStockModel $stock, WarehouseResponseDto $warehouse): self
     {
         return new self(
             warehouse: $warehouse,

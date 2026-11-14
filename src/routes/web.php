@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Controllers\AdminImageController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\AdminImageController;
 use App\Http\Controllers\MainPageGalleryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductSupplyController;
+use App\Http\Controllers\ProductUnitController;
+use App\Http\Controllers\ProductUnitStatusController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserCartController;
 use App\Http\Controllers\UserController;
@@ -79,6 +83,42 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/', [WarehouseController::class, 'store'])->name('store');
         Route::put('/{id}', [WarehouseController::class, 'update'])->name('update');
         Route::delete('/{id}', [WarehouseController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('suppliers')->name('suppliers.')->group(function () {
+        Route::get('/', [SupplierController::class, 'index'])->name('index');
+        Route::get('/create', [SupplierController::class, 'create'])->name('create');
+        Route::post('/', [SupplierController::class, 'store'])->name('store');
+        Route::get('/{id}', [SupplierController::class, 'show'])->name('show');
+        Route::put('/{id}', [SupplierController::class, 'update'])->name('update');
+        Route::delete('/{id}', [SupplierController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('product-units')->name('product-units.')->group(function () {
+        Route::get('/', [ProductUnitController::class, 'index'])->name('index');
+        Route::get('/create', [ProductUnitController::class, 'create'])->name('create');
+        Route::post('/', [ProductUnitController::class, 'store'])->name('store');
+        Route::get('/{id}', [ProductUnitController::class, 'show'])->name('show');
+        Route::put('/{id}', [ProductUnitController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ProductUnitController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('product-unit-statuses')->name('product-unit-statuses.')->group(function () {
+        Route::get('/', [ProductUnitStatusController::class, 'index'])->name('index');
+        Route::get('/create', [ProductUnitStatusController::class, 'create'])->name('create');
+        Route::post('/', [ProductUnitStatusController::class, 'store'])->name('store');
+        Route::get('/{id}', [ProductUnitStatusController::class, 'show'])->name('show');
+        Route::put('/{id}', [ProductUnitStatusController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ProductUnitStatusController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('product-supplies')->name('product-supplies.')->group(function () {
+        Route::get('/', [ProductSupplyController::class, 'index'])->name('index');
+        Route::get('/create', [ProductSupplyController::class, 'create'])->name('create');
+        Route::post('/', [ProductSupplyController::class, 'store'])->name('store');
+        Route::get('/{id}', [ProductSupplyController::class, 'show'])->name('show');
+        Route::put('/{id}', [ProductSupplyController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ProductSupplyController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('carts')->name('carts.')->group(function () {

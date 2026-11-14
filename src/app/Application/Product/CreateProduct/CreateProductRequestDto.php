@@ -10,7 +10,6 @@ use App\Domain\Shared\SortedItem\SortedItem;
 readonly class CreateProductRequestDto
 {
     /**
-     * @param  string[]  $categoryIds
      * @param  string[]  $tagIds
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
@@ -22,7 +21,7 @@ readonly class CreateProductRequestDto
         public int $sort,
         public string $name,
         public ?string $description,
-        public array $categoryIds,
+        public ?string $categoryId,
         public array $tagIds,
         public array $videoIds,
         public array $imageIds,

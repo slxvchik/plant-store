@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Product\Model;
 
-use App\Domain\ProductUnit\ProductUnitModel;
+use App\Domain\ProductUnit\Model\ProductStockModel;
 use App\Domain\Shared\SortedItem\SortedItem;
 use DateTimeImmutable;
 
@@ -14,7 +14,7 @@ use DateTimeImmutable;
 readonly class SaveOffer
 {
     /**
-     * @param  ProductUnitModel[]  $stocks
+     * @param  ProductStockModel[]  $stocks
      * @param  SortedItem<string>[]  $imageIds
      * @param  SortedItem<string>[]  $videoIds
      */
