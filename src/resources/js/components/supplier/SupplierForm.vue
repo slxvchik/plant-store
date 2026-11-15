@@ -1,9 +1,6 @@
 <template>
-    <form
-        class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-        @submit.prevent="submit"
-    >
-        <div class="grid gap-5 p-6 sm:grid-cols-2 sm:p-8">
+    <form class="supplier-form" @submit.prevent="submit">
+        <div class="supplier-form__grid">
             <Input
                 id="supplier-name"
                 v-model="form.name"
@@ -11,7 +8,6 @@
                 label="Название"
                 placeholder="ООО «Зелёная грядка»"
                 required
-                variant="standard"
             />
             <Input
                 id="supplier-email"
@@ -20,7 +16,6 @@
                 label="Email"
                 placeholder="supplier@example.ru"
                 type="email"
-                variant="standard"
             />
             <Input
                 id="supplier-phone"
@@ -29,7 +24,6 @@
                 label="Телефон"
                 placeholder="+7 (999) 123-45-67"
                 type="tel"
-                variant="standard"
             />
             <Input
                 id="supplier-address"
@@ -37,33 +31,25 @@
                 :error="form.errors.address"
                 label="Адрес"
                 placeholder="Город, улица, дом"
-                variant="standard"
             />
-            <div class="sm:col-span-2">
-                <Input
+            <div class="supplier-form__wide">
+                <Textarea
                     id="supplier-comment"
                     v-model="form.comment"
                     :error="form.errors.comment"
                     label="Комментарий"
-                    multiline
                     placeholder="Условия сотрудничества, контактное лицо, график поставок"
-                    variant="standard"
                 />
             </div>
         </div>
-        <div
-            class="flex flex-col-reverse gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:flex-row sm:justify-end sm:px-8"
-        >
-            <Link
-                class="inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
-                href="/admin/suppliers"
-            >
+        <div class="supplier-form__footer">
+            <Link class="supplier-form__cancel" href="/admin/suppliers">
                 Отмена
             </Link>
             <Button
                 :disabled="form.processing"
                 :text="form.processing ? 'Сохранение…' : submitLabel"
-                class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm"
+                auto-width
                 secondary
                 type="submit"
             />
@@ -75,6 +61,7 @@
 import { Link, useForm } from '@inertiajs/vue3';
 import Button from '@/components/Button.vue';
 import Input from '@/components/Input.vue';
+import Textarea from '@/components/Textarea.vue';
 import type { SupplierFormData } from '@/types/inventory';
 
 const props = withDefaults(

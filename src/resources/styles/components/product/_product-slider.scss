@@ -1,0 +1,31 @@
+.product-slider {
+    @apply relative;
+
+    &__swiper {
+        @apply w-full overflow-visible lg:overflow-hidden;
+    }
+
+    &__slide {
+        @apply h-auto px-2 py-4;
+    }
+
+    &__button {
+        @apply absolute top-[35%] z-10 hidden h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-text-title/10 bg-bg-elevated text-text-title shadow-lg transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white lg:flex dark:border-white/10 dark:bg-bg-night-soft dark:text-white;
+
+        &--previous {
+            @apply left-0;
+        }
+
+        &--next {
+            @apply right-0;
+        }
+    }
+
+    &__icon {
+        @apply h-5 w-5;
+
+        &--previous {
+            @apply rotate-180;
+        }
+    }
+}

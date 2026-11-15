@@ -1,21 +1,17 @@
 <template>
-    <div
-        class="border-text-title/10 dark:border-white/10 [&:not(:last-of-type)]:border-b"
-    >
-        <button
+    <div class="accordion-item">
+        <Button
+            style-type="link"
             :aria-expanded="isOpen"
-            class="flex min-h-14 w-full cursor-pointer items-center justify-between gap-4 py-4 text-left text-text-title transition-all duration-300 ease-in-out hover:text-primary dark:text-linen dark:hover:text-secondary"
+            class="accordion-item__button"
             type="button"
             @click="$emit('toggle')"
         >
-            <span class="font-medium md:text-lg">{{ question }}</span>
-            <span
-                :class="isOpen ? 'rotate-180 bg-sage-soft dark:bg-primary' : ''"
-                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-bg-surface transition-all duration-300 dark:bg-white/10"
-            >
+            <span class="accordion-item__question">{{ question }}</span>
+            <span :class="iconClasses">
                 <svg
                     aria-hidden="true"
-                    class="h-4 w-4"
+                    class="accordion-item__chevron"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="1.7"
@@ -28,27 +24,26 @@
                     />
                 </svg>
             </span>
-        </button>
-        <div
-            :class="
-                isOpen
-                    ? 'grid-rows-[1fr] opacity-100'
-                    : 'grid-rows-[0fr] opacity-0'
-            "
-            class="grid transition-all duration-500 ease-in-out"
-        >
-            <div class="overflow-hidden">
-                <p
-                    class="max-w-2xl pb-5 text-sm leading-7 text-text-muted md:text-base dark:text-white/60"
-                >
-                    <slot />
-                </p>
+        </Button>
+        <div :class="panelClasses">
+            <div class="accordion-item__panel-inner">
+                <p class="accordion-item__answer"><slot /></p>
             </div>
         </div>
     </div>
 </template>
-
 <script lang="ts" setup>
-defineProps<{ question: string; isOpen: boolean }>();
+import { computed } from 'vue';
+import Button from '@/components/Button.vue';
+
+const props = defineProps<{ question: string; isOpen: boolean }>();
 defineEmits<{ toggle: [] }>();
+const iconClasses = computed(() => [
+    'accordion-item__icon',
+    { 'accordion-item__icon--open': props.isOpen },
+]);
+const panelClasses = computed(() => [
+    'accordion-item__panel',
+    { 'accordion-item__panel--open': props.isOpen },
+]);
 </script>

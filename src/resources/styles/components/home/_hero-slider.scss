@@ -1,0 +1,77 @@
+.hero-slider {
+    @apply bg-bg-base px-3 pt-3 md:bg-bg-dark md:p-0;
+    &__swiper {
+        @apply relative h-[700px] overflow-hidden rounded-[28px] md:h-[680px] md:rounded-none;
+    }
+
+    &__slide {
+        @apply flex h-full flex-col bg-bg-elevated md:grid md:grid-cols-2 md:bg-bg-dark dark:bg-bg-night-soft;
+    }
+
+    &__visual {
+        @apply relative order-1 h-[340px] overflow-hidden md:order-2 md:h-full;
+    }
+
+    &__image {
+        @apply h-full w-full scale-105 object-cover;
+    }
+
+    &__content {
+        @apply relative order-2 flex h-full grow overflow-hidden px-5 py-8 md:order-1 md:p-10 lg:p-20;
+    }
+
+    &__decoration {
+        @apply pointer-events-none absolute rounded-full border border-primary/10 md:border-white/5;
+        &--left {
+            @apply -bottom-20 -left-24 h-72 w-72;
+        }
+
+        &--right {
+            @apply -right-20 -bottom-28 h-80 w-80 transition-transform duration-1000;
+        }
+    }
+
+    &__copy {
+        @apply relative z-10;
+    }
+
+    &__eyebrow {
+        @apply mb-4 flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-primary uppercase md:text-xs md:text-secondary dark:text-secondary;
+    }
+
+    &__eyebrow-icon {
+        @apply h-4 w-4;
+    }
+
+    &__title {
+        @apply line-clamp-2 pr-1 pb-1 font-serif text-[40px] leading-[1.04] font-medium tracking-[-0.035em] text-text-title md:text-6xl md:text-linen xl:text-[72px] dark:text-linen;
+    }
+
+    &__accent {
+        @apply font-normal text-primary md:line-clamp-none md:text-secondary lg:text-nowrap;
+    }
+
+    &__description {
+        @apply mt-5 line-clamp-7 max-w-md text-[15px] leading-7 text-text-muted md:text-lg md:leading-8 md:text-white/60 dark:text-white/60;
+    }
+
+    &__actions {
+        @apply mt-7 mb-4 grid grid-cols-2 gap-3 min-[420px]:flex-row md:mt-9;
+    }
+
+    &__primary {
+        @apply group flex min-h-12 items-center justify-center gap-3 rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-primary-hover hover:shadow-xl md:bg-secondary md:text-bg-dark md:hover:bg-linen;
+    }
+
+    &__primary-icon {
+        @apply flex h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1;
+    }
+
+    &__secondary {
+        @apply flex min-h-12 items-center justify-center rounded-full border border-text-title/15 px-6 text-sm font-semibold text-text-title transition-all duration-300 hover:border-primary hover:bg-sage-soft/50 md:border-white/20 md:text-white md:hover:border-white/40 md:hover:bg-white/5 dark:text-linen;
+    }
+
+    &__counter {
+        @apply absolute bottom-5 left-[50%] z-10 flex translate-x-[-50%] items-center text-xs font-medium tracking-widest text-nowrap text-text-muted md:left-5 md:translate-x-0 md:text-white/45;
+    }
+}

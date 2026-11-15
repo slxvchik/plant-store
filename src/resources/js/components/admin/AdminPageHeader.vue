@@ -1,16 +1,14 @@
 <template>
-    <div
-        class="flex flex-col gap-5 border-b border-slate-200 pb-6 sm:flex-row sm:items-end sm:justify-between"
-    >
-        <div class="min-w-0">
+    <div class="admin-page-header">
+        <div class="admin-page-header__content">
             <Link
                 v-if="backUrl"
                 :href="backUrl"
-                class="mb-3 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-emerald-700"
+                class="admin-page-header__back"
             >
                 <svg
                     aria-hidden="true"
-                    class="h-4 w-4"
+                    class="admin-page-header__back-icon"
                     fill="none"
                     viewBox="0 0 20 20"
                 >
@@ -24,28 +22,15 @@
                 </svg>
                 {{ backLabel }}
             </Link>
-            <p
-                v-if="eyebrow"
-                class="mb-1 text-xs font-semibold tracking-[0.18em] text-emerald-700 uppercase"
-            >
+            <p v-if="eyebrow" class="admin-page-header__eyebrow">
                 {{ eyebrow }}
             </p>
-            <h1
-                class="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl"
-            >
-                {{ title }}
-            </h1>
-            <p
-                v-if="description"
-                class="mt-2 max-w-3xl text-sm leading-6 text-slate-500"
-            >
+            <h1 class="admin-page-header__title">{{ title }}</h1>
+            <p v-if="description" class="admin-page-header__description">
                 {{ description }}
             </p>
         </div>
-        <div
-            v-if="$slots.actions"
-            class="flex shrink-0 flex-wrap items-center gap-3"
-        >
+        <div v-if="$slots.actions" class="admin-page-header__actions">
             <slot name="actions" />
         </div>
     </div>

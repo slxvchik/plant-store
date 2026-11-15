@@ -1,0 +1,11 @@
+.favorite-button {
+    @apply flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/80 text-text-title transition-all duration-300 hover:scale-110 dark:bg-bg-night/70 dark:text-white;
+
+    &__icon {
+        @apply h-5 w-5 text-secondary;
+
+        &--active {
+            @apply text-red-400;
+        }
+    }
+}

@@ -1,0 +1,47 @@
+.textarea {
+    @apply block;
+
+    &__label {
+        @apply mb-2 block text-sm font-medium text-slate-700;
+    }
+
+    &__required {
+        @apply text-rose-500;
+    }
+
+    &__wrap {
+        @apply relative;
+    }
+
+    &__floating-label {
+        @apply pointer-events-none absolute top-5 left-4 z-10 text-sm text-text-muted transition-all duration-300 dark:text-white/40;
+
+        &--active {
+            @apply top-2.5 text-xs text-primary dark:text-secondary;
+        }
+    }
+
+    &--error &__floating-label {
+        @apply text-red-400;
+    }
+
+    &__field {
+        @apply min-h-28 w-full resize-y rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400;
+    }
+
+    &--floating &__field {
+        @apply min-h-32 resize-none rounded-2xl border-text-title/15 bg-bg-elevated px-4 pt-6 pb-3 text-[15px] text-text-title focus:border-primary focus:ring-primary/10 dark:border-white/15 dark:bg-bg-night-soft dark:text-white;
+    }
+
+    &--error &__field {
+        @apply border-rose-300 focus:border-rose-500 focus:ring-rose-100;
+    }
+
+    &__error {
+        @apply mt-1.5 block text-xs font-medium text-rose-600 dark:text-rose-400;
+    }
+
+    &__hint {
+        @apply mt-1.5 block text-xs text-slate-400;
+    }
+}

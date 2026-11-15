@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-6">
+    <div class="product-supply-show">
         <AdminPageHeader
             :description="`Создана ${formatDate(productSupply.createdAt)}`"
             :title="`Поставка #${productSupply.id.slice(0, 8)}`"
@@ -7,67 +7,51 @@
             eyebrow="Детали поступления"
         >
             <template #actions>
-                <button
-                    class="rounded-xl border border-rose-200 bg-white px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-50"
-                    type="button"
+                <Button
+                    auto-width
+                    danger
+                    ghost
+                    text="Удалить поставку"
                     @click="destroy"
-                >
-                    Удалить поставку
-                </button>
+                />
             </template>
         </AdminPageHeader>
-        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <div
+        <div class="product-supply-show__stats">
+            <Card
                 v-for="card in summaryCards"
                 :key="card.label"
-                class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+                class="product-supply-show__stat"
             >
-                <p
-                    class="text-xs font-semibold tracking-wider text-slate-400 uppercase"
-                >
-                    {{ card.label }}
-                </p>
-                <p class="mt-2 font-semibold text-slate-900">
-                    {{ card.value }}
-                </p>
-            </div>
+                <p class="product-supply-show__stat-label">{{ card.label }}</p>
+                <p class="product-supply-show__stat-value">{{ card.value }}</p>
+            </Card>
         </div>
-        <section
-            class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-        >
-            <div class="grid gap-6 md:grid-cols-2">
+        <Card class="product-supply-show__information">
+            <div class="product-supply-show__columns">
                 <div>
-                    <h2 class="text-sm font-semibold text-slate-900">
+                    <h2 class="product-supply-show__heading">
                         Информация о закупке
                     </h2>
-                    <dl class="mt-4 space-y-3 text-sm">
-                        <div class="flex justify-between gap-4">
-                            <dt class="text-slate-500">Поставщик</dt>
-                            <dd class="text-right font-medium text-slate-800">
-                                {{ supplierName }}
-                            </dd>
+                    <dl class="product-supply-show__list">
+                        <div class="product-supply-show__row">
+                            <dt>Поставщик</dt>
+                            <dd>{{ supplierName }}</dd>
                         </div>
-                        <div class="flex justify-between gap-4">
-                            <dt class="text-slate-500">Товар</dt>
-                            <dd class="text-right font-medium text-slate-800">
-                                {{ offerName }}
-                            </dd>
+                        <div class="product-supply-show__row">
+                            <dt>Товар</dt>
+                            <dd>{{ offerName }}</dd>
                         </div>
-                        <div class="flex justify-between gap-4">
-                            <dt class="text-slate-500">Склад</dt>
-                            <dd class="text-right font-medium text-slate-800">
-                                {{ warehouseName }}
-                            </dd>
+                        <div class="product-supply-show__row">
+                            <dt>Склад</dt>
+                            <dd>{{ warehouseName }}</dd>
                         </div>
-                        <div class="flex justify-between gap-4">
-                            <dt class="text-slate-500">Пересорт</dt>
+                        <div class="product-supply-show__row">
+                            <dt>Пересорт</dt>
                             <dd
-                                :class="
-                                    productSupply.misGraded
-                                        ? 'text-amber-700'
-                                        : 'text-slate-800'
-                                "
-                                class="font-medium"
+                                :class="{
+                                    'product-supply-show__warning':
+                                        productSupply.misGraded,
+                                }"
                             >
                                 {{ productSupply.misGraded ? 'Да' : 'Нет' }}
                             </dd>
@@ -75,108 +59,100 @@
                     </dl>
                 </div>
                 <div>
-                    <h2 class="text-sm font-semibold text-slate-900">
-                        Комментарий
-                    </h2>
-                    <p
-                        class="mt-4 rounded-xl bg-slate-50 p-4 text-sm leading-6 whitespace-pre-wrap text-slate-600"
-                    >
+                    <h2 class="product-supply-show__heading">Комментарий</h2>
+                    <p class="product-supply-show__comment">
                         {{
                             productSupply.comment || 'Комментарий не добавлен.'
                         }}
                     </p>
                 </div>
             </div>
-        </section>
-        <section
-            class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-        >
-            <div
-                class="flex items-center justify-between border-b border-slate-100 px-6 py-5"
-            >
+        </Card>
+        <section class="product-supply-show__units">
+            <div class="product-supply-show__units-header">
                 <div>
-                    <h2 class="font-semibold text-slate-900">Единицы товара</h2>
-                    <p class="mt-1 text-sm text-slate-500">
+                    <h2 class="product-supply-show__units-title">
+                        Единицы товара
+                    </h2>
+                    <p class="product-supply-show__units-count">
                         {{ productUnits.length }} записей связано с этой
                         поставкой
                     </p>
                 </div>
                 <Link
-                    class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700"
+                    class="product-supply-show__add"
                     href="/admin/product-units/create"
                 >
                     Добавить единицы
                 </Link>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full min-w-[760px] text-left text-sm">
-                    <thead
-                        class="bg-slate-50 text-xs font-semibold tracking-wider text-slate-500 uppercase"
-                    >
-                        <tr>
-                            <th class="px-6 py-3">ID</th>
-                            <th class="px-6 py-3">Статус</th>
-                            <th class="px-6 py-3">Резерв</th>
-                            <th class="px-6 py-3">QR</th>
-                            <th class="px-6 py-3">Комментарий</th>
-                            <th class="px-6 py-3 text-right">Действие</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr v-for="unit in productUnits" :key="unit.id">
-                            <td
-                                class="px-6 py-4 font-mono text-xs text-slate-600"
+            <Table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Статус</th>
+                        <th>Резерв</th>
+                        <th>QR</th>
+                        <th>Комментарий</th>
+                        <th class="product-supply-show__cell--actions">
+                            Действие
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="unit in productUnits" :key="unit.id">
+                        <td class="product-supply-show__unit-id">
+                            {{ unit.id.slice(0, 8) }}
+                        </td>
+                        <td>
+                            <Badge
+                                :label="statusName(unit.productUnitStatusId)"
+                            />
+                        </td>
+                        <td class="product-supply-show__muted">
+                            {{ unit.reserved ? 'Да' : 'Нет' }}
+                        </td>
+                        <td class="product-supply-show__muted">
+                            {{ unit.qrCode || 'Не задан' }}
+                        </td>
+                        <td class="product-supply-show__unit-comment">
+                            {{ unit.comments || '—' }}
+                        </td>
+                        <td class="product-supply-show__cell--actions">
+                            <Link
+                                :href="`/admin/product-units/${unit.id}`"
+                                class="product-supply-show__open"
                             >
-                                {{ unit.id.slice(0, 8) }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <Badge
-                                    :label="
-                                        statusName(unit.productUnitStatusId)
-                                    "
-                                />
-                            </td>
-                            <td class="px-6 py-4 text-slate-600">
-                                {{ unit.reserved ? 'Да' : 'Нет' }}
-                            </td>
-                            <td class="px-6 py-4 text-slate-500">
-                                {{ unit.qrCode || 'Не задан' }}
-                            </td>
-                            <td
-                                class="max-w-56 truncate px-6 py-4 text-slate-500"
-                            >
-                                {{ unit.comments || '—' }}
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <Link
-                                    :href="`/admin/product-units/${unit.id}`"
-                                    class="text-xs font-semibold text-emerald-700 hover:underline"
-                                >
-                                    Открыть
-                                </Link>
-                            </td>
-                        </tr>
-                        <tr v-if="productUnits.length === 0">
-                            <td
-                                class="px-6 py-12 text-center text-slate-500"
-                                colspan="6"
-                            >
-                                С поставкой пока не связано ни одной единицы.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                Открыть
+                            </Link>
+                        </td>
+                    </tr>
+                    <tr v-if="productUnits.length === 0">
+                        <td class="product-supply-show__empty" colspan="6">
+                            С поставкой пока не связано ни одной единицы.
+                        </td>
+                    </tr>
+                </tbody>
+            </Table>
         </section>
     </div>
 </template>
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Badge from '@/components/Badge.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import type { ProductOption, ProductSupply, ProductUnit, ProductUnitStatus, Supplier } from '@/types/inventory.ts';
+import Button from '@/components/Button.vue';
+import Card from '@/components/Card.vue';
+import Table from '@/components/Table.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
+import type {
+    ProductOption,
+    ProductSupply,
+    ProductUnit,
+    ProductUnitStatus,
+    Supplier,
+} from '@/types/inventory.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 
 defineOptions({ layout: AdminLayout });
@@ -199,9 +175,12 @@ const offerName = computed(() => {
         const offer = product.offers.find(
             (item) => item.id === props.productSupply.offerId,
         );
-        if (offer)
+
+        if (offer) {
             return `${product.name} — ${offer.sku || offer.id.slice(0, 8)}`;
+        }
     }
+
     return 'Не указан';
 }).value;
 const warehouseName = computed(
@@ -237,7 +216,8 @@ function formatMoney(value: number | null) {
 const destroy = () => {
     if (
         window.confirm('Удалить поставку? Связанные единицы останутся в учёте.')
-    )
+    ) {
         router.delete(`/admin/product-supplies/${props.productSupply.id}`);
+    }
 };
 </script>

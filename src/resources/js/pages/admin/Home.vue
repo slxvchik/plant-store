@@ -1,114 +1,65 @@
 <template>
-    <div class="space-y-8">
-        <div
-            class="overflow-hidden rounded-3xl bg-slate-950 px-6 py-8 text-white shadow-xl sm:px-8 sm:py-10"
-        >
-            <p
-                class="text-xs font-semibold tracking-[0.2em] text-emerald-400 uppercase"
-            >
-                Панель управления
-            </p>
-            <h1 class="mt-3 text-3xl font-semibold tracking-tight">
-                Деулино Сад
-            </h1>
-            <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+    <div class="home">
+        <div class="home__hero">
+            <p class="home__eyebrow">Панель управления</p>
+            <h1 class="home__title">Деулино Сад</h1>
+            <p class="home__description">
                 Каталог, складские единицы, закупки и заказы — в едином рабочем
                 пространстве.
             </p>
         </div>
-        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="home__grid">
             <a
-                href="/admin/products"
-                class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg"
+                v-for="card in cards"
+                :key="card.href"
+                :class="cardClasses(card.tone)"
+                :href="card.href"
             >
-                <span
-                    class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-lg font-semibold text-emerald-700"
-                >
-                    К
-                </span>
-                <h2
-                    class="mt-5 font-semibold text-slate-900 group-hover:text-emerald-700"
-                >
-                    Каталог
-                </h2>
-                <p class="mt-2 text-sm leading-6 text-slate-500">
-                    Товары, категории и торговые предложения.
-                </p>
-                <p class="mt-5 text-xs font-semibold text-emerald-700">
-                    Перейти →
-                </p>
-            </a>
-            <a
-                href="/admin/product-units"
-                class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg"
-            >
-                <span
-                    class="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-lg font-semibold text-sky-700"
-                >
-                    Е
-                </span>
-                <h2
-                    class="mt-5 font-semibold text-slate-900 group-hover:text-emerald-700"
-                >
-                    Единицы товара
-                </h2>
-                <p class="mt-2 text-sm leading-6 text-slate-500">
-                    Поштучный учёт, статусы и генерация партий.
-                </p>
-                <p class="mt-5 text-xs font-semibold text-emerald-700">
-                    Перейти →
-                </p>
-            </a>
-            <a
-                href="/admin/product-supplies"
-                class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg"
-            >
-                <span
-                    class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-lg font-semibold text-violet-700"
-                >
-                    П
-                </span>
-                <h2
-                    class="mt-5 font-semibold text-slate-900 group-hover:text-emerald-700"
-                >
-                    Поставки
-                </h2>
-                <p class="mt-2 text-sm leading-6 text-slate-500">
-                    Приёмка товара и автоматическое создание единиц.
-                </p>
-                <p class="mt-5 text-xs font-semibold text-emerald-700">
-                    Перейти →
-                </p>
-            </a>
-            <a
-                href="/admin/orders"
-                class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg"
-            >
-                <span
-                    class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-lg font-semibold text-amber-700"
-                >
-                    З
-                </span>
-                <h2
-                    class="mt-5 font-semibold text-slate-900 group-hover:text-emerald-700"
-                >
-                    Заказы
-                </h2>
-                <p class="mt-2 text-sm leading-6 text-slate-500">
-                    Обработка заказов и контроль выполнения.
-                </p>
-                <p class="mt-5 text-xs font-semibold text-emerald-700">
-                    Перейти →
-                </p>
+                <span :class="iconClasses(card.tone)">{{ card.letter }}</span>
+                <h2 class="home__card-title">{{ card.title }}</h2>
+                <p class="home__card-description">{{ card.description }}</p>
+                <p class="home__card-link">Перейти →</p>
             </a>
         </div>
     </div>
 </template>
+<script lang="ts" setup>
+import AdminLayout from '@/layouts/AdminLayout.vue';
 
-<script setup lang="ts">
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-
-defineOptions({
-    layout: AdminLayout,
-});
+defineOptions({ layout: AdminLayout });
+const cards = [
+    {
+        href: '/admin/products',
+        letter: 'К',
+        title: 'Каталог',
+        description: 'Товары, категории и торговые предложения.',
+        tone: 'emerald',
+    },
+    {
+        href: '/admin/product-units',
+        letter: 'Е',
+        title: 'Единицы товара',
+        description: 'Поштучный учёт, статусы и генерация партий.',
+        tone: 'sky',
+    },
+    {
+        href: '/admin/product-supplies',
+        letter: 'П',
+        title: 'Поставки',
+        description: 'Приёмка товара и автоматическое создание единиц.',
+        tone: 'violet',
+    },
+    {
+        href: '/admin/orders',
+        letter: 'З',
+        title: 'Заказы',
+        description: 'Обработка заказов и контроль выполнения.',
+        tone: 'amber',
+    },
+];
+const cardClasses = (tone: string) => ['home__card', `home__card--${tone}`];
+const iconClasses = (tone: string) => [
+    'home__card-icons',
+    `home__card-icon--${tone}`,
+];
 </script>

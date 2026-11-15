@@ -1,0 +1,19 @@
+.reveal {
+    @apply transform-gpu opacity-0 transition-all duration-700 ease-out will-change-transform;
+
+    &--up {
+        @apply translate-y-8;
+    }
+
+    &--left {
+        @apply -translate-x-8;
+    }
+
+    &--right {
+        @apply translate-x-8;
+    }
+
+    &--visible {
+        @apply translate-x-0 translate-y-0 opacity-100;
+    }
+}

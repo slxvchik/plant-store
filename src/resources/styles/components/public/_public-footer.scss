@@ -1,0 +1,81 @@
+.public-footer {
+    @apply bg-bg-dark py-12 pb-24 text-white md:py-16 lg:pb-0 xl:py-20;
+
+    &__grid {
+        @apply grid gap-10 pb-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.5fr_0.5fr_fit-content(225px)] lg:gap-12 lg:pb-14;
+    }
+
+    &__brand {
+        @apply flex w-fit items-center gap-3;
+    }
+
+    &__logo {
+        @apply h-10 w-10 text-secondary;
+    }
+
+    &__brand-name {
+        @apply font-serif text-2xl font-semibold;
+    }
+
+    &__brand-accent {
+        @apply font-normal text-secondary italic;
+    }
+
+    &__description {
+        @apply mt-5 max-w-sm text-sm leading-7 text-white/55 md:text-base;
+    }
+
+    &__since {
+        @apply mt-6 flex items-center gap-2 text-sm text-secondary;
+    }
+
+    &__since-icon,
+    &__phone :deep(.icon),
+    &__email :deep(.icon) {
+        @apply h-5 w-5 shrink-0;
+    }
+
+    &__heading {
+        @apply text-xs font-semibold tracking-[0.18em] text-secondary uppercase;
+    }
+
+    &__nav {
+        @apply mt-5 flex flex-col items-start gap-1;
+    }
+
+    &__nav-link {
+        @apply flex min-h-9 items-center text-sm text-white/60 transition-all hover:translate-x-1 hover:text-white;
+    }
+
+    &__phone {
+        @apply mt-5 flex min-h-11 w-fit items-center gap-3 text-lg transition-colors hover:text-secondary;
+    }
+
+    &__email {
+        @apply flex min-h-11 w-fit items-center gap-3 text-sm text-white/60 transition-colors hover:text-white;
+    }
+
+    &__schedule {
+        @apply mt-4 text-sm leading-6 text-white/45;
+    }
+
+    &__developer {
+        @apply block w-fit text-xs text-white/20;
+    }
+
+    &__divider {
+        @apply flex h-px w-full bg-white/10;
+    }
+
+    &__bottom {
+        @apply flex flex-col gap-3 pt-6 text-xs text-white/35 md:flex-row md:items-center md:justify-between;
+    }
+
+    &__legal {
+        @apply flex flex-wrap gap-x-5 gap-y-2;
+    }
+
+    &__legal-link {
+        @apply transition-colors hover:text-white;
+    }
+}

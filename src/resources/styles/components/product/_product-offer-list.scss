@@ -1,0 +1,50 @@
+
+.product-offer-list {
+    @apply w-full overflow-hidden rounded-lg border border-gray-200 bg-white;
+    &__header,
+    &__row {
+        @apply grid grid-cols-[200px_120px_1fr_350px_200px];
+    }
+
+    &__header {
+        @apply border-b border-gray-200 bg-slate-50 font-medium text-gray-700;
+    }
+
+    &__header > div,
+    &__row > div {
+        @apply border-r border-gray-200 p-3;
+    }
+
+    &__header > div:last-child,
+    &__row > div:last-child {
+        @apply border-r-0;
+    }
+
+    &__actions-heading {
+        @apply text-center;
+    }
+
+    &__body {
+        @apply divide-y divide-gray-200;
+    }
+
+    &__row {
+        @apply items-center text-sm text-gray-700 hover:bg-slate-50;
+    }
+
+    &__id {
+        @apply text-gray-400;
+    }
+
+    &__active {
+        @apply flex justify-center;
+    }
+
+    &__actions {
+        @apply flex flex-col text-center;
+    }
+
+    &__empty {
+        @apply bg-gray-50 p-8 text-center text-gray-400;
+    }
+}

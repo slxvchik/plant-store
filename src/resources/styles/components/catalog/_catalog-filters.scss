@@ -1,0 +1,78 @@
+.catalog-filters {
+    @apply space-y-7;
+    &__legend {
+        @apply font-serif text-xl text-text-title dark:text-linen;
+    }
+
+    &__categories {
+        @apply mt-3 space-y-0.5;
+    }
+
+    &__category {
+        @apply group flex min-h-11 cursor-pointer items-center gap-3 rounded-lg px-1 text-sm text-text-muted transition-colors duration-300 hover:text-primary dark:text-white/60 dark:hover:text-secondary;
+    }
+
+    &__checkbox,
+    &__stock-input {
+        @apply peer sr-only;
+    }
+
+    &__check {
+        @apply flex h-5 w-5 items-center justify-center rounded-md border border-text-title/20 bg-transparent transition-all duration-300 peer-checked:border-primary peer-checked:bg-primary peer-focus-visible:ring-2 peer-focus-visible:ring-primary/30 dark:border-white/25;
+    }
+
+    &__check-icon {
+        @apply h-3 w-3 text-white;
+    }
+
+    &__price {
+        @apply border-t border-text-title/10 pt-6 dark:border-white/10;
+    }
+
+    &__price-header {
+        @apply flex items-center justify-between gap-3;
+    }
+
+    &__price-value {
+        @apply text-sm font-semibold text-primary dark:text-secondary;
+    }
+
+    &__range {
+        @apply relative mt-5 grid h-11 w-full cursor-pointer accent-primary;
+    }
+
+    &__range-track {
+        @apply absolute top-[50%] left-0 z-0 h-2 w-full -translate-y-[50%] rounded bg-bg-surface;
+    }
+
+    &__range-fill {
+        @apply absolute top-[50%] h-2 -translate-y-[50%] rounded bg-primary;
+    }
+
+    &__range-input {
+        @apply pointer-events-none z-1 col-start-1 row-start-1 w-full cursor-pointer appearance-none bg-transparent;
+        &::-webkit-slider-thumb {
+            @apply pointer-events-auto;
+        }
+
+        &::-moz-range-thumb {
+            @apply pointer-events-auto;
+        }
+    }
+
+    &__range-labels {
+        @apply flex justify-between text-xs text-text-muted dark:text-white/40;
+    }
+
+    &__stock {
+        @apply flex min-h-12 cursor-pointer items-center justify-between gap-4 border-t border-text-title/10 pt-5 text-sm text-text-title dark:border-white/10 dark:text-linen;
+    }
+
+    &__switch {
+        @apply relative h-7 w-12 rounded-full bg-text-title/15 transition-all duration-300 peer-checked:bg-primary peer-focus-visible:ring-2 peer-focus-visible:ring-primary/30 after:absolute after:top-1 after:left-1 after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow-sm after:transition-transform after:duration-300 peer-checked:after:translate-x-5 dark:bg-white/15;
+    }
+
+    &__reset {
+        @apply flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-text-title/10 text-sm font-medium text-text-muted transition-all duration-300 hover:border-accent hover:text-accent dark:border-white/15 dark:text-white/55;
+    }
+}

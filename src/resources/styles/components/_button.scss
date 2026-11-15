@@ -1,0 +1,55 @@
+.button {
+    @apply cursor-pointer font-sans transition-colors duration-200;
+
+    &--button {
+        @apply flex w-full items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-base font-medium text-white disabled:cursor-not-allowed disabled:opacity-60 xl:text-lg;
+    }
+
+    &--link {
+        @apply text-base text-primary hover:text-primary-hover xl:text-lg;
+    }
+
+    &--primary.button--button {
+        @apply bg-primary hover:bg-primary-hover;
+    }
+
+    &--secondary.button--button {
+        @apply bg-secondary hover:bg-secondary-hover;
+    }
+
+    &--secondary.button--link {
+        @apply text-secondary hover:text-secondary-hover;
+    }
+
+    &--danger {
+        @apply bg-rose-600 text-white hover:bg-rose-700;
+    }
+
+    &--ghost {
+        @apply bg-transparent text-slate-600 hover:bg-slate-100;
+    }
+
+    &--outline {
+        @apply border border-slate-200 bg-transparent text-slate-600 hover:border-emerald-200 hover:text-emerald-700;
+    }
+
+    &--danger.button--ghost {
+        @apply bg-transparent text-rose-600 hover:bg-rose-50;
+    }
+
+    &--danger.button--link {
+        @apply bg-transparent text-rose-500 hover:bg-transparent hover:text-rose-700;
+    }
+
+    &--sm {
+        @apply px-3 py-2 text-xs xl:text-xs;
+    }
+
+    &--auto {
+        @apply w-auto;
+    }
+
+    &--auto:not(#{&}--sm) {
+        @apply rounded-xl px-5 py-2.5 text-sm xl:text-sm;
+    }
+}

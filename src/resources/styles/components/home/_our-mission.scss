@@ -1,0 +1,66 @@
+.our-mission {
+    @apply scroll-mt-20 bg-bg-dark px-4 py-16 md:px-8 md:py-24 lg:py-28;
+    &__grid {
+        @apply grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20;
+    }
+
+    &__visual {
+        @apply relative;
+    }
+
+    &__image-wrap {
+        @apply aspect-[4/5] max-h-[640px] overflow-hidden rounded-[28px];
+    }
+
+    &__image {
+        @apply h-full w-full object-cover;
+    }
+
+    &__stat {
+        @apply absolute right-4 bottom-4 rounded-2xl border border-white/20 bg-bg-dark/60 px-5 py-4 text-white backdrop-blur-md md:right-8 md:bottom-8;
+    }
+
+    &__stat-value {
+        @apply font-serif text-3xl text-secondary;
+    }
+
+    &__stat-label {
+        @apply mt-1 text-xs text-white/60;
+    }
+
+    &__eyebrow {
+        @apply text-xs font-semibold tracking-[0.2em] text-secondary uppercase;
+    }
+
+    &__title {
+        @apply mt-4 font-serif text-3xl leading-tight text-linen md:text-4xl lg:text-5xl;
+    }
+
+    &__title-accent {
+        @apply text-secondary;
+    }
+
+    &__description {
+        @apply mt-5 max-w-lg text-sm leading-7 text-white/55 md:text-base;
+    }
+
+    &__principles {
+        @apply mt-8 space-y-5;
+    }
+
+    &__principle {
+        @apply flex gap-4;
+    }
+
+    &__principle-number {
+        @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 font-serif text-secondary;
+    }
+
+    &__principle-title {
+        @apply font-medium text-white;
+    }
+
+    &__principle-text {
+        @apply mt-1 text-sm leading-6 text-white/45;
+    }
+}

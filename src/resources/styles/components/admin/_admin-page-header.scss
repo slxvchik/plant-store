@@ -1,0 +1,31 @@
+.admin-page-header {
+    @apply flex flex-col gap-5 border-b border-slate-200 pb-6 sm:flex-row sm:items-end sm:justify-between;
+
+    &__content {
+        @apply min-w-0;
+    }
+
+    &__back {
+        @apply mb-3 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-emerald-700;
+    }
+
+    &__back-icon {
+        @apply h-4 w-4;
+    }
+
+    &__eyebrow {
+        @apply mb-1 text-xs font-semibold tracking-[0.18em] text-emerald-700 uppercase;
+    }
+
+    &__title {
+        @apply text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl;
+    }
+
+    &__description {
+        @apply mt-2 max-w-3xl text-sm leading-6 text-slate-500;
+    }
+
+    &__actions {
+        @apply flex shrink-0 flex-wrap items-center gap-3;
+    }
+}

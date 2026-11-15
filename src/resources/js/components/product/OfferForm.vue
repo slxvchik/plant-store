@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-5">
+    <div class="offer-form">
         <p v-if="form.id">#{{ form.id }}</p>
         <Input
             id="offer_id"
@@ -8,7 +8,7 @@
             :error="form.errors.sku"
             label="Артикул"
         />
-        <div class="w-fit">
+        <div class="offer-form__checkbox">
             <Checkbox
                 id="offer_active"
                 v-model="form.active"
@@ -23,12 +23,11 @@
             label="Сортировка"
             type="number"
         />
-        <Input
+        <Textarea
             id="offer_description"
             v-model="form.description"
             :disabled="disabled"
             label="Описание"
-            multiline
         />
         <Input
             id="offer_price"
@@ -62,6 +61,7 @@ import type { InertiaForm } from '@inertiajs/vue3';
 import Checkbox from '@/components/Checkbox.vue';
 import ImageUpload from '@/components/ImageUpload.vue';
 import Input from '@/components/Input.vue';
+import Textarea from '@/components/Textarea.vue';
 import type { OfferFormState } from '@/types/product.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 

@@ -1,0 +1,19 @@
+.modal {
+    @apply fixed inset-0 z-50 justify-center overflow-y-scroll bg-black/50 py-10 select-none;
+
+    &__dialog {
+        @apply relative mx-auto w-full max-w-4xl rounded-lg bg-white p-6 shadow-xl focus:outline-none;
+    }
+
+    &__close {
+        @apply absolute top-6 right-6 h-6 w-6 cursor-pointer text-gray-600 hover:text-gray-800;
+    }
+
+    &__title {
+        @apply mb-4 pr-10 text-xl font-bold;
+    }
+
+    &__body--without-title {
+        @apply mt-8;
+    }
+}

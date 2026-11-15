@@ -1,0 +1,22 @@
+.catalog-hero {
+    @apply border-b border-text-title/5 pb-4 md:pb-8 dark:border-white/10;
+    &__inner {
+        @apply flex flex-col gap-5 md:flex-row md:items-end md:justify-between;
+    }
+
+    &__eyebrow {
+        @apply text-xs font-semibold tracking-[0.2em] text-accent uppercase;
+    }
+
+    &__title {
+        @apply mt-3 font-serif text-4xl leading-tight text-text-title md:text-5xl lg:text-6xl dark:text-linen;
+    }
+
+    &__accent {
+        @apply text-primary dark:text-secondary;
+    }
+
+    &__description {
+        @apply max-w-md text-sm leading-6 text-text-muted md:text-base dark:text-white/50;
+    }
+}

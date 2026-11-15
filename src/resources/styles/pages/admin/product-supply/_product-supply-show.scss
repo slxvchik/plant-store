@@ -1,0 +1,101 @@
+.product-supply-show {
+    @apply space-y-6;
+    :deep(.table) {
+        @apply rounded-none border-0 shadow-none;
+    }
+
+    :deep(.table__table) {
+        min-width: 760px;
+    }
+
+    &__stats {
+        @apply grid gap-4 sm:grid-cols-2 xl:grid-cols-4;
+    }
+
+    &__stat {
+        @apply p-5;
+    }
+
+    &__stat-label {
+        @apply text-xs font-semibold tracking-wider text-slate-400 uppercase;
+    }
+
+    &__stat-value {
+        @apply mt-2 font-semibold text-slate-900;
+    }
+
+    &__columns {
+        @apply grid gap-6 md:grid-cols-2;
+    }
+
+    &__heading {
+        @apply text-sm font-semibold text-slate-900;
+    }
+
+    &__list {
+        @apply mt-4 space-y-3 text-sm;
+    }
+
+    &__row {
+        @apply flex justify-between gap-4;
+        dt {
+            @apply text-slate-500;
+        }
+
+        dd {
+            @apply text-right font-medium text-slate-800;
+        }
+    }
+
+    &__warning {
+        @apply text-amber-700;
+    }
+
+    &__comment {
+        @apply mt-4 rounded-xl bg-slate-50 p-4 text-sm leading-6 whitespace-pre-wrap text-slate-600;
+    }
+
+    &__units {
+        @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+    }
+
+    &__units-header {
+        @apply flex items-center justify-between border-b border-slate-100 px-6 py-5;
+    }
+
+    &__units-title {
+        @apply font-semibold text-slate-900;
+    }
+
+    &__units-count {
+        @apply mt-1 text-sm text-slate-500;
+    }
+
+    &__add {
+        @apply rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700;
+    }
+
+    &__cell--actions {
+        @apply text-right;
+    }
+
+    &__unit-id {
+        @apply font-mono text-xs text-slate-600;
+    }
+
+    &__muted {
+        @apply text-slate-500;
+    }
+
+    &__unit-comment {
+        @apply max-w-56 truncate text-slate-500;
+    }
+
+    &__open {
+        @apply text-xs font-semibold text-emerald-700 hover:underline;
+    }
+
+    &__empty {
+        @apply py-12 text-center text-slate-500;
+    }
+}

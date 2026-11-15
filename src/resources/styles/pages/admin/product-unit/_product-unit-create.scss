@@ -1,0 +1,41 @@
+.product-unit-create {
+    @apply w-full space-y-6;
+    &__tabs {
+        @apply grid grid-cols-2 rounded-xl bg-slate-100 p-1;
+    }
+
+    &__tab {
+        @apply rounded-lg px-4 py-2.5 text-sm font-medium text-slate-500 transition;
+        &--active {
+            @apply bg-white font-semibold text-slate-900 shadow-sm;
+        }
+    }
+
+    &__form {
+        @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+    }
+
+    &__grid {
+        @apply grid gap-5 p-6 sm:grid-cols-2 sm:p-8;
+    }
+
+    &__wide {
+        @apply sm:col-span-2;
+    }
+
+    &__preview {
+        @apply rounded-xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-800;
+    }
+
+    &__preview-title {
+        @apply block font-semibold;
+    }
+
+    &__preview-hint {
+        @apply mt-1 block text-emerald-600;
+    }
+
+    &__footer {
+        @apply flex items-center justify-between gap-4 border-t border-slate-100 bg-slate-50 px-6 py-4 text-xs text-slate-500 sm:px-8;
+    }
+}

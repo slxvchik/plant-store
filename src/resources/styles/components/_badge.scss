@@ -1,0 +1,35 @@
+.badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset;
+
+    &__dot {
+        @apply h-1.5 w-1.5 rounded-full bg-current opacity-70;
+    }
+
+    &--success {
+        @apply bg-emerald-50 text-emerald-700 ring-emerald-200;
+    }
+
+    &--neutral {
+        @apply bg-slate-100 text-slate-500 ring-slate-200;
+    }
+
+    &--warning {
+        @apply bg-amber-50 text-amber-700 ring-amber-200;
+    }
+
+    &--danger {
+        @apply bg-rose-50 text-rose-700 ring-rose-200;
+    }
+
+    &--info {
+        @apply bg-sky-50 text-sky-700 ring-sky-200;
+    }
+
+    &--violet {
+        @apply bg-violet-50 text-violet-700 ring-violet-200;
+    }
+
+    &--cyan {
+        @apply bg-cyan-50 text-cyan-700 ring-cyan-200;
+    }
+}

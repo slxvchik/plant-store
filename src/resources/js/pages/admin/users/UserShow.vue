@@ -1,49 +1,102 @@
 <template>
-    <div class="space-y-6">
-        <AdminPageHeader :title="`${user.firstName} ${user.lastName ?? ''}`" eyebrow="Пользователь" description="Контактные данные, роли и состояние учётной записи." :back-url="AdminUsers.list.url()">
-            <template #actions><Button class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm" secondary text="Редактировать" @click="openEditModal(user)" /></template>
+    <div class="user-show">
+        <AdminPageHeader
+            :back-url="AdminUsers.list.url()"
+            :title="`${user.firstName} ${user.lastName ?? ''}`"
+            description="Контактные данные, роли и состояние учётной записи."
+            eyebrow="Пользователь"
+        >
+            <template #actions>
+                <Button
+                    auto-width
+                    secondary
+                    text="Редактировать"
+                    @click="openEditModal(user)"
+                />
+            </template>
         </AdminPageHeader>
-        <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <dl class="grid gap-x-8 gap-y-6 text-sm sm:grid-cols-2 lg:grid-cols-3">
-                <div><dt class="text-slate-400">ID</dt><dd class="mt-1 font-mono text-xs text-slate-700">#{{ user.id }}</dd></div>
-                <div><dt class="text-slate-400">Email</dt><dd class="mt-1 font-medium text-slate-800">{{ user.email }}</dd></div>
-                <div><dt class="text-slate-400">Телефон</dt><dd class="mt-1 font-medium text-slate-800">{{ user.phone }}</dd></div>
-                <div><dt class="text-slate-400">Роли</dt><dd class="mt-1 flex flex-wrap gap-1.5"><Badge v-for="role in user.roles" :key="role" :label="role" tone="info" /></dd></div>
-                <div><dt class="mb-1 text-slate-400">Email подтверждён</dt><dd><Badge :label="user.emailConfirmed ? 'Да' : 'Нет'" :tone="user.emailConfirmed ? 'success' : 'neutral'" /></dd></div>
-                <div><dt class="text-slate-400">Создан</dt><dd class="mt-1 text-slate-700">{{ user.createdAt }}</dd></div>
-                <div><dt class="text-slate-400">Обновлён</dt><dd class="mt-1 text-slate-700">{{ user.updatedAt }}</dd></div>
+        <Card class="user-show__card">
+            <dl class="user-show__details">
+                <div>
+                    <dt>ID</dt>
+                    <dd class="user-show__id">#{{ user.id }}</dd>
+                </div>
+                <div>
+                    <dt>Email</dt>
+                    <dd>{{ user.email }}</dd>
+                </div>
+                <div>
+                    <dt>Телефон</dt>
+                    <dd>{{ user.phone }}</dd>
+                </div>
+                <div>
+                    <dt>Роли</dt>
+                    <dd class="user-show__roles">
+                        <Badge
+                            v-for="role in user.roles"
+                            :key="role"
+                            :label="role"
+                            tone="info"
+                        />
+                    </dd>
+                </div>
+                <div>
+                    <dt>Email подтверждён</dt>
+                    <dd>
+                        <Badge
+                            :label="user.emailConfirmed ? 'Да' : 'Нет'"
+                            :tone="user.emailConfirmed ? 'success' : 'neutral'"
+                        />
+                    </dd>
+                </div>
+                <div>
+                    <dt>Создан</dt>
+                    <dd class="user-show__date">{{ user.createdAt }}</dd>
+                </div>
+                <div>
+                    <dt>Обновлён</dt>
+                    <dd class="user-show__date">{{ user.updatedAt }}</dd>
+                </div>
             </dl>
-        </section>
+        </Card>
+        <Modal
+            v-model:open="isFormPopupOpen"
+            title="Редактировать пользователя"
+        >
+            <form class="user-show__form" @submit.prevent="submit">
+                <UserFormFields
+                    v-model="form"
+                    :errors="form.errors"
+                    is-edit-mode
+                />
+                <div class="user-show__form-footer">
+                    <Button
+                        :disabled="form.processing"
+                        auto-width
+                        secondary
+                        text="Сохранить"
+                        type="submit"
+                    />
+                </div>
+            </form>
+        </Modal>
     </div>
-    <Popup v-model:open="isFormPopupOpen" title="Редактировать пользователя">
-        <form class="flex w-full flex-col gap-5" @submit.prevent="submit">
-            <UserFormFields v-model="form" :errors="form.errors" is-edit-mode />
-            <Button
-                :disabled="form.processing"
-                class="relative left-[50%] max-w-80 translate-x-[-50%]"
-                secondary
-                text="Сохранить"
-                type="submit"
-            />
-        </form>
-    </Popup>
 </template>
-
 <script lang="ts" setup>
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
-import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Popup from '@/components/Popup.vue';
+import Card from '@/components/Card.vue';
+import Modal from '@/components/Modal.vue';
 import UserFormFields from '@/components/user/UserFormFields.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm.ts';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminUsers from '@/routes/admin/users';
 import type { User, UserFormState } from '@/types/user.ts';
 import { validate } from '@/utils/validator.ts';
 
 defineOptions({ layout: AdminLayout });
 defineProps<{ user: User }>();
-
 const createData = (): UserFormState => ({
     firstName: '',
     lastName: '',

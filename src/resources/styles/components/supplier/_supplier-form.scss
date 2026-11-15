@@ -1,0 +1,19 @@
+.supplier-form {
+    @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+
+    &__grid {
+        @apply grid gap-5 p-6 sm:grid-cols-2 sm:p-8;
+    }
+
+    &__wide {
+        @apply sm:col-span-2;
+    }
+
+    &__footer {
+        @apply flex flex-col-reverse gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:flex-row sm:justify-end sm:px-8;
+    }
+
+    &__cancel {
+        @apply inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-medium text-slate-600 transition hover:bg-slate-100;
+    }
+}

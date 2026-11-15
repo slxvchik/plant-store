@@ -1,0 +1,7 @@
+.breadcrumbs {
+    @apply flex items-center gap-2 py-4 text-xs text-text-muted lg:py-6 dark:text-white/40;
+
+    &__current {
+        @apply text-text-title dark:text-white/65;
+    }
+}

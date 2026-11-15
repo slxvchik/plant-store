@@ -1,0 +1,43 @@
+.tags {
+    @apply space-y-6;
+
+    :deep(.table__table) {
+        min-width: 850px;
+    }
+
+    &__cell--actions {
+        @apply text-right;
+    }
+
+    &__id {
+        @apply font-mono text-xs text-slate-400;
+    }
+
+    &__alias {
+        @apply font-medium text-slate-600;
+    }
+
+    &__name {
+        @apply font-semibold text-slate-900;
+    }
+
+    &__muted {
+        @apply text-slate-500;
+    }
+
+    &__actions {
+        @apply flex justify-end gap-2;
+    }
+
+    &__empty {
+        @apply py-16 text-center text-slate-500;
+    }
+
+    &__form {
+        @apply flex w-full flex-col gap-5;
+    }
+
+    &__form-footer {
+        @apply flex justify-end border-t border-slate-100 pt-5;
+    }
+}

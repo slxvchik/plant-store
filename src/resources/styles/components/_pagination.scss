@@ -1,0 +1,41 @@
+.pagination {
+    &--admin {
+        @apply flex flex-col items-center justify-between gap-4 border-t border-slate-100 px-5 py-4 sm:flex-row;
+    }
+
+    &--numbered {
+        @apply flex h-8 w-full items-center justify-center gap-2;
+    }
+
+    &__summary {
+        @apply text-sm text-slate-500;
+    }
+
+    &__current {
+        @apply font-semibold text-slate-800;
+    }
+
+    &__actions {
+        @apply flex items-center gap-2;
+    }
+
+    &__button {
+        @apply rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:border-emerald-200 hover:text-emerald-700;
+
+        &--disabled {
+            @apply cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300 hover:border-slate-100 hover:text-slate-300;
+        }
+    }
+
+    &__number {
+        @apply flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg bg-primary text-white transition-colors select-none hover:bg-primary-hover;
+
+        &--active {
+            @apply cursor-default bg-secondary;
+        }
+    }
+
+    &__ellipsis {
+        @apply text-primary select-none;
+    }
+}

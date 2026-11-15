@@ -1,0 +1,40 @@
+// INFO: Admin
+@forward "admin/news/news";
+@forward "admin/news/news-show";
+
+@forward "admin/product-supply/product-supplies";
+@forward "admin/product-supply/product-supply-create";
+@forward "admin/product-supply/product-supply-show";
+
+@forward "admin/product-unit/product-unit-create";
+@forward "admin/product-unit/product-unit-show";
+@forward "admin/product-unit/product-units";
+
+@forward "admin/product-unit-status/product-unit-status-create";
+@forward "admin/product-unit-status/product-unit-status-show";
+@forward "admin/product-unit-status/product-unit-statuses";
+
+@forward "admin/products/create-product";
+@forward "admin/products/edit-product";
+@forward "admin/products/products-index";
+
+@forward "admin/suppliers/supplier-create";
+@forward "admin/suppliers/supplier-show";
+@forward "admin/suppliers/suppliers";
+
+@forward "admin/users/user-show";
+@forward "admin/users/users";
+
+@forward "admin/categories";
+@forward "admin/home";
+@forward "admin/main-page-gallery";
+@forward "admin/tags";
+@forward "admin/user-requests";
+@forward "admin/warehouses";
+
+@forward "catalog/catalog-index";
+@forward "catalog/product-detail";
+
+@forward "contacts";
+@forward "error";
+@forward "home";

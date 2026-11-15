@@ -1,18 +1,16 @@
 <template>
-    <div class="flex flex-col gap-5">
+    <div class="user-form-fields">
         <Input
             id="firstName"
             v-model="form.firstName"
             :error="errors?.firstName"
             label="Имя"
-            variant="standard"
         />
         <Input
             id="lastName"
             v-model="form.lastName"
             :error="errors?.lastName"
             label="Фамилия"
-            variant="standard"
         />
         <Input
             id="email"
@@ -20,7 +18,6 @@
             :error="errors?.email"
             label="Email"
             type="email"
-            variant="standard"
         />
         <Input
             id="phone"
@@ -28,7 +25,6 @@
             :error="errors?.phone"
             label="Телефон"
             type="tel"
-            variant="standard"
         />
         <Input
             id="password"
@@ -36,7 +32,6 @@
             :error="errors?.password"
             label="Пароль (оставьте пустым, чтобы не менять)"
             type="password"
-            variant="standard"
         />
         <Select
             id="roles"
@@ -45,14 +40,12 @@
             :items="roleOptions"
             label="Роли"
             multiple
-            variant="standard"
         />
         <Checkbox
             id="emailConfirmed"
             v-model="form.emailConfirmed"
             :error="errors?.emailConfirmed"
             text="Email подтверждён"
-            variant="standard"
         />
     </div>
 </template>

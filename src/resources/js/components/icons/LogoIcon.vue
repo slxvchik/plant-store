@@ -1,7 +1,7 @@
 <template>
     <svg
         aria-hidden="true"
-        class="h-full w-full"
+        class="logo-icon"
         fill="currentColor"
         viewBox="0 0 444.244 444.244"
         xml:space="preserve"

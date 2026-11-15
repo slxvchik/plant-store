@@ -1,0 +1,35 @@
+.tabs {
+    @apply flex flex-1 flex-col;
+
+    &__list {
+        @apply flex rounded-lg shadow-[0_0_25px_var(--color-secondary)];
+    }
+
+    &__button {
+        @apply p-2;
+
+        &--active {
+            @apply font-bold text-secondary;
+        }
+    }
+
+    &__panel {
+        @apply grid grid-rows-[0fr] opacity-0 transition-all duration-300 ease-in-out;
+
+        &--open {
+            @apply grid-rows-[1fr] opacity-100;
+        }
+    }
+
+    &__panel-inner {
+        @apply overflow-hidden;
+
+        &--open {
+            @apply overflow-visible;
+        }
+    }
+
+    &__content {
+        @apply flex flex-col pt-5 pb-2;
+    }
+}

@@ -1,36 +1,36 @@
 <template>
-    <div class="flex flex-1 flex-col">
-        <div
-            class="flex flex-row rounded-lg shadow-[0_0_25px_var(--color-secondary)]"
-        >
-            <button
+    <div class="tabs">
+        <div class="tabs__list">
+            <Button
                 v-for="item in items"
                 :key="item.id"
-                :class="{ 'font-bold text-secondary': activeId === item.id }"
-                class="flex cursor-pointer p-2"
+                :class="[
+                    'tabs__button',
+                    { 'tabs__button--active': activeId === item.id },
+                ]"
+                :text="item.label"
+                style-type="link"
                 type="button"
                 @click="activeId = item.id"
-            >
-                {{ item.label }}
-            </button>
+            />
         </div>
-
-        <div class="flex flex-col">
+        <div class="tabs__panels">
             <div
                 v-for="item in items"
                 :key="item.id"
-                :class="
-                    activeId === item.id
-                        ? 'grid-rows-[1fr] opacity-100'
-                        : 'grid-rows-[0fr] opacity-0'
-                "
-                class="grid transition-all duration-300 ease-in-out"
-                @transitionend="handleTransitionEnd(item.id)"
+                :class="[
+                    'tabs__panel',
+                    { 'tabs__panel--open': activeId === item.id },
+                ]"
+                @transitionend="openId = activeId"
             >
-                <div :class="{ 'overflow-hidden': fullyOpenId !== item.id }">
-                    <div class="flex flex-col pt-5 pb-2">
-                        <slot :name="item.id" />
-                    </div>
+                <div
+                    :class="[
+                        'tabs__panel-inner',
+                        { 'tabs__panel-inner--open': openId === item.id },
+                    ]"
+                >
+                    <div class="tabs__content"><slot :name="item.id" /></div>
                 </div>
             </div>
         </div>
@@ -39,29 +39,12 @@
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
+import Button from '@/components/Button.vue';
 
-type TabItem = {
-    id: string;
-    label: string;
-};
-
-interface Props {
-    items: TabItem[];
-}
-
-const props = defineProps<Props>();
-
+const props = defineProps<{ items: { id: string; label: string }[] }>();
 const activeId = ref(props.items[0]?.id || '');
-
-const fullyOpenId = ref('');
-
+const openId = ref('');
 watch(activeId, () => {
-    fullyOpenId.value = '';
+    openId.value = '';
 });
-
-const handleTransitionEnd = (itemId: string) => {
-    if (activeId.value === itemId) {
-        fullyOpenId.value = itemId;
-    }
-};
 </script>

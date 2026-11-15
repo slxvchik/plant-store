@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full space-y-6">
+    <div class="supplier-show">
         <AdminPageHeader
             :title="supplier.name"
             back-url="/admin/suppliers"
@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import SupplierForm from '@/components/supplier/SupplierForm.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import type { Supplier } from '@/types/inventory.ts';
 
 defineOptions({ layout: AdminLayout });

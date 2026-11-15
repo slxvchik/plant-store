@@ -1,5 +1,5 @@
 <template>
-    <section class="bg-bg-base px-3 pt-3 md:bg-bg-dark md:p-0">
+    <section class="hero-slider">
         <swiper
             :autoplay="{ delay: 65000, disableOnInteraction: false }"
             :effect="'fade'"
@@ -7,75 +7,57 @@
             :modules="swiperModules"
             :slides-per-view="1"
             :speed="900"
-            class="relative h-[700px] overflow-hidden rounded-[28px] md:h-[680px] md:rounded-none"
+            class="hero-slider__swiper"
             @slide-change="onSlideChange"
         >
-            <swiper-slide v-for="slide in slides" :key="slide.title" class="">
-                <div
-                    class="flex h-full flex-col bg-bg-elevated md:grid md:grid-cols-2 md:bg-bg-dark dark:bg-bg-night-soft"
-                >
-                    <div
-                        class="relative order-1 h-[340px] overflow-hidden md:order-2 md:h-full"
-                    >
+            <swiper-slide v-for="slide in slides" :key="slide.title">
+                <div class="hero-slider__slide">
+                    <div class="hero-slider__visual">
                         <img
                             :alt="slide.imageAlt"
                             :src="slide.image"
-                            class="h-full w-full scale-105 object-cover"
+                            class="hero-slider__image"
                             fetchpriority="high"
                         />
                     </div>
-                    <div
-                        class="flex-start relative order-2 flex h-full grow overflow-hidden px-5 py-8 md:order-1 md:p-10 lg:p-20"
-                    >
+                    <div class="hero-slider__content">
                         <div
-                            class="pointer-events-none absolute -bottom-20 -left-24 h-72 w-72 rounded-full border border-primary/10 md:border-white/5"
+                            class="hero-slider__decoration hero-slider__decoration--left"
                         />
                         <div
                             :style="{
                                 transform: `rotate(${activeSlide * 20}deg)`,
                             }"
-                            class="pointer-events-none absolute -right-20 -bottom-28 h-80 w-80 rounded-full border border-primary/10 transition-transform duration-1000 md:border-white/5"
+                            class="hero-slider__decoration hero-slider__decoration--right"
                         />
-                        <div class="relative z-10">
-                            <p
-                                class="mb-4 flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-primary uppercase md:text-xs md:text-secondary dark:text-secondary"
-                            >
-                                <span class="h-4 w-4">
-                                    <AppIcon name="leaf" />
+                        <div class="hero-slider__copy">
+                            <p class="hero-slider__eyebrow">
+                                <span class="hero-slider__eyebrow-icon">
+                                    <Icon name="leaf" />
                                 </span>
                                 {{ slide.eyebrow }}
                             </p>
-                            <h1
-                                class="line-clamp-2 pb-1 pr-1 font-serif text-[40px] leading-[1.04] font-medium tracking-[-0.035em] text-text-title md:text-6xl md:text-[64px] md:text-linen xl:text-[72px] dark:text-linen"
-                            >
+                            <h1 class="hero-slider__title">
                                 {{ slide.title }}
-                                <em
-                                    class="font-normal text-primary md:line-clamp-none md:text-secondary lg:text-nowrap"
-                                >
+                                <em class="hero-slider__accent">
                                     {{ slide.accent }}
                                 </em>
                             </h1>
-                            <p
-                                class="mt-5 line-clamp-7 max-w-md text-[15px] leading-7 text-text-muted md:text-lg md:leading-8 md:text-white/60 dark:text-white/60"
-                            >
+                            <p class="hero-slider__description">
                                 {{ slide.description }}
                             </p>
-                            <div
-                                class="mt-7 mb-4 grid grid-cols-2 gap-3 min-[420px]:flex-row md:mt-9"
-                            >
+                            <div class="hero-slider__actions">
                                 <Link
-                                    class="group flex min-h-12 items-center justify-center gap-3 rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-primary-hover hover:shadow-xl md:bg-secondary md:text-bg-dark md:hover:bg-linen"
+                                    class="hero-slider__primary"
                                     href="/catalog"
                                 >
                                     Выбрать растение
-                                    <span
-                                        class="flex h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1"
-                                    >
-                                        <AppIcon name="arrow" />
+                                    <span class="hero-slider__primary-icon">
+                                        <Icon name="arrow" />
                                     </span>
                                 </Link>
                                 <a
-                                    class="flex min-h-12 items-center justify-center rounded-full border border-text-title/15 px-6 text-sm font-semibold text-text-title transition-all duration-300 hover:border-primary hover:bg-sage-soft/50 md:border-white/20 md:text-white md:hover:border-white/40 md:hover:bg-white/5 dark:text-linen"
+                                    class="hero-slider__secondary"
                                     href="#mission"
                                 >
                                     Наша философия
@@ -85,12 +67,8 @@
                     </div>
                 </div>
             </swiper-slide>
-            <div
-                class="absolute bottom-5 left-[50%] z-10 flex translate-x-[-50%] items-center md:bottom-5 md:left-5 md:translate-x-0"
-            >
-                <span
-                    class="text-xs font-medium tracking-widest text-nowrap text-text-muted md:text-white/45"
-                >
+            <div class="hero-slider__counter">
+                <span>
                     {{ addZeroNumber(activeSlide + 1) }} /
                     {{ addZeroNumber(slides.length) }}
                 </span>
@@ -98,14 +76,13 @@
         </swiper>
     </section>
 </template>
-
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import type { Swiper as SwiperInstance } from 'swiper';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { ref } from 'vue';
-import AppIcon from '@/components/AppIcon.vue';
+import Icon from '@/components/icons/Icon.vue';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
@@ -134,13 +111,8 @@ const slides = [
         caption: 'Новая весенняя коллекция',
     },
 ];
-const addZeroNumber = (num: number): string => {
-    if (num < 10) {
-        return `0${num}`;
-    }
-
-    return `${num}`;
-};
+const addZeroNumber = (num: number): string =>
+    num < 10 ? `0${num}` : `${num}`;
 const onSlideChange = (swiper: SwiperInstance): void => {
     activeSlide.value = swiper.realIndex;
 };

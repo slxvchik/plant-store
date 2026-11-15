@@ -1,0 +1,19 @@
+.search-input {
+    @apply relative flex-1;
+
+    &__sr {
+        @apply sr-only;
+    }
+
+    &__icon {
+        @apply pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-text-muted dark:text-white/40;
+    }
+
+    &__field {
+        @apply h-12 w-full rounded-2xl border border-text-title/10 bg-bg-elevated pr-4 pl-12 text-sm text-text-title transition-all placeholder:text-text-muted/60 focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none dark:border-white/10 dark:bg-bg-night-soft dark:text-white;
+    }
+
+    &__clear {
+        @apply absolute top-1/2 right-2.5 h-5 w-5 -translate-y-1/2 cursor-pointer text-primary transition-colors hover:text-text-title;
+    }
+}

@@ -1,38 +1,123 @@
 <template>
-    <div class="space-y-6">
-        <AdminPageHeader title="Пользователи" eyebrow="Администрирование" description="Учётные записи, контактные данные и роли доступа.">
-            <template #actions><Button secondary text="Добавить пользователя" class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm" @click="openCreateModal" /></template>
+    <div class="users">
+        <AdminPageHeader
+            description="Учётные записи, контактные данные и роли доступа."
+            eyebrow="Администрирование"
+            title="Пользователи"
+        >
+            <template #actions>
+                <Button
+                    auto-width
+                    secondary
+                    text="Добавить пользователя"
+                    @click="openCreateModal"
+                />
+            </template>
         </AdminPageHeader>
-        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <div class="overflow-x-auto"><table class="w-full min-w-[950px] text-left text-sm">
-                <thead class="border-b border-slate-200 bg-slate-50 text-xs font-semibold tracking-wider text-slate-500 uppercase"><tr><th class="px-5 py-4">ID</th><th class="px-5 py-4">Имя</th><th class="px-5 py-4">Email</th><th class="px-5 py-4">Телефон</th><th class="px-5 py-4">Роли</th><th class="px-5 py-4 text-right">Действия</th></tr></thead>
-                <tbody class="divide-y divide-slate-100"><tr v-for="user in usersPage.items" :key="user.id" class="hover:bg-slate-50">
-                    <td class="px-5 py-4 font-mono text-xs text-slate-400">#{{ user.id.slice(0, 8) }}</td><td class="px-5 py-4 font-semibold text-slate-900">{{ user.firstName }} {{ user.lastName ?? '' }}</td><td class="px-5 py-4 text-slate-600">{{ user.email }}</td><td class="px-5 py-4 whitespace-nowrap text-slate-600">{{ user.phone }}</td><td class="px-5 py-4"><div class="flex flex-wrap gap-1.5"><Badge v-for="role in user.roles" :key="role" :label="role" tone="info" /></div></td>
-                    <td class="px-5 py-4"><div class="flex justify-end gap-2"><Link :href="AdminUsers.show.url(user.id)" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700" text="Открыть" /><Button class="!w-auto !rounded-lg !bg-transparent !px-3 !py-2 !text-xs !text-slate-600 hover:!bg-slate-100" text="Изменить" @click="openEditModal(user)" /><Button class="!w-auto !rounded-lg !bg-transparent !px-3 !py-2 !text-xs !text-rose-600 hover:!bg-rose-50" text="Удалить" @click="destroy(user.id)" /></div></td>
-                </tr><tr v-if="usersPage.items.length === 0"><td colspan="6" class="px-5 py-16 text-center text-slate-500">Пользователи не найдены.</td></tr></tbody>
-            </table></div>
-            <PaginationList :pagination="pagination" />
-        </section>
+        <Table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Имя</th>
+                    <th>Email</th>
+                    <th>Телефон</th>
+                    <th>Роли</th>
+                    <th class="users__cell--actions">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="user in usersPage.items" :key="user.id">
+                    <td class="users__id">#{{ user.id.slice(0, 8) }}</td>
+                    <td class="users__name">
+                        {{ user.firstName }} {{ user.lastName ?? '' }}
+                    </td>
+                    <td class="users__contact">{{ user.email }}</td>
+                    <td class="users__phone">{{ user.phone }}</td>
+                    <td>
+                        <div class="users__roles">
+                            <Badge
+                                v-for="role in user.roles"
+                                :key="role"
+                                :label="role"
+                                tone="info"
+                            />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="users__actions">
+                            <Link
+                                :href="AdminUsers.show.url(user.id)"
+                                class="users__open"
+                            >
+                                Открыть
+                            </Link>
+                            <Button
+                                auto-width
+                                ghost
+                                small
+                                text="Изменить"
+                                @click="openEditModal(user)"
+                            />
+                            <Button
+                                auto-width
+                                danger
+                                ghost
+                                small
+                                text="Удалить"
+                                @click="destroy(user.id)"
+                            />
+                        </div>
+                    </td>
+                </tr>
+                <tr v-if="usersPage.items.length === 0">
+                    <td class="users__empty" colspan="6">
+                        Пользователи не найдены.
+                    </td>
+                </tr>
+            </tbody>
+            <template #pagination>
+                <Pagination :pagination="pagination" />
+            </template>
+        </Table>
+        <Modal
+            v-model:open="isFormPopupOpen"
+            :title="
+                isEditMode
+                    ? 'Редактировать пользователя'
+                    : 'Создать пользователя'
+            "
+        >
+            <form class="users__form" @submit.prevent="submit">
+                <UserFormFields
+                    v-model="form"
+                    :errors="form.errors"
+                    :is-edit-mode="isEditMode"
+                />
+                <div class="users__form-footer">
+                    <Button
+                        :disabled="form.processing"
+                        :text="isEditMode ? 'Сохранить' : 'Создать'"
+                        auto-width
+                        secondary
+                        type="submit"
+                    />
+                </div>
+            </form>
+        </Modal>
     </div>
-    <Popup v-model:open="isFormPopupOpen" :title="isEditMode ? 'Редактировать пользователя' : 'Создать пользователя'">
-        <form class="flex w-full flex-col gap-5" @submit.prevent="submit">
-            <UserFormFields v-model="form" :errors="form.errors" :is-edit-mode="isEditMode" />
-            <div class="flex justify-end border-t border-slate-100 pt-5"><Button :disabled="form.processing" :text="isEditMode ? 'Сохранить' : 'Создать'" class="!w-auto !rounded-xl !px-5 !text-sm" secondary type="submit" /></div>
-        </form>
-    </Popup>
 </template>
-
 <script lang="ts" setup>
+import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
-import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Link from '@/components/Link.vue';
-import PaginationList from '@/components/PaginationList.vue';
-import Popup from '@/components/Popup.vue';
+import Modal from '@/components/Modal.vue';
+import Pagination from '@/components/Pagination.vue';
+import Table from '@/components/Table.vue';
 import UserFormFields from '@/components/user/UserFormFields.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm.ts';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminUsers from '@/routes/admin/users';
 import type { Page } from '@/types/pagination.ts';
 import type { User, UserFormState } from '@/types/user.ts';
@@ -44,7 +129,6 @@ const props = defineProps<{ usersPage: Page<User> }>();
 const pagination = computed(() =>
     getPaginationFromPageResponse(props.usersPage),
 );
-
 const createData = (): UserFormState => ({
     firstName: '',
     lastName: '',

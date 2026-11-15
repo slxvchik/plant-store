@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full space-y-6">
+    <div class="product-unit-show">
         <AdminPageHeader
             :title="`Единица #${productUnit.id.slice(0, 8)}`"
             back-url="/admin/product-units"
@@ -19,13 +19,13 @@
 <script lang="ts" setup>
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import ProductUnitForm from '@/components/product/ProductUnitForm.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import type {
     ProductOption,
     ProductSupply,
     ProductUnit,
     ProductUnitFormData,
-    ProductUnitStatus
+    ProductUnitStatus,
 } from '@/types/inventory.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 

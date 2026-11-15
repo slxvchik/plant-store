@@ -1,0 +1,46 @@
+.product-units {
+    @apply space-y-6;
+    :deep(.table__table) {
+        min-width: 1050px;
+    }
+
+    &__create {
+        @apply rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700;
+    }
+
+    &__cell--actions {
+        @apply text-right;
+    }
+
+    &__unit {
+        @apply font-mono text-xs font-semibold text-slate-700 hover:text-emerald-700;
+    }
+
+    &__qr {
+        @apply mt-1 text-xs text-slate-400;
+    }
+
+    &__offer {
+        @apply max-w-64 font-medium text-slate-700;
+    }
+
+    &__muted {
+        @apply text-slate-600;
+    }
+
+    &__supply {
+        @apply font-mono text-xs text-slate-500;
+    }
+
+    &__actions {
+        @apply flex justify-end gap-2;
+    }
+
+    &__edit {
+        @apply rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700;
+    }
+
+    &__empty {
+        @apply py-16 text-center text-slate-500;
+    }
+}

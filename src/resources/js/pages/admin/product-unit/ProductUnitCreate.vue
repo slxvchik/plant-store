@@ -1,33 +1,32 @@
 <template>
-    <div class="w-full space-y-6">
+    <div class="product-unit-create">
         <AdminPageHeader
             back-url="/admin/product-units"
             description="Создайте одну единицу вручную или сформируйте партию с пустыми QR-кодами."
             eyebrow="Складской учёт"
             title="Создание единиц товара"
         />
-        <div class="grid grid-cols-2 rounded-xl bg-slate-100 p-1">
-            <button
-                :class="mode === 'batch' ? activeTab : tab"
+        <div class="product-unit-create__tabs">
+            <Button
+                :class="tabClasses('batch')"
+                style-type="link"
                 type="button"
                 @click="mode = 'batch'"
             >
                 Партия
-            </button>
-            <button
-                :class="mode === 'single' ? activeTab : tab"
+            </Button>
+            <Button
+                :class="tabClasses('single')"
+                style-type="link"
                 type="button"
                 @click="mode = 'single'"
             >
                 Одна единица
-            </button>
+            </Button>
         </div>
-        <form
-            class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-            @submit.prevent="submit"
-        >
-            <div class="grid gap-5 p-6 sm:grid-cols-2 sm:p-8">
-                <div class="sm:col-span-2">
+        <form class="product-unit-create__form" @submit.prevent="submit">
+            <div class="product-unit-create__grid">
+                <div class="product-unit-create__wide">
                     <Select
                         v-model="form.offerId"
                         :error="form.errors.offerId"
@@ -88,37 +87,35 @@
                     description="Единица будет недоступна для других заказов"
                     text="Зарезервировано"
                 />
-                <div
-                    v-else
-                    class="rounded-xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-800"
-                >
-                    <span class="block font-semibold">
+                <div v-else class="product-unit-create__preview">
+                    <span class="product-unit-create__preview-title">
                         Будет создано: {{ form.quantity || 0 }} шт.
                     </span>
-                    <span class="mt-1 block text-emerald-600">
+                    <span class="product-unit-create__preview-hint">
                         QR-коды останутся пустыми.
                     </span>
                 </div>
-                <div class="sm:col-span-2">
-                    <Input
+                <div class="product-unit-create__wide">
+                    <Textarea
                         v-model="form.comments"
                         :error="form.errors.comments"
                         label="Комментарии"
-                        multiline
                         placeholder="Общий комментарий для создаваемых записей"
                     />
                 </div>
             </div>
-            <div
-                class="flex items-center justify-between gap-4 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:px-8"
-            >
-                <p class="text-xs text-slate-500">
-                    Все записи создаются в одной транзакции.
-                </p>
+            <div class="product-unit-create__footer">
+                <p>Все записи создаются в одной транзакции.</p>
                 <Button
                     :disabled="form.processing"
-                    :text="form.processing ? 'Создание…' : mode === 'batch' ? `Сгенерировать ${form.quantity || 0} шт.` : 'Создать единицу'"
-                    class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm"
+                    :text="
+                        form.processing
+                            ? 'Создание…'
+                            : mode === 'batch'
+                              ? `Сгенерировать ${form.quantity || 0} шт.`
+                              : 'Создать единицу'
+                    "
+                    auto-width
                     secondary
                     type="submit"
                 />
@@ -127,15 +124,20 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Button from '@/components/Button.vue';
 import Checkbox from '@/components/Checkbox.vue';
-import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
-import Select from '@/components/Select.vue';
 import Input from '@/components/Input.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import type { ProductOption, ProductSupply, ProductUnitStatus } from '@/types/inventory.ts';
+import Select from '@/components/Select.vue';
+import Textarea from '@/components/Textarea.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
+import type {
+    ProductOption,
+    ProductSupply,
+    ProductUnitStatus,
+} from '@/types/inventory.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 
 defineOptions({ layout: AdminLayout });
@@ -157,10 +159,10 @@ type UnitCreateForm = {
     qrCode: string | null;
 };
 const mode = ref<'batch' | 'single'>('batch');
-const tab =
-    'rounded-lg px-4 py-2.5 text-sm font-medium text-slate-500 transition';
-const activeTab =
-    'rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 shadow-sm';
+const tabClasses = (tabMode: 'batch' | 'single') => [
+    'product-unit-create__tab',
+    { 'product-unit-create__tab--active': mode.value === tabMode },
+];
 const form = useForm<UnitCreateForm>({
     quantity: 10,
     productSupplyId: null,

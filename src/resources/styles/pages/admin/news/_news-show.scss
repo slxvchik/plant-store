@@ -1,0 +1,45 @@
+
+.news-show {
+    @apply space-y-6;
+    &__card {
+        @apply sm:p-8;
+    }
+
+    &__details {
+        @apply grid gap-5 border-b border-slate-100 pb-6 text-sm sm:grid-cols-4;
+        dt {
+            @apply mb-1 text-slate-400;
+        }
+
+        dd {
+            @apply font-medium text-slate-800;
+        }
+    }
+
+    &__id {
+        @apply font-mono text-xs text-slate-700;
+    }
+
+    &__description {
+        @apply pt-6;
+        h2 {
+            @apply text-sm font-semibold text-slate-900;
+        }
+
+        p {
+            @apply mt-3 max-w-4xl leading-7 whitespace-pre-wrap text-slate-600;
+        }
+    }
+
+    &__empty {
+        @apply text-slate-400;
+    }
+
+    &__form {
+        @apply flex w-full flex-col gap-5;
+    }
+
+    &__form-footer {
+        @apply flex justify-end border-t border-slate-100 pt-5;
+    }
+}

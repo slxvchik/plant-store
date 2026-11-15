@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full space-y-6">
+    <div class="product-unit-status-show">
         <AdminPageHeader
             :title="status.name"
             back-url="/admin/product-unit-statuses"
@@ -15,8 +15,8 @@
 </template>
 <script lang="ts" setup>
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import ProductUnitStatusForm from '@/components/product/ProductUnitStatusForm.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import type { ProductUnitStatus } from '@/types/inventory.ts';
 
 defineOptions({ layout: AdminLayout });

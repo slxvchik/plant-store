@@ -1,0 +1,30 @@
+.blog {
+    @apply scroll-mt-24 bg-bg-surface px-4 py-16 md:px-8 md:py-24 dark:bg-bg-night-soft;
+    &__header {
+        @apply flex flex-col gap-5 md:flex-row md:items-end md:justify-between;
+    }
+
+    &__eyebrow {
+        @apply text-xs font-semibold tracking-[0.2em] text-accent uppercase;
+    }
+
+    &__title {
+        @apply mt-3 font-serif text-3xl text-text-title md:text-4xl lg:text-5xl dark:text-linen;
+    }
+
+    &__title-break {
+        @apply hidden md:block;
+    }
+
+    &__all {
+        @apply group flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary;
+    }
+
+    &__all-icon {
+        @apply h-4 w-4 transition-transform duration-300 group-hover:translate-x-1;
+    }
+
+    &__grid {
+        @apply mt-9 grid gap-8 md:mt-12 md:grid-cols-3 md:gap-5 lg:gap-8;
+    }
+}

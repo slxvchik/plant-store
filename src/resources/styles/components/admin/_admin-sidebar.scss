@@ -1,0 +1,106 @@
+.admin-sidebar {
+    @apply fixed inset-y-0 left-0 z-40 flex w-20 flex-col border-r border-slate-800 bg-slate-950 shadow-xl lg:w-72;
+
+    &__brand {
+        @apply flex h-20 shrink-0 items-center justify-center gap-3 border-b border-white/10 px-4 lg:justify-start lg:px-6;
+    }
+
+    &__logo {
+        @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500 p-2 shadow-lg shadow-emerald-950/30;
+    }
+
+    &__logo-icon {
+        @apply fill-white;
+    }
+
+    &__brand-copy {
+        @apply hidden min-w-0 lg:block;
+    }
+
+    &__brand-name {
+        @apply block truncate text-sm font-semibold tracking-wide text-white;
+    }
+
+    &__brand-subtitle {
+        @apply mt-0.5 block text-xs text-slate-400;
+    }
+
+    &__nav {
+        @apply flex-1 space-y-1.5 overflow-y-auto px-2.5 py-5 lg:px-4;
+        scrollbar-width: none;
+    }
+
+    &__link,
+    &__group-button {
+        @apply flex items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-400 ring-1 ring-transparent transition ring-inset hover:bg-white/5 hover:text-white lg:justify-start;
+    }
+
+    &__link--active {
+        @apply bg-emerald-500/15 text-emerald-300 ring-emerald-400/20 hover:bg-emerald-500/15 hover:text-emerald-300;
+    }
+
+    &__icon,
+    &__group-icon {
+        @apply flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/5 text-xs font-semibold text-slate-500;
+    }
+
+    &__icon--active {
+        @apply bg-emerald-400/15 text-emerald-300;
+    }
+
+    &__label {
+        @apply hidden lg:inline;
+
+        &--nowrap {
+            @apply whitespace-nowrap;
+        }
+    }
+
+    &__group-button {
+        @apply w-full cursor-pointer lg:justify-between;
+    }
+
+    &__group-button--active {
+        @apply text-white;
+    }
+
+    &__group-content {
+        @apply flex items-center gap-3;
+    }
+
+    &__group-icon {
+        @apply text-slate-400;
+    }
+
+    &__chevron {
+        @apply hidden h-3 w-3 transition-transform lg:block;
+
+        &--open {
+            @apply rotate-90;
+        }
+    }
+
+    &__children {
+        @apply mt-1 space-y-1 lg:ml-5 lg:border-l lg:border-white/10 lg:pl-3;
+    }
+
+    &__child {
+        @apply flex items-center justify-center rounded-lg px-3 py-2.5 text-xs font-medium text-slate-500 transition hover:bg-white/5 hover:text-slate-200 lg:justify-start;
+
+        &--active {
+            @apply bg-emerald-500/15 text-emerald-300;
+        }
+    }
+
+    &__child-dot {
+        @apply h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-60 lg:mr-2;
+    }
+
+    &__footer {
+        @apply hidden shrink-0 border-t border-white/10 px-6 py-4 text-xs text-slate-600 lg:block;
+    }
+
+    &__version {
+        @apply float-right;
+    }
+}

@@ -1,0 +1,68 @@
+
+.callback {
+    @apply bg-bg-surface px-4 py-16 md:px-8 md:py-24 dark:bg-bg-night;
+    &__card {
+        @apply grid overflow-hidden rounded-[28px] bg-bg-base lg:grid-cols-2 dark:bg-bg-night-soft;
+    }
+
+    &__visual {
+        @apply relative min-h-72 overflow-hidden lg:min-h-[560px];
+    }
+
+    &__image {
+        @apply absolute inset-0 h-full w-full object-cover;
+    }
+
+    &__overlay {
+        @apply absolute inset-0 bg-gradient-to-t from-bg-dark/55 to-transparent;
+    }
+
+    &__visual-copy {
+        @apply absolute right-6 bottom-6 left-6 text-white md:right-8 md:bottom-8 md:left-8;
+    }
+
+    &__visual-title {
+        @apply font-serif text-2xl;
+    }
+
+    &__visual-text {
+        @apply mt-2 max-w-sm text-sm leading-6 text-white/65;
+    }
+
+    &__form {
+        @apply p-6 md:p-10 lg:p-12;
+    }
+
+    &__eyebrow {
+        @apply text-xs font-semibold tracking-[0.2em] text-primary uppercase dark:text-secondary;
+    }
+
+    &__title {
+        @apply mt-3 font-serif text-3xl text-text-title md:text-4xl dark:text-linen;
+    }
+
+    &__description {
+        @apply mt-3 text-sm leading-6 text-text-muted dark:text-white/45;
+    }
+
+    &__fields {
+        @apply mt-7 space-y-4;
+    }
+
+    &__row {
+        @apply grid gap-4 md:grid-cols-2;
+    }
+
+    &__submit {
+        @apply mt-6 flex min-h-13 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-6 font-semibold text-white shadow-lg shadow-primary/10 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover disabled:opacity-60;
+    }
+
+    &__submit-icon,
+    &__success-icon {
+        @apply h-4 w-4;
+    }
+
+    &__success {
+        @apply mt-4 flex items-center gap-2 text-sm text-primary dark:text-secondary;
+    }
+}

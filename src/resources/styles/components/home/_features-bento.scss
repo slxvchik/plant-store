@@ -1,0 +1,119 @@
+.features-bento {
+    @apply bg-bg-surface px-4 py-16 md:px-8 md:py-24 dark:bg-bg-night-soft;
+    &__header {
+        @apply max-w-2xl;
+    }
+
+    &__eyebrow {
+        @apply text-xs font-semibold tracking-[0.2em] text-primary uppercase dark:text-secondary;
+    }
+
+    &__title {
+        @apply mt-3 font-serif text-3xl leading-tight text-text-title md:text-4xl lg:text-5xl dark:text-linen;
+    }
+
+    &__grid {
+        @apply mt-9 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-2 lg:auto-rows-[250px] lg:grid-cols-12 lg:gap-5;
+    }
+
+    &__feature {
+        @apply md:col-span-2 lg:col-span-7 lg:row-span-2;
+    }
+
+    &__feature-card {
+        @apply group relative h-full min-h-[420px] overflow-hidden rounded-[28px] lg:min-h-full;
+    }
+
+    &__feature-image {
+        @apply absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105;
+    }
+
+    &__feature-overlay {
+        @apply absolute inset-0 bg-gradient-to-t from-bg-dark/90 via-bg-dark/20 to-transparent;
+    }
+
+    &__feature-copy {
+        @apply absolute inset-x-0 bottom-0 p-6 text-white md:p-8 lg:p-10;
+    }
+
+    &__feature-icon,
+    &__delivery-icon,
+    &__guarantee-icon {
+        @apply flex h-11 w-11 items-center justify-center rounded-full bg-white/15 backdrop-blur;
+    }
+
+    &__icon {
+        @apply h-5 w-5;
+    }
+
+    &__feature-title {
+        @apply mt-5 font-serif text-3xl md:text-4xl;
+    }
+
+    &__feature-text {
+        @apply mt-3 max-w-md text-sm leading-6 text-white/70 md:text-base;
+    }
+
+    &__delivery {
+        @apply lg:col-span-5;
+    }
+
+    &__delivery-card {
+        @apply flex h-full min-h-[240px] flex-col justify-between rounded-[28px] bg-primary p-6 text-white transition-all duration-300 hover:shadow-xl md:p-8 dark:bg-primary/80;
+    }
+
+    &__delivery-copy {
+        @apply mt-8;
+    }
+
+    &__delivery-title {
+        @apply font-serif text-2xl md:text-3xl;
+    }
+
+    &__delivery-text {
+        @apply mt-2 text-sm leading-6 text-white/65;
+    }
+
+    &__trust {
+        @apply lg:col-span-2;
+    }
+
+    &__trust-card {
+        @apply flex h-full min-h-[220px] flex-col justify-between rounded-[28px] border border-text-title/5 bg-bg-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-bg-night;
+    }
+
+    &__trust-label {
+        @apply text-xs font-semibold tracking-widest text-accent uppercase;
+    }
+
+    &__trust-value {
+        @apply font-serif text-5xl text-text-title dark:text-linen;
+        span {
+            @apply text-primary dark:text-secondary;
+        }
+    }
+
+    &__trust-text {
+        @apply mt-1 text-sm text-text-muted dark:text-white/50;
+    }
+
+    &__guarantee {
+        @apply lg:col-span-3;
+    }
+
+    &__guarantee-card {
+        @apply flex h-full min-h-[220px] flex-col justify-between rounded-[28px] bg-[#d9cbbb] p-6 text-bg-dark transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:bg-[#9b8975];
+    }
+
+    &__guarantee-icon {
+        @apply bg-white/35;
+    }
+
+    &__guarantee-title {
+        @apply font-serif text-2xl;
+    }
+
+    &__guarantee-text {
+        @apply mt-2 text-sm leading-6 opacity-70;
+    }
+}

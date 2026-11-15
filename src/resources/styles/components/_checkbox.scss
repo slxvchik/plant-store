@@ -1,0 +1,52 @@
+.checkbox {
+    @apply flex flex-col;
+
+    &__label {
+        @apply flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 transition hover:border-emerald-200;
+    }
+
+    &__native {
+        @apply mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500;
+    }
+
+    &__box {
+        @apply hidden;
+    }
+
+    &__text {
+        @apply block text-sm font-medium text-slate-700;
+    }
+
+    &__description {
+        @apply mt-0.5 block text-xs leading-5 text-slate-500;
+    }
+
+    &--default &__label {
+        @apply items-center gap-2 rounded-none border-0 bg-transparent p-0 hover:border-0;
+    }
+
+    &--default &__native {
+        @apply hidden;
+    }
+
+    &--default &__box {
+        @apply inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border border-[#DCE3DB] bg-white text-white transition-colors;
+    }
+
+    &--default &__box--checked {
+        @apply border-secondary bg-secondary;
+    }
+
+    &--default &__text {
+        @apply font-medium text-text-muted select-none;
+    }
+
+    &--error &__text,
+    &__error {
+        @apply text-red-400;
+    }
+
+    &__error {
+        @apply mt-1.5 text-xs font-medium;
+    }
+}

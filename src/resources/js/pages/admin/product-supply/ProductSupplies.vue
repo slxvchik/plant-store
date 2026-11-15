@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-6">
+    <div class="product-supplies">
         <AdminPageHeader
             description="Регистрируйте поступления и автоматически формируйте складские единицы."
             eyebrow="Закупки"
@@ -7,138 +7,119 @@
         >
             <template #actions>
                 <Link
-                    class="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700"
+                    class="product-supplies__create"
                     href="/admin/product-supplies/create"
                 >
                     Новая поставка
                 </Link>
             </template>
         </AdminPageHeader>
-        <div class="grid gap-4 sm:grid-cols-3">
-            <div
-                class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
-            >
-                <p class="text-sm text-slate-500">Поставок на странице</p>
-                <p class="mt-2 text-2xl font-semibold text-slate-950">
+        <div class="product-supplies__stats">
+            <div class="product-supplies__stat">
+                <p class="product-supplies__stat-label">Поставок на странице</p>
+                <p class="product-supplies__stat-value">
                     {{ productSuppliesPage.items.length }}
                 </p>
             </div>
-            <div
-                class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
-            >
-                <p class="text-sm text-slate-500">Заявлено единиц</p>
-                <p class="mt-2 text-2xl font-semibold text-slate-950">
-                    {{ declaredTotal }}
-                </p>
+            <div class="product-supplies__stat">
+                <p class="product-supplies__stat-label">Заявлено единиц</p>
+                <p class="product-supplies__stat-value">{{ declaredTotal }}</p>
             </div>
-            <div
-                class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm"
-            >
-                <p class="text-sm text-emerald-700">Сгенерировано единиц</p>
-                <p class="mt-2 text-2xl font-semibold text-emerald-950">
-                    {{ actualTotal }}
-                </p>
+            <div class="product-supplies__stat product-supplies__stat--accent">
+                <p class="product-supplies__stat-label">Сгенерировано единиц</p>
+                <p class="product-supplies__stat-value">{{ actualTotal }}</p>
             </div>
         </div>
-        <section
-            class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-        >
-            <div class="overflow-x-auto">
-                <table class="w-full min-w-[1000px] text-left text-sm">
-                    <thead
-                        class="border-b border-slate-200 bg-slate-50 text-xs font-semibold tracking-wider text-slate-500 uppercase"
-                    >
-                        <tr>
-                            <th class="px-5 py-4">Поставка</th>
-                            <th class="px-5 py-4">Поставщик</th>
-                            <th class="px-5 py-4">Товар</th>
-                            <th class="px-5 py-4">Количество</th>
-                            <th class="px-5 py-4">Стоимость</th>
-                            <th class="px-5 py-4">Отметка</th>
-                            <th class="px-5 py-4 text-right">Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr
-                            v-for="supply in productSuppliesPage.items"
-                            :key="supply.id"
-                            class="hover:bg-slate-50/80"
+        <Table>
+            <thead>
+                <tr>
+                    <th>Поставка</th>
+                    <th>Поставщик</th>
+                    <th>Товар</th>
+                    <th>Количество</th>
+                    <th>Стоимость</th>
+                    <th>Отметка</th>
+                    <th class="product-supplies__cell--actions">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    v-for="supply in productSuppliesPage.items"
+                    :key="supply.id"
+                >
+                    <td>
+                        <Link
+                            :href="`/admin/product-supplies/${supply.id}`"
+                            class="product-supplies__id"
                         >
-                            <td class="px-5 py-4">
-                                <Link
-                                    :href="`/admin/product-supplies/${supply.id}`"
-                                    class="font-mono text-xs font-semibold text-slate-800 hover:text-emerald-700"
-                                >
-                                    #{{ supply.id.slice(0, 8) }}
-                                </Link>
-                                <p class="mt-1 text-xs text-slate-400">
-                                    {{ formatDate(supply.createdAt) }}
-                                </p>
-                            </td>
-                            <td class="px-5 py-4 font-medium text-slate-700">
-                                {{ supplierName(supply.supplierId) }}
-                            </td>
-                            <td class="max-w-64 px-5 py-4 text-slate-600">
-                                {{ offerName(supply.offerId) }}
-                            </td>
-                            <td class="px-5 py-4">
-                                <span class="font-semibold text-slate-900">
-                                    {{ supply.actualQuantity }}
-                                </span>
-                                <span class="text-slate-400">
-                                    / {{ supply.declaredQuantity }} шт.
-                                </span>
-                                <p class="mt-1 text-xs text-slate-400">
-                                    факт / план
-                                </p>
-                            </td>
-                            <td class="px-5 py-4 text-slate-700">
-                                {{
-                                    formatMoney(
-                                        supply.totalPurchasePriceInKopecks,
-                                    )
-                                }}
-                            </td>
-                            <td class="px-5 py-4">
-                                <span
-                                    v-if="supply.misGraded"
-                                    class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 ring-1 ring-amber-200 ring-inset"
-                                >
-                                    Пересорт
-                                </span>
-                                <span v-else class="text-slate-400">—</span>
-                            </td>
-                            <td class="px-5 py-4 text-right">
-                                <Link
-                                    :href="`/admin/product-supplies/${supply.id}`"
-                                    class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700"
-                                >
-                                    Открыть
-                                </Link>
-                            </td>
-                        </tr>
-                        <tr v-if="productSuppliesPage.items.length === 0">
-                            <td
-                                class="px-5 py-16 text-center text-slate-500"
-                                colspan="7"
-                            >
-                                Поставки ещё не зарегистрированы.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <PaginationList :pagination="productSuppliesPage" />
-        </section>
+                            #{{ supply.id.slice(0, 8) }}
+                        </Link>
+                        <p class="product-supplies__date">
+                            {{ formatDate(supply.createdAt) }}
+                        </p>
+                    </td>
+                    <td class="product-supplies__supplier">
+                        {{ supplierName(supply.supplierId) }}
+                    </td>
+                    <td class="product-supplies__offer">
+                        {{ offerName(supply.offerId) }}
+                    </td>
+                    <td>
+                        <span class="product-supplies__actual">
+                            {{ supply.actualQuantity }}
+                        </span>
+                        <span class="product-supplies__declared">
+                            / {{ supply.declaredQuantity }} шт.
+                        </span>
+                        <p class="product-supplies__quantity-hint">
+                            факт / план
+                        </p>
+                    </td>
+                    <td class="product-supplies__price">
+                        {{ formatMoney(supply.totalPurchasePriceInKopecks) }}
+                    </td>
+                    <td>
+                        <Badge
+                            v-if="supply.misGraded"
+                            label="Пересорт"
+                            tone="warning"
+                        />
+                        <span v-else class="product-supplies__dash">—</span>
+                    </td>
+                    <td class="product-supplies__cell--actions">
+                        <Link
+                            :href="`/admin/product-supplies/${supply.id}`"
+                            class="product-supplies__open"
+                        >
+                            Открыть
+                        </Link>
+                    </td>
+                </tr>
+                <tr v-if="productSuppliesPage.items.length === 0">
+                    <td class="product-supplies__empty" colspan="7">
+                        Поставки ещё не зарегистрированы.
+                    </td>
+                </tr>
+            </tbody>
+            <template #pagination>
+                <Pagination :pagination="productSuppliesPage" />
+            </template>
+        </Table>
     </div>
 </template>
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
-import PaginationList from '@/components/PaginationList.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import type { ProductOption, ProductSupply, Supplier } from '@/types/inventory.ts';
+import Badge from '@/components/Badge.vue';
+import Pagination from '@/components/Pagination.vue';
+import Table from '@/components/Table.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
+import type {
+    ProductOption,
+    ProductSupply,
+    Supplier,
+} from '@/types/inventory.ts';
 import type { Page } from '@/types/pagination.ts';
 
 defineOptions({ layout: AdminLayout });
@@ -164,9 +145,12 @@ const supplierName = (id: string | null) =>
 const offerName = (id: string | null) => {
     for (const product of props.products) {
         const offer = product.offers.find((item) => item.id === id);
-        if (offer)
+
+        if (offer) {
             return `${product.name} — ${offer.sku || offer.id.slice(0, 8)}`;
+        }
     }
+
     return 'Не указан';
 };
 const formatDate = (date: string) =>

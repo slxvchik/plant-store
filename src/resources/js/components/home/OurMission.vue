@@ -1,73 +1,52 @@
 <template>
-    <section
-        id="mission"
-        class="scroll-mt-20 bg-bg-dark px-4 py-16 md:px-8 md:py-24 lg:py-28"
-    >
+    <section id="mission" class="our-mission">
         <Container>
-            <div
-                class="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20"
-            >
+            <div class="our-mission__grid">
                 <Reveal direction="right">
-                    <div class="relative">
-                        <div
-                            class="aspect-[4/5] max-h-[640px] overflow-hidden rounded-[28px]"
-                        >
+                    <div class="our-mission__visual">
+                        <div class="our-mission__image-wrap">
                             <img
                                 alt="Цветущее растение в оранжерее Деулино"
-                                class="h-full w-full object-cover"
+                                class="our-mission__image"
                                 loading="lazy"
                                 src="/images/water_lily.png"
                             />
                         </div>
-                        <div
-                            class="absolute right-4 bottom-4 rounded-2xl border border-white/20 bg-bg-dark/60 px-5 py-4 text-white backdrop-blur-md md:right-8 md:bottom-8"
-                        >
-                            <p class="font-serif text-3xl text-secondary">
-                                2 400+
-                            </p>
-                            <p class="mt-1 text-xs text-white/60">
+                        <div class="our-mission__stat">
+                            <p class="our-mission__stat-value">2 400+</p>
+                            <p class="our-mission__stat-label">
                                 растений обрели дом в этом году
                             </p>
                         </div>
                     </div>
                 </Reveal>
                 <Reveal :delay="100" direction="left">
-                    <p
-                        class="text-xs font-semibold tracking-[0.2em] text-secondary uppercase"
-                    >
-                        Наша миссия
-                    </p>
-                    <h2
-                        class="mt-4 font-serif text-3xl leading-tight text-linen md:text-4xl lg:text-5xl"
-                    >
+                    <p class="our-mission__eyebrow">Наша миссия</p>
+                    <h2 class="our-mission__title">
                         Помогаем людям
                         <br />
                         и растениям
-                        <em class="text-secondary">расти вместе</em>
+                        <em class="our-mission__title-accent">расти вместе</em>
                     </h2>
-                    <p
-                        class="mt-5 max-w-lg text-sm leading-7 text-white/55 md:text-base"
-                    >
+                    <p class="our-mission__description">
                         Мы верим, что забота о живом начинается с внимания.
                         Поэтому знаем историю каждого растения и говорим честно
                         об уходе, условиях и возможных сложностях.
                     </p>
-                    <ul class="mt-8 space-y-5">
+                    <ul class="our-mission__principles">
                         <li
                             v-for="(item, index) in principles"
                             :key="item.title"
-                            class="flex gap-4"
+                            class="our-mission__principle"
                         >
-                            <span
-                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 font-serif text-secondary"
-                            >
+                            <span class="our-mission__principle-number">
                                 0{{ index + 1 }}
                             </span>
                             <div>
-                                <h3 class="font-medium text-white">
+                                <h3 class="our-mission__principle-title">
                                     {{ item.title }}
                                 </h3>
-                                <p class="mt-1 text-sm leading-6 text-white/45">
+                                <p class="our-mission__principle-text">
                                     {{ item.text }}
                                 </p>
                             </div>
@@ -78,7 +57,6 @@
         </Container>
     </section>
 </template>
-
 <script lang="ts" setup>
 import Container from '@/components/Container.vue';
 import Reveal from '@/components/Reveal.vue';

@@ -1,0 +1,30 @@
+.user-requests {
+    @apply space-y-6;
+    :deep(.table__table) {
+        min-width: 850px;
+    }
+
+    &__cell--actions {
+        @apply text-right;
+    }
+
+    &__name {
+        @apply font-semibold text-slate-900;
+    }
+
+    &__phone {
+        @apply whitespace-nowrap text-slate-600;
+    }
+
+    &__contact {
+        @apply text-slate-600;
+    }
+
+    &__comment {
+        @apply max-w-80 text-slate-500;
+    }
+
+    &__empty {
+        @apply py-16 text-center text-slate-500;
+    }
+}

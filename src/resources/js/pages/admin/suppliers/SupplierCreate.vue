@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full space-y-6">
+    <div class="supplier-create">
         <AdminPageHeader
             back-url="/admin/suppliers"
             description="Добавьте основные контактные данные. Обязательно только название."
@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import SupplierForm from '@/components/supplier/SupplierForm.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import type { SupplierFormData } from '@/types/inventory.ts';
 
 defineOptions({ layout: AdminLayout });

@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-6">
+    <div class="product-unit-statuses">
         <AdminPageHeader
             description="Настройте жизненный цикл растений — от посева до отгрузки."
             eyebrow="Складской учёт"
@@ -7,56 +7,57 @@
         >
             <template #actions>
                 <Link
-                    class="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700"
+                    class="product-unit-statuses__create"
                     href="/admin/product-unit-statuses/create"
                 >
                     Добавить статус
                 </Link>
             </template>
         </AdminPageHeader>
-        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div class="product-unit-statuses__grid">
             <article
                 v-for="status in statusesPage.items"
                 :key="status.id"
-                class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md"
+                class="product-unit-statuses__card"
             >
-                <div class="flex items-start justify-between gap-4">
+                <div class="product-unit-statuses__card-top">
                     <Badge :label="status.name" />
-                    <span class="font-mono text-xs text-slate-300">
+                    <span class="product-unit-statuses__id">
                         #{{ status.id.slice(0, 6) }}
                     </span>
                 </div>
-                <p class="mt-4 min-h-10 text-sm leading-6 text-slate-500">
+                <p class="product-unit-statuses__comment">
                     {{ status.comment || 'Описание статуса не заполнено.' }}
                 </p>
-                <div class="mt-5 flex gap-2 border-t border-slate-100 pt-4">
+                <div class="product-unit-statuses__actions">
                     <Link
                         :href="`/admin/product-unit-statuses/${status.id}`"
-                        class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700"
+                        class="product-unit-statuses__edit"
                     >
                         Изменить
                     </Link>
-                    <button
-                        class="rounded-lg px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50"
-                        type="button"
+                    <Button
+                        auto-width
+                        danger
+                        ghost
+                        small
+                        text="Удалить"
                         @click="destroy(status.id)"
-                    >
-                        Удалить
-                    </button>
+                    />
                 </div>
             </article>
             <div
                 v-if="statusesPage.items.length === 0"
-                class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center text-slate-500"
+                class="product-unit-statuses__empty"
             >
                 Статусы ещё не созданы.
             </div>
         </div>
         <div
             v-if="statusesPage.totalPages > 1"
-            class="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+            class="product-unit-statuses__pagination"
         >
-            <PaginationList :pagination="statusesPage" />
+            <Pagination :pagination="statusesPage" />
         </div>
     </div>
 </template>
@@ -64,8 +65,9 @@
 import { Link, router } from '@inertiajs/vue3';
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Badge from '@/components/Badge.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import PaginationList from '@/components/PaginationList.vue';
+import Button from '@/components/Button.vue';
+import Pagination from '@/components/Pagination.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import type { ProductUnitStatus } from '@/types/inventory.ts';
 import type { Page } from '@/types/pagination.ts';
 

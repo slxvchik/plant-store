@@ -1,35 +1,33 @@
 <template>
-    <div class="space-y-6">
+    <div class="warehouses">
         <AdminPageHeader
-            title="Склады"
-            eyebrow="Складской учёт"
             description="Адреса и контакты мест хранения товарных единиц."
+            eyebrow="Складской учёт"
+            title="Склады"
         >
             <template #actions>
                 <Button
-                    text="Добавить склад"
+                    auto-width
                     secondary
-                    class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm shadow-sm"
+                    text="Добавить склад"
                     @click="openCreateModal"
                 />
             </template>
         </AdminPageHeader>
-        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div class="warehouses__grid">
             <article
                 v-for="warehouse in warehouses"
                 :key="warehouse.id"
-                class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-emerald-200 hover:shadow-md"
+                class="warehouses__card"
             >
-                <div class="flex items-start justify-between gap-4">
-                    <span
-                        class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"
-                    >
-                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none">
+                <div class="warehouses__card-top">
+                    <span class="warehouses__icon">
+                        <svg fill="none" viewBox="0 0 20 20">
                             <path
                                 d="m3 8 7-4 7 4v8H3V8Z"
                                 stroke="currentColor"
-                                stroke-width="1.5"
                                 stroke-linejoin="round"
+                                stroke-width="1.5"
                             />
                             <path
                                 d="M7 16v-5h6v5"
@@ -38,85 +36,83 @@
                             />
                         </svg>
                     </span>
-                    <span class="font-mono text-xs text-slate-300">
+                    <span class="warehouses__id">
                         #{{ warehouse.id.slice(0, 6) }}
                     </span>
                 </div>
-                <h2 class="mt-5 leading-6 font-semibold text-slate-900">
-                    {{ warehouse.address }}
-                </h2>
-                <p class="mt-2 text-sm text-slate-500">
+                <h2 class="warehouses__address">{{ warehouse.address }}</h2>
+                <p class="warehouses__phone">
                     {{ warehouse.phone || 'Телефон не указан' }}
                 </p>
-                <div class="mt-5 flex gap-2 border-t border-slate-100 pt-4">
-                    <button
+                <div class="warehouses__actions">
+                    <Button
+                        auto-width
+                        outline
+                        small
+                        text="Изменить"
                         type="button"
-                        class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700"
                         @click="openEditModal(warehouse)"
-                    >
-                        Изменить
-                    </button>
-                    <button
+                    />
+                    <Button
+                        auto-width
+                        danger
+                        ghost
+                        small
+                        text="Удалить"
                         type="button"
-                        class="rounded-lg px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50"
                         @click="destroy(warehouse.id)"
-                    >
-                        Удалить
-                    </button>
+                    />
                 </div>
             </article>
-            <div
-                v-if="warehouses.length === 0"
-                class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center text-slate-500"
-            >
+            <div v-if="warehouses.length === 0" class="warehouses__empty">
                 Склады ещё не добавлены.
             </div>
         </div>
-    </div>
-    <Popup
-        v-model:open="isFormPopupOpen"
-        :title="isEditMode ? 'Редактировать склад' : 'Создать склад'"
-    >
-        <form class="flex w-full flex-col gap-5" @submit.prevent="submit">
-            <Input
-                id="address"
-                v-model="form.address"
-                label="Адрес"
-                :error="form.errors.address"
-                @update:modelValue="
-                    validateField && validateField('address', form.address)
-                "
-            />
-            <Input
-                id="phone"
-                v-model="form.phone"
-                type="tel"
-                label="Номер телефона"
-                :error="form.errors.phone"
-                @update:modelValue="
-                    validateField && validateField('phone', form.phone)
-                "
-            />
-            <div class="flex justify-end border-t border-slate-100 pt-5">
-                <Button
-                    type="submit"
-                    secondary
-                    :disabled="form.processing"
-                    :text="isEditMode ? 'Сохранить' : 'Создать'"
-                    class="!w-auto !rounded-xl !px-5 !text-sm"
+        <Modal
+            v-model:open="isFormPopupOpen"
+            :title="isEditMode ? 'Редактировать склад' : 'Создать склад'"
+        >
+            <form class="warehouses__form" @submit.prevent="submit">
+                <Input
+                    id="address"
+                    v-model="form.address"
+                    :error="form.errors.address"
+                    label="Адрес"
+                    @update:modelValue="
+                        validateField && validateField('address', form.address)
+                    "
                 />
-            </div>
-        </form>
-    </Popup>
+                <Input
+                    id="phone"
+                    v-model="form.phone"
+                    :error="form.errors.phone"
+                    label="Номер телефона"
+                    type="tel"
+                    @update:modelValue="
+                        validateField && validateField('phone', form.phone)
+                    "
+                />
+                <div class="warehouses__form-footer">
+                    <Button
+                        :disabled="form.processing"
+                        :text="isEditMode ? 'Сохранить' : 'Создать'"
+                        auto-width
+                        secondary
+                        type="submit"
+                    />
+                </div>
+            </form>
+        </Modal>
+    </div>
 </template>
 
-<script setup lang="ts">
-import Button from '@/components/Button.vue';
+<script lang="ts" setup>
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
+import Button from '@/components/Button.vue';
 import Input from '@/components/Input.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Popup from '@/components/Popup.vue';
+import Modal from '@/components/Modal.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminWarehouses from '@/routes/admin/warehouses';
 import type { Warehouse } from '@/types/warehouse';
 import { validate } from '@/utils/validator.ts';

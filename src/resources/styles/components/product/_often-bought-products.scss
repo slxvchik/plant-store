@@ -1,0 +1,39 @@
+.often-bought-products {
+    @apply overflow-hidden bg-bg-base px-4 py-16 md:px-8 md:py-24 lg:py-28 dark:bg-bg-night;
+
+    &__header {
+        @apply flex flex-col gap-5 md:flex-row md:items-end md:justify-between;
+    }
+
+    &__eyebrow {
+        @apply text-xs font-semibold tracking-[0.2em] text-accent uppercase;
+    }
+
+    &__title {
+        @apply mt-3 font-serif text-3xl leading-tight text-text-title md:text-4xl lg:text-5xl dark:text-linen;
+    }
+
+    &__break {
+        @apply hidden md:block;
+    }
+
+    &__copy {
+        @apply max-w-md;
+    }
+
+    &__description {
+        @apply text-sm leading-6 text-text-muted md:text-base dark:text-white/50;
+    }
+
+    &__link {
+        @apply group mt-4 flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary;
+    }
+
+    &__link-icon {
+        @apply h-4 w-4 transition-transform duration-300 group-hover:translate-x-1;
+    }
+
+    &__slider {
+        @apply mt-8 md:mt-12;
+    }
+}

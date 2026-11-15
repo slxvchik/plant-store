@@ -1,0 +1,40 @@
+.accordion-item {
+    @apply border-text-title/10 dark:border-white/10;
+    &:not(:last-of-type) {
+        @apply border-b;
+    }
+
+    &__button {
+        @apply flex min-h-14 w-full cursor-pointer items-center justify-between gap-4 py-4 text-left text-text-title transition-all duration-300 ease-in-out hover:text-primary dark:text-linen dark:hover:text-secondary;
+    }
+
+    &__question {
+        @apply font-medium md:text-lg;
+    }
+
+    &__icon {
+        @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-bg-surface transition-all duration-300 dark:bg-white/10;
+        &--open {
+            @apply rotate-180 bg-sage-soft dark:bg-primary;
+        }
+    }
+
+    &__chevron {
+        @apply h-4 w-4;
+    }
+
+    &__panel {
+        @apply grid grid-rows-[0fr] opacity-0 transition-all duration-500 ease-in-out;
+        &--open {
+            @apply grid-rows-[1fr] opacity-100;
+        }
+    }
+
+    &__panel-inner {
+        @apply overflow-hidden;
+    }
+
+    &__answer {
+        @apply max-w-2xl pb-5 text-sm leading-7 text-text-muted md:text-base dark:text-white/60;
+    }
+}

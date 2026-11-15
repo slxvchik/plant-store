@@ -1,0 +1,57 @@
+.home {
+    @apply space-y-8;
+    &__hero {
+        @apply overflow-hidden rounded-3xl bg-slate-950 px-6 py-8 text-white shadow-xl sm:px-8 sm:py-10;
+    }
+
+    &__eyebrow {
+        @apply text-xs font-semibold tracking-[0.2em] text-emerald-400 uppercase;
+    }
+
+    &__title {
+        @apply mt-3 text-3xl font-semibold tracking-tight;
+    }
+
+    &__description {
+        @apply mt-3 max-w-2xl text-sm leading-6 text-slate-300;
+    }
+
+    &__grid {
+        @apply grid gap-4 sm:grid-cols-2 xl:grid-cols-4;
+    }
+
+    &__card {
+        @apply group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg;
+    }
+
+    &__card-icon {
+        @apply flex h-11 w-11 items-center justify-center rounded-xl text-lg font-semibold;
+        &--emerald {
+            @apply bg-emerald-50 text-emerald-700;
+        }
+
+        &--sky {
+            @apply bg-sky-50 text-sky-700;
+        }
+
+        &--violet {
+            @apply bg-violet-50 text-violet-700;
+        }
+
+        &--amber {
+            @apply bg-amber-50 text-amber-700;
+        }
+    }
+
+    &__card-title {
+        @apply mt-5 font-semibold text-slate-900 group-hover:text-emerald-700;
+    }
+
+    &__card-description {
+        @apply mt-2 text-sm leading-6 text-slate-500;
+    }
+
+    &__card-link {
+        @apply mt-5 text-xs font-semibold text-emerald-700;
+    }
+}

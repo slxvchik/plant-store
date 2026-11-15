@@ -1,23 +1,43 @@
 <template>
-    <div class="space-y-6">
+    <div class="edit-product">
         <AdminPageHeader
-            :title="product.name"
-            eyebrow="Карточка товара"
-            description="Основные данные, торговые предложения и складские остатки."
             :back-url="backUrl"
+            :title="product.name"
+            description="Основные данные, торговые предложения и складские остатки."
+            eyebrow="Карточка товара"
         >
             <template #actions>
-                <Badge :label="product.active ? 'Активен' : 'Не активен'" :tone="product.active ? 'success' : 'neutral'" />
+                <Badge
+                    :label="product.active ? 'Активен' : 'Не активен'"
+                    :tone="product.active ? 'success' : 'neutral'"
+                />
                 <Button
-                    :text="isEditMode ? 'Выключить редактирование' : 'Включить редактирование'"
-                    class="!w-auto !rounded-xl !px-4 !py-2.5 !text-sm"
+                    :text="
+                        isEditMode
+                            ? 'Выключить редактирование'
+                            : 'Включить редактирование'
+                    "
+                    auto-width
                     secondary
                     type="button"
                     @click="isEditMode = !isEditMode"
                 />
                 <template v-if="isEditMode">
-                    <Button :disabled="form.processing" class="!w-auto !rounded-xl !px-4 !py-2.5 !text-sm" secondary text="Сохранить" type="button" @click="submit" />
-                    <Button class="!w-auto !rounded-xl !bg-rose-600 !px-4 !py-2.5 !text-sm hover:!bg-rose-700" text="Удалить товар" type="button" @click="deleteProduct" />
+                    <Button
+                        :disabled="form.processing"
+                        auto-width
+                        secondary
+                        text="Сохранить"
+                        type="button"
+                        @click="submit"
+                    />
+                    <Button
+                        auto-width
+                        danger
+                        text="Удалить товар"
+                        type="button"
+                        @click="deleteProduct"
+                    />
                 </template>
             </template>
         </AdminPageHeader>
@@ -31,10 +51,10 @@
                 />
             </template>
             <template #offers>
-                <div class="flex flex-col gap-5">
-                    <div v-if="isEditMode" class="max-w-80">
+                <div class="edit-product__offers">
+                    <div v-if="isEditMode" class="edit-product__offer-action">
                         <Button
-                            class="bg-secondary hover:bg-secondary-hover"
+                            secondary
                             text="Добавить ТП"
                             @click="offerDialog?.openCreate()"
                         />
@@ -60,15 +80,15 @@
 <script lang="ts" setup>
 import { router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
-import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import OfferEditorDialog from '@/components/product/OfferEditorDialog.vue';
 import ProductForm from '@/components/product/ProductForm.vue';
 import ProductOfferList from '@/components/product/ProductOfferList.vue';
 import Tabs from '@/components/Tabs.vue';
 import { useProductForm } from '@/composables/useProductForm.ts';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminProduct from '@/routes/admin/products';
 import type { Category, Warehouse } from '@/types';
 import type { Product } from '@/types/product.ts';

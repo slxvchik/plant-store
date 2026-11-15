@@ -1,10 +1,7 @@
 <template>
-    <form
-        class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-        @submit.prevent="submit"
-    >
-        <div class="grid gap-5 p-6 sm:grid-cols-2 sm:p-8">
-            <div class="sm:col-span-2">
+    <form class="product-unit-form" @submit.prevent="submit">
+        <div class="product-unit-form__grid">
+            <div class="product-unit-form__wide">
                 <Select
                     id="product-unit-offer"
                     v-model="form.offerId"
@@ -13,7 +10,6 @@
                     label="Товар / торговое предложение"
                     placeholder="Выберите предложение"
                     required
-                    variant="standard"
                 />
             </div>
             <Select
@@ -24,7 +20,6 @@
                 label="Склад"
                 placeholder="Выберите склад"
                 required
-                variant="standard"
             />
             <Select
                 id="product-unit-status"
@@ -34,7 +29,6 @@
                 label="Статус"
                 placeholder="Выберите статус"
                 required
-                variant="standard"
             />
             <Select
                 id="product-unit-supply"
@@ -43,7 +37,6 @@
                 :items="supplyOptions"
                 label="Поставка"
                 placeholder="Без поставки"
-                variant="standard"
             />
             <Input
                 id="product-unit-sowing-date"
@@ -51,7 +44,6 @@
                 :error="form.errors.sowingDate"
                 label="Дата посева"
                 type="date"
-                variant="standard"
             />
             <Input
                 id="product-unit-qr-code"
@@ -60,7 +52,6 @@
                 hint="Если указан, значение должно быть уникальным."
                 label="QR-код"
                 placeholder="Оставьте пустым для генерации позже"
-                variant="standard"
             />
             <Checkbox
                 id="product-unit-reserved"
@@ -68,31 +59,23 @@
                 :error="form.errors.reserved"
                 description="Единица недоступна для других заказов"
                 text="Зарезервировано"
-                variant="standard"
             />
-            <div class="sm:col-span-2">
-                <Input
+            <div class="product-unit-form__wide">
+                <Textarea
                     id="product-unit-comments"
                     v-model="form.comments"
                     :error="form.errors.comments"
                     label="Комментарии"
-                    multiline
-                    variant="standard"
                 />
             </div>
         </div>
-        <div
-            class="flex justify-end gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:px-8"
-        >
-            <Link
-                class="inline-flex h-11 items-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-medium text-slate-600 hover:bg-slate-100"
-                href="/admin/product-units"
-            >
+        <div class="product-unit-form__footer">
+            <Link class="product-unit-form__cancel" href="/admin/product-units">
                 Отмена
             </Link>
             <Button
                 :disabled="form.processing"
-                class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm"
+                auto-width
                 secondary
                 :text="form.processing ? 'Сохранение…' : 'Сохранить изменения'"
                 type="submit"
@@ -108,6 +91,7 @@ import Button from '@/components/Button.vue';
 import Checkbox from '@/components/Checkbox.vue';
 import Input from '@/components/Input.vue';
 import Select from '@/components/Select.vue';
+import Textarea from '@/components/Textarea.vue';
 import type {
     ProductOption,
     ProductSupply,

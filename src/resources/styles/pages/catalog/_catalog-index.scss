@@ -1,0 +1,143 @@
+.catalog-index {
+    @apply bg-bg-base dark:bg-bg-night;
+
+    &__container {
+        @apply bg-bg-base dark:bg-bg-night;
+    }
+
+    &__content {
+        @apply py-6 md:py-10;
+    }
+
+    &__toolbar {
+        @apply mb-6 flex flex-col gap-3 md:mb-8 md:flex-row md:items-center;
+    }
+
+    &__sort {
+        @apply w-full max-w-62.5;
+    }
+
+    &__layout {
+        @apply lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[264px_minmax(0,1fr)] xl:gap-10;
+    }
+
+    &__sidebar {
+        @apply hidden lg:block;
+    }
+
+    &__sidebar-inner {
+        @apply sticky top-28 max-h-[calc(100dvh-8rem)] overflow-y-auto pr-2;
+    }
+
+    &__filter-heading {
+        @apply mb-6 flex items-center justify-between;
+    }
+
+    &__filter-title {
+        @apply font-serif text-2xl text-text-title dark:text-linen;
+    }
+
+    &__filter-count {
+        @apply rounded-full bg-sage-soft px-2.5 py-1 text-xs font-semibold text-primary dark:bg-primary/25 dark:text-secondary;
+    }
+
+    &__results-meta {
+        @apply mb-5 flex items-center justify-between text-sm;
+    }
+
+    &__results-count {
+        @apply text-text-muted dark:text-white/45;
+    }
+
+    &__results-count span {
+        @apply font-semibold text-text-title dark:text-white;
+    }
+
+    &__help {
+        @apply hidden text-text-muted md:block dark:text-white/40;
+    }
+
+    &__help-link {
+        @apply text-primary underline decoration-primary/30 underline-offset-4 dark:text-secondary;
+    }
+
+    &__products {
+        @apply relative grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4;
+    }
+
+    &__empty {
+        @apply flex min-h-[420px] flex-col items-center justify-center rounded-[28px] border border-dashed border-text-title/15 px-6 text-center dark:border-white/15;
+    }
+
+    &__empty-icon {
+        @apply flex h-16 w-16 items-center justify-center rounded-full bg-sage-soft p-5 text-primary dark:bg-primary/20 dark:text-secondary;
+    }
+
+    &__empty-title {
+        @apply mt-5 font-serif text-2xl text-text-title dark:text-linen;
+    }
+
+    &__empty-text {
+        @apply mt-2 max-w-sm text-sm leading-6 text-text-muted dark:text-white/50;
+    }
+
+    &__empty-reset {
+        @apply mt-5 min-h-11 cursor-pointer rounded-full bg-primary px-5 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-hover;
+    }
+
+    &__mobile-trigger-wrap {
+        @apply fixed inset-x-0 bottom-22 z-30 flex justify-center lg:hidden;
+    }
+
+    &__mobile-trigger {
+        @apply flex min-h-12 cursor-pointer items-center gap-2 rounded-full bg-bg-dark px-6 text-sm font-semibold text-white shadow-[0_12px_35px_rgba(30,41,36,0.3)] transition-all duration-300 hover:scale-105 active:scale-95 dark:bg-secondary dark:text-bg-dark;
+    }
+
+    &__mobile-trigger-icon {
+        @apply h-5 w-5;
+    }
+
+    &__mobile-count {
+        @apply flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] text-white;
+    }
+
+    &__overlay {
+        @apply fixed inset-0 z-[60] bg-bg-dark/45 backdrop-blur-sm lg:hidden;
+    }
+
+    &__drawer {
+        @apply fixed inset-x-0 bottom-0 z-[70] flex h-[92dvh] flex-col rounded-t-[28px] bg-bg-elevated shadow-2xl lg:hidden dark:bg-bg-night-soft;
+    }
+
+    &__drawer-handle {
+        @apply mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-text-title/15 dark:bg-white/20;
+    }
+
+    &__drawer-header {
+        @apply flex items-center justify-between border-b border-text-title/10 px-5 py-4 dark:border-white/10;
+    }
+
+    &__drawer-eyebrow {
+        @apply text-xs tracking-widest text-primary uppercase dark:text-secondary;
+    }
+
+    &__drawer-title {
+        @apply mt-1 font-serif text-3xl text-text-title dark:text-linen;
+    }
+
+    &__drawer-close {
+        @apply flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-bg-surface p-3 text-text-title transition-all duration-300 hover:rotate-90 dark:bg-white/5 dark:text-white;
+    }
+
+    &__drawer-body {
+        @apply flex-1 overflow-y-auto px-5 py-6;
+    }
+
+    &__drawer-footer {
+        @apply border-t border-text-title/10 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] dark:border-white/10;
+    }
+
+    &__drawer-submit {
+        @apply min-h-13 w-full cursor-pointer rounded-full bg-primary font-semibold text-white transition-all duration-300 hover:bg-primary-hover active:scale-[0.98];
+    }
+}

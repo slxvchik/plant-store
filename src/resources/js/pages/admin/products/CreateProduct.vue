@@ -1,13 +1,20 @@
 <template>
-    <div class="space-y-6">
+    <div class="create-product">
         <AdminPageHeader
-            title="Создание товара"
-            eyebrow="Каталог"
-            description="Заполните карточку товара и добавьте торговые предложения."
             :back-url="AdminProduct.index.url()"
+            description="Заполните карточку товара и добавьте торговые предложения."
+            eyebrow="Каталог"
+            title="Создание товара"
         >
             <template #actions>
-                <Button :disabled="form.processing" secondary text="Создать товар" type="button" class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm" @click="submit" />
+                <Button
+                    :disabled="form.processing"
+                    auto-width
+                    secondary
+                    text="Создать товар"
+                    type="button"
+                    @click="submit"
+                />
             </template>
         </AdminPageHeader>
         <Tabs :items="tabs">
@@ -19,10 +26,10 @@
                 />
             </template>
             <template #offers>
-                <div class="flex flex-col gap-5">
-                    <div class="max-w-80">
+                <div class="create-product__offers">
+                    <div class="create-product__offer-action">
                         <Button
-                            class="bg-secondary hover:bg-secondary-hover"
+                            secondary
                             text="Добавить ТП"
                             @click="offerDialog?.openCreate()"
                         />
@@ -47,12 +54,12 @@
 import { computed, ref } from 'vue';
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Button from '@/components/Button.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import OfferEditorDialog from '@/components/product/OfferEditorDialog.vue';
 import ProductForm from '@/components/product/ProductForm.vue';
 import ProductOfferList from '@/components/product/ProductOfferList.vue';
 import Tabs from '@/components/Tabs.vue';
 import { useProductForm } from '@/composables/useProductForm';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminProduct from '@/routes/admin/products';
 import type { Category } from '@/types/category';
 import type { Warehouse } from '@/types/warehouse';

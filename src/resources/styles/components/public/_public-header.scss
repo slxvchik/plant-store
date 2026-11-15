@@ -1,0 +1,86 @@
+.public-header {
+    @apply sticky top-0 z-60 border-b border-text-title/5 bg-bg-base/90 backdrop-blur-xl transition-colors dark:border-white/10 dark:bg-bg-night/90;
+
+    &__inner {
+        @apply flex h-18 w-full items-center justify-between lg:h-22;
+    }
+
+    &__brand {
+        @apply group flex min-h-11 items-center gap-2.5;
+    }
+
+    &__logo {
+        @apply h-9 w-9 text-primary transition-transform group-hover:rotate-12 lg:h-10 lg:w-10 dark:text-secondary;
+    }
+
+    &__brand-name {
+        @apply font-serif text-[22px] leading-none font-semibold tracking-tight text-text-title lg:text-[26px] dark:text-linen;
+    }
+
+    &__brand-accent {
+        @apply font-normal text-primary italic dark:text-secondary;
+    }
+
+    &__nav {
+        @apply hidden items-center gap-1 lg:flex;
+    }
+
+    &__nav-item {
+        @apply relative;
+    }
+
+    &__nav-link,
+    &__nav-button {
+        @apply flex min-h-11 items-center rounded-full px-4 text-[15px] font-medium text-text-muted transition-all hover:bg-bg-surface hover:text-text-title dark:text-white/65 dark:hover:bg-white/5 dark:hover:text-white;
+    }
+
+    &__nav-link--active {
+        @apply text-primary dark:text-secondary;
+    }
+
+    &__nav-button {
+        @apply cursor-pointer gap-1.5;
+    }
+
+    &__chevron {
+        @apply h-3.5 w-3.5 rotate-90 transition-transform;
+
+        &--open {
+            @apply rotate-270;
+        }
+    }
+
+    &__dropdown {
+        @apply absolute top-full left-0 w-64 rounded-2xl border border-text-title/5 bg-bg-elevated p-2 shadow-xl dark:border-white/10 dark:bg-bg-night-soft;
+    }
+
+    &__dropdown-link {
+        @apply flex min-h-11 items-center justify-between rounded-xl px-3 py-2 text-sm text-text-muted transition-all hover:bg-bg-surface hover:pl-4 hover:text-primary dark:text-white/65 dark:hover:bg-white/5 dark:hover:text-secondary;
+    }
+
+    &__dropdown-icon {
+        @apply h-4 w-4;
+    }
+
+    &__actions {
+        @apply flex items-center gap-1 md:gap-2;
+    }
+
+    &__action,
+    &__theme {
+        @apply hidden h-11 w-11 cursor-pointer items-center justify-center rounded-full text-text-muted transition-all hover:bg-bg-surface hover:text-primary md:flex dark:text-white/65 dark:hover:bg-white/5;
+    }
+
+    &__theme {
+        @apply flex;
+    }
+
+    &__action :deep(.icon),
+    &__theme :deep(.icon) {
+        @apply h-5 w-5;
+    }
+
+    &__contact {
+        @apply ml-2 hidden min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-hover xl:flex;
+    }
+}

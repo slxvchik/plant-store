@@ -1,0 +1,39 @@
+.image-upload {
+    @apply flex flex-col gap-2;
+
+    &__label {
+        @apply mb-1.5 text-text-muted select-none;
+    }
+
+    &__items {
+        @apply flex flex-wrap gap-2;
+    }
+
+    &__item {
+        @apply relative flex w-50 flex-col gap-4;
+    }
+
+    &__preview {
+        @apply h-50;
+    }
+
+    &__image {
+        @apply h-full w-full rounded object-cover;
+    }
+
+    &__fields {
+        @apply flex flex-col gap-2;
+    }
+
+    &__remove {
+        @apply absolute top-1 right-1 h-10 w-10 rounded-lg bg-white p-2 text-secondary hover:text-secondary-hover;
+    }
+
+    &__input {
+        @apply w-full text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-slate-100 file:px-4 file:py-2 file:font-medium file:text-slate-700 hover:file:bg-slate-200;
+    }
+
+    &__error {
+        @apply text-red-400;
+    }
+}

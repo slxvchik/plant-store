@@ -1,103 +1,61 @@
 <template>
-    <aside
-        class="fixed inset-y-0 left-0 z-40 flex w-20 flex-col border-r border-slate-800 bg-slate-950 shadow-xl lg:w-72"
-    >
-        <a
-            :href="AdminRoutes.home.url()"
-            class="flex h-20 shrink-0 items-center justify-center gap-3 border-b border-white/10 px-4 lg:justify-start lg:px-6"
-        >
-            <span
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500 p-2 shadow-lg shadow-emerald-950/30"
-            >
-                <LogoIcon class="fill-white" />
+    <aside class="admin-sidebar">
+        <a :href="AdminRoutes.home.url()" class="admin-sidebar__brand">
+            <span class="admin-sidebar__logo">
+                <LogoIcon class="admin-sidebar__logo-icon" />
             </span>
-            <span class="hidden min-w-0 lg:block">
-                <span
-                    class="block truncate text-sm font-semibold tracking-wide text-white"
-                >
-                    Деулино Сад
-                </span>
-                <span class="mt-0.5 block text-xs text-slate-400">
+            <span class="admin-sidebar__brand-copy">
+                <span class="admin-sidebar__brand-name">Деулино Сад</span>
+                <span class="admin-sidebar__brand-subtitle">
                     Панель управления
                 </span>
             </span>
         </a>
-        <nav
-            class="flex-1 scrollbar-none space-y-1.5 overflow-y-auto px-2.5 py-5 lg:px-4"
-        >
+        <nav class="admin-sidebar__nav">
             <template v-for="tab in menuTabs" :key="tab.href">
                 <Link
                     v-if="!tab.children"
-                    :class="
-                        tab.active
-                            ? 'bg-emerald-500/15 text-emerald-300 ring-emerald-400/20'
-                            : 'text-slate-400 ring-transparent hover:bg-white/5 hover:text-white'
-                    "
+                    :class="linkClasses(tab.active)"
                     :href="tab.href"
                     :title="tab.name"
-                    class="flex items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium ring-1 transition ring-inset lg:justify-start"
                 >
-                    <span
-                        :class="
-                            tab.active
-                                ? 'bg-emerald-400/15 text-emerald-300'
-                                : 'bg-white/5 text-slate-500'
-                        "
-                        class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-semibold"
-                    >
+                    <span :class="iconClasses(tab.active)">
                         {{ tab.name.slice(0, 1) }}
                     </span>
-                    <span class="hidden lg:inline">{{ tab.name }}</span>
+                    <span class="admin-sidebar__label">{{ tab.name }}</span>
                 </Link>
-                <div v-else>
-                    <button
-                        :class="
-                            tab.active
-                                ? 'text-white'
-                                : 'text-slate-400 hover:text-white'
-                        "
+                <div v-else class="admin-sidebar__group">
+                    <Button
+                        style-type="link"
+                        :class="groupClasses(tab.active)"
                         :title="tab.name"
-                        class="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition hover:bg-white/5 lg:justify-between"
                         type="button"
                         @click="tab.isOpen = !tab.isOpen"
                     >
-                        <span class="flex items-center gap-3">
-                            <span
-                                class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/5 text-xs font-semibold text-slate-400"
-                            >
+                        <span class="admin-sidebar__group-content">
+                            <span class="admin-sidebar__group-icon">
                                 {{ tab.name.slice(0, 1) }}
                             </span>
-                            <span class="hidden whitespace-nowrap lg:inline">
+                            <span
+                                class="admin-sidebar__label admin-sidebar__label--nowrap"
+                            >
                                 {{ tab.name }}
                             </span>
                         </span>
-                        <span
-                            :class="tab.isOpen ? 'rotate-90' : ''"
-                            class="hidden h-3 w-3 transition-transform lg:block"
-                        >
-                            <ChevronIcon />
+                        <span :class="chevronClasses(tab.isOpen)">
+                            <Icon name="chevron" />
                         </span>
-                    </button>
-                    <div
-                        v-if="tab.isOpen"
-                        class="mt-1 space-y-1 lg:ml-5 lg:border-l lg:border-white/10 lg:pl-3"
-                    >
+                    </Button>
+                    <div v-if="tab.isOpen" class="admin-sidebar__children">
                         <Link
                             v-for="childTab in tab.children"
                             :key="childTab.href"
-                            :class="
-                                childTab.active
-                                    ? 'bg-emerald-500/15 text-emerald-300'
-                                    : 'text-slate-500 hover:bg-white/5 hover:text-slate-200'
-                            "
+                            :class="childClasses(childTab.active)"
                             :href="childTab.href"
                             :title="childTab.name"
-                            class="flex items-center justify-center rounded-lg px-3 py-2.5 text-xs font-medium transition lg:justify-start"
                         >
-                            <span
-                                class="h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-60 lg:mr-2"
-                            />
-                            <span class="hidden lg:inline">
+                            <span class="admin-sidebar__child-dot" />
+                            <span class="admin-sidebar__label">
                                 {{ childTab.name }}
                             </span>
                         </Link>
@@ -105,11 +63,9 @@
                 </div>
             </template>
         </nav>
-        <div
-            class="hidden shrink-0 border-t border-white/10 px-6 py-4 text-xs text-slate-600 lg:block"
-        >
+        <div class="admin-sidebar__footer">
             Деулино Сад · ERP
-            <span class="float-right">v1.0</span>
+            <span class="admin-sidebar__version">v1.0</span>
         </div>
     </aside>
 </template>
@@ -117,7 +73,8 @@
 <script lang="ts" setup>
 import { Link, usePage } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
-import ChevronIcon from '@/components/icons/ChevronIcon.vue';
+import Button from '@/components/Button.vue';
+import Icon from '@/components/icons/Icon.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
 import AdminRoutes from '@/routes/admin';
 
@@ -190,6 +147,27 @@ const menuTabs = ref([
 ]);
 
 const page = usePage();
+
+const linkClasses = (active: boolean) => [
+    'admin-sidebar__link',
+    { 'admin-sidebar__link--active': active },
+];
+const iconClasses = (active: boolean) => [
+    'admin-sidebar__icon',
+    { 'admin-sidebar__icon--active': active },
+];
+const groupClasses = (active: boolean) => [
+    'admin-sidebar__group-button',
+    { 'admin-sidebar__group-button--active': active },
+];
+const chevronClasses = (open: boolean) => [
+    'admin-sidebar__chevron',
+    { 'admin-sidebar__chevron--open': open },
+];
+const childClasses = (active: boolean) => [
+    'admin-sidebar__child',
+    { 'admin-sidebar__child--active': active },
+];
 
 const updateMenuState = (currentPath: string) => {
     menuTabs.value.forEach((tab) => {

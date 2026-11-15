@@ -1,28 +1,30 @@
 <template>
-    <Popup
+    <Modal
         v-model:open="isOpen"
         :title="!disabled && isEditMode ? 'Редактирование ТП' : 'Создание ТП'"
     >
-        <OfferForm
-            v-model:form="offerForm"
-            :disabled="disabled"
-            :warehouses="warehouses"
-        />
-        <Button
-            v-if="!disabled"
-            :text="isEditMode ? 'Сохранить' : 'Создать'"
-            secondary
-            type="button"
-            @click="save"
-        />
-    </Popup>
+        <div class="offer-editor-dialog">
+            <OfferForm
+                v-model:form="offerForm"
+                :disabled="disabled"
+                :warehouses="warehouses"
+            />
+            <Button
+                v-if="!disabled"
+                :text="isEditMode ? 'Сохранить' : 'Создать'"
+                secondary
+                type="button"
+                @click="save"
+            />
+        </div>
+    </Modal>
 </template>
 
 <script lang="ts" setup>
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Button from '@/components/Button.vue';
-import Popup from '@/components/Popup.vue';
+import Modal from '@/components/Modal.vue';
 import OfferForm from '@/components/product/OfferForm.vue';
 import { useFormValidator } from '@/composables/useFormValidator.ts';
 import type { OfferFormState } from '@/types/product.ts';

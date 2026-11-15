@@ -1,19 +1,14 @@
 <template>
-    <div class="w-full space-y-6">
+    <div class="product-supply-create">
         <AdminPageHeader
             back-url="/admin/product-supplies"
             description="После сохранения система автоматически создаст фактическое количество единиц товара."
             eyebrow="Закупки"
             title="Новая поставка"
         />
-        <form
-            class="grid items-start gap-6 lg:grid-cols-[1fr_320px]"
-            @submit.prevent="submit"
-        >
-            <div
-                class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-            >
-                <div class="grid gap-5 p-6 sm:grid-cols-2 sm:p-8">
+        <form class="product-supply-create__layout" @submit.prevent="submit">
+            <div class="product-supply-create__form-card">
+                <div class="product-supply-create__grid">
                     <Select
                         v-model="form.supplierId"
                         :error="form.errors.supplierId"
@@ -75,59 +70,63 @@
                         label="Общая стоимость, ₽"
                         type="number"
                     />
-                    <div class="sm:col-span-2">
-                        <button
+                    <div class="product-supply-create__wide">
+                        <Button
                             v-if="calculatedTotal !== null"
-                            class="mb-4 text-xs font-semibold text-emerald-700 hover:underline"
+                            class="product-supply-create__calculate"
+                            style-type="link"
                             type="button"
                             @click="fillCalculatedTotal"
                         >
                             Рассчитать сумму: {{ formatMoney(calculatedTotal) }}
-                        </button>
+                        </Button>
                         <Checkbox
                             v-model="form.misGraded"
                             description="Состав или количество отличается от сопроводительных документов"
                             text="Пересорт"
                         />
                     </div>
-                    <div class="sm:col-span-2">
-                        <Input
+                    <div class="product-supply-create__wide">
+                        <Textarea
                             v-model="form.comment"
                             :error="form.errors.comment"
                             label="Комментарий"
-                            multiline
                             placeholder="Номер накладной, особенности приёмки, расхождения"
                         />
                     </div>
                 </div>
             </div>
-            <aside class="space-y-4 lg:sticky lg:top-6">
-                <div
-                    class="rounded-2xl border border-emerald-200 bg-emerald-950 p-6 text-white shadow-lg shadow-emerald-950/10"
-                >
-                    <p class="text-sm font-medium text-emerald-200">
+            <aside class="product-supply-create__aside">
+                <div class="product-supply-create__summary">
+                    <p class="product-supply-create__summary-label">
                         Будет сгенерировано
                     </p>
-                    <p class="mt-3 text-4xl font-semibold tracking-tight">
+                    <p class="product-supply-create__quantity">
                         {{ form.actualQuantity || 0 }}
-                        <span class="text-lg text-emerald-300">шт.</span>
+                        <span>шт.</span>
                     </p>
-                    <div
-                        class="mt-6 space-y-3 border-t border-white/10 pt-5 text-sm"
-                    >
+                    <div class="product-supply-create__details">
                         <div>
-                            <p class="text-emerald-300">Товар</p>
-                            <p class="mt-1 font-medium">{{ selectedOffer }}</p>
+                            <p class="product-supply-create__detail-label">
+                                Товар
+                            </p>
+                            <p class="product-supply-create__detail-value">
+                                {{ selectedOffer }}
+                            </p>
                         </div>
                         <div>
-                            <p class="text-emerald-300">Склад</p>
-                            <p class="mt-1 font-medium">
+                            <p class="product-supply-create__detail-label">
+                                Склад
+                            </p>
+                            <p class="product-supply-create__detail-value">
                                 {{ selectedWarehouse }}
                             </p>
                         </div>
                         <div>
-                            <p class="text-emerald-300">Сумма</p>
-                            <p class="mt-1 font-medium">
+                            <p class="product-supply-create__detail-label">
+                                Сумма
+                            </p>
+                            <p class="product-supply-create__detail-value">
                                 {{
                                     formatMoney(
                                         form.totalPurchasePriceInKopecks,
@@ -139,12 +138,15 @@
                 </div>
                 <Button
                     :disabled="form.processing"
-                    :text="form.processing ? 'Создание поставки…' : 'Создать поставку и единицы'"
-                    class="!h-12 !rounded-xl !text-sm"
+                    :text="
+                        form.processing
+                            ? 'Создание поставки…'
+                            : 'Создать поставку и единицы'
+                    "
                     secondary
                     type="submit"
                 />
-                <p class="text-center text-xs leading-5 text-slate-400">
+                <p class="product-supply-create__note">
                     Поставка и все единицы будут сохранены в одной транзакции.
                     QR-коды останутся пустыми.
                 </p>
@@ -155,13 +157,18 @@
 <script lang="ts" setup>
 import { useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Button from '@/components/Button.vue';
 import Checkbox from '@/components/Checkbox.vue';
-import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
-import Select from '@/components/Select.vue';
 import Input from '@/components/Input.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import type { ProductOption, ProductUnitStatus, Supplier } from '@/types/inventory.ts';
+import Select from '@/components/Select.vue';
+import Textarea from '@/components/Textarea.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
+import type {
+    ProductOption,
+    ProductUnitStatus,
+    Supplier,
+} from '@/types/inventory.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 
 defineOptions({ layout: AdminLayout });

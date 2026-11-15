@@ -1,0 +1,151 @@
+.contacts {
+    @apply bg-bg-base dark:bg-bg-night;
+
+    &__section {
+        @apply px-4 py-10 md:px-8 md:py-16;
+    }
+
+    &__container {
+        @apply mx-auto max-w-[1280px];
+    }
+
+    &__breadcrumbs {
+        @apply flex items-center gap-2 text-xs text-text-muted dark:text-white/40;
+    }
+
+    &__breadcrumb-link {
+        @apply transition-colors hover:text-primary;
+    }
+
+    &__breadcrumb-current {
+        @apply text-text-title dark:text-white/65;
+    }
+
+    &__intro {
+        @apply mt-7 max-w-3xl;
+    }
+
+    &__eyebrow {
+        @apply text-xs font-semibold tracking-[0.2em] text-accent uppercase;
+    }
+
+    &__title {
+        @apply mt-3 font-serif text-4xl leading-tight text-text-title md:text-5xl lg:text-6xl dark:text-linen;
+    }
+
+    &__title-accent {
+        @apply text-primary dark:text-secondary;
+    }
+
+    &__description {
+        @apply mt-5 max-w-xl text-sm leading-7 text-text-muted md:text-base dark:text-white/50;
+    }
+
+    &__grid {
+        @apply mt-10 grid gap-6 md:mt-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10;
+    }
+
+    &__info-card {
+        @apply flex h-full flex-col overflow-hidden rounded-[28px] bg-bg-surface dark:bg-bg-night-soft;
+    }
+
+    &__image-wrap {
+        @apply relative h-64 overflow-hidden md:h-80 lg:h-auto lg:min-h-72 lg:flex-1;
+    }
+
+    &__image {
+        @apply h-full w-full object-cover;
+    }
+
+    &__image-overlay {
+        @apply absolute inset-0 bg-gradient-to-t from-bg-dark/65 to-transparent;
+    }
+
+    &__image-caption {
+        @apply absolute right-5 bottom-5 left-5 text-white;
+    }
+
+    &__image-title {
+        @apply font-serif text-2xl;
+    }
+
+    &__image-text {
+        @apply mt-1 text-sm text-white/65;
+    }
+
+    &__details {
+        @apply space-y-5 p-6 md:p-8;
+    }
+
+    &__contact {
+        @apply group flex min-h-12 items-center gap-4;
+    }
+
+    &__contact-icon {
+        @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated p-3 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white dark:bg-white/5 dark:text-secondary;
+    }
+
+    &__contact-label {
+        @apply block text-xs text-text-muted dark:text-white/40;
+    }
+
+    &__contact-value {
+        @apply font-semibold text-text-title dark:text-linen;
+    }
+
+    &__contact-value--email {
+        @apply break-all;
+    }
+
+    &__contact-value--address {
+        @apply mt-1 text-sm leading-6;
+    }
+
+    &__form {
+        @apply rounded-[28px] border border-text-title/5 bg-bg-elevated p-6 shadow-[0_10px_50px_rgba(32,43,38,0.05)] md:p-8 lg:p-10 dark:border-white/10 dark:bg-bg-night-soft;
+    }
+
+    &__form-eyebrow {
+        @apply text-xs font-semibold tracking-[0.18em] text-primary uppercase dark:text-secondary;
+    }
+
+    &__form-title {
+        @apply mt-3 font-serif text-3xl text-text-title dark:text-linen;
+    }
+
+    &__form-description {
+        @apply mt-2 text-sm leading-6 text-text-muted dark:text-white/45;
+    }
+
+    &__fields {
+        @apply mt-7 space-y-4;
+    }
+
+    &__field-row {
+        @apply grid gap-4 md:grid-cols-2;
+    }
+
+    &__submit {
+        @apply mt-6 flex min-h-13 w-full cursor-pointer items-center justify-center gap-3 rounded-full bg-primary px-6 font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-xl active:scale-[0.98] disabled:cursor-wait disabled:opacity-60;
+    }
+
+    &__submit-icon {
+        @apply h-5 w-5;
+    }
+
+    &__spinner {
+        @apply h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white;
+    }
+
+    &__policy {
+        @apply mt-4 text-center text-xs leading-5 text-text-muted dark:text-white/35;
+    }
+
+    &__success {
+        @apply mt-5 flex items-center gap-3 rounded-2xl bg-sage-soft p-4 text-sm text-primary dark:bg-primary/20 dark:text-secondary;
+    }
+
+    &__success-icon {
+        @apply h-5 w-5 shrink-0;
+    }
+}

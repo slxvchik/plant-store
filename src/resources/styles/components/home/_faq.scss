@@ -1,0 +1,26 @@
+.faq {
+    @apply bg-bg-base px-4 py-16 md:px-8 md:py-24 dark:bg-bg-night;
+    &__grid {
+        @apply grid scroll-mt-28 gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20;
+    }
+
+    &__eyebrow {
+        @apply text-xs font-semibold tracking-[0.2em] text-accent uppercase;
+    }
+
+    &__title {
+        @apply mt-3 font-serif text-3xl leading-tight text-text-title md:text-4xl dark:text-linen;
+    }
+
+    &__description {
+        @apply mt-4 text-sm leading-6 text-text-muted dark:text-white/50;
+    }
+
+    &__link {
+        @apply group mt-5 flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary;
+    }
+
+    &__link-icon {
+        @apply h-4 w-4 transition-transform duration-300 group-hover:translate-x-1;
+    }
+}
