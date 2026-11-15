@@ -76,7 +76,7 @@ class OfferModel
      * @param  SortedItem<string>[]  $imageIds
      * @param  SortedItem<string>[]  $videoIds
      */
-    public function __construct(string $id, bool $active, string $sku, int $sort, ?string $description, int $price, array $imageIds, array $videoIds)
+    public function __construct(string $id, bool $active, string $sku, int $sort, ?string $description, int $price, int $stockQuantity, array $imageIds, array $videoIds)
     {
         $uuid = new Uuid($id);
         $this->id = $uuid;
@@ -85,6 +85,7 @@ class OfferModel
         $this->sort = $sort;
         $this->description = $description;
         $this->price = $price;
+        $this->stockQuantity = $stockQuantity;
         $this->imageIds = $imageIds;
         $this->videoIds = $videoIds;
     }
@@ -93,7 +94,7 @@ class OfferModel
      * @param  SortedItem<string>[]  $imageIds
      * @param  SortedItem<string>[]  $videoIds
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $sku, int $sort, ?string $description, int $price, array $imageIds, array $videoIds): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $sku, int $sort, ?string $description, int $price, int $stockQuantity, array $imageIds, array $videoIds): self
     {
         $uuid = $uuidIdentityGenerator->generate();
 
@@ -104,6 +105,7 @@ class OfferModel
             sort: $sort,
             description: $description,
             price: $price,
+            stockQuantity: $stockQuantity,
             imageIds: $imageIds,
             videoIds: $videoIds
         );
@@ -119,6 +121,7 @@ class OfferModel
         int $sort,
         ?string $description,
         int $price,
+        int $stockQuantity,
         array $imageIds,
         array $videoIds
     ): void {
@@ -127,6 +130,7 @@ class OfferModel
         $this->sort = $sort;
         $this->description = $description;
         $this->price = $price;
+        $this->stockQuantity = $stockQuantity;
         $this->imageIds = $imageIds;
         $this->videoIds = $videoIds;
     }

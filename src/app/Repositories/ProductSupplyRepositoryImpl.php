@@ -25,6 +25,13 @@ class ProductSupplyRepositoryImpl implements ProductSupplyRepository
     }
 
     #[Override]
+    public function findAll(): array
+    {
+        return ProductSupply::query()->orderByDesc('created_at')->get()
+            ->map(fn (ProductSupply $productSupply): DomainProductSupply => $productSupply->toDomain())->all();
+    }
+
+    #[Override]
     public function findPageBySupplierId(string $supplierId, Pageable $pageable): Page
     {
         $paginator = ProductSupply::query()

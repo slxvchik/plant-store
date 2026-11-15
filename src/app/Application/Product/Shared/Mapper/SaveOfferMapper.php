@@ -28,18 +28,7 @@ final class SaveOfferMapper
             sort: $offer->sort,
             description: $offer->description,
             price: $offer->price,
-            stocks: array_map(
-                fn ($stock): ProductStockModel => new ProductStockModel(
-                    warehouseId: $stock->warehouseId,
-                    quantity: $stock->quantity,
-                    reserved: $stock->reserved,
-                ),
-                $offer->stocks,
-            ),
-            formFactor: $offer->formFactor,
-            size: $offer->size,
-            age: $offer->age,
-            sowingDate: $offer->sowingDate,
+            stockQuantity: $offer->stockQuantity,
             imageIds: $offer->imageIds,
             videoIds: $offer->videoIds,
         );

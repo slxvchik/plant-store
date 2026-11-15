@@ -21,7 +21,6 @@ readonly class ProductUnitResponseDto implements JsonSerializable
         public string $productUnitStatusId,
         public string $comments,
         public ?string $qrCode,
-        public ?string $barcode,
     ) {}
 
     public static function fromDomain(ProductUnitModel $productUnit): self

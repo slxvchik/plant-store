@@ -1,44 +1,75 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <h1 class="text-4xl text-text-title">Склады</h1>
-        <div class="max-w-80">
-            <Button text="Создать" secondary @click="openCreateModal" />
-        </div>
-    </div>
-    <div
-        class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
-    >
-        <div
-            class="grid grid-cols-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
+    <div class="space-y-6">
+        <AdminPageHeader
+            title="Склады"
+            eyebrow="Складской учёт"
+            description="Адреса и контакты мест хранения товарных единиц."
         >
-            <div class="p-4">Id</div>
-            <div class="p-4">Адрес</div>
-            <div class="p-4">Телефон</div>
-            <div class="p-4">Действие</div>
-        </div>
-        <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
-            <div
+            <template #actions>
+                <Button
+                    text="Добавить склад"
+                    secondary
+                    class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm shadow-sm"
+                    @click="openCreateModal"
+                />
+            </template>
+        </AdminPageHeader>
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <article
                 v-for="warehouse in warehouses"
                 :key="warehouse.id"
-                class="grid grid-cols-4 transition-colors hover:bg-gray-50"
+                class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-emerald-200 hover:shadow-md"
             >
-                <div class="p-4 font-medium text-gray-900">
-                    #{{ warehouse.id }}
+                <div class="flex items-start justify-between gap-4">
+                    <span
+                        class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"
+                    >
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none">
+                            <path
+                                d="m3 8 7-4 7 4v8H3V8Z"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linejoin="round"
+                            />
+                            <path
+                                d="M7 16v-5h6v5"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                            />
+                        </svg>
+                    </span>
+                    <span class="font-mono text-xs text-slate-300">
+                        #{{ warehouse.id.slice(0, 6) }}
+                    </span>
                 </div>
-                <div class="truncate p-4">{{ warehouse.address }}</div>
-                <div class="p-4 whitespace-nowrap">{{ warehouse.phone }}</div>
-                <div class="flex gap-2 p-4">
-                    <Button
-                        text="Редактировать"
-                        class="w-fit bg-yellow-400 hover:bg-yellow-500"
+                <h2 class="mt-5 leading-6 font-semibold text-slate-900">
+                    {{ warehouse.address }}
+                </h2>
+                <p class="mt-2 text-sm text-slate-500">
+                    {{ warehouse.phone || 'Телефон не указан' }}
+                </p>
+                <div class="mt-5 flex gap-2 border-t border-slate-100 pt-4">
+                    <button
+                        type="button"
+                        class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700"
                         @click="openEditModal(warehouse)"
-                    />
-                    <Button
-                        text="Удалить"
-                        class="w-fit bg-red-400 hover:bg-red-500"
+                    >
+                        Изменить
+                    </button>
+                    <button
+                        type="button"
+                        class="rounded-lg px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50"
                         @click="destroy(warehouse.id)"
-                    />
+                    >
+                        Удалить
+                    </button>
                 </div>
+            </article>
+            <div
+                v-if="warehouses.length === 0"
+                class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center text-slate-500"
+            >
+                Склады ещё не добавлены.
             </div>
         </div>
     </div>
@@ -66,19 +97,22 @@
                     validateField && validateField('phone', form.phone)
                 "
             />
-            <Button
-                type="submit"
-                secondary
-                :disabled="form.processing"
-                :text="isEditMode ? 'Сохранить' : 'Создать'"
-                class="relative left-[50%] max-w-80 translate-x-[-50%]"
-            />
+            <div class="flex justify-end border-t border-slate-100 pt-5">
+                <Button
+                    type="submit"
+                    secondary
+                    :disabled="form.processing"
+                    :text="isEditMode ? 'Сохранить' : 'Создать'"
+                    class="!w-auto !rounded-xl !px-5 !text-sm"
+                />
+            </div>
         </form>
     </Popup>
 </template>
 
 <script setup lang="ts">
 import Button from '@/components/Button.vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Input from '@/components/Input.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Popup from '@/components/Popup.vue';

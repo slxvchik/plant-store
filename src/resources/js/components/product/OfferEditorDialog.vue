@@ -29,7 +29,7 @@ import type { OfferFormState } from '@/types/product.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 import { validate } from '@/utils/validator.ts';
 
-const props = defineProps<{
+defineProps<{
     warehouses: Warehouse[];
     disabled?: boolean;
 }>();
@@ -46,15 +46,7 @@ function createEmptyOffer(): OfferFormState {
         sort: 500,
         description: '',
         price: 0,
-        stocks: props.warehouses.map((warehouse) => ({
-            warehouseId: warehouse.id,
-            quantity: 0,
-            reserved: 0,
-        })),
-        formFactor: '',
-        size: '',
-        age: null,
-        sowingDate: '',
+        stockQuantity: 0,
         images: [],
     };
 }
@@ -62,11 +54,6 @@ function createEmptyOffer(): OfferFormState {
 function copyOffer(offer: OfferFormState): OfferFormState {
     return {
         ...offer,
-        stocks: offer.stocks.map((stock) => ({
-            warehouseId: stock.warehouseId,
-            quantity: stock.quantity,
-            reserved: stock.reserved,
-        })),
         images: offer.images.map((image) => ({ ...image })),
     };
 }

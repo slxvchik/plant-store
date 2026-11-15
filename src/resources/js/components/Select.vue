@@ -1,16 +1,51 @@
 <template>
+    <label v-if="variant === 'standard'" class="block">
+        <span v-if="label" class="mb-2 block text-sm font-medium text-slate-700">
+            {{ label }}
+            <span v-if="required" class="text-rose-500">*</span>
+        </span>
+        <select
+            :id="inputId"
+            v-model="modelValue"
+            :aria-describedby="error || hint ? `${inputId}-message` : undefined"
+            :aria-invalid="Boolean(error)"
+            :class="fieldClasses"
+            :disabled="disabled"
+            :multiple="multiple"
+            :required="required"
+        >
+            <option v-if="!multiple" :value="null">{{ placeholder }}</option>
+            <option v-for="item in items" :key="item.value" :value="item.value">
+                {{ item.label }}
+            </option>
+        </select>
+        <span
+            v-if="error"
+            :id="`${inputId}-message`"
+            class="mt-1.5 block text-xs font-medium text-rose-600"
+        >
+            {{ error }}
+        </span>
+        <span
+            v-else-if="hint"
+            :id="`${inputId}-message`"
+            class="mt-1.5 block text-xs text-slate-400"
+        >
+            {{ hint }}
+        </span>
+    </label>
     <div
-        class="relative h-full w-full"
+        v-else
         v-click-outside="() => (isOpen = false)"
+        class="relative h-full w-full"
     >
         <span
             v-if="label"
-            :class="
-                !error ? 'text-text-muted dark:text-white/40' : 'text-red-400'
-            "
+            :class="!error ? 'text-text-muted dark:text-white/40' : 'text-red-400'"
             class="mb-1.5 select-none"
         >
             {{ label }}
+            <span v-if="required" class="text-red-400">*</span>
         </span>
         <div
             :class="[
@@ -22,15 +57,13 @@
                     : 'border-red-500 focus:ring-4 focus:ring-red-500/10',
             ]"
             class="flex h-12 cursor-pointer items-center justify-between border bg-bg-elevated px-4 py-3.5 focus:outline-none dark:bg-bg-night-soft"
-            @click.prevent="toggleDropdown"
             tabindex="0"
+            @click.prevent="toggleDropdown"
             @keydown.space.prevent="toggleDropdown"
             @keydown.enter.prevent="toggleDropdown"
             @keydown.esc="isOpen = false"
         >
-            <p
-                class="relative top-px truncate font-sans text-text-title dark:text-white"
-            >
+            <p class="relative top-px truncate font-sans text-text-title dark:text-white">
                 {{ displayValue }}
             </p>
             <span
@@ -40,9 +73,8 @@
                 <AppIcon name="chevron" />
             </span>
         </div>
-        <p v-if="error" class="text-red-400">
-            {{ error }}
-        </p>
+        <p v-if="error" class="text-red-400">{{ error }}</p>
+        <p v-else-if="hint" class="mt-1.5 text-xs text-text-muted">{{ hint }}</p>
         <div
             :class="[isOpen ? 'block' : 'hidden']"
             class="absolute top-[calc(100%+5px)] left-0 z-50 w-full overflow-hidden rounded-b-2xl shadow-lg"
@@ -58,8 +90,8 @@
                             : 'bg-bg-elevated dark:bg-bg-night-soft dark:text-white'
                     "
                     class="cursor-pointer px-4 py-2 text-sm font-semibold text-text-title transition-colors outline-none hover:bg-slate-100 focus:bg-slate-300 dark:focus:text-secondary"
-                    @click="selectItem(item)"
                     tabindex="-1"
+                    @click="selectItem(item)"
                     @keydown.space.prevent="selectItem(item)"
                     @keydown.enter.prevent="selectItem(item)"
                     @keydown.esc="isOpen = false"
@@ -80,7 +112,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, ref, useId } from 'vue';
 import AppIcon from '@/components/AppIcon.vue';
 import { clickOutside as vClickOutside } from '@/directives/clickOutside';
 import type { SelectItem } from '@/types/select-item.ts';
@@ -89,6 +121,7 @@ type SelectValue = SelectItem['value'];
 type SelectModel = SelectValue | SelectValue[] | null;
 
 interface Props {
+    id?: string;
     multiple?: boolean;
     items: SelectItem[];
     placeholder?: string;
@@ -96,21 +129,33 @@ interface Props {
     nullable?: boolean;
     error?: string;
     disabled?: boolean;
+    required?: boolean;
+    hint?: string;
+    variant?: 'dropdown' | 'standard';
 }
 
 const props = withDefaults(defineProps<Props>(), {
     multiple: false,
     placeholder: 'Выберите значение',
     nullable: false,
+    variant: 'standard',
 });
 
 const modelValue = defineModel<SelectModel>({ default: null });
+const generatedId = useId();
+const inputId = computed(() => props.id ?? `select-${generatedId}`);
 const itemRefs = ref<HTMLLIElement[]>([]);
 const isOpen = ref(false);
-
 const selectedValues = computed<SelectValue[]>(() =>
     Array.isArray(modelValue.value) ? modelValue.value : [],
 );
+const fieldClasses = computed(() => [
+    'w-full cursor-pointer rounded-xl border bg-white px-3.5 text-sm text-slate-900 shadow-sm outline-none transition focus:ring-4 disabled:cursor-not-allowed disabled:bg-slate-50',
+    props.multiple ? 'min-h-11 py-2' : 'h-11',
+    props.error
+        ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-100'
+        : 'border-slate-200 focus:border-emerald-500 focus:ring-emerald-100',
+]);
 
 const moveFocus = (currentIndex: number, step: number) => {
     const count = props.items.length;
@@ -142,7 +187,6 @@ const toggleDropdown = async () => {
                 ? selectedValues.value.includes(item.value)
                 : modelValue.value === item.value,
         );
-
         const targetIndex = selectedIndex >= 0 ? selectedIndex : 0;
         itemRefs.value[targetIndex]?.focus();
     }

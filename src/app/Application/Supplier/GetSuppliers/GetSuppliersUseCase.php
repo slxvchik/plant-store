@@ -13,5 +13,5 @@ interface GetSuppliersUseCase
     /**
      * @return Page<SupplierResponseDto>
      */
-    public function execute(Pageable $pageable): Page;
+    public function execute(Pageable $pageable, ?string $search = null): Page;
 }

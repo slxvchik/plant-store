@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\ProductUnit\UpdateProductUnit;
 
+use App\Application\ProductUnit\Shared\Exception\ProductUnitAlreadyExistsException;
 use App\Application\ProductUnit\Shared\Exception\ProductUnitNotFoundException;
 use App\Domain\ProductUnit\ProductUnitRepository;
 use Override;
@@ -18,6 +19,13 @@ readonly class UpdateProductUnitService implements UpdateProductUnitUseCase
         $productUnit = $this->productUnitRepository->findById($requestDto->id);
         if ($productUnit === null) {
             throw new ProductUnitNotFoundException($requestDto->id);
+        }
+
+        if ($requestDto->qrCode !== null && $requestDto->qrCode !== '') {
+            $sameQrCode = $this->productUnitRepository->findByQrCode($requestDto->qrCode);
+            if ($sameQrCode !== null && $sameQrCode->id->value !== $productUnit->id->value) {
+                throw new ProductUnitAlreadyExistsException($requestDto->qrCode);
+            }
         }
 
         $productUnit->update(

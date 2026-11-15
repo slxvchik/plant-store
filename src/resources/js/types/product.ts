@@ -2,7 +2,6 @@ import type { Category } from '@/types/category';
 import type { Image, ImageFormState } from '@/types/image';
 import type { Tag } from '@/types/tag';
 import type { Video } from '@/types/video';
-import type { Warehouse } from '@/types/warehouse';
 
 // Response
 export type Product = {
@@ -13,7 +12,7 @@ export type Product = {
     sort: number;
     description: string | null;
     offers: Offer[];
-    category: Category;
+    category: Category | null;
     tags: Tag[];
     videos: Video[];
     images: Image[];
@@ -26,17 +25,7 @@ export type Offer = {
     sort: number;
     description: string | null;
     price: number;
-    stocks: Stock[];
-    formFactor: string | null;
-    size: string | null;
-    age: number | null;
-    sowingDate: string | null;
-};
-
-export type Stock = {
-    warehouse: Warehouse;
-    quantity: number;
-    reserved: number;
+    stockQuantity: number | null;
 };
 
 export type ProductListItem = {
@@ -48,7 +37,7 @@ export type ProductListItem = {
     oldPrice?: number;
     minPrice: number;
     inStock: boolean;
-    category: Category;
+    category?: Category;
     tags: Tag[];
     image: Image;
 };
@@ -61,7 +50,7 @@ export type ProductFormState = {
     alias: string;
     sort: number;
     description: string;
-    categories: string[];
+    category: string | null;
     tags: string[];
     images: ImageFormState[];
     offers: OfferFormState[];
@@ -75,18 +64,8 @@ export type OfferFormState = {
     sort: number;
     description: string;
     price: number;
-    stocks: StockFormState[];
-    formFactor: string;
-    size: string;
-    age: number | null;
-    sowingDate: string;
+    stockQuantity: number;
     images: ImageFormState[];
-};
-
-export type StockFormState = {
-    warehouseId: string;
-    quantity: number;
-    reserved: number;
 };
 
 // Requests

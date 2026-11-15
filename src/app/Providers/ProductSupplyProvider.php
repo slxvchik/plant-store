@@ -8,6 +8,8 @@ use App\Application\ProductSupply\CreateProductSupply\CreateProductSupplyService
 use App\Application\ProductSupply\CreateProductSupply\CreateProductSupplyUseCase;
 use App\Application\ProductSupply\DeleteProductSupply\DeleteProductSupplyService;
 use App\Application\ProductSupply\DeleteProductSupply\DeleteProductSupplyUseCase;
+use App\Application\ProductSupply\GetAllProductSupplies\GetAllProductSuppliesService;
+use App\Application\ProductSupply\GetAllProductSupplies\GetAllProductSuppliesUseCase;
 use App\Application\ProductSupply\GetProductSupply\GetProductSupplyService;
 use App\Application\ProductSupply\GetProductSupply\GetProductSupplyUseCase;
 use App\Application\ProductSupply\GetProductSupplies\GetProductSuppliesService;
@@ -24,6 +26,7 @@ class ProductSupplyProvider extends ServiceProvider
     {
         $this->app->singleton(ProductSupplyRepository::class, ProductSupplyRepositoryImpl::class);
         $this->app->singleton(GetProductSuppliesUseCase::class, GetProductSuppliesService::class);
+        $this->app->singleton(GetAllProductSuppliesUseCase::class, GetAllProductSuppliesService::class);
         $this->app->singleton(GetProductSupplyUseCase::class, GetProductSupplyService::class);
         $this->app->singleton(CreateProductSupplyUseCase::class, CreateProductSupplyService::class);
         $this->app->singleton(UpdateProductSupplyUseCase::class, UpdateProductSupplyService::class);

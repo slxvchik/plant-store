@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('sort');
             $table->string('name', 255);
             $table->text('description')->nullable();
+            $table->foreignUuid('category_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
 
@@ -27,11 +28,8 @@ return new class extends Migration
             $table->string('sku', 100);
             $table->integer('sort');
             $table->text('description')->nullable();
+            $table->integer('stock_quantity');
             $table->integer('price');
-            $table->string('form_factor', 512)->nullable();
-            $table->string('size', 512)->nullable();
-            $table->integer('age_in_months')->nullable();
-            $table->date('sowing_date')->nullable();
             $table->timestamps();
         });
 
@@ -67,12 +65,6 @@ return new class extends Migration
             $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('tag_id')->constrained()->cascadeOnDelete();
             $table->primary(['product_id', 'tag_id']);
-        });
-
-        Schema::create('product_categories', function (Blueprint $table) {
-            $table->foreignUuid('product_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('category_id')->constrained()->cascadeOnDelete();
-            $table->primary(['product_id', 'category_id']);
         });
 
         Schema::create('product_images', function (Blueprint $table) {

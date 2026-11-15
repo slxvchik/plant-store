@@ -1,46 +1,34 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <h1 class="text-4xl text-text-title">Заявки</h1>
-    </div>
-    <div
-        class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
-    >
-        <div
-            class="grid grid-cols-5 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
-        >
-            <div class="p-4">ФИО</div>
-            <div class="p-4">Телефон</div>
-            <div class="p-4">Почта</div>
-            <div class="p-4">Комментарий</div>
-            <div class="p-4">Действие</div>
-        </div>
-        <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
-            <div
-                v-for="request in userRequestsPage.items"
-                :key="request.id"
-                class="grid grid-cols-5"
-            >
-                <div class="p-4">{{ request.fio }}</div>
-                <div class="p-4">{{ request.phone }}</div>
-                <div class="p-4">{{ request.email }}</div>
-                <div class="p-4">{{ request.comment }}</div>
-                <div class="p-4">
-                    <Button
-                        text="Удалить"
-                        class="bg-red-400 hover:bg-red-500"
-                        @click="destroy(request.id)"
-                    />
-                </div>
+    <div class="space-y-6">
+        <AdminPageHeader title="Заявки" eyebrow="Клиенты" description="Контактные данные и комментарии из форм обратной связи." />
+        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[850px] text-left text-sm">
+                    <thead class="border-b border-slate-200 bg-slate-50 text-xs font-semibold tracking-wider text-slate-500 uppercase">
+                        <tr><th class="px-5 py-4">ФИО</th><th class="px-5 py-4">Телефон</th><th class="px-5 py-4">Почта</th><th class="px-5 py-4">Комментарий</th><th class="px-5 py-4 text-right">Действия</th></tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr v-for="request in userRequestsPage.items" :key="request.id" class="hover:bg-slate-50">
+                            <td class="px-5 py-4 font-semibold text-slate-900">{{ request.fio }}</td>
+                            <td class="px-5 py-4 whitespace-nowrap text-slate-600">{{ request.phone }}</td>
+                            <td class="px-5 py-4 text-slate-600">{{ request.email }}</td>
+                            <td class="max-w-80 px-5 py-4 text-slate-500">{{ request.comment }}</td>
+                            <td class="px-5 py-4 text-right"><Button text="Удалить" class="!w-auto !rounded-lg !bg-transparent !px-3 !py-2 !text-xs !text-rose-600 hover:!bg-rose-50" @click="destroy(request.id)" /></td>
+                        </tr>
+                        <tr v-if="userRequestsPage.items.length === 0"><td colspan="5" class="px-5 py-16 text-center text-slate-500">Новых заявок нет.</td></tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
+            <PaginationList :pagination="pagination" />
+        </section>
     </div>
-    <PaginationList v-if="pagination.totalPages > 1" :pagination="pagination" />
 </template>
 
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import Button from '@/components/Button.vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import PaginationList from '@/components/PaginationList.vue';
 import AdminRequests from '@/routes/admin/requests';

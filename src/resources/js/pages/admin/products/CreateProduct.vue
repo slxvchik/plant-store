@@ -1,20 +1,15 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <div class="w-fit">
-            <Link :href="AdminProduct.index.url()" text="Назад" secondary />
-        </div>
-        <div class="flex flex-row gap-10">
-            <h1 class="text-4xl text-text-title">Создание товара</h1>
-            <div class="w-fit">
-                <Button
-                    type="button"
-                    text="Создать"
-                    secondary
-                    :disabled="form.processing"
-                    @click="submit"
-                />
-            </div>
-        </div>
+    <div class="space-y-6">
+        <AdminPageHeader
+            title="Создание товара"
+            eyebrow="Каталог"
+            description="Заполните карточку товара и добавьте торговые предложения."
+            :back-url="AdminProduct.index.url()"
+        >
+            <template #actions>
+                <Button :disabled="form.processing" secondary text="Создать товар" type="button" class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm" @click="submit" />
+            </template>
+        </AdminPageHeader>
         <Tabs :items="tabs">
             <template #product>
                 <ProductForm
@@ -27,8 +22,8 @@
                 <div class="flex flex-col gap-5">
                     <div class="max-w-80">
                         <Button
-                            text="Добавить ТП"
                             class="bg-secondary hover:bg-secondary-hover"
+                            text="Добавить ТП"
                             @click="offerDialog?.openCreate()"
                         />
                     </div>
@@ -48,11 +43,11 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, ref } from 'vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Button from '@/components/Button.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Link from '@/components/Link.vue';
 import OfferEditorDialog from '@/components/product/OfferEditorDialog.vue';
 import ProductForm from '@/components/product/ProductForm.vue';
 import ProductOfferList from '@/components/product/ProductOfferList.vue';

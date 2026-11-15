@@ -17,8 +17,7 @@ class ProductUnitStatusRepositoryImpl implements ProductUnitStatusRepository
     #[Override]
     public function findPage(Pageable $pageable): Page
     {
-        $paginator = ProductUnitStatus::query()
-            ->orderBy('name')
+        $paginator = ProductUnitStatus::query()->orderBy('name')
             ->paginate(perPage: $pageable->perPage, page: $pageable->page);
 
         return PaginationAdapter::toDomainPage(
@@ -28,9 +27,22 @@ class ProductUnitStatusRepositoryImpl implements ProductUnitStatusRepository
     }
 
     #[Override]
+    public function findAll(): array
+    {
+        return ProductUnitStatus::query()->orderBy('name')->get()
+            ->map(fn (ProductUnitStatus $status): DomainProductUnitStatus => $status->toDomain())->all();
+    }
+
+    #[Override]
     public function findById(string $id): ?DomainProductUnitStatus
     {
         return ProductUnitStatus::find($id)?->toDomain();
+    }
+
+    #[Override]
+    public function findByName(string $name): ?DomainProductUnitStatus
+    {
+        return ProductUnitStatus::firstWhere('name', $name)?->toDomain();
     }
 
     #[Override]

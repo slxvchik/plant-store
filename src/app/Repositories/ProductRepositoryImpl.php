@@ -9,7 +9,6 @@ use App\Domain\Product\Criteria\ProductSearchCriteria;
 use App\Domain\Product\Model\OfferModel as DomainOffer;
 use App\Domain\Product\Model\ProductModel as DomainProduct;
 use App\Domain\Product\Repository\ProductRepository;
-use App\Domain\ProductUnit\Model\ProductStockModel;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Shared\SortedItem\SortedItem;
@@ -68,6 +67,13 @@ class ProductRepositoryImpl implements ProductRepository
             ->get()
             ->map(fn (Product $product): DomainProduct => $product->toDomain())
             ->all();
+    }
+
+    #[Override]
+    public function findAll(): array
+    {
+        return $this->query()->orderBy('sort')->get()
+            ->map(fn (Product $product): DomainProduct => $product->toDomain())->all();
     }
 
     #[Override]
@@ -159,6 +165,7 @@ class ProductRepositoryImpl implements ProductRepository
             'sort' => $product->sort,
             'name' => $product->name,
             'description' => $product->description,
+            'category_id' => $product->categoryId,
         ];
     }
 
@@ -171,10 +178,7 @@ class ProductRepositoryImpl implements ProductRepository
             'sort' => $offer->sort,
             'description' => $offer->description,
             'price' => $offer->price,
-            'form_factor' => $offer->formFactor,
-            'size' => $offer->size,
-            'age_in_months' => $offer->age,
-            'sowing_date' => $offer->sowingDate,
+            'stock_quantity' => $offer->stockQuantity,
         ];
     }
 
@@ -208,10 +212,7 @@ class ProductRepositoryImpl implements ProductRepository
             'sort',
             'description',
             'price',
-            'form_factor',
-            'size',
-            'age_in_months',
-            'sowing_date',
+            'stock_quantity',
             'updated_at',
         ]);
 
@@ -221,13 +222,6 @@ class ProductRepositoryImpl implements ProductRepository
 
             $offerPivotData[] = ['product_id' => $productId, 'offer_id' => $offerId];
 
-            $this->syncRelationships('offer_stocks', 'offer_id', $offerId, $offer->stocks, function (ProductStockModel $stock) {
-                return [
-                    'warehouse_id' => $stock->warehouseId,
-                    'quantity' => $stock->quantity,
-                    'reserved' => $stock->reserved,
-                ];
-            });
             $this->syncRelationships('offer_images', 'offer_id', $offerId, $offer->imageIds, function (SortedItem $sortedImage) {
                 return [
                     'image_id' => $sortedImage->id,
@@ -253,11 +247,6 @@ class ProductRepositoryImpl implements ProductRepository
     {
         $productId = $product->id->value;
 
-        $this->syncRelationships('product_categories', 'product_id', $productId, $product->categoryId, function (string $categoryId) {
-            return [
-                'category_id' => $categoryId,
-            ];
-        });
         $this->syncRelationships('product_tags', 'product_id', $productId, $product->tagIds, function (string $tagId) {
             return [
                 'tag_id' => $tagId,

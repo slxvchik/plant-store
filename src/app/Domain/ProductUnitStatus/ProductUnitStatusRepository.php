@@ -15,7 +15,14 @@ interface ProductUnitStatusRepository
      */
     public function findPage(Pageable $pageable): Page;
 
+    /**
+     * @return ProductUnitStatusModel[]
+     */
+    public function findAll(): array;
+
     public function findById(string $id): ?ProductUnitStatusModel;
+
+    public function findByName(string $name): ?ProductUnitStatusModel;
 
     public function create(ProductUnitStatusModel $status): string;
 

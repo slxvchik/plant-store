@@ -13,7 +13,7 @@
             >
                 <SearchInput v-model="searchQuery" id="catalog-search-input" />
                 <div class="w-full max-w-62.5">
-                    <Select v-model="productsSort" :items="sortItems" />
+                    <Select variant="dropdown" v-model="productsSort" :items="sortItems" />
                 </div>
             </div>
 

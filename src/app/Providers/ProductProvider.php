@@ -11,6 +11,8 @@ use App\Application\Product\GetDetailProduct\GetDetailProductService;
 use App\Application\Product\GetDetailProduct\GetDetailProductUseCase;
 use App\Application\Product\GetProducts\GetProductsService;
 use App\Application\Product\GetProducts\GetProductsUseCase;
+use App\Application\Product\GetProductOptions\GetProductOptionsService;
+use App\Application\Product\GetProductOptions\GetProductOptionsUseCase;
 use App\Application\Product\Shared\Port\ProductDetailsFetcher;
 use App\Application\Product\UpdateProduct\UpdateProductService;
 use App\Application\Product\UpdateProduct\UpdateProductUseCase;
@@ -43,6 +45,11 @@ class ProductProvider extends ServiceProvider
         $this->app->singleton(
             GetProductsUseCase::class,
             GetProductsService::class,
+        );
+
+        $this->app->singleton(
+            GetProductOptionsUseCase::class,
+            GetProductOptionsService::class,
         );
 
         $this->app->singleton(

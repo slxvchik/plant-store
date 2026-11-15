@@ -98,6 +98,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [ProductUnitController::class, 'index'])->name('index');
         Route::get('/create', [ProductUnitController::class, 'create'])->name('create');
         Route::post('/', [ProductUnitController::class, 'store'])->name('store');
+        Route::post('/batch', [ProductUnitController::class, 'storeBatch'])->name('store-batch');
         Route::get('/{id}', [ProductUnitController::class, 'show'])->name('show');
         Route::put('/{id}', [ProductUnitController::class, 'update'])->name('update');
         Route::delete('/{id}', [ProductUnitController::class, 'destroy'])->name('destroy');
@@ -119,13 +120,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/{id}', [ProductSupplyController::class, 'show'])->name('show');
         Route::put('/{id}', [ProductSupplyController::class, 'update'])->name('update');
         Route::delete('/{id}', [ProductSupplyController::class, 'destroy'])->name('destroy');
-    });
-
-    Route::prefix('carts')->name('carts.')->group(function () {
-        Route::get('/', [CartController::class, 'index'])->name('list');
-        Route::post('/', [CartController::class, 'store'])->name('store');
-        Route::post('/{cartId}/products', [CartController::class, 'saveProduct'])->name('save');
-        Route::delete('/{cartId}/products/{productId}/offers/{offerId}', [CartController::class, 'deleteProduct'])->name('delete');
     });
 
     Route::prefix('main-page')->name('main-page.')->group(function () {
@@ -151,15 +145,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/{id}', [UserController::class, 'show'])->name('show');
         Route::put('/{id}', [UserController::class, 'update'])->name('update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
-    });
-
-    Route::prefix('orders')->name('orders.')->group(function () {
-        Route::get('/', [OrderController::class, 'index'])->name('list');
-        Route::post('/', [OrderController::class, 'store'])->name('store');
-        Route::get('/{id}', [OrderController::class, 'show'])->name('show');
-        Route::put('/{id}/take', [OrderController::class, 'take'])->name('take');
-        Route::put('/{id}/cancel', [OrderController::class, 'cancel'])->name('cancel');
-        Route::put('/{id}/complete', [OrderController::class, 'complete'])->name('complete');
-        Route::delete('/{id}', [OrderController::class, 'destroy'])->name('destroy');
     });
 });

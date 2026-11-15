@@ -12,9 +12,18 @@ interface SupplierRepository
     /**
      * @return Page<SupplierModel>
      */
-    public function findPage(Pageable $pageable): Page;
+    public function findPage(Pageable $pageable, ?string $search = null): Page;
+
+    /**
+     * @return SupplierModel[]
+     */
+    public function findAll(): array;
 
     public function findById(string $id): ?SupplierModel;
+
+    public function findByName(string $name): ?SupplierModel;
+
+    public function findByEmail(string $email): ?SupplierModel;
 
     public function create(SupplierModel $supplier): string;
 

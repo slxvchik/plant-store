@@ -1,65 +1,51 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <h1 class="text-4xl text-text-title">Товары</h1>
-        <div class="w-fit">
-            <Link
-                :href="AdminProducts.create.url()"
-                text="Создать товар"
-                styleType="button"
-                secondary
-            />
-        </div>
-    </div>
-    <div
-        class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
-    >
-        <div class="grid w-full grid-cols-4">
-            <div class="border-r border-gray-200 p-4">Id</div>
-            <div class="border-r border-gray-200 p-4">Название</div>
-            <div class="border-r border-gray-200 p-4">Активность</div>
-            <div class="p-4">Действие</div>
-        </div>
-        <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
-            <div
-                v-for="product in productsPage.items"
-                :key="product.id"
-                class="grid grid-cols-4 transition-colors hover:bg-gray-50"
-            >
-                <div class="p-4 font-medium text-gray-900">
-                    #{{ product.id }}
-                </div>
-                <div class="p-4 whitespace-nowrap">{{ product.name }}</div>
-                <div class="p-4">{{ product.active }}</div>
-                <div class="flex gap-2 p-4">
-                    <div class="w-fit">
-                        <Link
-                            text="Смотреть"
-                            styleType="button"
-                            secondary
-                            :href="AdminRoutes.products.show.url(product.id)"
-                        />
-                    </div>
-                    <div class="w-fit">
-                        <Button
-                            type="button"
-                            text="Удалить"
-                            class="w-fit bg-red-400 hover:bg-red-500"
-                            @click="deleteProduct(product.id)"
-                        />
-                    </div>
-                </div>
+    <div class="space-y-6">
+        <AdminPageHeader
+            title="Товары"
+            eyebrow="Каталог"
+            description="Управляйте карточками товаров, предложениями и видимостью в каталоге."
+        >
+            <template #actions>
+                <Link
+                    :href="AdminProducts.create.url()"
+                    class="inline-flex rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+                    text="Создать товар"
+                />
+            </template>
+        </AdminPageHeader>
+        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[760px] text-left text-sm">
+                    <thead class="border-b border-slate-200 bg-slate-50 text-xs font-semibold tracking-wider text-slate-500 uppercase">
+                        <tr><th class="px-5 py-4">ID</th><th class="px-5 py-4">Название</th><th class="px-5 py-4">Активность</th><th class="px-5 py-4 text-right">Действия</th></tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr v-for="product in productsPage.items" :key="product.id" class="transition hover:bg-slate-50">
+                            <td class="px-5 py-4 font-mono text-xs text-slate-400">#{{ product.id.slice(0, 8) }}</td>
+                            <td class="px-5 py-4 font-semibold text-slate-900">{{ product.name }}</td>
+                            <td class="px-5 py-4"><Badge :label="product.active ? 'Активен' : 'Скрыт'" :tone="product.active ? 'success' : 'neutral'" /></td>
+                            <td class="px-5 py-4">
+                                <div class="flex justify-end gap-2">
+                                    <Link :href="AdminRoutes.products.show.url(product.id)" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:border-emerald-200 hover:text-emerald-700" text="Открыть" />
+                                    <Button class="!w-auto !rounded-lg !bg-transparent !px-3 !py-2 !text-xs !text-rose-600 hover:!bg-rose-50" text="Удалить" type="button" @click="deleteProduct(product.id)" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr v-if="productsPage.items.length === 0"><td colspan="4" class="px-5 py-16 text-center text-slate-500">Товары ещё не созданы.</td></tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
-    </div>
-    <div class="mt-10" v-if="pagination.totalPages > 1">
-        <PaginationList :pagination="pagination" />
+            <PaginationList :pagination="pagination" />
+        </section>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { router } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Link from '@/components/Link.vue';
 import PaginationList from '@/components/PaginationList.vue';

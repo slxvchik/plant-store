@@ -8,6 +8,8 @@ use App\Application\Supplier\CreateSupplier\CreateSupplierService;
 use App\Application\Supplier\CreateSupplier\CreateSupplierUseCase;
 use App\Application\Supplier\DeleteSupplier\DeleteSupplierService;
 use App\Application\Supplier\DeleteSupplier\DeleteSupplierUseCase;
+use App\Application\Supplier\GetAllSuppliers\GetAllSuppliersService;
+use App\Application\Supplier\GetAllSuppliers\GetAllSuppliersUseCase;
 use App\Application\Supplier\GetSupplier\GetSupplierService;
 use App\Application\Supplier\GetSupplier\GetSupplierUseCase;
 use App\Application\Supplier\GetSuppliers\GetSuppliersService;
@@ -24,6 +26,7 @@ class SupplierProvider extends ServiceProvider
     {
         $this->app->singleton(SupplierRepository::class, SupplierRepositoryImpl::class);
         $this->app->singleton(GetSuppliersUseCase::class, GetSuppliersService::class);
+        $this->app->singleton(GetAllSuppliersUseCase::class, GetAllSuppliersService::class);
         $this->app->singleton(GetSupplierUseCase::class, GetSupplierService::class);
         $this->app->singleton(CreateSupplierUseCase::class, CreateSupplierService::class);
         $this->app->singleton(UpdateSupplierUseCase::class, UpdateSupplierService::class);

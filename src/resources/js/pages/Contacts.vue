@@ -189,7 +189,7 @@
                                 Ответим в течение двух рабочих часов.
                             </p>
                             <div class="mt-7 space-y-4">
-                                <Input
+                                <Input variant="floating"
                                     id="contact-name"
                                     v-model="form.fio"
                                     label="Ваше имя *"
@@ -197,7 +197,7 @@
                                     :error="clientErrors.fio || form.errors.fio"
                                 />
                                 <div class="grid gap-4 md:grid-cols-2">
-                                    <Input
+                                    <Input variant="floating"
                                         id="contact-phone"
                                         v-model="form.phone"
                                         type="tel"
@@ -208,7 +208,7 @@
                                             form.errors.phone
                                         "
                                     />
-                                    <Input
+                                    <Input variant="floating"
                                         id="contact-email"
                                         v-model="form.email"
                                         type="email"
@@ -220,7 +220,7 @@
                                         "
                                     />
                                 </div>
-                                <Input
+                                <Input variant="floating"
                                     id="contact-message"
                                     v-model="form.comment"
                                     label="Ваш вопрос *"

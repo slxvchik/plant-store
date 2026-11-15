@@ -15,9 +15,9 @@ readonly class GetSuppliersService implements GetSuppliersUseCase
     public function __construct(private SupplierRepository $supplierRepository) {}
 
     #[Override]
-    public function execute(Pageable $pageable): Page
+    public function execute(Pageable $pageable, ?string $search = null): Page
     {
-        $page = $this->supplierRepository->findPage($pageable);
+        $page = $this->supplierRepository->findPage($pageable, $search);
         $suppliers = array_map(SupplierResponseDto::fromDomain(...), $page->items);
 
         return $page->changeItems($suppliers);

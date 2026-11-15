@@ -9,7 +9,7 @@ use App\Domain\News\NewsModel;
 use App\Domain\News\NewsRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Models\News as NewsModel;
+use App\Models\News;
 use Override;
 
 class NewsRepositoryImpl implements NewsRepository
@@ -17,7 +17,7 @@ class NewsRepositoryImpl implements NewsRepository
     #[Override]
     public function create(NewsModel $news): string
     {
-        NewsModel::create($this->attributes($news));
+        News::create($this->attributes($news));
 
         return $news->id->value;
     }
@@ -25,37 +25,37 @@ class NewsRepositoryImpl implements NewsRepository
     #[Override]
     public function update(NewsModel $news): void
     {
-        NewsModel::findOrFail($news->id->value)->update($this->attributes($news));
+        News::findOrFail($news->id->value)->update($this->attributes($news));
     }
 
     #[Override]
     public function delete(string $id): void
     {
-        NewsModel::findOrFail($id)->delete();
+        News::findOrFail($id)->delete();
     }
 
     #[Override]
     public function findById(string $id): ?NewsModel
     {
-        return NewsModel::find($id)?->toDomain();
+        return News::find($id)?->toDomain();
     }
 
     #[Override]
     public function findByAlias(string $alias): ?NewsModel
     {
-        return NewsModel::firstWhere('alias', $alias)?->toDomain();
+        return News::firstWhere('alias', $alias)?->toDomain();
     }
 
     #[Override]
     public function findPage(Pageable $pageable): Page
     {
-        $paginator = NewsModel::query()
+        $paginator = News::query()
             ->orderBy('sort')
             ->paginate(perPage: $pageable->perPage, page: $pageable->page);
 
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
-            mapper: fn (NewsModel $news): NewsModel => $news->toDomain(),
+            mapper: fn (News $news): News => $news->toDomain(),
         );
     }
 

@@ -177,11 +177,7 @@ class ProductModel
                     sort: $saveOffer->sort,
                     description: $saveOffer->description,
                     price: $saveOffer->price,
-                    stocks: $saveOffer->stocks,
-                    formFactor: $saveOffer->formFactor,
-                    size: $saveOffer->size,
-                    age: $saveOffer->age,
-                    sowingDate: $saveOffer->sowingDate,
+                    stockQuantity: $saveOffer->stockQuantity,
                     imageIds: $saveOffer->imageIds,
                     videoIds: $saveOffer->videoIds
                 );
@@ -201,11 +197,7 @@ class ProductModel
                 sort: $saveOffer->sort,
                 description: $saveOffer->description,
                 price: $saveOffer->price,
-                stocks: $saveOffer->stocks,
-                formFactor: $saveOffer->formFactor,
-                size: $saveOffer->size,
-                age: $saveOffer->age,
-                sowingDate: $saveOffer->sowingDate,
+                stockQuantity: $saveOffer->stockQuantity,
                 imageIds: $saveOffer->imageIds,
                 videoIds: $saveOffer->videoIds
             );

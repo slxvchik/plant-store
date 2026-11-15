@@ -32,7 +32,7 @@ final class NewsController extends Controller
     {
         $newsPage = $this->getNewsPageUseCase->execute($request->toPageable());
 
-        return Inertia::render('admin/News', [
+        return Inertia::render('admin/news/News', [
             'newsPage' => new PageResponseDto($newsPage, $request->fullUrl()),
         ]);
     }
@@ -46,7 +46,7 @@ final class NewsController extends Controller
 
     public function show(string $id): Response
     {
-        return Inertia::render('admin/NewsShow', [
+        return Inertia::render('admin/news/NewsShow', [
             'news' => $this->getNewsUseCase->execute($id),
         ]);
     }

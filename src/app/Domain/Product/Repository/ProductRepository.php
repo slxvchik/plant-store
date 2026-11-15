@@ -26,6 +26,11 @@ interface ProductRepository
     public function findByIds(array $ids): array;
 
     /**
+     * @return ProductModel[]
+     */
+    public function findAll(): array;
+
+    /**
      * @return Page<ProductModel>
      */
     public function findPage(Pageable $pageable): Page;

@@ -26,8 +26,8 @@ class PaginationRequest extends FormRequest
         $data = $this->validated();
 
         return new Pageable(
-            page: $data['page'] ?? 1,
-            perPage: $data['perPage'] ?? 10,
+            page: (int) ($data['page'] ?? 1),
+            perPage: (int) ($data['perPage'] ?? 10),
         );
     }
 }

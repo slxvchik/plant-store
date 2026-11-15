@@ -20,7 +20,6 @@ use Override;
  * @property string $product_unit_status_id
  * @property string $comments
  * @property ?string $qr_code
- * @property ?string $barcode
  */
 class ProductUnit extends Model
 {

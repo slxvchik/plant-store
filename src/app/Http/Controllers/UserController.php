@@ -32,7 +32,7 @@ final class UserController extends Controller
     {
         $usersPage = $this->getUsersPageUseCase->execute($request->toPageable());
 
-        return Inertia::render('admin/Users', [
+        return Inertia::render('admin/users/Users', [
             'usersPage' => new PageResponseDto($usersPage, $request->fullUrl()),
         ]);
     }
@@ -46,7 +46,7 @@ final class UserController extends Controller
 
     public function show(string $id): Response
     {
-        return Inertia::render('admin/UserShow', [
+        return Inertia::render('admin/users/UserShow', [
             'user' => $this->getUserUseCase->execute($id),
         ]);
     }

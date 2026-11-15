@@ -32,14 +32,14 @@ final class ProductUnitStatusController extends Controller
     {
         $statusesPage = $this->getStatusesUseCase->execute($request->toPageable());
 
-        return Inertia::render('admin/ProductUnitStatuses', [
+        return Inertia::render('admin/product-unit-status/ProductUnitStatuses', [
             'statusesPage' => new PageResponseDto($statusesPage, $request->fullUrl()),
         ]);
     }
 
     public function create(): Response
     {
-        return Inertia::render('admin/ProductUnitStatusCreate');
+        return Inertia::render('admin/product-unit-status/ProductUnitStatusCreate');
     }
 
     public function store(StoreProductUnitStatusRequest $request): RedirectResponse
@@ -51,7 +51,7 @@ final class ProductUnitStatusController extends Controller
 
     public function show(string $id): Response
     {
-        return Inertia::render('admin/ProductUnitStatusShow', [
+        return Inertia::render('admin/product-unit-status/ProductUnitStatusShow', [
             'status' => $this->getStatusUseCase->execute($id),
         ]);
     }

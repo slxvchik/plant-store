@@ -51,7 +51,7 @@
                             двух рабочих часов.
                         </p>
                         <div class="mt-7 space-y-4">
-                            <Input
+                            <Input variant="floating"
                                 id="callback-fio"
                                 v-model="callbackForm.fio"
                                 :error="callbackForm.errors.fio"
@@ -65,7 +65,7 @@
                                 "
                             />
                             <div class="grid gap-4 md:grid-cols-2">
-                                <Input
+                                <Input variant="floating"
                                     id="callback-email"
                                     v-model="callbackForm.email"
                                     :error="callbackForm.errors.email"
@@ -79,7 +79,7 @@
                                         )
                                     "
                                 />
-                                <Input
+                                <Input variant="floating"
                                     id="callback-phone"
                                     v-model="callbackForm.phone"
                                     :error="callbackForm.errors.phone"
@@ -94,7 +94,7 @@
                                     "
                                 />
                             </div>
-                            <Input
+                            <Input variant="floating"
                                 id="callback-comment"
                                 v-model="callbackForm.comment"
                                 :error="callbackForm.errors.comment"

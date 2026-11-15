@@ -16,7 +16,6 @@ readonly class ProductResponseDto implements JsonSerializable
 {
     /**
      * @param  OfferResponseDto[]  $offers
-     * @param  CategoryResponseDto[]  $categories
      * @param  TagResponseDto[]  $tags
      * @param  VideoResponseDto[]  $videos
      * @param  ImageResponseDto[]  $images
@@ -29,7 +28,7 @@ readonly class ProductResponseDto implements JsonSerializable
         public int $sort,
         public ?string $description,
         public array $offers,
-        public array $categories,
+        public ?CategoryResponseDto $category,
         public array $tags,
         public array $videos,
         public array $images,
@@ -37,18 +36,17 @@ readonly class ProductResponseDto implements JsonSerializable
 
     /**
      * @param  OfferResponseDto[]  $offers
-     * @param  CategoryResponseDto[]  $categories
      * @param  TagResponseDto[]  $tags
      * @param  VideoResponseDto[]  $videos
      * @param  ImageResponseDto[]  $images
      */
     public static function fromDomain(
         ProductModel $product,
-        array        $offers,
-        array        $categories,
-        array        $tags,
-        array        $images,
-        array        $videos,
+        array $offers,
+        ?CategoryResponseDto $category,
+        array $tags,
+        array $images,
+        array $videos,
     ): self {
         return new self(
             id: $product->id->value,
@@ -58,7 +56,7 @@ readonly class ProductResponseDto implements JsonSerializable
             sort: $product->sort,
             description: $product->description,
             offers: $offers,
-            categories: $categories,
+            category: $category,
             tags: $tags,
             videos: $videos,
             images: $images,
@@ -79,7 +77,7 @@ readonly class ProductResponseDto implements JsonSerializable
             'sort' => $this->sort,
             'description' => $this->description,
             'offers' => $this->offers,
-            'categories' => $this->categories,
+            'category' => $this->category,
             'tags' => $this->tags,
             'videos' => $this->videos,
             'images' => $this->images,

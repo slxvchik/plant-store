@@ -15,6 +15,11 @@ interface ProductSupplyRepository
     public function findPage(Pageable $pageable): Page;
 
     /**
+     * @return ProductSupplyModel[]
+     */
+    public function findAll(): array;
+
+    /**
      * @return Page<ProductSupplyModel>
      */
     public function findPageBySupplierId(string $supplierId, Pageable $pageable): Page;

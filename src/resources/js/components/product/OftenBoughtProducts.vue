@@ -44,7 +44,7 @@
             </Reveal>
         </Container>
         <Reveal :delay="120" class="mt-8 md:mt-12">
-            <ProductSlider />
+            <ProductSlider :items="[]" />
         </Reveal>
     </section>
 </template>

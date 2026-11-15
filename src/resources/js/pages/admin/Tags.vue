@@ -1,101 +1,23 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <h1 class="text-4xl text-text-title">Теги</h1>
-        <div class="max-w-80">
-            <Button text="Создать" secondary @click="openCreateModal" />
-        </div>
+    <div class="space-y-6">
+        <AdminPageHeader title="Теги" eyebrow="Каталог" description="Управляйте метками для быстрого поиска и группировки товаров."><template #actions><Button text="Добавить тег" secondary class="!w-auto !rounded-xl !px-5 !py-2.5 !text-sm shadow-sm" @click="openCreateModal" /></template></AdminPageHeader>
+        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div class="overflow-x-auto"><table class="w-full min-w-[850px] text-left text-sm"><thead class="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500"><tr><th class="px-5 py-4">ID</th><th class="px-5 py-4">Алиас</th><th class="px-5 py-4">Название</th><th class="px-5 py-4">Сортировка</th><th class="px-5 py-4">Активность</th><th class="px-5 py-4 text-right">Действия</th></tr></thead><tbody class="divide-y divide-slate-100"><tr v-for="tag in tagsPage.items" :key="tag.id" class="transition hover:bg-slate-50"><td class="px-5 py-4 font-mono text-xs text-slate-400">#{{ tag.id.slice(0, 8) }}</td><td class="px-5 py-4 font-medium text-slate-600">{{ tag.alias }}</td><td class="px-5 py-4 font-semibold text-slate-900">{{ tag.name }}</td><td class="px-5 py-4 text-slate-500">{{ tag.sort }}</td><td class="px-5 py-4"><Badge :label="tag.active ? 'Активен' : 'Скрыт'" :tone="tag.active ? 'success' : 'neutral'" /></td><td class="px-5 py-4"><div class="flex justify-end gap-2"><button type="button" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:border-emerald-200 hover:text-emerald-700" @click="openEditModal(tag)">Изменить</button><button type="button" class="rounded-lg px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50" @click="destroy(tag.id)">Удалить</button></div></td></tr><tr v-if="tagsPage.items.length === 0"><td colspan="6" class="px-5 py-16 text-center text-slate-500">Теги ещё не созданы.</td></tr></tbody></table></div></section>
     </div>
-    <div
-        class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
-    >
-        <div
-            class="grid grid-cols-6 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
-        >
-            <div class="p-4">Id</div>
-            <div class="p-4">Алиас</div>
-            <div class="p-4">Название</div>
-            <div class="p-4">Сортировка</div>
-            <div class="p-4">Активность</div>
-            <div class="p-4">Действие</div>
-        </div>
-        <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
-            <div
-                v-for="tag in tagsPage.items"
-                :key="tag.id"
-                class="grid grid-cols-6 transition-colors hover:bg-gray-50"
-            >
-                <div class="p-4 font-medium text-gray-900">#{{ tag.id }}</div>
-                <div class="truncate p-4">{{ tag.alias }}</div>
-                <div class="p-4">{{ tag.name }}</div>
-                <div class="p-4 whitespace-nowrap">{{ tag.sort }}</div>
-                <div class="p-4">{{ tag.active }}</div>
-                <div class="flex flex-wrap gap-2 p-4">
-                    <Button
-                        text="Редактировать"
-                        class="bg-yellow-400 hover:bg-yellow-500"
-                        @click="openEditModal(tag)"
-                    />
-                    <Button
-                        text="Удалить"
-                        class="bg-red-400 hover:bg-red-500"
-                        @click="destroy(tag.id)"
-                    />
-                </div>
-            </div>
-        </div>
-    </div>
-    <Popup
-        v-model:open="isFormPopupOpen"
-        :title="isEditMode ? 'Редактировать тег' : 'Создать тег'"
-    >
+    <Popup v-model:open="isFormPopupOpen" :title="isEditMode ? 'Редактировать тег' : 'Создать тег'">
         <form class="flex w-full flex-col gap-5" @submit.prevent="submit">
-            <Input
-                id="alias"
-                v-model="form.alias"
-                label="Алиас"
-                :error="form.errors.alias"
-                @update:modelValue="
-                    validateField && validateField('alias', form.alias)
-                "
-            />
-            <Input
-                id="name"
-                v-model="form.name"
-                label="Название"
-                :error="form.errors.name"
-                @update:modelValue="
-                    validateField && validateField('name', form.name)
-                "
-            />
-            <Input
-                id="sort"
-                v-model.number="form.sort"
-                label="Сортировка"
-                type="number"
-                :error="form.errors.sort"
-                @update:modelValue="
-                    validateField && validateField('sort', form.sort)
-                "
-            />
-            <Checkbox
-                id="active"
-                text="Активность"
-                v-model="form.active"
-                :error="form.errors.active"
-            />
-            <Button
-                type="submit"
-                secondary
-                :disabled="form.processing"
-                :text="isEditMode ? 'Сохранить' : 'Создать'"
-                class="relative left-[50%] max-w-80 translate-x-[-50%]"
-            />
+            <Input id="alias" v-model="form.alias" label="Алиас" :error="form.errors.alias" @update:modelValue="validateField && validateField('alias', form.alias)" />
+            <Input id="name" v-model="form.name" label="Название" :error="form.errors.name" @update:modelValue="validateField && validateField('name', form.name)" />
+            <Input id="sort" v-model.number="form.sort" label="Сортировка" type="number" :error="form.errors.sort" @update:modelValue="validateField && validateField('sort', form.sort)" />
+            <Checkbox id="active" text="Активность" v-model="form.active" :error="form.errors.active" />
+            <div class="flex justify-end border-t border-slate-100 pt-5"><Button type="submit" secondary :disabled="form.processing" :text="isEditMode ? 'Сохранить' : 'Создать'" class="!w-auto !rounded-xl !px-5 !text-sm" /></div>
         </form>
     </Popup>
 </template>
 
 <script setup lang="ts">
+import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Checkbox from '@/components/Checkbox.vue';
 import Input from '@/components/Input.vue';
 import AdminLayout from '@/components/layouts/AdminLayout.vue';

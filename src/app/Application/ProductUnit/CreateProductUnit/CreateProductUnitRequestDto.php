@@ -17,6 +17,5 @@ readonly class CreateProductUnitRequestDto
         public string $productUnitStatusId,
         public string $comments,
         public ?string $qrCode,
-        public ?string $barcode,
     ) {}
 }

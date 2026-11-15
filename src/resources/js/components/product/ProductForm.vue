@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-5">
+    <div class="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <p v-if="form.id">#{{ form.id }}</p>
         <Input
             id="name"
@@ -41,7 +41,7 @@
             multiline
         />
         <Select
-            v-model="form.categories"
+            v-model="form.category"
             :disabled="disabled"
             :items="allCategories"
             label="Категории"

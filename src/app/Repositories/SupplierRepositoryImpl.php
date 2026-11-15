@@ -10,16 +10,24 @@ use App\Domain\Shared\Pagination\Pageable;
 use App\Domain\Supplier\SupplierModel as DomainSupplier;
 use App\Domain\Supplier\SupplierRepository;
 use App\Models\Supplier;
+use Illuminate\Database\Eloquent\Builder;
 use Override;
 
 class SupplierRepositoryImpl implements SupplierRepository
 {
     #[Override]
-    public function findPage(Pageable $pageable): Page
+    public function findPage(Pageable $pageable, ?string $search = null): Page
     {
-        $paginator = Supplier::query()
-            ->orderBy('name')
-            ->paginate(perPage: $pageable->perPage, page: $pageable->page);
+        $query = Supplier::query()->orderBy('name');
+        if ($search !== null && $search !== '') {
+            $query->where(function (Builder $builder) use ($search): void {
+                $builder->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        $paginator = $query->paginate(perPage: $pageable->perPage, page: $pageable->page);
 
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
@@ -28,9 +36,28 @@ class SupplierRepositoryImpl implements SupplierRepository
     }
 
     #[Override]
+    public function findAll(): array
+    {
+        return Supplier::query()->orderBy('name')->get()
+            ->map(fn (Supplier $supplier): DomainSupplier => $supplier->toDomain())->all();
+    }
+
+    #[Override]
     public function findById(string $id): ?DomainSupplier
     {
         return Supplier::find($id)?->toDomain();
+    }
+
+    #[Override]
+    public function findByName(string $name): ?DomainSupplier
+    {
+        return Supplier::firstWhere('name', $name)?->toDomain();
+    }
+
+    #[Override]
+    public function findByEmail(string $email): ?DomainSupplier
+    {
+        return Supplier::firstWhere('email', $email)?->toDomain();
     }
 
     #[Override]

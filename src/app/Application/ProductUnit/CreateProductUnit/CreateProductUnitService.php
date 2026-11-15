@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\ProductUnit\CreateProductUnit;
 
+use App\Application\ProductUnit\Shared\Exception\ProductUnitAlreadyExistsException;
 use App\Domain\ProductUnit\ProductUnitModel;
 use App\Domain\ProductUnit\ProductUnitRepository;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
@@ -19,6 +20,10 @@ readonly class CreateProductUnitService implements CreateProductUnitUseCase
     #[Override]
     public function execute(CreateProductUnitRequestDto $requestDto): string
     {
+        if ($requestDto->qrCode !== null && $requestDto->qrCode !== '' && $this->productUnitRepository->findByQrCode($requestDto->qrCode) !== null) {
+            throw new ProductUnitAlreadyExistsException($requestDto->qrCode);
+        }
+
         $productUnit = ProductUnitModel::createNew(
             uuidGenerator: $this->uuidGenerator,
             productSupplyId: $requestDto->productSupplyId,

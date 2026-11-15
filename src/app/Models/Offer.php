@@ -25,22 +25,17 @@ class Offer extends Model
         'sort',
         'description',
         'price',
-        'form_factor',
-        'size',
-        'age_in_months',
-        'sowing_date',
+        'stock_quantity',
     ];
 
     protected $casts = [
         'active' => 'boolean',
         'sort' => 'integer',
         'price' => 'integer',
-        'age_in_months' => 'integer',
-        'sowing_date' => 'immutable_datetime',
+        'stock_quantity' => 'integer',
     ];
 
     /**
-     * @throws DateMalformedStringException
      * @throws InvalidArgumentException
      */
     public function toDomain(): DomainOfferModel
@@ -79,11 +74,7 @@ class Offer extends Model
             sort: $this->sort,
             description: $this->description ?? null,
             price: $this->price,
-            stocks: $stocks,
-            formFactor: $this->form_factor ?? null,
-            size: $this->size ?? null,
-            age: $this->age_in_months ?? null,
-            sowingDate: $this->sowing_date ?? null,
+            stockQuantity: $this->stockQuantity ?? 0,
             imageIds: $imageIds,
             videoIds: $videoIds,
         );

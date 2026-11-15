@@ -7,6 +7,7 @@ namespace App\Application\Product\UpdateProduct;
 use App\Application\Product\Shared\Exception\ProductAliasExistsException;
 use App\Application\Product\Shared\Exception\ProductNotFoundException;
 use App\Application\Product\Shared\Mapper\SaveOfferMapper;
+use App\Domain\Product\Exception\OfferNotFoundException;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Override;
@@ -20,7 +21,7 @@ readonly class UpdateProductService implements UpdateProductUseCase
 
     /**
      * @throws ProductAliasExistsException
-     * @throws ProductNotFoundException
+     * @throws ProductNotFoundException|OfferNotFoundException
      */
     #[Override]
     public function execute(UpdateProductRequestDto $updateProductRequestDto): void

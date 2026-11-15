@@ -1,6 +1,37 @@
 <template>
+    <nav
+        v-if="variant === 'admin' && pagination.totalPages > 1"
+        aria-label="Пагинация"
+        class="flex flex-col items-center justify-between gap-4 border-t border-slate-100 px-5 py-4 sm:flex-row"
+    >
+        <p class="text-sm text-slate-500">
+            Страница
+            <span class="font-semibold text-slate-800">{{ pagination.currentPage }}</span>
+            из {{ pagination.totalPages }}
+        </p>
+        <div class="flex items-center gap-2">
+            <Link
+                v-if="pagination.prevUrl"
+                :class="adminButtonClass"
+                :href="pagination.prevUrl"
+                preserve-scroll
+            >
+                Назад
+            </Link>
+            <span v-else :class="adminDisabledClass">Назад</span>
+            <Link
+                v-if="pagination.nextUrl"
+                :class="adminButtonClass"
+                :href="pagination.nextUrl"
+                preserve-scroll
+            >
+                Вперёд
+            </Link>
+            <span v-else :class="adminDisabledClass">Вперёд</span>
+        </div>
+    </nav>
     <div
-        v-if="pagination.totalPages > 1"
+        v-else-if="pagination.totalPages > 1"
         class="flex h-8 w-full items-center justify-center gap-2"
     >
         <Link
@@ -17,27 +48,19 @@
             ...
         </span>
         <template v-for="page in visiblePages" :key="page.number.toString()">
-            <div v-if="page.isActive" :class="linkActiveClasses">
-                {{ page.number }}
-            </div>
+            <div v-if="page.isActive" :class="linkActiveClasses">{{ page.number }}</div>
             <Link v-else-if="page.url" :class="linkClasses" :href="page.url">
                 {{ page.number }}
             </Link>
         </template>
         <span
-            v-if="
-                pagination.lastUrl &&
-                pagination.currentPage < pagination.totalPages - 3
-            "
+            v-if="pagination.lastUrl && pagination.currentPage < pagination.totalPages - 3"
             class="text-primary select-none"
         >
             ...
         </span>
         <Link
-            v-if="
-                pagination.lastUrl &&
-                pagination.currentPage < pagination.totalPages - 2
-            "
+            v-if="pagination.lastUrl && pagination.currentPage < pagination.totalPages - 2"
             :class="linkClasses"
             :href="pagination.lastUrl"
         >
@@ -49,14 +72,17 @@
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import type { Pagination } from '@/types/page-response.ts';
+import type { Page } from '@/types/pagination';
 
-const props = defineProps({
-    pagination: {
-        type: Object as () => Pagination,
-        required: true,
-    },
-});
+type Pagination = Omit<Page<unknown>, 'items' | 'perPage'>;
+
+const props = withDefaults(
+    defineProps<{
+        pagination: Pagination;
+        variant?: 'numbered' | 'admin';
+    }>(),
+    { variant: 'admin' },
+);
 
 const visiblePages = computed(() => {
     const pages = [];
@@ -64,37 +90,19 @@ const visiblePages = computed(() => {
     const current = p.currentPage;
 
     if (p.prev2Url && current > 2) {
-        pages.push({
-            number: current - 2,
-            url: p.prev2Url,
-            isActive: false,
-        });
+        pages.push({ number: current - 2, url: p.prev2Url, isActive: false });
     }
-
     if (p.prevUrl && current > 1) {
-        pages.push({
-            number: current - 1,
-            url: p.prevUrl,
-            isActive: false,
-        });
+        pages.push({ number: current - 1, url: p.prevUrl, isActive: false });
     }
 
     pages.push({ number: current, url: null, isActive: true });
 
     if (p.nextUrl && current < p.totalPages) {
-        pages.push({
-            number: current + 1,
-            url: p.nextUrl,
-            isActive: false,
-        });
+        pages.push({ number: current + 1, url: p.nextUrl, isActive: false });
     }
-
     if (p.next2Url && current + 1 < p.totalPages) {
-        pages.push({
-            number: current + 2,
-            url: p.next2Url,
-            isActive: false,
-        });
+        pages.push({ number: current + 2, url: p.next2Url, isActive: false });
     }
 
     return pages;
@@ -102,7 +110,10 @@ const visiblePages = computed(() => {
 
 const linkCommonClasses =
     'flex h-8 w-8 items-center justify-center rounded-lg text-white transition-colors duration-300 select-none';
-const linkClasses =
-    linkCommonClasses + ' cursor-pointer bg-primary hover:bg-primary-hover';
-const linkActiveClasses = linkCommonClasses + ' bg-secondary hover:none';
+const linkClasses = `${linkCommonClasses} cursor-pointer bg-primary hover:bg-primary-hover`;
+const linkActiveClasses = `${linkCommonClasses} bg-secondary hover:none`;
+const adminButtonClass =
+    'rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:border-emerald-200 hover:text-emerald-700';
+const adminDisabledClass =
+    'cursor-not-allowed rounded-lg border border-slate-100 bg-slate-50 px-3.5 py-2 text-sm text-slate-300';
 </script>
