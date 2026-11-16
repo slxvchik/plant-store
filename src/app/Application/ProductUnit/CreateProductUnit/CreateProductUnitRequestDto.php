@@ -16,6 +16,5 @@ readonly class CreateProductUnitRequestDto
         public ?DateTimeImmutable $sowingDate,
         public string $productUnitStatusId,
         public string $comments,
-        public ?string $qrCode,
     ) {}
 }

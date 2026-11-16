@@ -55,12 +55,6 @@ class ProductUnitRepositoryImpl implements ProductUnitRepository
     }
 
     #[Override]
-    public function findByQrCode(string $qrCode): ?DomainProductUnit
-    {
-        return ProductUnit::firstWhere('qr_code', $qrCode)?->toDomain();
-    }
-
-    #[Override]
     public function create(DomainProductUnit $productUnit): string
     {
         ProductUnit::create($this->attributes($productUnit));
@@ -109,7 +103,6 @@ class ProductUnitRepositoryImpl implements ProductUnitRepository
             'sowing_date' => $productUnit->sowingDate,
             'product_unit_status_id' => $productUnit->productUnitStatusId,
             'comments' => $productUnit->comments,
-            'qr_code' => $productUnit->qrCode,
         ];
     }
 }

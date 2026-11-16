@@ -21,13 +21,6 @@ readonly class UpdateProductUnitService implements UpdateProductUnitUseCase
             throw new ProductUnitNotFoundException($requestDto->id);
         }
 
-        if ($requestDto->qrCode !== null && $requestDto->qrCode !== '') {
-            $sameQrCode = $this->productUnitRepository->findByQrCode($requestDto->qrCode);
-            if ($sameQrCode !== null && $sameQrCode->id->value !== $productUnit->id->value) {
-                throw new ProductUnitAlreadyExistsException($requestDto->qrCode);
-            }
-        }
-
         $productUnit->update(
             productSupplyId: $requestDto->productSupplyId,
             offerId: $requestDto->offerId,
@@ -36,7 +29,6 @@ readonly class UpdateProductUnitService implements UpdateProductUnitUseCase
             sowingDate: $requestDto->sowingDate,
             productUnitStatusId: $requestDto->productUnitStatusId,
             comments: $requestDto->comments,
-            qrCode: $requestDto->qrCode,
         );
 
         $this->productUnitRepository->update($productUnit);

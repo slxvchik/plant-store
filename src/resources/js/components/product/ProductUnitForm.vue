@@ -45,14 +45,6 @@
                 label="Дата посева"
                 type="date"
             />
-            <Input
-                id="product-unit-qr-code"
-                v-model="form.qrCode"
-                :error="form.errors.qrCode"
-                hint="Если указан, значение должно быть уникальным."
-                label="QR-код"
-                placeholder="Оставьте пустым для генерации позже"
-            />
             <Checkbox
                 id="product-unit-reserved"
                 v-model="form.reserved"

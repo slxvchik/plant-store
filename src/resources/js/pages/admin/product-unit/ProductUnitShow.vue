@@ -6,6 +6,7 @@
             description="Обновите расположение, статус, резерв или связь с поставкой."
             eyebrow="Карточка единицы товара"
         />
+        <QrCode v-if="productUnit.id" :content="productUnit.id" class="product-unit-show__qr"/>
         <ProductUnitForm
             :initial="initial"
             :products="products"
@@ -19,13 +20,14 @@
 <script lang="ts" setup>
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import ProductUnitForm from '@/components/product/ProductUnitForm.vue';
+import QrCode from '@/components/QrCode.vue';
 import AdminLayout from '@/layouts/AdminLayout.vue';
 import type {
     ProductOption,
     ProductSupply,
     ProductUnit,
     ProductUnitFormData,
-    ProductUnitStatus,
+    ProductUnitStatus
 } from '@/types/inventory.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 
@@ -45,6 +47,5 @@ const initial: ProductUnitFormData = {
     sowingDate: props.productUnit.sowingDate?.slice(0, 10) ?? null,
     productUnitStatusId: props.productUnit.productUnitStatusId,
     comments: props.productUnit.comments,
-    qrCode: props.productUnit.qrCode,
 };
 </script>

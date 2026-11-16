@@ -102,6 +102,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/{id}', [ProductUnitController::class, 'show'])->name('show');
         Route::put('/{id}', [ProductUnitController::class, 'update'])->name('update');
         Route::delete('/{id}', [ProductUnitController::class, 'destroy'])->name('destroy');
+        Route::inertia('/qr-code-finder', 'admin/product-unit/ProductUnitQrCodeFinder')->name('qr-code-finder');
     });
 
     Route::prefix('product-unit-statuses')->name('product-unit-statuses.')->group(function () {

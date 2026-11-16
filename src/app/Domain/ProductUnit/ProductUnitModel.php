@@ -32,8 +32,6 @@ class ProductUnitModel
 
     public private(set) string $comments;
 
-    public private(set) ?string $qrCode;
-
     /**
      * @param  ProductUnitStatusHistoryItemModel[]  $statusHistory
      */
@@ -47,7 +45,6 @@ class ProductUnitModel
         array $statusHistory,
         string $productUnitStatusId,
         string $comments,
-        ?string $qrCode,
     ) {
         $this->id = $id;
         $this->productSupplyId = $productSupplyId;
@@ -58,7 +55,6 @@ class ProductUnitModel
         $this->statusHistory = $statusHistory;
         $this->productUnitStatusId = $productUnitStatusId;
         $this->comments = $comments;
-        $this->qrCode = $qrCode;
     }
 
     public static function createNew(
@@ -70,7 +66,6 @@ class ProductUnitModel
         bool $reserved = false,
         ?DateTimeImmutable $sowingDate = null,
         string $comments = '',
-        ?string $qrCode = null,
     ): self {
         return new self(
             id: new Uuid($uuidGenerator->generate()),
@@ -82,7 +77,6 @@ class ProductUnitModel
             statusHistory: [],
             productUnitStatusId: $productUnitStatusId,
             comments: $comments,
-            qrCode: $qrCode,
         );
     }
 
@@ -99,7 +93,6 @@ class ProductUnitModel
         array $statusHistory,
         string $productUnitStatusId,
         string $comments,
-        ?string $qrCode,
     ): self {
         return new self(
             id: new Uuid($id),
@@ -111,7 +104,6 @@ class ProductUnitModel
             statusHistory: $statusHistory,
             productUnitStatusId: $productUnitStatusId,
             comments: $comments,
-            qrCode: $qrCode,
         );
     }
 
@@ -123,7 +115,6 @@ class ProductUnitModel
         ?DateTimeImmutable $sowingDate,
         string $productUnitStatusId,
         string $comments,
-        ?string $qrCode,
     ): void {
         $this->productSupplyId = $productSupplyId;
         $this->offerId = $offerId;
@@ -132,7 +123,6 @@ class ProductUnitModel
         $this->sowingDate = $sowingDate;
         $this->productUnitStatusId = $productUnitStatusId;
         $this->comments = $comments;
-        $this->qrCode = $qrCode;
     }
 
     public function reserve(): void

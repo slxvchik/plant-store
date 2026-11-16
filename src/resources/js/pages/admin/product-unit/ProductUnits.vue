@@ -7,8 +7,14 @@
         >
             <template #actions>
                 <Link
-                    class="product-units__create"
+                    href="/admin/product-units/qr-code-finder"
+                    styleType="button"
+                >
+                    Найти по qr-code
+                </Link>
+                <Link
                     href="/admin/product-units/create"
+                    styleType="button"
                 >
                     Создать / сгенерировать
                 </Link>
@@ -71,9 +77,6 @@
                         >
                             #{{ unit.id.slice(0, 8) }}
                         </Link>
-                        <p class="product-units__qr">
-                            {{ unit.qrCode || 'QR не задан' }}
-                        </p>
                     </td>
                     <td class="product-units__offer">
                         {{ offerLabel(unit.offerId) }}
@@ -127,7 +130,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { Link, router } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import { computed, reactive } from 'vue';
 import AdminFilterBar from '@/components/admin/AdminFilterBar.vue';
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
@@ -142,10 +145,11 @@ import type {
     ProductSupply,
     ProductUnit,
     ProductUnitFilters,
-    ProductUnitStatus,
+    ProductUnitStatus
 } from '@/types/inventory.ts';
 import type { Page } from '@/types/pagination.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
+import Link from '@/components/Link.vue';
 
 defineOptions({ layout: AdminLayout });
 const props = defineProps<{

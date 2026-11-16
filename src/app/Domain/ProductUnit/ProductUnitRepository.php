@@ -21,8 +21,6 @@ interface ProductUnitRepository
 
     public function findById(string $id): ?ProductUnitModel;
 
-    public function findByQrCode(string $qrCode): ?ProductUnitModel;
-
     public function create(ProductUnitModel $productUnit): string;
 
     /**

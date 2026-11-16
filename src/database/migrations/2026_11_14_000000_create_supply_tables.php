@@ -49,7 +49,6 @@ return new class extends Migration
             $table->date('sowing_date')->nullable();
             $table->foreignUuid('product_unit_status_id')->constrained()->restrictOnDelete();
             $table->text('comments')->default('');
-            $table->string('qr_code')->nullable();
             $table->string('barcode')->nullable();
             $table->timestamps();
         });

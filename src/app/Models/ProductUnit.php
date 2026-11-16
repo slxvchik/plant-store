@@ -19,7 +19,6 @@ use Override;
  * @property ?DateTimeImmutable $sowing_date
  * @property string $product_unit_status_id
  * @property string $comments
- * @property ?string $qr_code
  */
 class ProductUnit extends Model
 {
@@ -38,7 +37,6 @@ class ProductUnit extends Model
         'sowing_date',
         'product_unit_status_id',
         'comments',
-        'qr_code',
     ];
 
     #[Override]
@@ -63,7 +61,6 @@ class ProductUnit extends Model
             statusHistory: [],
             productUnitStatusId: $this->product_unit_status_id,
             comments: $this->comments,
-            qrCode: $this->qr_code,
         );
     }
 }

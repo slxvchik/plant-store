@@ -21,7 +21,6 @@
                         :error="form.errors.offerId"
                         :items="offerOptions"
                         label="Товар / предложение"
-                        required
                     />
                     <Select
                         v-model="form.warehouseId"
@@ -148,7 +147,6 @@
                 />
                 <p class="product-supply-create__note">
                     Поставка и все единицы будут сохранены в одной транзакции.
-                    QR-коды останутся пустыми.
                 </p>
             </aside>
         </form>

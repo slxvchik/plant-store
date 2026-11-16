@@ -22,16 +22,12 @@ abstract class ProductUnitRequest extends FormRequest
             'sowingDate' => ['sometimes', 'nullable', 'date'],
             'productUnitStatusId' => ['required', 'uuid', 'exists:product_unit_statuses,id'],
             'comments' => ['sometimes', 'nullable', 'string'],
-            'qrCode' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }
 
-    /**
-     * @return array{productSupplyId: ?string, offerId: ?string, warehouseId: string, reserved: bool, sowingDate: ?DateTimeImmutable, productUnitStatusId: string, comments: string, qrCode: ?string}
-     */
     protected function productUnitData(): array
     {
-        /** @var array{productSupplyId?: ?string, offerId?: ?string, warehouseId: string, reserved: bool, sowingDate?: ?string, productUnitStatusId: string, comments?: ?string, qrCode?: ?string} $data */
+        /** @var array{productSupplyId?: ?string, offerId?: ?string, warehouseId: string, reserved: bool, sowingDate?: ?string, productUnitStatusId: string, comments?: ?string} $data */
         $data = $this->validated();
 
         return [
@@ -42,7 +38,6 @@ abstract class ProductUnitRequest extends FormRequest
             'sowingDate' => isset($data['sowingDate']) ? new DateTimeImmutable($data['sowingDate']) : null,
             'productUnitStatusId' => $data['productUnitStatusId'],
             'comments' => $data['comments'] ?? '',
-            'qrCode' => $data['qrCode'] ?? null,
         ];
     }
 }

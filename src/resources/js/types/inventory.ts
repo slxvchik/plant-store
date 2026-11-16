@@ -22,7 +22,6 @@ export type ProductUnit = {
     sowingDate: string | null;
     productUnitStatusId: string;
     comments: string;
-    qrCode: string | null;
 };
 
 export type ProductSupply = {
@@ -81,5 +80,4 @@ export type ProductUnitFormData = {
     sowingDate: string | null;
     productUnitStatusId: string;
     comments: string;
-    qrCode: string | null;
 };

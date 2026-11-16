@@ -20,10 +20,6 @@ readonly class CreateProductUnitService implements CreateProductUnitUseCase
     #[Override]
     public function execute(CreateProductUnitRequestDto $requestDto): string
     {
-        if ($requestDto->qrCode !== null && $requestDto->qrCode !== '' && $this->productUnitRepository->findByQrCode($requestDto->qrCode) !== null) {
-            throw new ProductUnitAlreadyExistsException($requestDto->qrCode);
-        }
-
         $productUnit = ProductUnitModel::createNew(
             uuidGenerator: $this->uuidGenerator,
             productSupplyId: $requestDto->productSupplyId,
@@ -33,7 +29,6 @@ readonly class CreateProductUnitService implements CreateProductUnitUseCase
             reserved: $requestDto->reserved,
             sowingDate: $requestDto->sowingDate,
             comments: $requestDto->comments,
-            qrCode: $requestDto->qrCode,
         );
 
         return $this->productUnitRepository->create($productUnit);

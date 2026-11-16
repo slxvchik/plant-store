@@ -2,7 +2,7 @@
     <div class="product-unit-create">
         <AdminPageHeader
             back-url="/admin/product-units"
-            description="Создайте одну единицу вручную или сформируйте партию с пустыми QR-кодами."
+            description="Создайте одну единицу вручную или сформируйте партию."
             eyebrow="Складской учёт"
             title="Создание единиц товара"
         />
@@ -74,13 +74,6 @@
                     required
                     type="number"
                 />
-                <Input
-                    v-else
-                    v-model="form.qrCode"
-                    :error="form.errors.qrCode"
-                    label="QR-код"
-                    placeholder="Можно заполнить позже"
-                />
                 <Checkbox
                     v-if="mode === 'single'"
                     v-model="form.reserved"
@@ -90,9 +83,6 @@
                 <div v-else class="product-unit-create__preview">
                     <span class="product-unit-create__preview-title">
                         Будет создано: {{ form.quantity || 0 }} шт.
-                    </span>
-                    <span class="product-unit-create__preview-hint">
-                        QR-коды останутся пустыми.
                     </span>
                 </div>
                 <div class="product-unit-create__wide">
@@ -156,7 +146,6 @@ type UnitCreateForm = {
     sowingDate: string | null;
     productUnitStatusId: string;
     comments: string;
-    qrCode: string | null;
 };
 const mode = ref<'batch' | 'single'>('batch');
 const tabClasses = (tabMode: 'batch' | 'single') => [
@@ -172,7 +161,6 @@ const form = useForm<UnitCreateForm>({
     sowingDate: null,
     productUnitStatusId: '',
     comments: '',
-    qrCode: null,
 });
 const offerOptions = computed(() =>
     props.products.flatMap((product) =>
@@ -217,7 +205,6 @@ const submit = () => {
             sowingDate: data.sowingDate,
             productUnitStatusId: data.productUnitStatusId,
             comments: data.comments,
-            qrCode: data.qrCode,
         })).post('/admin/product-units');
     }
 };

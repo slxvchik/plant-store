@@ -92,7 +92,6 @@
                         <th>ID</th>
                         <th>Статус</th>
                         <th>Резерв</th>
-                        <th>QR</th>
                         <th>Комментарий</th>
                         <th class="product-supply-show__cell--actions">
                             Действие
@@ -111,9 +110,6 @@
                         </td>
                         <td class="product-supply-show__muted">
                             {{ unit.reserved ? 'Да' : 'Нет' }}
-                        </td>
-                        <td class="product-supply-show__muted">
-                            {{ unit.qrCode || 'Не задан' }}
                         </td>
                         <td class="product-supply-show__unit-comment">
                             {{ unit.comments || '—' }}
