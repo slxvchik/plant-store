@@ -1,30 +1,41 @@
+@use "../../helpers" as *;
+
 .user-requests {
-    @apply space-y-6;
-    :deep(.table__table) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .table__table {
         min-width: 850px;
     }
 
     &__cell--actions {
-        @apply text-right;
+        text-align: right;
     }
 
     &__name {
-        @apply font-semibold text-slate-900;
+        font-weight: 600;
+        color: #0f172a;
     }
 
     &__phone {
-        @apply whitespace-nowrap text-slate-600;
+        white-space: nowrap;
+        color: #475569;
     }
 
     &__contact {
-        @apply text-slate-600;
+        color: #475569;
     }
 
     &__comment {
-        @apply max-w-80 text-slate-500;
+        max-width: 20rem;
+        color: #64748b;
     }
 
     &__empty {
-        @apply py-16 text-center text-slate-500;
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        text-align: center;
+        color: #64748b;
     }
 }

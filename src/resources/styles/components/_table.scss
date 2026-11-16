@@ -1,28 +1,51 @@
+@use "../helpers" as *;
+
 .table {
-    @apply block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+    display: block;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
     &__scroll {
-        @apply overflow-x-auto;
+        overflow-x: auto;
     }
 
     &__table {
-        @apply w-full text-left text-sm;
+        width: 100%;
+        text-align: left;
+        font-size: 0.875rem;
 
-        :deep(thead) {
-            @apply border-b border-slate-200 bg-slate-50 text-xs font-semibold tracking-wider text-slate-500 uppercase;
+        thead {
+            border-bottom: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            text-transform: uppercase;
         }
 
-        :deep(tbody) {
-            @apply divide-y divide-slate-100;
+        tbody {
+            > tr {
+                border-bottom: 1px solid #f1f5f9;
+            }
         }
 
-        :deep(th),
-        :deep(td) {
-            @apply px-5 py-4;
+        th,
+        td {
+            padding: 1rem 1.25rem;
         }
 
-        :deep(tbody tr) {
-            @apply transition hover:bg-slate-50;
+        tbody tr {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+
+            &:hover {
+                background-color: #f8fafc;
+            }
         }
     }
 }

@@ -1,78 +1,142 @@
+@use "../../../helpers" as *;
+
 .product-supplies {
-    @apply space-y-6;
-    :deep(.table__table) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .table__table {
         min-width: 1000px;
     }
 
     &__create {
-        @apply rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700;
+        border-radius: 0.75rem;
+        background-color: #059669;
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: white;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            background-color: #047857;
+        }
     }
 
     &__stats {
-        @apply grid gap-4 sm:grid-cols-3;
+        display: grid;
+        gap: 1rem;
+
+        @include for-width(sm) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
     }
 
     &__stat {
-        @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm;
+        border-radius: 1rem;
+        border: 1px solid #e2e8f0;
+        background-color: white;
+        padding: 1.25rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
         &--accent {
-            @apply border-emerald-200 bg-emerald-50;
+            border-color: #a7f3d0;
+            background-color: #ecfdf5;
+
             .product-supplies__stat-label {
-                @apply text-emerald-700;
+                color: #047857;
             }
 
             .product-supplies__stat-value {
-                @apply text-emerald-950;
+                color: #022c22;
             }
         }
     }
 
     &__stat-label {
-        @apply text-sm text-slate-500;
+        font-size: 0.875rem;
+        color: #64748b;
     }
 
     &__stat-value {
-        @apply mt-2 text-2xl font-semibold text-slate-950;
+        margin-top: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #020617;
     }
 
     &__cell--actions {
-        @apply text-right;
+        text-align: right;
     }
 
     &__id {
-        @apply font-mono text-xs font-semibold text-slate-800 hover:text-emerald-700;
+        font-family: var(--font-serif);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #1e293b;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            color: #047857;
+        }
     }
 
     &__date,
     &__quantity-hint {
-        @apply mt-1 text-xs text-slate-400;
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: #94a3b8;
     }
 
     &__supplier {
-        @apply font-medium text-slate-700;
+        font-weight: 500;
+        color: #334155;
     }
 
     &__offer {
-        @apply max-w-64 text-slate-600;
+        max-width: 16rem;
+        color: #475569;
     }
 
     &__actual {
-        @apply font-semibold text-slate-900;
+        font-weight: 600;
+        color: #0f172a;
     }
 
     &__declared,
     &__dash {
-        @apply text-slate-400;
+        color: #94a3b8;
     }
 
     &__price {
-        @apply text-slate-700;
+        color: #334155;
     }
 
     &__open {
-        @apply rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700;
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            color: #047857;
+        }
     }
 
     &__empty {
-        @apply py-16 text-center text-slate-500;
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        text-align: center;
+        color: #64748b;
     }
 }

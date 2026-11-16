@@ -1,41 +1,103 @@
+@use "../helpers" as *;
+
 .pagination {
     &--admin {
-        @apply flex flex-col items-center justify-between gap-4 border-t border-slate-100 px-5 py-4 sm:flex-row;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border-top: 1px solid #f1f5f9;
+        padding: 1rem 1.25rem;
+
+        @include for-width(sm) {
+            flex-direction: row;
+        }
     }
 
     &--numbered {
-        @apply flex h-8 w-full items-center justify-center gap-2;
+        display: flex;
+        height: 2rem;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
     }
 
     &__summary {
-        @apply text-sm text-slate-500;
+        font-size: 0.875rem;
+        color: #64748b;
     }
 
     &__current {
-        @apply font-semibold text-slate-800;
+        font-weight: 600;
+        color: #1e293b;
     }
 
     &__actions {
-        @apply flex items-center gap-2;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     &__button {
-        @apply rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:border-emerald-200 hover:text-emerald-700;
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+        background-color: white;
+        padding: 0.5rem 0.875rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #475569;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            border-color: #a7f3d0;
+            color: #047857;
+        }
 
         &--disabled {
-            @apply cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300 hover:border-slate-100 hover:text-slate-300;
+            cursor: not-allowed;
+            border-color: #f1f5f9;
+            background-color: #f8fafc;
+            color: #cbd5e1;
+
+            &:hover {
+                border-color: #f1f5f9;
+                color: #cbd5e1;
+            }
         }
     }
 
     &__number {
-        @apply flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg bg-primary text-white transition-colors select-none hover:bg-primary-hover;
+        display: flex;
+        height: 2rem;
+        width: 2rem;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        background-color: var(--color-primary);
+        color: white;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+        user-select: none;
+
+        &:hover {
+            background-color: var(--color-primary-hover);
+        }
 
         &--active {
-            @apply cursor-default bg-secondary;
+            cursor: default;
+            background-color: var(--color-secondary);
         }
     }
 
     &__ellipsis {
-        @apply text-primary select-none;
+        color: var(--color-primary);
+        user-select: none;
     }
 }

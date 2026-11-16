@@ -90,7 +90,7 @@
                             />
                         </div>
                         <Button
-                            style-type="link"
+                            style-type="button"
                             :disabled="callbackForm.processing"
                             class="callback__submit"
                             type="submit"
@@ -172,12 +172,15 @@ const submit = (): void => {
 </script>
 <style lang="scss" scoped>
 .callback-success-enter-active {
-    @apply transition-all duration-300;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
 }
 .callback-success-enter-from {
-    @apply translate-y-2 opacity-0;
+    transform: translateY(0.5rem);
+    opacity: 0;
 }
 .callback-success-leave-to {
-    @apply opacity-0;
+    opacity: 0;
 }
 </style>

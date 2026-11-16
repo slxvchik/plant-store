@@ -1,7 +1,28 @@
+@use "../helpers" as *;
+
 .breadcrumbs {
-    @apply flex items-center gap-2 py-4 text-xs text-text-muted lg:py-6 dark:text-white/40;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+
+    .dark & {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    @include for-width(lg) {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
 
     &__current {
-        @apply text-text-title dark:text-white/65;
+        color: var(--color-text-title);
+
+        .dark & {
+            color: rgba(255, 255, 255, 0.65);
+        }
     }
 }

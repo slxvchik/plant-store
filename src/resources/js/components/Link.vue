@@ -37,10 +37,8 @@ const external = computed(
     () => typeof props.href === 'string' && /^(https?:)?\/\//.test(props.href),
 );
 const attrs = computed(() => {
-    const { class: _, ...attrsWithoutClass } = inputAttrs;
-
     return external.value
-        ? { target: '_blank', rel: 'noopener noreferrer', ...attrsWithoutClass }
-        : attrsWithoutClass;
+        ? { target: '_blank', rel: 'noopener noreferrer', ...inputAttrs }
+        : inputAttrs;
 });
 </script>

@@ -1,50 +1,76 @@
+@use "../../helpers" as *;
 
 .product-offer-list {
-    @apply w-full overflow-hidden rounded-lg border border-gray-200 bg-white;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-bg-surface);
+    background-color: #fff;
+
     &__header,
     &__row {
-        @apply grid grid-cols-[200px_120px_1fr_350px_200px];
+        display: grid;
+        grid-template-columns: 200px 120px 1fr 350px 200px;
     }
 
     &__header {
-        @apply border-b border-gray-200 bg-slate-50 font-medium text-gray-700;
+        border-bottom: 1px solid var(--color-bg-surface);
+        background-color: var(--color-bg-base);
+        font-weight: 500;
+        color: var(--color-text-title);
     }
 
     &__header > div,
     &__row > div {
-        @apply border-r border-gray-200 p-3;
+        border-right: 1px solid var(--color-bg-surface);
+        padding: 0.75rem;
     }
 
     &__header > div:last-child,
     &__row > div:last-child {
-        @apply border-r-0;
+        border-right-width: 0;
     }
 
     &__actions-heading {
-        @apply text-center;
+        text-align: center;
     }
 
     &__body {
-        @apply divide-y divide-gray-200;
+        > :not([hidden]) ~ :not([hidden]) {
+            border-top: 1px solid var(--color-bg-surface);
+        }
     }
 
     &__row {
-        @apply items-center text-sm text-gray-700 hover:bg-slate-50;
+        align-items: center;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: var(--color-text-title);
+
+        &:hover {
+            background-color: var(--color-bg-base);
+        }
     }
 
     &__id {
-        @apply text-gray-400;
+        color: var(--color-text-muted);
     }
 
     &__active {
-        @apply flex justify-center;
+        display: flex;
+        justify-content: center;
     }
 
     &__actions {
-        @apply flex flex-col text-center;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
     }
 
     &__empty {
-        @apply bg-gray-50 p-8 text-center text-gray-400;
+        background-color: var(--color-bg-base);
+        padding: 2rem;
+        text-align: center;
+        color: var(--color-text-muted);
     }
 }

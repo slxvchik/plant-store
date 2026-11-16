@@ -1,3 +1,5 @@
+@use "../helpers" as *;
+
 .home {
-    @apply w-full;
+    width: 100%;
 }

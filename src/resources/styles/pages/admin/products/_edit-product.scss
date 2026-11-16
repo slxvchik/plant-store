@@ -1,11 +1,15 @@
+@use "../../../helpers" as *;
+
 .edit-product {
-    @apply space-y-6;
+    margin-top: 1.5rem;
 
     &__offers {
-        @apply flex flex-col gap-5;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
     }
 
     &__offer-action {
-        @apply max-w-80;
+        max-width: 320px;
     }
 }

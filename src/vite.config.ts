@@ -1,6 +1,5 @@
 import inertia from '@inertiajs/vite';
 import { wayfinder } from '@laravel/vite-plugin-wayfinder';
-import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
@@ -10,7 +9,6 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/tailwind/tailwind.css',
                 'resources/styles/index.scss',
                 'resources/js/app.ts',
             ],
@@ -22,7 +20,6 @@ export default defineConfig({
             ],
         }),
         inertia(),
-        tailwindcss(),
         vue({
             template: {
                 transformAssetUrls: {

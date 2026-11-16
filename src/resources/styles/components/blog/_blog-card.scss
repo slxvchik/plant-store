@@ -1,34 +1,111 @@
+@use "../../helpers" as *;
+
 .blog-card {
-    @apply group block h-full;
+    display: block;
+    height: 100%;
+
     &__image-wrap {
-        @apply aspect-[4/3] overflow-hidden rounded-[24px] bg-bg-base dark:bg-bg-night;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        border-radius: 24px;
+        background-color: var(--color-bg-base);
+
+        .dark & {
+            background-color: var(--color-bg-night);
+        }
     }
 
     &__image {
-        @apply h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        transition-duration: 700ms;
+    }
+
+    &:hover &__image {
+        transform: scale(1.05);
     }
 
     &__meta {
-        @apply mt-4 flex items-center gap-2 text-xs text-text-muted dark:text-white/45;
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        color: var(--color-text-muted);
+
+        .dark & {
+            color: rgb(255 255 255 / 0.45);
+        }
     }
 
     &__separator {
-        @apply text-accent;
+        color: var(--color-accent);
     }
 
     &__title {
-        @apply mt-3 font-serif text-2xl leading-tight text-text-title transition-colors duration-300 group-hover:text-primary dark:text-linen dark:group-hover:text-secondary;
+        margin-top: 0.75rem;
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        line-height: 1.25;
+        color: var(--color-text-title);
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+
+        .dark & {
+            color: var(--color-linen);
+        }
+    }
+
+    &:hover &__title {
+        color: var(--color-primary);
+    }
+
+    .dark &:hover &__title {
+        color: var(--color-secondary);
     }
 
     &__excerpt {
-        @apply mt-2 text-sm leading-6 text-text-muted dark:text-white/50;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: var(--color-text-muted);
+
+        .dark & {
+            color: rgb(255 255 255 / 0.5);
+        }
     }
 
     &__link {
-        @apply mt-4 flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary;
+        margin-top: 1rem;
+        display: flex;
+        min-height: 2.75rem;
+        width: fit-content;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 600;
+        color: var(--color-primary);
+
+        .dark & {
+            color: var(--color-secondary);
+        }
     }
 
     &__link-icon {
-        @apply h-4 w-4 transition-transform duration-300 group-hover:translate-x-1;
+        height: 1rem;
+        width: 1rem;
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+
+    &:hover &__link-icon {
+        transform: translateX(0.25rem);
     }
 }

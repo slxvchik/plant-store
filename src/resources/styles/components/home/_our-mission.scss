@@ -1,66 +1,157 @@
+@use "../../helpers" as *;
+
 .our-mission {
-    @apply scroll-mt-20 bg-bg-dark px-4 py-16 md:px-8 md:py-24 lg:py-28;
+    scroll-margin-top: 5rem;
+    background-color: var(--color-bg-dark);
+    padding: 4rem 1rem;
+
+    @include for-width(md) {
+        padding: 6rem 2rem;
+    }
+
+    @include for-width(lg) {
+        padding-top: 7rem;
+        padding-bottom: 7rem;
+    }
+
     &__grid {
-        @apply grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20;
+        display: grid;
+        align-items: center;
+        gap: 2.5rem;
+
+        @include for-width(lg) {
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 5rem;
+        }
     }
 
     &__visual {
-        @apply relative;
+        position: relative;
     }
 
     &__image-wrap {
-        @apply aspect-[4/5] max-h-[640px] overflow-hidden rounded-[28px];
+        aspect-ratio: 4 / 5;
+        max-height: 640px;
+        overflow: hidden;
+        border-radius: 28px;
     }
 
     &__image {
-        @apply h-full w-full object-cover;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
     }
 
     &__stat {
-        @apply absolute right-4 bottom-4 rounded-2xl border border-white/20 bg-bg-dark/60 px-5 py-4 text-white backdrop-blur-md md:right-8 md:bottom-8;
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        border-radius: 1rem;
+        border: 1px solid rgb(255 255 255 / 0.2);
+        background-color: color-mix(in srgb, var(--color-bg-dark) 60%, transparent);
+        padding: 1rem 1.25rem;
+        color: #fff;
+        backdrop-filter: blur(12px);
+
+        @include for-width(md) {
+            right: 2rem;
+            bottom: 2rem;
+        }
     }
 
     &__stat-value {
-        @apply font-serif text-3xl text-secondary;
+        font-family: var(--font-serif);
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+        color: var(--color-secondary);
     }
 
     &__stat-label {
-        @apply mt-1 text-xs text-white/60;
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        color: rgb(255 255 255 / 0.6);
     }
 
     &__eyebrow {
-        @apply text-xs font-semibold tracking-[0.2em] text-secondary uppercase;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: var(--color-secondary);
+        text-transform: uppercase;
     }
 
     &__title {
-        @apply mt-4 font-serif text-3xl leading-tight text-linen md:text-4xl lg:text-5xl;
+        margin-top: 1rem;
+        font-family: var(--font-serif);
+        font-size: 1.875rem;
+        line-height: 1.25;
+        color: var(--color-linen);
+
+        @include for-width(md) {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+
+        @include for-width(lg) {
+            font-size: 3rem;
+            line-height: 1;
+        }
     }
 
     &__title-accent {
-        @apply text-secondary;
+        color: var(--color-secondary);
     }
 
     &__description {
-        @apply mt-5 max-w-lg text-sm leading-7 text-white/55 md:text-base;
+        margin-top: 1.25rem;
+        max-width: 32rem;
+        font-size: 0.875rem;
+        line-height: 1.75rem;
+        color: rgb(255 255 255 / 0.55);
+
+        @include for-width(md) {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
     }
 
     &__principles {
-        @apply mt-8 space-y-5;
+        margin-top: 2rem;
+
+        > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 1.25rem;
+        }
     }
 
     &__principle {
-        @apply flex gap-4;
+        display: flex;
+        gap: 1rem;
     }
 
     &__principle-number {
-        @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 font-serif text-secondary;
+        display: flex;
+        height: 2.5rem;
+        width: 2.5rem;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        background-color: rgb(255 255 255 / 0.05);
+        font-family: var(--font-serif);
+        color: var(--color-secondary);
     }
 
     &__principle-title {
-        @apply font-medium text-white;
+        font-weight: 500;
+        color: #fff;
     }
 
     &__principle-text {
-        @apply mt-1 text-sm leading-6 text-white/45;
+        margin-top: 0.25rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: rgb(255 255 255 / 0.45);
     }
 }

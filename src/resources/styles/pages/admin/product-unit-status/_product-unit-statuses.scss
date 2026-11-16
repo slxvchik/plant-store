@@ -1,42 +1,116 @@
+@use "../../../helpers" as *;
+
 .product-unit-statuses {
-    @apply space-y-6;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
     &__create {
-        @apply rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700;
+        border-radius: 0.75rem;
+        background-color: #059669;
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: white;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            background-color: #047857;
+        }
     }
 
     &__grid {
-        @apply grid gap-4 sm:grid-cols-2 xl:grid-cols-3;
+        display: grid;
+        gap: 1rem;
+
+        @include for-width(sm) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include for-width(xl) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
     }
 
     &__card {
-        @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md;
+        border-radius: 1rem;
+        border: 1px solid #e2e8f0;
+        background-color: white;
+        padding: 1.25rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            transform: translateY(-0.125rem);
+            border-color: #a7f3d0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
     }
 
     &__card-top {
-        @apply flex items-start justify-between gap-4;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
     }
 
     &__id {
-        @apply font-mono text-xs text-slate-300;
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        color: #cbd5e1;
     }
 
     &__comment {
-        @apply mt-4 min-h-10 text-sm leading-6 text-slate-500;
+        margin-top: 1rem;
+        min-height: 2.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: #64748b;
     }
 
     &__actions {
-        @apply mt-5 flex gap-2 border-t border-slate-100 pt-4;
+        margin-top: 1.25rem;
+        display: flex;
+        gap: 0.5rem;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 1rem;
     }
 
     &__edit {
-        @apply rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700;
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            color: #047857;
+        }
     }
 
     &__empty {
-        @apply col-span-full rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center text-slate-500;
+        grid-column: 1 / -1;
+        border-radius: 1rem;
+        border: 1px dashed #cbd5e1;
+        background-color: white;
+        padding: 4rem 1.5rem;
+        text-align: center;
+        color: #64748b;
     }
 
     &__pagination {
-        @apply overflow-hidden rounded-2xl border border-slate-200 bg-white;
+        overflow: hidden;
+        border-radius: 1rem;
+        border: 1px solid #e2e8f0;
+        background-color: white;
     }
 }

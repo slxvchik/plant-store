@@ -92,7 +92,7 @@
                     >
                         <Icon name="cart" />
                     </Link>
-                    <Link class="public-header__contact" href="/contacts">
+                    <Link styleType="button" class="public-header__contact" href="/contacts">
                         Связаться с нами
                     </Link>
                 </div>
@@ -113,30 +113,24 @@ import { useTheme } from '@/composables/useTheme';
 import { clickOutside as vClickOutside } from '@/directives/clickOutside';
 import CatalogIndex from '@/routes/catalog';
 
+interface NavItem {
+    label: string;
+    href: string;
+    children?: NavItem[];
+}
+
 const page = usePage();
 const openMenu = ref<string | null>(null);
 const { isDark, toggleTheme } = useTheme();
-const navigation = [
+const navigation = <NavItem[]>[
     {
         label: 'Каталог',
         href: '/catalog',
-        children: [
-            { label: 'Все растения', href: '/catalog' },
-            { label: 'Комнатные растения', href: '/catalog' },
-            { label: 'Деревья и крупномеры', href: '/catalog' },
-            { label: 'Новые поступления', href: '/catalog' },
-        ],
     },
     {
         label: 'О питомнике',
-        href: '/about',
-        children: [
-            { label: 'Наша история', href: '/#mission' },
-            { label: 'Как мы выращиваем', href: '/#mission' },
-            { label: 'Доставка и гарантия', href: '/#delivery' },
-        ],
+        href: '/#mission',
     },
-    { label: 'Садовый журнал', href: '/#journal' },
     { label: 'Контакты', href: '/contacts' },
 ];
 const navLinkClasses = (href: string) => [
@@ -154,15 +148,20 @@ const closeMenu = () => {
 
 <style lang="scss" scoped>
 .public-header-dropdown-enter-active {
-    @apply transition-all duration-200 ease-out;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
 }
 
 .public-header-dropdown-leave-active {
-    @apply transition-all duration-150 ease-in;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
 }
 
 .public-header-dropdown-enter-from,
 .public-header-dropdown-leave-to {
-    @apply translate-y-2 opacity-0;
+    transform: translateY(0.5rem);
+    opacity: 0;
 }
 </style>

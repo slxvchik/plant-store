@@ -1,54 +1,91 @@
+@use "../../helpers" as *;
+
 .main-page-gallery {
-    @apply space-y-6;
-    :deep(.table__table) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .table__table {
         min-width: 1000px;
     }
 
     &__cell--actions {
-        @apply text-right;
+        text-align: right;
     }
 
     &__image {
-        @apply h-20 w-28 rounded-xl object-cover;
+        height: 5rem;
+        width: 7rem;
+        border-radius: 0.75rem;
+        object-fit: cover;
     }
 
     &__sort {
-        @apply text-slate-500;
+        color: #64748b;
     }
 
     &__title {
-        @apply max-w-56 truncate font-semibold text-slate-900;
+        max-width: 14rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 600;
+        color: #0f172a;
     }
 
     &__pre-title {
-        @apply max-w-56 truncate text-slate-500;
+        max-width: 14rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #64748b;
     }
 
     &__actions {
-        @apply flex justify-end gap-2;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
     }
 
     &__empty {
-        @apply py-16 text-center text-slate-500;
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        text-align: center;
+        color: #64748b;
     }
 
     &__form {
-        @apply flex w-full flex-col gap-5;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: 1.25rem;
     }
 
     &__upload {
-        @apply flex flex-col gap-1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
     }
 
     &__error {
-        @apply text-xs font-medium text-rose-600;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #dc2626;
     }
 
     &__fields {
-        @apply grid gap-5 sm:grid-cols-2;
+        display: grid;
+        gap: 1.25rem;
+
+        @include for-width(sm) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     &__form-footer {
-        @apply flex justify-end border-t border-slate-100 pt-5;
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 1.25rem;
     }
 }

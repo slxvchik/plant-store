@@ -1,3 +1,6 @@
+@use "../helpers" as *;
+
 .error {
-    @apply p-6 text-center;
+    padding: 1.5rem;
+    text-align: center;
 }

@@ -1,22 +1,81 @@
+@use "../../helpers" as *;
+
 .catalog-hero {
-    @apply border-b border-text-title/5 pb-4 md:pb-8 dark:border-white/10;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text-title) 5%, transparent);
+    padding-bottom: 1rem;
+
+    @include for-width(md) {
+        padding-bottom: 2rem;
+    }
+
+    .dark & {
+        border-color: rgb(255 255 255 / 0.1);
+    }
+
     &__inner {
-        @apply flex flex-col gap-5 md:flex-row md:items-end md:justify-between;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+
+        @include for-width(md) {
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
     }
 
     &__eyebrow {
-        @apply text-xs font-semibold tracking-[0.2em] text-accent uppercase;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: var(--color-accent);
+        text-transform: uppercase;
     }
 
     &__title {
-        @apply mt-3 font-serif text-4xl leading-tight text-text-title md:text-5xl lg:text-6xl dark:text-linen;
+        margin-top: 0.75rem;
+        font-family: var(--font-serif);
+        font-size: 2.25rem;
+        line-height: 1.25;
+        color: var(--color-text-title);
+
+        @include for-width(md) {
+            font-size: 3rem;
+            line-height: 1;
+        }
+
+        @include for-width(lg) {
+            font-size: 3.75rem;
+            line-height: 1;
+        }
+
+        .dark & {
+            color: var(--color-linen);
+        }
     }
 
     &__accent {
-        @apply text-primary dark:text-secondary;
+        color: var(--color-primary);
+
+        .dark & {
+            color: var(--color-secondary);
+        }
     }
 
     &__description {
-        @apply max-w-md text-sm leading-6 text-text-muted md:text-base dark:text-white/50;
+        max-width: 28rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: var(--color-text-muted);
+
+        @include for-width(md) {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+
+        .dark & {
+            color: rgb(255 255 255 / 0.5);
+        }
     }
 }

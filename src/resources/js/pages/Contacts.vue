@@ -1,7 +1,7 @@
 <template>
     <div class="contacts">
         <section class="contacts__section">
-            <div class="contacts__container">
+            <Container>
                 <nav aria-label="Хлебные крошки" class="contacts__breadcrumbs">
                     <Link class="contacts__breadcrumb-link" href="/">
                         Главная
@@ -179,9 +179,13 @@
                             <Button
                                 :disabled="form.processing"
                                 class="contacts__submit"
-                                style-type="link"
                                 type="submit"
                             >
+                                {{
+                                    form.processing
+                                        ? 'Отправляем…'
+                                        : 'Отправить сообщение'
+                                }}
                                 <span
                                     v-if="form.processing"
                                     class="contacts__spinner"
@@ -189,11 +193,6 @@
                                 <span v-else class="contacts__submit-icon">
                                     <Icon name="arrow" />
                                 </span>
-                                {{
-                                    form.processing
-                                        ? 'Отправляем…'
-                                        : 'Отправить сообщение'
-                                }}
                             </Button>
                             <p class="contacts__policy">
                                 Нажимая кнопку, вы соглашаетесь с политикой
@@ -215,7 +214,7 @@
                         </form>
                     </Reveal>
                 </div>
-            </div>
+            </Container>
         </section>
     </div>
 </template>
@@ -224,6 +223,7 @@
 import { Link, useForm } from '@inertiajs/vue3';
 import { reactive, ref } from 'vue';
 import Button from '@/components/Button.vue';
+import Container from '@/components/Container.vue';
 import Icon from '@/components/icons/Icon.vue';
 import Input from '@/components/Input.vue';
 import Reveal from '@/components/Reveal.vue';

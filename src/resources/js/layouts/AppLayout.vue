@@ -23,14 +23,6 @@ const page = usePage();
 </script>
 
 <style lang="scss" scoped>
-.app-layout {
-    @apply relative min-h-dvh w-full overflow-x-clip bg-bg-base text-text-title transition-colors dark:bg-bg-night dark:text-linen;
-
-    &__main {
-        @apply min-h-[60vh] pb-20 lg:pb-0;
-    }
-}
-
 .app-layout-page-enter-active {
     @apply transition-all duration-300 ease-out;
 }

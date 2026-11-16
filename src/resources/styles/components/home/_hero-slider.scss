@@ -1,77 +1,329 @@
+@use "../../helpers" as *;
+
 .hero-slider {
-    @apply bg-bg-base px-3 pt-3 md:bg-bg-dark md:p-0;
+    background-color: var(--color-bg-base);
+    padding: 0.75rem 0.75rem 0;
+
+    @include for-width(md) {
+        background-color: var(--color-bg-dark);
+        padding: 0;
+    }
+
     &__swiper {
-        @apply relative h-[700px] overflow-hidden rounded-[28px] md:h-[680px] md:rounded-none;
+        position: relative;
+        height: 700px;
+        overflow: hidden;
+        border-radius: 28px;
+
+        @include for-width(md) {
+            height: 680px;
+            border-radius: 0;
+        }
     }
 
     &__slide {
-        @apply flex h-full flex-col bg-bg-elevated md:grid md:grid-cols-2 md:bg-bg-dark dark:bg-bg-night-soft;
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        background-color: var(--color-bg-elevated);
+
+        @include for-width(md) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            background-color: var(--color-bg-dark);
+        }
+
+        .dark & {
+            background-color: var(--color-bg-night-soft);
+        }
     }
 
     &__visual {
-        @apply relative order-1 h-[340px] overflow-hidden md:order-2 md:h-full;
+        position: relative;
+        order: 1;
+        height: 340px;
+        overflow: hidden;
+
+        @include for-width(md) {
+            order: 2;
+            height: 100%;
+        }
     }
 
     &__image {
-        @apply h-full w-full scale-105 object-cover;
+        height: 100%;
+        width: 100%;
+        transform: scale(1.05);
+        object-fit: cover;
     }
 
     &__content {
-        @apply relative order-2 flex h-full grow overflow-hidden px-5 py-8 md:order-1 md:p-10 lg:p-20;
+        position: relative;
+        order: 2;
+        display: flex;
+        height: 100%;
+        flex-grow: 1;
+        overflow: hidden;
+        padding: 2rem 1.25rem;
+
+        @include for-width(md) {
+            order: 1;
+            padding: 2.5rem;
+        }
+
+        @include for-width(lg) {
+            padding: 5rem;
+        }
     }
 
     &__decoration {
-        @apply pointer-events-none absolute rounded-full border border-primary/10 md:border-white/5;
+        pointer-events: none;
+        position: absolute;
+        border-radius: 9999px;
+        border: 1px solid color-mix(in srgb, var(--color-primary) 10%, transparent);
+
+        @include for-width(md) {
+            border-color: rgb(255 255 255 / 0.05);
+        }
+
         &--left {
-            @apply -bottom-20 -left-24 h-72 w-72;
+            bottom: -5rem;
+            left: -6rem;
+            height: 18rem;
+            width: 18rem;
         }
 
         &--right {
-            @apply -right-20 -bottom-28 h-80 w-80 transition-transform duration-1000;
+            right: -5rem;
+            bottom: -7rem;
+            height: 20rem;
+            width: 20rem;
+            transition-property: transform;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 1000ms;
         }
     }
 
     &__copy {
-        @apply relative z-10;
+        position: relative;
+        z-index: 10;
     }
 
     &__eyebrow {
-        @apply mb-4 flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-primary uppercase md:text-xs md:text-secondary dark:text-secondary;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: var(--color-primary);
+        text-transform: uppercase;
+
+        @include for-width(md) {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            color: var(--color-secondary);
+        }
+
+        .dark & {
+            color: var(--color-secondary);
+        }
     }
 
     &__eyebrow-icon {
-        @apply h-4 w-4;
+        height: 1rem;
+        width: 1rem;
     }
 
     &__title {
-        @apply line-clamp-2 pr-1 pb-1 font-serif text-[40px] leading-[1.04] font-medium tracking-[-0.035em] text-text-title md:text-6xl md:text-linen xl:text-[72px] dark:text-linen;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        padding-right: 0.25rem;
+        padding-bottom: 0.25rem;
+        font-family: var(--font-serif);
+        font-size: 40px;
+        line-height: 1.04;
+        font-weight: 500;
+        letter-spacing: -0.035em;
+        color: var(--color-text-title);
+
+        @include for-width(md) {
+            font-size: 3.75rem;
+            line-height: 1;
+            color: var(--color-linen);
+        }
+
+        @include for-width(xl) {
+            font-size: 72px;
+        }
+
+        .dark & {
+            color: var(--color-linen);
+        }
     }
 
     &__accent {
-        @apply font-normal text-primary md:line-clamp-none md:text-secondary lg:text-nowrap;
+        font-weight: 400;
+        color: var(--color-primary);
+
+        @include for-width(md) {
+            display: block;
+            overflow: visible;
+            -webkit-line-clamp: unset;
+            color: var(--color-secondary);
+        }
+
+        @include for-width(lg) {
+            white-space: nowrap;
+        }
     }
 
     &__description {
-        @apply mt-5 line-clamp-7 max-w-md text-[15px] leading-7 text-text-muted md:text-lg md:leading-8 md:text-white/60 dark:text-white/60;
+        margin-top: 1.25rem;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 7;
+        overflow: hidden;
+        max-width: 28rem;
+        font-size: 15px;
+        line-height: 1.75rem;
+        color: var(--color-text-muted);
+
+        @include for-width(md) {
+            font-size: 1.125rem;
+            line-height: 2rem;
+            color: rgb(255 255 255 / 0.6);
+        }
+
+        .dark & {
+            color: rgb(255 255 255 / 0.6);
+        }
     }
 
     &__actions {
-        @apply mt-7 mb-4 grid grid-cols-2 gap-3 min-[420px]:flex-row md:mt-9;
+        margin-top: 1.75rem;
+        margin-bottom: 1rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+
+        @media (min-width: 420px) {
+            flex-direction: row;
+        }
+
+        @include for-width(md) {
+            margin-top: 2.25rem;
+        }
     }
 
     &__primary {
-        @apply group flex min-h-12 items-center justify-center gap-3 rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-primary-hover hover:shadow-xl md:bg-secondary md:text-bg-dark md:hover:bg-linen;
+        display: flex;
+        min-height: 3rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        border-radius: 9999px;
+        background-color: var(--color-primary);
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 600;
+        color: #fff;
+        box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--color-primary) 15%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--color-primary) 15%, transparent);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+
+        &:hover {
+            transform: translateY(-0.25rem);
+            background-color: var(--color-primary-hover);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        @include for-width(md) {
+            background-color: var(--color-secondary);
+            color: var(--color-bg-dark);
+
+            &:hover {
+                background-color: var(--color-linen);
+            }
+        }
+
+        &:hover .hero-slider__primary-icon {
+            transform: translateX(0.25rem);
+        }
     }
 
     &__primary-icon {
-        @apply flex h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1;
+        display: flex;
+        height: 1rem;
+        width: 1rem;
+        flex-shrink: 0;
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
     }
 
     &__secondary {
-        @apply flex min-h-12 items-center justify-center rounded-full border border-text-title/15 px-6 text-sm font-semibold text-text-title transition-all duration-300 hover:border-primary hover:bg-sage-soft/50 md:border-white/20 md:text-white md:hover:border-white/40 md:hover:bg-white/5 dark:text-linen;
+        display: flex;
+        min-height: 3rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        border: 1px solid color-mix(in srgb, var(--color-text-title) 15%, transparent);
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 600;
+        color: var(--color-text-title);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+
+        &:hover {
+            border-color: var(--color-primary);
+            background-color: color-mix(in srgb, var(--color-sage-soft) 50%, transparent);
+        }
+
+        @include for-width(md) {
+            border-color: rgb(255 255 255 / 0.2);
+            color: #fff;
+
+            &:hover {
+                border-color: rgb(255 255 255 / 0.4);
+                background-color: rgb(255 255 255 / 0.05);
+            }
+        }
+
+        .dark & {
+            color: var(--color-linen);
+        }
     }
 
     &__counter {
-        @apply absolute bottom-5 left-[50%] z-10 flex translate-x-[-50%] items-center text-xs font-medium tracking-widest text-nowrap text-text-muted md:left-5 md:translate-x-0 md:text-white/45;
+        position: absolute;
+        bottom: 1.25rem;
+        left: 50%;
+        z-index: 10;
+        display: flex;
+        transform: translateX(-50%);
+        align-items: center;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+        color: var(--color-text-muted);
+
+        @include for-width(md) {
+            left: 1.25rem;
+            transform: translateX(0);
+            color: rgb(255 255 255 / 0.45);
+        }
     }
 }

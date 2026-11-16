@@ -1,19 +1,27 @@
+@use "../helpers" as *;
+
 .reveal {
-    @apply transform-gpu opacity-0 transition-all duration-700 ease-out will-change-transform;
+    transform: translateZ(0);
+    opacity: 0;
+    transition-property: all;
+    transition-duration: 700ms;
+    transition-timing-function: ease-out;
+    will-change: transform;
 
     &--up {
-        @apply translate-y-8;
+        transform: translateY(2rem);
     }
 
     &--left {
-        @apply -translate-x-8;
+        transform: translateX(-2rem);
     }
 
     &--right {
-        @apply translate-x-8;
+        transform: translateX(2rem);
     }
 
     &--visible {
-        @apply translate-x-0 translate-y-0 opacity-100;
+        transform: translateX(0) translateY(0);
+        opacity: 1;
     }
 }

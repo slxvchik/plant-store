@@ -1,86 +1,292 @@
+@use "../../helpers" as *;
+
 .public-header {
-    @apply sticky top-0 z-60 border-b border-text-title/5 bg-bg-base/90 backdrop-blur-xl transition-colors dark:border-white/10 dark:bg-bg-night/90;
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    border-bottom: 1px solid rgba(32, 43, 38, 0.05);
+    background-color: rgba(247, 244, 237, 0.9);
+    backdrop-filter: blur(24px);
+    transition-property: color, background-color, border-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    .dark & {
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(23, 29, 25, 0.9);
+    }
 
     &__inner {
-        @apply flex h-18 w-full items-center justify-between lg:h-22;
+        display: flex;
+        height: 4.5rem;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+
+        @include for-width(lg) {
+            height: 5.5rem;
+        }
     }
 
     &__brand {
-        @apply group flex min-h-11 items-center gap-2.5;
+        display: flex;
+        min-height: 2.75rem;
+        align-items: center;
+        gap: 0.625rem;
+
+        &:hover {
+            .public-header__logo {
+                transform: rotate(12deg);
+            }
+        }
     }
 
     &__logo {
-        @apply h-9 w-9 text-primary transition-transform group-hover:rotate-12 lg:h-10 lg:w-10 dark:text-secondary;
+        display: flex;
+        height: 2.25rem;
+        width: 2.25rem;
+        color: var(--color-primary);
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        .dark & {
+            color: var(--color-secondary);
+        }
+
+        @include for-width(lg) {
+            height: 2.5rem;
+            width: 2.5rem;
+        }
     }
 
     &__brand-name {
-        @apply font-serif text-[22px] leading-none font-semibold tracking-tight text-text-title lg:text-[26px] dark:text-linen;
+        font-family: var(--font-serif);
+        font-size: 22px;
+        line-height: 1;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        color: var(--color-text-title);
+
+        .dark & {
+            color: var(--color-linen);
+        }
+
+        @include for-width(lg) {
+            font-size: 26px;
+        }
     }
 
     &__brand-accent {
-        @apply font-normal text-primary italic dark:text-secondary;
+        font-weight: 400;
+        color: var(--color-primary);
+        font-style: italic;
+
+        .dark & {
+            color: var(--color-secondary);
+        }
     }
 
     &__nav {
-        @apply hidden items-center gap-1 lg:flex;
+        display: none;
+        align-items: center;
+        gap: 0.25rem;
+
+        @include for-width(lg) {
+            display: flex;
+        }
     }
 
     &__nav-item {
-        @apply relative;
+        position: relative;
     }
 
     &__nav-link,
     &__nav-button {
-        @apply flex min-h-11 items-center rounded-full px-4 text-[15px] font-medium text-text-muted transition-all hover:bg-bg-surface hover:text-text-title dark:text-white/65 dark:hover:bg-white/5 dark:hover:text-white;
+        display: flex;
+        min-height: 2.75rem;
+        align-items: center;
+        border-radius: 9999px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--color-text-muted);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            background-color: var(--color-bg-surface);
+            color: var(--color-text-title);
+        }
+
+        .dark & {
+            color: rgba(255, 255, 255, 0.65);
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                color: white;
+            }
+        }
     }
 
     &__nav-link--active {
-        @apply text-primary dark:text-secondary;
+        color: var(--color-primary);
+
+        .dark & {
+            color: var(--color-secondary);
+        }
     }
 
     &__nav-button {
-        @apply cursor-pointer gap-1.5;
+        cursor: pointer;
+        gap: 0.375rem;
     }
 
     &__chevron {
-        @apply h-3.5 w-3.5 rotate-90 transition-transform;
+        height: 0.875rem;
+        width: 0.875rem;
+        transform: rotate(90deg);
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
 
         &--open {
-            @apply rotate-270;
+            transform: rotate(270deg);
         }
     }
 
     &__dropdown {
-        @apply absolute top-full left-0 w-64 rounded-2xl border border-text-title/5 bg-bg-elevated p-2 shadow-xl dark:border-white/10 dark:bg-bg-night-soft;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 16rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(32, 43, 38, 0.05);
+        background-color: var(--color-bg-elevated);
+        padding: 0.5rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+        .dark & {
+            border-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--color-bg-night-soft);
+        }
     }
 
     &__dropdown-link {
-        @apply flex min-h-11 items-center justify-between rounded-xl px-3 py-2 text-sm text-text-muted transition-all hover:bg-bg-surface hover:pl-4 hover:text-primary dark:text-white/65 dark:hover:bg-white/5 dark:hover:text-secondary;
+        display: flex;
+        min-height: 2.75rem;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            background-color: var(--color-bg-surface);
+            padding-left: 1rem;
+            color: var(--color-primary);
+        }
+
+        .dark & {
+            color: rgba(255, 255, 255, 0.65);
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                color: var(--color-secondary);
+            }
+        }
     }
 
     &__dropdown-icon {
-        @apply h-4 w-4;
+        height: 1rem;
+        width: 1rem;
     }
 
     &__actions {
-        @apply flex items-center gap-1 md:gap-2;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+
+        @include for-width(md) {
+            gap: 0.5rem;
+        }
+    }
+
+    &__action {
+        display: none;
     }
 
     &__action,
     &__theme {
-        @apply hidden h-11 w-11 cursor-pointer items-center justify-center rounded-full text-text-muted transition-all hover:bg-bg-surface hover:text-primary md:flex dark:text-white/65 dark:hover:bg-white/5;
+        flex-shrink: 0;
+        height: 2.75rem;
+        width: 2.75rem;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        color: var(--color-text-muted);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            background-color: var(--color-bg-surface);
+            color: var(--color-primary);
+        }
+
+        .dark & {
+            color: rgba(255, 255, 255, 0.65);
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        @include for-width(md) {
+            display: flex;
+        }
     }
 
     &__theme {
-        @apply flex;
+        display: flex;
     }
 
-    &__action :deep(.icon),
-    &__theme :deep(.icon) {
-        @apply h-5 w-5;
+    &__action .icon,
+    &__theme .icon {
+        height: 1.25rem;
+        width: 1.25rem;
     }
 
     &__contact {
-        @apply ml-2 hidden min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-hover xl:flex;
+        margin-left: 0.5rem;
+        display: none;
+        min-height: 2.75rem;
+        align-items: center;
+        border-radius: 9999px;
+        background-color: var(--color-primary);
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: white;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        @include for-width(xl) {
+            display: flex;
+        }
     }
 }

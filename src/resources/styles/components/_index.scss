@@ -1,4 +1,24 @@
-// INFO: Admin
+// INFO: Base components START
+@forward "accordion-item";
+@forward "badge";
+@forward "breadcrumbs";
+@forward "button";
+@forward "card";
+@forward "checkbox";
+@forward "container";
+@forward "image-upload";
+@forward "input";
+@forward "link";
+@forward "modal";
+@forward "pagination";
+@forward "reveal";
+@forward "search-input";
+@forward "select";
+@forward "table";
+@forward "tabs";
+@forward "textarea";
+// INFO: Base components END
+
 @forward "admin/admin-page-header";
 @forward "admin/admin-filter-bar";
 @forward "admin/admin-sidebar";
@@ -39,22 +59,3 @@
 @forward "supplier/supplier-form";
 
 @forward "user/user-form-fields";
-
-@forward "accordion-item";
-@forward "badge";
-@forward "breadcrumbs";
-@forward "button";
-@forward "card";
-@forward "checkbox";
-@forward "container";
-@forward "image-upload";
-@forward "input";
-@forward "link";
-@forward "modal";
-@forward "pagination";
-@forward "reveal";
-@forward "search-input";
-@forward "select";
-@forward "table";
-@forward "tabs";
-@forward "textarea";

@@ -1,42 +1,62 @@
+@use "../../helpers" as *;
+
 .categories {
-    @apply space-y-6;
-    :deep(.table__table) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .table__table {
         min-width: 1000px;
     }
 
     &__cell--actions {
-        @apply text-right;
+        text-align: right;
     }
 
     &__id {
-        @apply font-mono text-xs text-slate-400;
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        color: #94a3b8;
     }
 
     &__alias {
-        @apply font-medium text-slate-600;
+        font-weight: 500;
+        color: #475569;
     }
 
     &__name {
-        @apply font-semibold text-slate-900;
+        font-weight: 600;
+        color: #0f172a;
     }
 
     &__muted {
-        @apply text-slate-500;
+        color: #64748b;
     }
 
     &__actions {
-        @apply flex justify-end gap-2;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
     }
 
     &__empty {
-        @apply py-16 text-center text-slate-500;
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        text-align: center;
+        color: #64748b;
     }
 
     &__form {
-        @apply flex w-full flex-col gap-5;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: 1.25rem;
     }
 
     &__form-footer {
-        @apply flex justify-end border-t border-slate-100 pt-5;
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 1.25rem;
     }
 }

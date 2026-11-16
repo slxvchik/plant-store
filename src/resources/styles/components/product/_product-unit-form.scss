@@ -1,19 +1,59 @@
+@use "../../helpers" as *;
+
 .product-unit-form {
-    @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--color-bg-surface);
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 
     &__grid {
-        @apply grid gap-5 p-6 sm:grid-cols-2 sm:p-8;
+        display: grid;
+        gap: 1.25rem;
+        padding: 1.5rem;
+
+        @include for-width(sm) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            padding: 2rem;
+        }
     }
 
     &__wide {
-        @apply sm:col-span-2;
+        @include for-width(sm) {
+            grid-column: span 2 / span 2;
+        }
     }
 
     &__footer {
-        @apply flex justify-end gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:px-8;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        border-top: 1px solid var(--color-bg-base);
+        background-color: var(--color-bg-base);
+        padding: 1rem 1.5rem;
+
+        @include for-width(sm) {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
     }
 
     &__cancel {
-        @apply inline-flex h-11 items-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-medium text-slate-600 hover:bg-slate-100;
+        display: inline-flex;
+        height: 2.75rem;
+        align-items: center;
+        border-radius: 0.75rem;
+        border: 1px solid var(--color-bg-surface);
+        background-color: #fff;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+        color: var(--color-text-muted);
+
+        &:hover {
+            background-color: var(--color-bg-surface);
+        }
     }
 }

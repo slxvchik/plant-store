@@ -11,7 +11,7 @@
 
         @fonts
 
-        @vite(['resources/tailwind/tailwind.css', 'resources/styles/index.scss', 'resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
+        @vite(['resources/styles/index.scss', 'resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         <x-inertia::head>
             <title>{{ config('app.name', 'Laravel') }}</title>
         </x-inertia::head>

@@ -1,3 +1,13 @@
 .notification-list {
     @apply z-999 fixed left-1/2 top-4 flex w-full max-w-sm -translate-x-1/2 flex-col gap-3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    top: 1rem;
+    width: 100%;
+    max-width: 384px;
+    transform: translateX(-50%);
 }

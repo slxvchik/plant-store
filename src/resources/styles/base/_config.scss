@@ -1,32 +1,11 @@
-@import 'tailwindcss';
-
-@font-face {
-    font-family: 'PlayfairDisplay';
-    src: url('../fonts/PlayfairDisplay-VariableFont_wght.ttf')
-    format('truetype-variations');
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'SofiaSans';
-    src: url('../fonts/SofiaSans-VariableFont_wght.ttf')
-    format('truetype-variations');
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@custom-variant dark (&:where(.dark, .dark *));
-
-@theme inline {
+:root {
     --font-serif: 'PlayfairDisplay', Georgia, serif;
     --font-sans: 'SofiaSans', ui-sans-serif, sans-serif;
 
     --color-bg-base: #f7f4ed;
     --color-bg-surface: #ece8de;
     --color-bg-elevated: #fcfaf5;
+
     --color-bg-dark: #1e2924;
     --color-bg-night: #171d19;
     --color-bg-night-soft: #222c26;
@@ -44,3 +23,20 @@
     --color-accent-hover: #8f6b50;
     --color-linen: #f7f4ed;
 }
+
+.dark {
+    --color-bg-base: var(--color-bg-night);
+    --color-bg-surface: var(--color-bg-dark);
+    --color-bg-elevated: var(--color-bg-night-soft);
+
+    --color-text-title: var(--color-text-inverse);
+    --color-text-muted: #8a9b87;
+}
+
+$site-breakpoints: (
+    sm: 640px,
+    md: 768px,
+    lg: 1024px,
+    xl: 1280px,
+    2xl: 1536px,
+);
