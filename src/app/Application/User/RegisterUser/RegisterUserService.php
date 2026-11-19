@@ -23,18 +23,18 @@ readonly class RegisterUserService implements RegisterUserUseCase
     {
         $user = UserModel::createNew(
             uuidGenerator: $this->uuidGeneratorInterface,
-            phone: $registerUserDto->phone,
             password: $registerUserDto->password,
             firstName: $registerUserDto->firstname,
             lastName: $registerUserDto->lastName,
             email: $registerUserDto->email,
+            phone: $registerUserDto->phone,
         );
 
         if ($this->userRepository->findByPhone($user->phone) !== null) {
             throw new UserPhoneAlreadyExistsException;
         }
 
-        if ($user->email !== null && $this->userRepository->findByEmail($user->email) !== null) {
+        if ($this->userRepository->findByEmail($user->email) !== null) {
             throw new UserEmailAlreadyExistsException;
         }
 

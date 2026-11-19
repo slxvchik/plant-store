@@ -1,5 +1,5 @@
 <template>
-    <section class="bg-bg-base px-4 py-16 md:px-8 md:py-24 dark:bg-bg-night">
+    <section class="faq">
         <Container>
             <div id="faq" class="faq__grid">
                 <Reveal>

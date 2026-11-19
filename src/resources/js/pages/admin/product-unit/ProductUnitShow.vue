@@ -6,7 +6,7 @@
             description="Обновите расположение, статус, резерв или связь с поставкой."
             eyebrow="Карточка единицы товара"
         />
-        <QrCode v-if="productUnit.id" :content="productUnit.id" class="product-unit-show__qr"/>
+        <BarCodeGenerator v-if="productUnit.id" :content="productUnit.id" class="product-unit-show__qr"/>
         <ProductUnitForm
             :initial="initial"
             :products="products"
@@ -19,8 +19,8 @@
 </template>
 <script lang="ts" setup>
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
+import BarCodeGenerator from '@/components/BarCodeGenerator.vue';
 import ProductUnitForm from '@/components/product/ProductUnitForm.vue';
-import QrCode from '@/components/QrCode.vue';
 import AdminLayout from '@/layouts/AdminLayout.vue';
 import type {
     ProductOption,

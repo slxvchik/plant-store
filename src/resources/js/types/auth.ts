@@ -11,3 +11,8 @@ export type User = {
 export type Auth = {
     user: User | null;
 };
+
+export type LoginFormState = {
+    login: string;
+    password: string;
+}

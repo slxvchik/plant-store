@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\User\AuthorizeUser;
+namespace App\Application\User\AuthenticateUser;
 
 use App\Domain\Shared\AppException\AppException;
 use App\Domain\Shared\AppException\AppExceptionStatus;

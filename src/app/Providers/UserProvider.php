@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Application\User\AuthenticateUser\AuthenticateUserService;
+use App\Application\User\AuthenticateUser\AuthenticateUserUseCase;
 use App\Application\User\CreateUser\CreateUserService;
 use App\Application\User\CreateUser\CreateUserUseCase;
 use App\Application\User\DeleteUser\DeleteUserService;
@@ -10,6 +12,8 @@ use App\Application\User\GetUser\GetUserService;
 use App\Application\User\GetUser\GetUserUseCase;
 use App\Application\User\GetUsersPage\GetUsersPageService;
 use App\Application\User\GetUsersPage\GetUsersPageUseCase;
+use App\Application\User\LogoutUser\LogoutUserService;
+use App\Application\User\LogoutUser\LogoutUserUseCase;
 use App\Application\User\UpdateUser\UpdateUserService;
 use App\Application\User\UpdateUser\UpdateUserUseCase;
 use App\Domain\User\Repository\UserRepository;
@@ -51,6 +55,11 @@ class UserProvider extends ServiceProvider
         $this->app->singleton(
             DeleteUserUseCase::class,
             DeleteUserService::class
+        );
+
+        $this->app->singleton(
+            AuthenticateUserUseCase::class,
+            AuthenticateUserService::class,
         );
     }
 

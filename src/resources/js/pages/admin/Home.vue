@@ -1,14 +1,14 @@
 <template>
-    <div class="home">
-        <div class="home__hero">
-            <p class="home__eyebrow">Панель управления</p>
-            <h1 class="home__title">Деулино Сад</h1>
-            <p class="home__description">
+    <div class="admin-home">
+        <div class="admin-home__hero">
+            <p class="admin-home__eyebrow">Панель управления</p>
+            <h1 class="admin-home__title">Деулино Сад</h1>
+            <p class="admin-home__description">
                 Каталог, складские единицы, закупки и заказы — в едином рабочем
                 пространстве.
             </p>
         </div>
-        <div class="home__grid">
+        <div class="admin-home__grid">
             <a
                 v-for="card in cards"
                 :key="card.href"
@@ -16,9 +16,9 @@
                 :href="card.href"
             >
                 <span :class="iconClasses(card.tone)">{{ card.letter }}</span>
-                <h2 class="home__card-title">{{ card.title }}</h2>
-                <p class="home__card-description">{{ card.description }}</p>
-                <p class="home__card-link">Перейти →</p>
+                <h2 class="admin-home__card-title">{{ card.title }}</h2>
+                <p class="admin-home__card-description">{{ card.description }}</p>
+                <p class="admin-home__card-link">Перейти →</p>
             </a>
         </div>
     </div>
@@ -57,9 +57,9 @@ const cards = [
         tone: 'amber',
     },
 ];
-const cardClasses = (tone: string) => ['home__card', `home__card--${tone}`];
+const cardClasses = (tone: string) => ['admin-home__card', `admin-home__card--${tone}`];
 const iconClasses = (tone: string) => [
-    'home__card-icons',
-    `home__card-icon--${tone}`,
+    'admin-home__card-icons',
+    `admin-home__card-icon--${tone}`,
 ];
 </script>
