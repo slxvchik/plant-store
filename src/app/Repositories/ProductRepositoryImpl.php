@@ -112,11 +112,7 @@ class ProductRepositoryImpl implements ProductRepository
         }
 
         if ($criteria->categoryId !== null) {
-            $query->whereIn('products.id', function ($subQuery) use ($criteria): void {
-                $subQuery->select('product_id')
-                    ->from('product_categories')
-                    ->where('category_id', $criteria->categoryId);
-            });
+            $query->whereIn('products.category_id', $criteria->categoryId);
         }
 
         if ($criteria->tagIds !== []) {
@@ -135,6 +131,10 @@ class ProductRepositoryImpl implements ProductRepository
 
                 $this->applyOfferCriteria($subQuery, $criteria);
             });
+        }
+
+        if ($criteria->featured !== null) {
+            $query->where('products.featured', $criteria->featured);
         }
 
         $paginator = $query->paginate(perPage: $pageable->perPage, page: $pageable->page);

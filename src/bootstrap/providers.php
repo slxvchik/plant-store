@@ -1,20 +1,33 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\CategoryProvider;
+use App\Providers\ImageProvider;
+use App\Providers\MainPageGalleryProvider;
+use App\Providers\NewsProvider;
+use App\Providers\ProductProvider;
+use App\Providers\ProductSupplyProvider;
+use App\Providers\ProductUnitProvider;
+use App\Providers\ProductUnitStatusProvider;
+use App\Providers\SupplierProvider;
+use App\Providers\TagProvider;
+use App\Providers\UserProvider;
+use App\Providers\UserRequestsProvider;
+use App\Providers\WarehouseProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\CartProvider::class,
-    App\Providers\CategoryProvider::class,
-    App\Providers\ImageProvider::class,
-    App\Providers\MainPageGalleryProvider::class,
-    App\Providers\NewsProvider::class,
-    App\Providers\OrderProvider::class,
-    App\Providers\ProductProvider::class,
-    App\Providers\ProductSupplyProvider::class,
-    App\Providers\ProductUnitProvider::class,
-    App\Providers\ProductUnitStatusProvider::class,
-    App\Providers\SupplierProvider::class,
-    App\Providers\TagProvider::class,
-    App\Providers\UserProvider::class,
-    App\Providers\UserRequestsProvider::class,
-    App\Providers\WarehouseProvider::class,
+    AppServiceProvider::class,
+    CategoryProvider::class,
+    ImageProvider::class,
+    MainPageGalleryProvider::class,
+    NewsProvider::class,
+    ProductProvider::class,
+    ProductSupplyProvider::class,
+    ProductUnitProvider::class,
+    ProductUnitStatusProvider::class,
+    SupplierProvider::class,
+    TagProvider::class,
+    UserProvider::class,
+    UserRequestsProvider::class,
+    WarehouseProvider::class,
 ];

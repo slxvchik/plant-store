@@ -68,7 +68,7 @@
                     <Link
                         aria-label="Поиск по каталогу"
                         class="public-header__action"
-                        :href="CatalogIndex.catalog.url()"
+                        :href="CatalogIndex.index.url()"
                     >
                         <Icon name="search" />
                     </Link>
@@ -95,6 +95,15 @@
                     <Link styleType="button" class="public-header__contact" href="/contacts">
                         Связаться с нами
                     </Link>
+                    <Button
+                        v-if="user"
+                        aria-label="Выйти из аккаунта"
+                        style-type="link"
+                        class="public-header__action"
+                        @click="logoutUser"
+                    >
+                        <Icon name="logout" />
+                    </Button>
                 </div>
             </div>
         </Container>
@@ -102,8 +111,8 @@
 </template>
 
 <script lang="ts" setup>
-import { usePage } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { router, usePage } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
 import Button from '@/components/Button.vue';
 import Container from '@/components/Container.vue';
 import Icon from '@/components/icons/Icon.vue';
@@ -111,6 +120,7 @@ import LogoIcon from '@/components/icons/LogoIcon.vue';
 import Link from '@/components/Link.vue';
 import { useTheme } from '@/composables/useTheme';
 import { clickOutside as vClickOutside } from '@/directives/clickOutside';
+import { logout as LogoutRoute } from '@/routes';
 import CatalogIndex from '@/routes/catalog';
 
 interface NavItem {
@@ -133,6 +143,10 @@ const navigation = <NavItem[]>[
     },
     { label: 'Контакты', href: '/contacts' },
 ];
+const user = computed(() => page.props.auth.user);
+const logoutUser = () => {
+    router.post(LogoutRoute.url());
+}
 const navLinkClasses = (href: string) => [
     'public-header__nav-link',
     { 'public-header__nav-link--active': page.url.startsWith(href) },

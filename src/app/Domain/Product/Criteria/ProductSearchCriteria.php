@@ -24,5 +24,6 @@ final readonly class ProductSearchCriteria
         public ?DateTimeImmutable $sowingDateFrom = null,
         public ?DateTimeImmutable $sowingDateTo = null,
         public ?bool $active = true,
+        public ?bool $featured = true,
     ) {}
 }

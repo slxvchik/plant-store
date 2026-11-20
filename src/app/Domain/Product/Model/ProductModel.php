@@ -70,12 +70,17 @@ class ProductModel
     public private(set) array $imageIds;
 
     /**
+     * @var bool displayed on main page
+     */
+    public private(set) bool $featured;
+
+    /**
      * @param  string[]  $tags
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
      * @param  OfferModel[]  $offers
      */
-    private function __construct(Uuid $id, bool $active, string $alias, int $sort, string $name, ?string $description, ?string $categoryId, array $tags, array $videoIds, array $imageIds, array $offers)
+    private function __construct(Uuid $id, bool $active, string $alias, int $sort, string $name, ?string $description, ?string $categoryId, array $tags, array $videoIds, array $imageIds, array $offers, bool $featured = false)
     {
         $this->id = $id;
         $this->active = $active;
@@ -88,6 +93,7 @@ class ProductModel
         $this->videoIds = $videoIds;
         $this->imageIds = $imageIds;
         $this->offers = $offers;
+        $this->featured = $featured;
     }
 
     /**
@@ -96,7 +102,7 @@ class ProductModel
      * @param  SortedItem<string>[]  $imageIds
      * @param  OfferModel[]  $offers
      */
-    public static function fromDb(string $id, bool $active, string $alias, int $sort, string $name, ?string $description, ?string $categoryId, array $tags, array $videoIds, array $imageIds, array $offers): self
+    public static function fromDb(string $id, bool $active, string $alias, int $sort, string $name, ?string $description, ?string $categoryId, array $tags, array $videoIds, array $imageIds, array $offers, bool $featured = false): self
     {
         $uuid = new Uuid($id);
 
@@ -111,7 +117,8 @@ class ProductModel
             tags: $tags,
             videoIds: $videoIds,
             imageIds: $imageIds,
-            offers: $offers
+            offers: $offers,
+            featured: $featured,
         );
     }
 
@@ -120,7 +127,7 @@ class ProductModel
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, int $sort, string $name, ?string $categoryId, array $tags, array $videoIds, array $imageIds, ?string $description): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, int $sort, string $name, ?string $categoryId, array $tags, array $videoIds, array $imageIds, ?string $description, bool $featured = false): self
     {
         $uuidValue = $uuidIdentityGenerator->generate();
         $newUuid = new Uuid($uuidValue);
@@ -136,7 +143,8 @@ class ProductModel
             tags: $tags,
             videoIds: $videoIds,
             imageIds: $imageIds,
-            offers: []
+            offers: [],
+            featured: $featured,
         );
     }
 
@@ -145,7 +153,7 @@ class ProductModel
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
      */
-    public function update(string $alias, int $sort, string $name, bool $active, ?string $description, ?string $categoryId, array $tagIds, array $videoIds, array $imageIds): void
+    public function update(string $alias, int $sort, string $name, bool $active, ?string $description, ?string $categoryId, array $tagIds, array $videoIds, array $imageIds, bool $featured): void
     {
         $this->alias = $alias;
         $this->sort = $sort;
@@ -156,6 +164,7 @@ class ProductModel
         $this->tagIds = $tagIds;
         $this->videoIds = $videoIds;
         $this->imageIds = $imageIds;
+        $this->featured = $featured;
     }
 
     /**

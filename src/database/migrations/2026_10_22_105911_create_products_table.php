@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->text('description')->nullable();
             $table->foreignUuid('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->boolean('featured');
             $table->timestamps();
         });
 

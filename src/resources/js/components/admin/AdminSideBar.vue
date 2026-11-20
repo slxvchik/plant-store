@@ -66,16 +66,25 @@
         <div class="admin-sidebar__footer">
             Деулино Сад · ERP
             <span class="admin-sidebar__version">v1.0</span>
+            <Button
+                v-if="user"
+                style-type="link"
+                text="Выйти"
+                class="admin-sidebar__logout"
+                type="button"
+                @click="logoutUser"
+            />
         </div>
     </aside>
 </template>
 
 <script lang="ts" setup>
-import { Link, usePage } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
+import { Link, router, usePage } from '@inertiajs/vue3';
+import { computed, ref, watch } from 'vue';
 import Button from '@/components/Button.vue';
 import Icon from '@/components/icons/Icon.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
+import { logout as LogoutRoute } from '@/routes';
 import AdminRoutes from '@/routes/admin';
 
 const menuTabs = ref([
@@ -195,4 +204,9 @@ watch(
     },
     { immediate: true },
 );
+
+const user = computed(() => page.props.auth.user);
+const logoutUser = () => {
+    router.post(LogoutRoute.url());
+}
 </script>

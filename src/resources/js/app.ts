@@ -29,7 +29,7 @@ createInertiaApp({
             if (flash?.message) {
                 useNotificationStore().add(
                     flash.message,
-                    flash.type ?? 'success',
+                    flash.type ?? 'info',
                 );
             }
         });
