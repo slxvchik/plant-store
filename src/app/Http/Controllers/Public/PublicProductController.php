@@ -11,16 +11,13 @@ use Illuminate\Http\Request;
 class PublicProductController extends Controller
 {
     public function __construct(
-        private readonly GetFeaturedProductsUseCase $getFeaturedProductsUseCase,
         private readonly SearchProductsUseCase $searchProductsUseCase,
     ) {}
 
     public function search(): JsonResponse
-
-    public function featured(): JsonResponse
     {
         return response()->json([
-            'products' => $this->getFeaturedProductsUseCase->execute()
+            'productsPage' => $this->searchProductsUseCase->execute(),
         ]);
     }
 }

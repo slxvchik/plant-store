@@ -1,13 +1,18 @@
 <template>
-    <TransitionGroup class="notification-list" name="notification" tag="div">
-        <NotificationItem
-            v-for="notification in store.items"
-            :key="notification.id"
-            :notification="notification"
-        />
-    </TransitionGroup>
+    <div v-if="store.items && store.items.length > 0" class="notifications">
+        <Container>
+            <TransitionGroup class="notifications__items" name="notification" tag="div">
+                <NotificationItem
+                    v-for="notification in store.items"
+                    :key="notification.id"
+                    :notification="notification"
+                />
+            </TransitionGroup>
+        </Container>
+    </div>
 </template>
 <script lang="ts" setup>
+import Container from '@/components/Container.vue';
 import NotificationItem from '@/components/notification/NotificationItem.vue';
 import { useNotificationStore } from '@/stores/useNotificationStore';
 

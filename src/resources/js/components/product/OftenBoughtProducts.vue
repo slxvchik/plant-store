@@ -1,5 +1,8 @@
 <template>
-    <section class="often-bought-products">
+    <section
+        v-if="products !== null && products !== undefined && products.length > 0"
+        class="often-bought-products"
+    >
         <Container>
             <Reveal>
                 <div class="often-bought-products__header">
@@ -32,7 +35,7 @@
             </Reveal>
         </Container>
         <Reveal :delay="120" class="often-bought-products__slider">
-            <ProductSlider :items="[]" />
+            <ProductSlider :items="products" />
         </Reveal>
     </section>
 </template>
@@ -42,4 +45,10 @@ import Container from '@/components/Container.vue';
 import Icon from '@/components/icons/Icon.vue';
 import ProductSlider from '@/components/product/ProductSlider.vue';
 import Reveal from '@/components/Reveal.vue';
+import type { Product } from '@/types/product.ts';
+
+interface Props {
+    products: Product[],
+}
+const { products } = defineProps<Props>();
 </script>

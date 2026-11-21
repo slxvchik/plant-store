@@ -42,6 +42,7 @@ readonly class UpdateProductService implements UpdateProductUseCase
             tagIds: $updateProductRequestDto->tagIds,
             videoIds: $updateProductRequestDto->videoIds,
             imageIds: $updateProductRequestDto->imageIds,
+            featured: $updateProductRequestDto->featured,
         );
 
         $existingProduct = $this->productRepository->findByAlias($product->alias);

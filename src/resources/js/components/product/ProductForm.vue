@@ -53,6 +53,15 @@
             multiple
             type="image"
         />
+        <div class="product-form__checkbox">
+            <Checkbox
+                id="featured"
+                v-model="form.featured"
+                :disabled="disabled"
+                :error="errors?.featured"
+                text="Выводить на главной"
+            />
+        </div>
     </div>
 </template>
 

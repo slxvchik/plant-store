@@ -20,6 +20,7 @@ readonly class GetFeaturedProductsService implements GetFeaturedProductsUseCase
     {
         $featuredProducts = $this->productRepository->search(
             criteria: new ProductSearchCriteria(
+                active: true,
                 featured: true,
             ),
             pageable: new Pageable(

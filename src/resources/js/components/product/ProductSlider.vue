@@ -54,8 +54,8 @@ import Icon from '@/components/icons/Icon.vue';
 import ProductCard from '@/components/product/ProductCard.vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import type { ProductListItem } from '@/types/product.ts';
+import type { Product } from '@/types/product.ts';
 
 const swiperOptions = [Navigation];
-defineProps<{ items: ProductListItem[] }>();
+defineProps<{ items: Product[] }>();
 </script>

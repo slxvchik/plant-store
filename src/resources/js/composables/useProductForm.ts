@@ -23,6 +23,7 @@ export function useProductForm(formMode: FormMode, product?: Product) {
         sort: product?.sort ?? 500,
         description: product?.description ?? '',
         category: product?.category?.id ?? null,
+        featured: product?.featured ?? false,
         tags: product?.tags.map((tag) => tag.id) ?? [],
         images: [],
         offers:
@@ -127,6 +128,7 @@ function serializeProduct(
         sort: form.sort,
         description: form.description,
         category: form.category,
+        featured: form.featured,
         tags: form.tags,
         images: getSortedItems(images),
         videos: [],

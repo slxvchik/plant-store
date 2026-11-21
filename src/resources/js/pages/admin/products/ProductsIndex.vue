@@ -8,7 +8,8 @@
             <template #actions>
                 <Link
                     :href="AdminProducts.create.url()"
-                    class="products-index__create"
+                    styleType="button"
+                    secondary
                 >
                     Создать товар
                 </Link>
@@ -70,11 +71,12 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { Link, router } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
+import Link from '@/components/Link.vue';
 import Pagination from '@/components/Pagination.vue';
 import Table from '@/components/Table.vue';
 import AdminLayout from '@/layouts/AdminLayout.vue';

@@ -194,7 +194,7 @@
 
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Button from '@/components/Button.vue';
 import CatalogFilters from '@/components/catalog/CatalogFilters.vue';
@@ -207,9 +207,16 @@ import Select from '@/components/Select.vue';
 import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { home } from '@/routes';
-import type { ProductListItem } from '@/types/product.ts';
+import type { Page } from '@/types/pagination.ts';
+import type { Product } from '@/types/product.ts';
 
 defineOptions({ layout: AppLayout });
+
+interface Props {
+    productsPage: Page<Product>,
+}
+const props = defineProps<Props>();
+const filteredProducts = computed(() => props.productsPage?.items ?? []);
 
 const sortItems = [
     { label: 'Сначала популярные', value: 'popularity' },
@@ -230,7 +237,6 @@ const activeFiltersCount = computed(
         (maxPrice.value < 7000 ? 1 : 0) +
         (onlyInStock.value ? 1 : 0),
 );
-const filteredProducts = ref<ProductListItem[]>([]);
 const resultLabel = computed(() => {
     const count = filteredProducts.value.length;
     const lastTwo = count % 100;

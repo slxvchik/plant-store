@@ -3,6 +3,7 @@
 .button {
     cursor: pointer;
     font-family: var(--font-sans);
+    font-size: 1rem;
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
     transition-duration: 200ms;
 
@@ -12,11 +13,17 @@
         align-items: center;
         justify-content: center;
         gap: 0.375rem;
-        border-radius: 0.5rem;
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
         font-weight: 500;
         color: white;
+        border-radius: 0.75rem;
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+        background-color: var(--color-primary);
+
+        &:hover {
+            background-color: var(--color-primary-hover);
+            color: white;
+        }
 
         &:disabled {
             cursor: not-allowed;
@@ -24,7 +31,7 @@
         }
 
         @include for-width(xl) {
-            font-size: 1.125rem;
+            font-size: 0.875rem;
         }
     }
 
@@ -128,15 +135,5 @@
 
     &--auto {
         width: auto;
-
-        &:not(.button--sm) {
-            border-radius: 0.75rem;
-            padding: 0.625rem 1.25rem;
-            font-size: 0.875rem;
-
-            @include for-width(xl) {
-                font-size: 0.875rem;
-            }
-        }
     }
 }

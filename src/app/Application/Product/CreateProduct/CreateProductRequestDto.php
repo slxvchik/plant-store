@@ -22,6 +22,7 @@ readonly class CreateProductRequestDto
         public string $name,
         public ?string $description,
         public ?string $categoryId,
+        public bool $featured,
         public array $tagIds,
         public array $videoIds,
         public array $imageIds,

@@ -283,25 +283,10 @@
         min-height: 2.75rem;
         width: 100%;
         cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        border-radius: 9999px;
-        background-color: var(--color-primary);
-        padding-left: 1rem;
-        padding-right: 1rem;
-        font-size: 0.75rem;
-        line-height: 1rem;
-        font-weight: 600;
-        color: #fff;
         transition-property: all;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 300ms;
 
-        &:hover {
-            background-color: var(--color-primary-hover);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-        }
 
         &:active {
             transform: scale(0.95);
@@ -309,14 +294,10 @@
 
         @include for-width(md) {
             width: 2.75rem;
-            padding-left: 0;
-            padding-right: 0;
         }
 
         @include for-width(lg) {
             width: auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
         }
     }
 

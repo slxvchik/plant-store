@@ -17,7 +17,6 @@ use App\Domain\Tag\TagRepository;
 readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
 {
     public function __construct(
-        private FileStorageInterface $fileStorage,
         private TagRepository $tagRepository,
         private CategoryRepository $categoryRepository,
         private GetImagesByIdsUseCase $getImagesByIdsUseCase,

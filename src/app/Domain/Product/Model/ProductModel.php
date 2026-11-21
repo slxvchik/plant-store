@@ -102,7 +102,7 @@ class ProductModel
      * @param  SortedItem<string>[]  $imageIds
      * @param  OfferModel[]  $offers
      */
-    public static function fromDb(string $id, bool $active, string $alias, int $sort, string $name, ?string $description, ?string $categoryId, array $tags, array $videoIds, array $imageIds, array $offers, bool $featured = false): self
+    public static function fromDb(string $id, bool $active, string $alias, int $sort, string $name, ?string $description, ?string $categoryId, array $tags, array $videoIds, array $imageIds, array $offers, bool $featured): self
     {
         $uuid = new Uuid($id);
 
@@ -127,7 +127,7 @@ class ProductModel
      * @param  SortedItem<string>[]  $videoIds
      * @param  SortedItem<string>[]  $imageIds
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, int $sort, string $name, ?string $categoryId, array $tags, array $videoIds, array $imageIds, ?string $description, bool $featured = false): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $alias, int $sort, string $name, ?string $categoryId, array $tags, array $videoIds, array $imageIds, ?string $description, bool $featured): self
     {
         $uuidValue = $uuidIdentityGenerator->generate();
         $newUuid = new Uuid($uuidValue);

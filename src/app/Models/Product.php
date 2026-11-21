@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Domain\Product\Model\ProductModel as DomainProduct;
 use App\Domain\Shared\SortedItem\SortedItem;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,12 +26,14 @@ class Product extends Model
         'name',
         'description',
         'category_id',
+        'featured',
     ];
 
     protected $casts = [
         'alias' => 'string',
         'active' => 'boolean',
         'sort' => 'integer',
+        'featured' => 'boolean',
     ];
 
     public function toDomain(): DomainProduct
@@ -69,6 +70,7 @@ class Product extends Model
             videoIds: $videoIds,
             imageIds: $imageIds,
             offers: $this->offers->mapWithKeys(fn (Offer $offer): array => [$offer->id => $offer->toDomain()])->all(),
+            featured: $this->featured,
         );
     }
 

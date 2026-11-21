@@ -14,18 +14,20 @@ use App\Http\Controllers\Private\PrivateTagController;
 use App\Http\Controllers\Private\PrivateUserController;
 use App\Http\Controllers\Private\PrivateUserRequestController;
 use App\Http\Controllers\Private\PrivateWarehouseController;
+use App\Http\Controllers\Public\PublicCatalogController;
+use App\Http\Controllers\Public\PublicHomeController;
 use App\Http\Controllers\Public\PublicUserRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
 
-Route::inertia('/', 'Home')->name('home');
+Route::get('/', [PublicHomeController::class, 'index'])->name('home');
 Route::inertia('/contacts', 'Contacts')->name('contacts');
 
 Route::post('/callback', [PublicUserRequestController::class, 'store'])->name('callback');
 
 Route::prefix('catalog')->name('catalog.')->group(function () {
-    Route::inertia('/', 'catalog/CatalogIndex')->name('index');
+    Route::get('/', [PublicCatalogController::class, 'index'])->name('index');
     Route::inertia('/{alias}', 'catalog/ProductDetail')->name('product');
 });
 

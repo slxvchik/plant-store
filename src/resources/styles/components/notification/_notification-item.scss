@@ -8,6 +8,7 @@
     background-color: var(--color-bg-surface);
     padding: 1rem;
     color: var(--color-text-title);
+    pointer-events: auto;
 
     &--success {
         background-color: color-mix(in srgb, var(--color-secondary) 18%, var(--color-bg-elevated));

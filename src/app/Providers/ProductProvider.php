@@ -9,10 +9,14 @@ use App\Application\Product\DeleteProduct\DeleteProductService;
 use App\Application\Product\DeleteProduct\DeleteProductUseCase;
 use App\Application\Product\GetDetailProduct\GetDetailProductService;
 use App\Application\Product\GetDetailProduct\GetDetailProductUseCase;
+use App\Application\Product\GetFeaturedProducts\GetFeaturedProductsService;
+use App\Application\Product\GetFeaturedProducts\GetFeaturedProductsUseCase;
 use App\Application\Product\GetProducts\GetProductsService;
 use App\Application\Product\GetProducts\GetProductsUseCase;
 use App\Application\Product\GetProductOptions\GetProductOptionsService;
 use App\Application\Product\GetProductOptions\GetProductOptionsUseCase;
+use App\Application\Product\SearchProducts\SearchProductsService;
+use App\Application\Product\SearchProducts\SearchProductsUseCase;
 use App\Application\Product\Shared\Port\ProductDetailsFetcher;
 use App\Application\Product\UpdateProduct\UpdateProductService;
 use App\Application\Product\UpdateProduct\UpdateProductUseCase;
@@ -65,6 +69,16 @@ class ProductProvider extends ServiceProvider
         $this->app->singleton(
             DeleteProductUseCase::class,
             DeleteProductService::class,
+        );
+
+        $this->app->singleton(
+            GetFeaturedProductsUseCase::class,
+            GetFeaturedProductsService::class,
+        );
+
+        $this->app->singleton(
+            SearchProductsUseCase::class,
+            SearchProductsService::class,
         );
     }
 

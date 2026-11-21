@@ -103,7 +103,7 @@ class ProductRepositoryImpl implements ProductRepository
     {
         $query = $this->query()->orderBy('sort');
 
-        if ($criteria->active !== null) {
+        if ($criteria->active === true) {
             $query->where('products.active', $criteria->active);
         }
 
@@ -166,6 +166,7 @@ class ProductRepositoryImpl implements ProductRepository
             'name' => $product->name,
             'description' => $product->description,
             'category_id' => $product->categoryId,
+            'featured' => $product->featured,
         ];
     }
 
@@ -302,7 +303,8 @@ class ProductRepositoryImpl implements ProductRepository
 
     private function hasOfferCriteria(ProductSearchCriteria $criteria): bool
     {
-        return $criteria->sku !== null
+        return $criteria->active === true
+            || $criteria->sku !== null
             || $criteria->formFactor !== null
             || $criteria->size !== null
             || $criteria->age !== null
@@ -314,6 +316,10 @@ class ProductRepositoryImpl implements ProductRepository
 
     private function applyOfferCriteria(QueryBuilder $query, ProductSearchCriteria $criteria): void
     {
+        if ($criteria->active === true) {
+            $query->where('active', $criteria->active);
+        }
+
         if ($criteria->sku !== null) {
             $query->where('offers.sku', $criteria->sku);
         }

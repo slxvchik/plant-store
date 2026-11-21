@@ -19,6 +19,7 @@ use App\Http\Requests\Private\Product\UpdateProductRequest;
 use App\Http\Requests\Public\PaginationRequest;
 use App\Notification\Notification;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 

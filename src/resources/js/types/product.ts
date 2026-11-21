@@ -11,6 +11,8 @@ export type Product = {
     name: string;
     sort: number;
     description: string | null;
+    featured: boolean;
+    minPrice: number;
     offers: Offer[];
     category: Category | null;
     tags: Tag[];
@@ -28,20 +30,6 @@ export type Offer = {
     stockQuantity: number | null;
 };
 
-export type ProductListItem = {
-    id: string;
-    active: boolean;
-    alias: string;
-    name: string;
-    sort: number;
-    oldPrice?: number;
-    minPrice: number;
-    inStock: boolean;
-    category?: Category;
-    tags: Tag[];
-    image: Image;
-};
-
 // Form state
 export type ProductFormState = {
     id?: string;
@@ -51,6 +39,7 @@ export type ProductFormState = {
     sort: number;
     description: string;
     category: string | null;
+    featured: boolean;
     tags: string[];
     images: ImageFormState[];
     offers: OfferFormState[];

@@ -35,6 +35,7 @@ readonly class CreateProductService implements CreateProductUseCase
             videoIds: $createProductRequestDto->videoIds,
             imageIds: $createProductRequestDto->imageIds,
             description: $createProductRequestDto->description,
+            featured: $createProductRequestDto->featured,
         );
 
         if ($this->productRepository->findByAlias($product->alias) !== null) {

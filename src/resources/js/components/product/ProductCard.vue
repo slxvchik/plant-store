@@ -7,8 +7,8 @@
         >
             <div class="product-card__image-wrap">
                 <img
-                    :alt="product.image.altText ?? ''"
-                    :src="product.image.webPathToFile"
+                    :alt="product.images[0]?.altText ?? ''"
+                    :src="product.images[0]?.webPathToFile"
                     class="product-card__image"
                     loading="lazy"
                 />
@@ -28,7 +28,7 @@
                 </span>
             </span>
         </Link>
-        <div class="product-card__favorite">
+        <div v-if="false" class="product-card__favorite">
             <FavoriteButton v-model="favorite" />
         </div>
         <div class="product-card__body">
@@ -61,16 +61,14 @@
                         {{ product.minPrice }}
                     </span>
                     <span
-                        v-if="product.oldPrice"
+                        v-if="false"
                         class="product-card__old-price"
-                    >
-                        {{ product.oldPrice }}
-                    </span>
+                    />
                 </div>
                 <Button
+                    v-if="false"
                     class="product-card__cart"
                     :aria-label="`Добавить ${product.name} в корзину`"
-                    style-type="link"
                     type="button"
                     @click="console.log('add to card!')"
                 >
@@ -89,8 +87,8 @@ import { ref } from 'vue';
 import Button from '@/components/Button.vue';
 import Icon from '@/components/icons/Icon.vue';
 import FavoriteButton from '@/components/product/FavoriteButton.vue';
-import type { ProductListItem } from '@/types/product.ts';
+import type { Product } from '@/types/product.ts';
 
-defineProps<{ product: ProductListItem }>();
+defineProps<{ product: Product }>();
 const favorite = ref(false);
 </script>
