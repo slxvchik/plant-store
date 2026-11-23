@@ -26,6 +26,7 @@ class CatalogSearchRequest extends PaginationRequest
     public function rules(): array
     {
         return array_merge(parent::rules(), [
+            'name' => ['sometimes', 'string'],
             'categories' => ['sometimes', 'array'],
             'categories.*' => ['string', 'exists:categories,alias'],
             'price_from' => ['sometimes', 'numeric', 'min:0'],
@@ -38,6 +39,7 @@ class CatalogSearchRequest extends PaginationRequest
     public function toCriteria(): ProductSearchCriteria
     {
         return new ProductSearchCriteria(
+            name: $this->filled('name') ? $this->input('name') : null,
             categoryAliases: $this->validated('categories', []),
             minPrice: $this->filled('price_from') ? (float) $this->validated('price_from') : null,
             maxPrice: $this->filled('price_to') ? (float) $this->validated('price_to') : null,

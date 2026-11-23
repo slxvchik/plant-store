@@ -18,11 +18,27 @@
         padding-bottom: 1.5rem;
     }
 
-    &__current {
-        color: var(--color-text-title);
+    &__item {
+        font-family: var(--font-sans);
+        font-size: 0.5rem;
+        color: var(--color-primary);
+
+        @include for-width(xl) {
+            font-size: 0.75rem;
+        }
 
         .dark & {
             color: rgba(255, 255, 255, 0.65);
+        }
+
+        &--current {
+            cursor: default;
+        }
+
+        &:not(.breadcrumbs__item--current) {
+            &:hover {
+                color: var(--color-primary-hover);
+            }
         }
     }
 }

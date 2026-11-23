@@ -238,6 +238,13 @@ const getQueryParam = (key: string): string | null => {
 
     return new URLSearchParams(window.location.search).get(key);
 };
+
+const getInitialSearchQuery = (): string => {
+    const param = getQueryParam('name');
+
+    return param ?? '';
+};
+
 const getInitialCategories = (): string[] => {
     const param = getQueryParam('categories');
 
@@ -287,7 +294,7 @@ const sortItems = [
     { label: 'Цена: по убыванию', value: ProductSearchSort.PRICE_DESC },
 ];
 const productsSort = ref(getInitialSort());
-const searchQuery = ref('');
+const searchQuery = ref(getInitialSearchQuery());
 const filtersOpen = ref(false);
 const selectedCategories = ref<string[]>(getInitialCategories());
 const minPrice = ref(getInitialNumber('price_from', props.minPrice));
@@ -313,6 +320,9 @@ const applyFilters = () => {
         router.get(
             window.location.pathname,
             {
+                name: searchQuery.value.length > 0
+                    ? searchQuery.value
+                    : undefined,
                 categories: selectedCategories.value.length > 0
                     ? selectedCategories.value.join(',')
                     : undefined,
@@ -334,7 +344,7 @@ const applyFilters = () => {
 };
 
 watch(
-    [selectedCategories, onlyInStock, productsSort, minPrice, maxPrice],
+    [searchQuery, selectedCategories, onlyInStock, productsSort, minPrice, maxPrice],
     applyFilters,
     { deep: true }
 );
@@ -359,6 +369,7 @@ const resultLabel = computed(() => {
 });
 
 const resetFilters = (): void => {
+    searchQuery.value = '';
     selectedCategories.value = [];
     minPrice.value = props.minPrice;
     maxPrice.value = props.maxPrice;
