@@ -38,12 +38,13 @@
                                 </span>
                             </div>
                             <CatalogFilters
-                                v-model:categories="selectedCategories"
                                 v-model:in-stock="onlyInStock"
                                 v-model:max-price="maxPrice"
                                 v-model:min-price="minPrice"
-                                :max-price-base="7000"
-                                :min-price-base="0"
+                                v-model:selected-categories="selectedCategories"
+                                :all-categories="allCategories"
+                                :max-price-base="props.maxPrice"
+                                :min-price-base="props.minPrice"
                                 id-prefix="desktop"
                                 @reset="resetFilters"
                             />
@@ -65,44 +66,49 @@
                                 </Link>
                             </p>
                         </div>
-                        <TransitionGroup
-                            v-if="filteredProducts.length"
-                            class="catalog-index__products"
-                            name="catalog-index-products"
-                            tag="div"
-                            @before-leave="beforeRemoveProduct"
-                        >
+                        <Transition name="catalog-index-fade" mode="out-in">
+                            <TransitionGroup
+                                v-if="filteredProducts.length"
+                                class="catalog-index__products"
+                                name="catalog-index-products"
+                                tag="div"
+                                @before-leave="beforeRemoveProduct"
+                            >
+                                <div
+                                    v-for="product in filteredProducts"
+                                    :key="product.id"
+                                    class="catalog-index__product"
+                                >
+                                    <ProductCard :product="product" />
+                                </div>
+                            </TransitionGroup>
                             <div
-                                v-for="product in filteredProducts"
-                                :key="product.id"
-                                class="catalog-index__product"
+                                v-else
+                                class="catalog-index__empty"
                             >
-                                <ProductCard :product="product" />
+                                <span class="catalog-index__empty-icon">
+                                    <Icon name="search" />
+                                </span>
+                                <h2 class="catalog-index__empty-title">
+                                    Ничего не нашли
+                                </h2>
+                                <p class="catalog-index__empty-text">
+                                    Попробуйте изменить запрос или сбросить фильтры
+                                    — в коллекции найдётся растение для вас.
+                                </p>
+                                <Button
+                                    class="catalog-index__empty-reset"
+                                    style-type="unstyled"
+                                    type="button"
+                                    @click="
+                                        resetFilters();
+                                        searchQuery = '';
+                                    "
+                                >
+                                    Сбросить фильтры
+                                </Button>
                             </div>
-                        </TransitionGroup>
-                        <div v-else class="catalog-index__empty">
-                            <span class="catalog-index__empty-icon">
-                                <Icon name="search" />
-                            </span>
-                            <h2 class="catalog-index__empty-title">
-                                Ничего не нашли
-                            </h2>
-                            <p class="catalog-index__empty-text">
-                                Попробуйте изменить запрос или сбросить фильтры
-                                — в коллекции найдётся растение для вас.
-                            </p>
-                            <Button
-                                class="catalog-index__empty-reset"
-                                style-type="unstyled"
-                                type="button"
-                                @click="
-                                    resetFilters();
-                                    searchQuery = '';
-                                "
-                            >
-                                Сбросить фильтры
-                            </Button>
-                        </div>
+                        </Transition>
                     </div>
                 </div>
             </div>
@@ -165,12 +171,13 @@
                         </div>
                         <div class="catalog-index__drawer-body">
                             <CatalogFilters
-                                v-model:categories="selectedCategories"
                                 v-model:in-stock="onlyInStock"
                                 v-model:max-price="maxPrice"
                                 v-model:min-price="minPrice"
-                                :max-price-base="7000"
-                                :min-price-base="0"
+                                v-model:selected-categories="selectedCategories"
+                                :all-categories="allCategories"
+                                :max-price-base="props.maxPrice"
+                                :min-price-base="props.minPrice"
                                 id-prefix="mobile"
                                 @reset="resetFilters"
                             />
@@ -193,8 +200,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Link } from '@inertiajs/vue3';
-import { computed, onMounted, ref } from 'vue';
+import { Link, router } from '@inertiajs/vue3';
+import { computed, ref, watch } from 'vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Button from '@/components/Button.vue';
 import CatalogFilters from '@/components/catalog/CatalogFilters.vue';
@@ -207,36 +214,131 @@ import Select from '@/components/Select.vue';
 import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { home } from '@/routes';
+import type { Category } from '@/types/category.ts';
 import type { Page } from '@/types/pagination.ts';
-import type { Product } from '@/types/product.ts';
+import type { Product} from '@/types/product.ts';
+import  { ProductSearchSort } from '@/types/product.ts';
 
 defineOptions({ layout: AppLayout });
 
 interface Props {
+    minPrice: number,
+    maxPrice: number,
+    categories: Category[],
     productsPage: Page<Product>,
 }
+
 const props = defineProps<Props>();
+
+const getQueryParam = (key: string): string | null => {
+    if (typeof window === 'undefined') {
+
+        return null;
+    }
+
+    return new URLSearchParams(window.location.search).get(key);
+};
+const getInitialCategories = (): string[] => {
+    const param = getQueryParam('categories');
+
+    return param ? param.split(',') : [];
+};
+
+const getInitialSort = (): string => {
+    const param = getQueryParam('sort');
+
+    return param && Object.values(ProductSearchSort).includes(param as ProductSearchSort)
+        ? param
+        : ProductSearchSort.SORT;
+};
+
+const getInitialInStock = (): boolean => {
+    return getQueryParam('in_stock') !== '0';
+};
+
+const getInitialNumber = (key: string, defaultValue: number): number => {
+    const param = getQueryParam(key);
+
+    if (param === null || param === '') {
+
+        return defaultValue;
+    }
+
+    const parsed = Number(param);
+
+    return Number.isNaN(parsed) ? defaultValue : parsed;
+};
+
+const allCategories = computed(() => {
+    return props.categories.map((category) => {
+        return {
+            alias: category.alias,
+            name: category.name,
+            active: selectedCategories.value.includes(category.alias),
+        };
+    });
+});
+
 const filteredProducts = computed(() => props.productsPage?.items ?? []);
 
 const sortItems = [
-    { label: 'Сначала популярные', value: 'popularity' },
-    { label: 'Цена: по возрастанию', value: 'price-big' },
-    { label: 'Цена: по убыванию', value: 'price-small' },
+    { label: 'Сначала популярные', value: ProductSearchSort.SORT },
+    { label: 'Цена: по возрастанию', value: ProductSearchSort.PRICE_ASC },
+    { label: 'Цена: по убыванию', value: ProductSearchSort.PRICE_DESC },
 ];
-const productsSort = ref('popularity');
+const productsSort = ref(getInitialSort());
 const searchQuery = ref('');
 const filtersOpen = ref(false);
-const selectedCategories = ref<string[]>([]);
-const minPrice = ref(0);
-const maxPrice = ref(7000);
-const onlyInStock = ref(true);
+const selectedCategories = ref<string[]>(getInitialCategories());
+const minPrice = ref(getInitialNumber('price_from', props.minPrice));
+const maxPrice = ref(getInitialNumber('price_to', props.maxPrice));
+const onlyInStock = ref(getInitialInStock());
 
 const activeFiltersCount = computed(
     () =>
         selectedCategories.value.length +
-        (maxPrice.value < 7000 ? 1 : 0) +
-        (onlyInStock.value ? 1 : 0),
+        (minPrice.value > props.minPrice ? 1 : 0) +
+        (maxPrice.value < props.maxPrice ? 1 : 0) +
+        (!onlyInStock.value ? 1 : 0),
 );
+
+let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+const applyFilters = () => {
+    if (debounceTimer) {
+        clearTimeout(debounceTimer);
+    }
+
+    debounceTimer = setTimeout(() => {
+        router.get(
+            window.location.pathname,
+            {
+                categories: selectedCategories.value.length > 0
+                    ? selectedCategories.value.join(',')
+                    : undefined,
+                in_stock: !onlyInStock.value ? 0 : undefined,
+                sort: productsSort.value !== ProductSearchSort.SORT
+                    ? productsSort.value
+                    : undefined,
+                price_from: minPrice.value > props.minPrice ? minPrice.value : undefined,
+                price_to: maxPrice.value < props.maxPrice ? maxPrice.value : undefined,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+                only: ['productsPage'],
+            }
+        );
+    }, 300);
+};
+
+watch(
+    [selectedCategories, onlyInStock, productsSort, minPrice, maxPrice],
+    applyFilters,
+    { deep: true }
+);
+
 const resultLabel = computed(() => {
     const count = filteredProducts.value.length;
     const lastTwo = count % 100;
@@ -258,8 +360,8 @@ const resultLabel = computed(() => {
 
 const resetFilters = (): void => {
     selectedCategories.value = [];
-    minPrice.value = 0;
-    maxPrice.value = 7000;
+    minPrice.value = props.minPrice;
+    maxPrice.value = props.maxPrice;
     onlyInStock.value = true;
 };
 
@@ -294,25 +396,38 @@ useBodyScrollLock(filtersOpen);
     position: absolute;
 }
 
+.catalog-index-fade-enter-active,
+.catalog-index-fade-leave-active {
+    transition:
+        opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.catalog-index-fade-enter-from,
+.catalog-index-fade-leave-to {
+    opacity: 0;
+    transform: translateY(6px);
+}
+
 .catalog-index-overlay-enter-active,
 .catalog-index-overlay-leave-active {
-    @apply transition-opacity duration-300;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .catalog-index-overlay-enter-from,
 .catalog-index-overlay-leave-to {
-    @apply opacity-0;
+    opacity: 0;
 }
 .catalog-index-drawer-enter-active {
-    @apply transform-gpu transition-transform duration-500 ease-out;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .catalog-index-drawer-leave-active {
-    @apply transform-gpu transition-transform duration-300 ease-in;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .catalog-index-drawer-enter-from,
 .catalog-index-drawer-leave-to {
-    @apply translate-y-full;
+    transform: translateY(100%);
 }
 .catalog-index-drawer-enter-to {
-    @apply translate-y-0;
+    transform: translateY(0);
 }
 </style>

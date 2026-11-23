@@ -2,32 +2,37 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\Application\Category\GetAllCategories\GetAllCategoriesService;
+use App\Application\Product\GetOfferMaxPrice\GetOfferMaxPriceUseCase;
+use App\Application\Product\GetOfferMinPrice\GetOfferMinPriceUseCase;
 use App\Application\Product\SearchProducts\SearchProductsUseCase;
-use App\Domain\Product\Criteria\ProductSearchCriteria;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Public\PaginationRequest;
-use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Public\CatalogSearchRequest;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PublicCatalogController extends Controller
 {
     public function __construct(
-        private readonly SearchProductsUseCase $searchProductsUseCase,
+        private readonly GetOfferMinPriceUseCase $getOfferMinPriceUseCase,
+        private readonly GetOfferMaxPriceUseCase $getOfferMaxPriceUseCase,
+        private readonly GetAllCategoriesService $getAllCategoriesService,
+        private readonly SearchProductsUseCase   $searchProductsUseCase,
     ) {}
 
-    public function index(PaginationRequest $paginationRequest): Response
+    public function index(CatalogSearchRequest $catalogSearchRequest): Response
     {
         return Inertia::render(
             'catalog/CatalogIndex',
             [
+                'categories' => array_filter($this->getAllCategoriesService->execute(), fn($category) => $category->active),
+                'minPrice' => $this->getOfferMinPriceUseCase->execute() ?? 0,
+                'maxPrice' => $this->getOfferMaxPriceUseCase->execute() ?? 0,
                 'productsPage' => $this->searchProductsUseCase->execute(
-                    criteria: new ProductSearchCriteria(
-                        active: true,
-                    ),
-                    pageable: $paginationRequest->toPageable(),
+                    criteria: $catalogSearchRequest->toCriteria(),
+                    pageable: $catalogSearchRequest->toPageable(),
                 ),
-            ]
+            ],
         );
     }
 }

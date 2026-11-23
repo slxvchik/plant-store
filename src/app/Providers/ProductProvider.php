@@ -11,6 +11,10 @@ use App\Application\Product\GetDetailProduct\GetDetailProductService;
 use App\Application\Product\GetDetailProduct\GetDetailProductUseCase;
 use App\Application\Product\GetFeaturedProducts\GetFeaturedProductsService;
 use App\Application\Product\GetFeaturedProducts\GetFeaturedProductsUseCase;
+use App\Application\Product\GetOfferMaxPrice\GetOfferMaxPriceService;
+use App\Application\Product\GetOfferMaxPrice\GetOfferMaxPriceUseCase;
+use App\Application\Product\GetOfferMinPrice\GetOfferMinPriceService;
+use App\Application\Product\GetOfferMinPrice\GetOfferMinPriceUseCase;
 use App\Application\Product\GetProducts\GetProductsService;
 use App\Application\Product\GetProducts\GetProductsUseCase;
 use App\Application\Product\GetProductOptions\GetProductOptionsService;
@@ -79,6 +83,16 @@ class ProductProvider extends ServiceProvider
         $this->app->singleton(
             SearchProductsUseCase::class,
             SearchProductsService::class,
+        );
+
+        $this->app->singleton(
+            GetOfferMinPriceUseCase::class,
+            GetOfferMinPriceService::class,
+        );
+
+        $this->app->singleton(
+            GetOfferMaxPriceUseCase::class,
+            GetOfferMaxPriceService::class,
         );
     }
 

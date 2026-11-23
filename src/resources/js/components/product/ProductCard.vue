@@ -33,7 +33,7 @@
         </div>
         <div class="product-card__body">
             <p v-if="product.category" class="product-card__category">
-                {{ product.category }}
+                {{ product.category?.name }}
             </p>
             <Link
                 :href="`/catalog/${product.alias}`"
@@ -55,10 +55,10 @@
                 <span class="product-card__rating-value">1</span>
                 <span class="product-card__rating-count">1</span>
             </div>
-            <div class="product-card__bottom">
+            <div v-if="minPrice" class="product-card__bottom">
                 <div class="product-card__prices">
                     <span class="product-card__price">
-                        {{ product.minPrice }}
+                        от {{ minPrice }} &#8381;
                     </span>
                     <span
                         v-if="false"
@@ -83,12 +83,21 @@
 </template>
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Button from '@/components/Button.vue';
 import Icon from '@/components/icons/Icon.vue';
 import FavoriteButton from '@/components/product/FavoriteButton.vue';
 import type { Product } from '@/types/product.ts';
 
-defineProps<{ product: Product }>();
+const { product } = defineProps<{ product: Product }>();
 const favorite = ref(false);
+const minPrice = computed(() => {
+    const offers = product.offers;
+
+    if (!offers || offers.length === 0) {
+        return null;
+    }
+
+    return Math.min(...offers.map(offer => offer.price));
+});
 </script>

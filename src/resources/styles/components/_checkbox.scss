@@ -10,7 +10,7 @@
         align-items: flex-start;
         gap: 0.75rem;
         border-radius: 0.75rem;
-        border: 1px solid #e2e8f0;
+        border: 1px solid color-mix(in srgb, var(--color-text-title) 20%, transparent);
         background-color: #f8fafc;
         padding: 0.75rem 1rem;
         transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
@@ -18,7 +18,7 @@
         transition-duration: 150ms;
 
         &:hover {
-            border-color: #a7f3d0;
+            border-color: var(--color-primary-hover);
         }
     }
 
@@ -27,8 +27,8 @@
         height: 1rem;
         width: 1rem;
         border-radius: 0.25rem;
-        border-color: #cbd5e1;
-        color: #059669;
+        border-color: var(--color-primary);
+        color: var(--color-primary);
 
         &:focus {
             --tw-ring-color: #10b981;
@@ -64,6 +64,17 @@
 
         &:hover {
             border: 0;
+
+
+            .checkbox {
+                &__box--checked {
+                    border-color: var(--color-primary-hover);
+                    background-color: var(--color-primary-hover);
+                }
+                &__text {
+                    color: var(--color-primary-hover);
+                }
+            }
         }
     }
 
@@ -88,8 +99,8 @@
     }
 
     &--default &__box--checked {
-        border-color: var(--color-secondary);
-        background-color: var(--color-secondary);
+        border-color: var(--color-primary);
+        background-color: var(--color-primary);
     }
 
     &--default &__text {

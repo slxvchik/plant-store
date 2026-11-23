@@ -79,3 +79,10 @@ export type OfferPayload = Omit<
     images: MediaSortedItemPayload[];
     videos: MediaSortedItemPayload[];
 };
+
+// Product search sort
+export enum ProductSearchSort {
+    SORT = 'sort',
+    PRICE_ASC = 'price_asc',
+    PRICE_DESC = 'price_desc',
+}

@@ -2,7 +2,7 @@
     <div class="app-layout">
         <PublicHeader />
         <Transition mode="out-in" name="app-layout-page">
-            <main :key="page.url" class="app-layout__main">
+            <main :key="page.component" class="app-layout__main">
                 <slot />
             </main>
         </Transition>

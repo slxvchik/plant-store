@@ -41,4 +41,8 @@ interface ProductRepository
      * @return Page<ProductModel>
      */
     public function search(ProductSearchCriteria $criteria, Pageable $pageable): Page;
+
+    public function getMinOfferPrice(): ?int;
+
+    public function getMaxOfferPrice(): ?int;
 }

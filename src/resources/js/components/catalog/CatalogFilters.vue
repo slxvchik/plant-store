@@ -1,33 +1,24 @@
 <template>
     <div class="catalog-filters">
-        <fieldset>
+        <fieldset v-if="allCategories.length > 0">
             <legend class="catalog-filters__legend">Категория</legend>
             <div class="catalog-filters__categories">
                 <label
-                    v-for="category in categories"
-                    :key="category"
+                    v-for="category in allCategories"
+                    :key="category.alias"
                     class="catalog-filters__category"
                 >
-                    <input
-                        :id="`${idPrefix}-category-${category}`"
-                        v-model="selectedCategories"
-                        :value="category"
-                        class="catalog-filters__checkbox"
-                        type="checkbox"
+                    <Checkbox
+                        :id="`category_checkbox_${category.alias}`"
+                        :text="category.name"
+                        :model-value="selectedCategories.includes(category.alias)"
+                        @update:model-value="(val) => toggleCategory(category.alias, val)"
+                        variant="default"
                     />
-                    <span class="catalog-filters__check">
-                        <span
-                            v-if="selectedCategories.includes(category)"
-                            class="catalog-filters__check-icon"
-                        >
-                            <Icon name="check" />
-                        </span>
-                    </span>
-                    {{ category }}
                 </label>
             </div>
         </fieldset>
-        <div class="catalog-filters__price">
+        <div v-if="props.minPriceBase > 0 && props.minPriceBase < props.maxPriceBase" class="catalog-filters__price">
             <div class="catalog-filters__price-header">
                 <p class="catalog-filters__legend">Цена от - до</p>
                 <p class="catalog-filters__price-value">
@@ -83,18 +74,19 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import Button from '@/components/Button.vue';
-import Icon from '@/components/icons/Icon.vue';
+import Checkbox from '@/components/Checkbox.vue';
+import type { CategorySearchModel } from '@/types/catalog.ts';
 
 interface Props {
     idPrefix: string;
+    allCategories: CategorySearchModel[];
     minPriceBase: number;
     maxPriceBase: number;
 }
+
 const props = defineProps<Props>();
 defineEmits<{ reset: [] }>();
-const selectedCategories = defineModel<string[]>('categories', {
-    required: true,
-});
+const selectedCategories = defineModel<string[]>('selectedCategories', { default: () => [] });
 const rangeStyle = computed(() => {
     const total = props.maxPriceBase - props.minPriceBase;
 
@@ -113,13 +105,16 @@ const rangeStyle = computed(() => {
 const minPrice = defineModel<number>('minPrice', { required: true });
 const maxPrice = defineModel<number>('maxPrice', { required: true });
 const onlyInStock = defineModel<boolean>('inStock', { required: true });
-const categories = [
-    'Комнатные растения',
-    'Декоративно-лиственные',
-    'Деревья',
-    'Ампельные растения',
-];
-</script>
-<style lang="scss" scoped>
 
-</style>
+const toggleCategory = (alias: string, isChecked: boolean) => {
+    if (isChecked) {
+        if (!selectedCategories.value.includes(alias)) {
+            selectedCategories.value.push(alias);
+        }
+    } else {
+        selectedCategories.value = selectedCategories.value.filter(
+            (item) => item !== alias
+        );
+    }
+};
+</script>
