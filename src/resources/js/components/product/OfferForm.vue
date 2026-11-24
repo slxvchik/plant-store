@@ -8,6 +8,13 @@
             :error="form.errors.sku"
             label="Артикул"
         />
+        <Input
+            id="offer_id"
+            v-model="form.name"
+            :disabled="disabled"
+            :error="form.errors.name"
+            label="Название"
+        />
         <div class="offer-form__checkbox">
             <Checkbox
                 id="offer_active"

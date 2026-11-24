@@ -71,6 +71,7 @@ class Offer extends Model
             id: $this->id,
             active: $this->active,
             sku: $this->sku,
+            name: $this->name,
             sort: $this->sort,
             description: $this->description ?? null,
             price: $this->price,

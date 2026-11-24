@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <HeroSlider />
+        <HeroSlider :slides="props.mainPageGallery"/>
         <OftenBoughtProducts :products="props.featuredProducts" />
         <FeaturesBento />
         <OurMission />
@@ -18,12 +18,14 @@ import OurMission from '@/components/home/OurMission.vue';
 import OftenBoughtProducts from '@/components/product/OftenBoughtProducts.vue';
 import Callback from '@/components/public/Callback.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
+import type { MainPageGallerySlide } from '@/types/main-page-gallery.ts';
 import type { Product } from '@/types/product.ts';
 
 defineOptions({ layout: AppLayout });
 
 interface Props {
     featuredProducts: Product[],
+    gallery: MainPageGallerySlide[],
 }
 const props = defineProps<Props>();
 </script>

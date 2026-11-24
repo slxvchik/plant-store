@@ -24,10 +24,12 @@ export type Offer = {
     id: string;
     active: boolean;
     sku: string;
+    name: string | null;
     sort: number;
     description: string | null;
     price: number;
     stockQuantity: number | null;
+    images: Image[];
 };
 
 // Form state
@@ -50,6 +52,7 @@ export type OfferFormState = {
     id?: string;
     active: boolean;
     sku: string;
+    name: string | null;
     sort: number;
     description: string;
     price: number;

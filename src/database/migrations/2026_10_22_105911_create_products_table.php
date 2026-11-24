@@ -27,6 +27,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->boolean('active');
             $table->string('sku', 100);
+            $table->string('name', 255);
             $table->integer('sort');
             $table->text('description')->nullable();
             $table->integer('stock_quantity');

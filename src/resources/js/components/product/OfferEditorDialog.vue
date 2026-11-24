@@ -45,6 +45,7 @@ function createEmptyOffer(): OfferFormState {
         clientKey: crypto.randomUUID(),
         active: false,
         sku: '',
+        name: '',
         sort: 500,
         description: '',
         price: 0,

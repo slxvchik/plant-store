@@ -1,5 +1,5 @@
 <template>
-    <section class="hero-slider">
+    <section v-if="slides && slides.length > 0" class="hero-slider">
         <swiper
             :autoplay="{ delay: 65000, disableOnInteraction: false }"
             :effect="'fade'"
@@ -10,12 +10,15 @@
             class="hero-slider__swiper"
             @slide-change="onSlideChange"
         >
-            <swiper-slide v-for="slide in slides" :key="slide.title">
+            <swiper-slide v-for="slide in slides" :key="slide.id">
                 <div class="hero-slider__slide">
                     <div class="hero-slider__visual">
                         <img
-                            :alt="slide.imageAlt"
-                            :src="slide.image"
+                            :src="slide.image?.webPathToFile ?? undefined"
+                            :alt="slide.image?.altText ?? undefined"
+                            :title="slide.image?.titleText ?? undefined"
+                            :width="slide.image?.width ?? undefined"
+                            :height="slide.image?.height ?? undefined"
                             class="hero-slider__image"
                             fetchpriority="high"
                         />
@@ -25,43 +28,31 @@
                             class="hero-slider__decoration hero-slider__decoration--left"
                         />
                         <div
-                            :style="{
-                                transform: `rotate(${activeSlide * 20}deg)`,
-                            }"
                             class="hero-slider__decoration hero-slider__decoration--right"
                         />
                         <div class="hero-slider__copy">
-                            <p class="hero-slider__eyebrow">
+                            <p v-if="slide.preTitle" class="hero-slider__eyebrow">
                                 <span class="hero-slider__eyebrow-icon">
                                     <Icon name="leaf" />
                                 </span>
-                                {{ slide.eyebrow }}
+                                {{ slide.preTitle }}
                             </p>
                             <h1 class="hero-slider__title">
                                 {{ slide.title }}
-                                <em class="hero-slider__accent">
-                                    {{ slide.accent }}
-                                </em>
                             </h1>
                             <p class="hero-slider__description">
                                 {{ slide.description }}
                             </p>
                             <div class="hero-slider__actions">
-                                <Link
+                                <Link v-if="slide.buttonLink && slide.buttonText"
                                     class="hero-slider__primary"
-                                    href="/catalog"
+                                    :href="slide.buttonLink"
                                 >
-                                    Выбрать растение
+                                    {{ slide.buttonText }}
                                     <span class="hero-slider__primary-icon">
                                         <Icon name="arrow" />
                                     </span>
                                 </Link>
-                                <a
-                                    class="hero-slider__secondary"
-                                    href="#mission"
-                                >
-                                    Наша философия
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -76,6 +67,7 @@
         </swiper>
     </section>
 </template>
+
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import type { Swiper as SwiperInstance } from 'swiper';
@@ -86,31 +78,15 @@ import Icon from '@/components/icons/Icon.vue';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
+import type { MainPageGallerySlide } from '@/types/main-page-gallery.ts';
+
+interface Props {
+    slides: MainPageGallerySlide[];
+}
+const { slides } = defineProps<Props>();
 
 const activeSlide = ref(0);
 const swiperModules = [EffectFade, Autoplay];
-const slides = [
-    {
-        eyebrow: 'Питомник растений полного цикла',
-        title: 'Природа, которую',
-        accent: 'хочется обнять',
-        description:
-            'Выращиваем здоровые растения с характером и доставляем их вместе со знаниями, поддержкой и вдохновением.',
-        image: '/images/slide_1.avif',
-        imageAlt: 'Ухоженные растения в питомнике Деулино Сад',
-        caption: 'Выращено в Деулино · 55°42′ N',
-    },
-    {
-        eyebrow: 'Новая коллекция уже здесь',
-        title: 'Ваш дом. Ваш ритм.',
-        accent: 'Ваш сад',
-        description:
-            'От первого компактного фикуса до зелёной коллекции — подберём растения под ваш свет, пространство и образ жизни.От первого компактного фикуса до зелёной коллекции — подберём растения под ваш свет, пространство и образ жизни.От первого компактного фикуса до зелёной коллекции — подберём растения под ваш свет, пространство и образ жизни.',
-        image: '/images/slide_2.avif',
-        imageAlt: 'Зелёные растения в светлой оранжерее',
-        caption: 'Новая весенняя коллекция',
-    },
-];
 const addZeroNumber = (num: number): string =>
     num < 10 ? `0${num}` : `${num}`;
 const onSlideChange = (swiper: SwiperInstance): void => {

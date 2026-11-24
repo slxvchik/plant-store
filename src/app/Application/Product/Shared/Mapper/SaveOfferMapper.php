@@ -25,6 +25,7 @@ final class SaveOfferMapper
             id: $offer->id,
             active: $offer->active,
             sku: $offer->sku,
+            name: $offer->name,
             sort: $offer->sort,
             description: $offer->description,
             price: $offer->price,

@@ -28,7 +28,7 @@ Route::post('/callback', [PublicUserRequestController::class, 'store'])->name('c
 
 Route::prefix('catalog')->name('catalog.')->group(function () {
     Route::get('/', [PublicCatalogController::class, 'index'])->name('index');
-    Route::inertia('/{alias}', 'catalog/ProductDetail')->name('product');
+    Route::get('/{alias}', [PublicCatalogController::class, 'showProduct'])->name('showProduct');
 });
 
 Route::prefix('auth')->group(function () {

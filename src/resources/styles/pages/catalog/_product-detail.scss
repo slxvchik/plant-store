@@ -64,16 +64,10 @@
         display: grid;
         max-width: 1440px;
         gap: 2rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
+        padding: 1.5rem 1rem;
 
         @include for-width(md) {
-            padding-left: 2rem;
-            padding-right: 2rem;
-            padding-top: 2.5rem;
-            padding-bottom: 2.5rem;
+            padding: 2.5rem 2rem;
         }
 
         @include for-width(lg) {
@@ -211,10 +205,17 @@
         height: 0.5rem;
         width: 0.5rem;
         border-radius: 9999px;
-        background-color: var(--color-primary);
 
-        .dark & {
-            background-color: var(--color-secondary);
+        &--available {
+            background-color: var(--color-primary);
+
+            .dark & {
+                background-color: var(--color-secondary);
+            }
+        }
+
+        &--unavailable {
+            background-color: #cd1e1e;
         }
     }
 
@@ -230,6 +231,10 @@
 
         @include for-width(md) {
             font-size: 1rem;
+        }
+
+        @include for-width(lg) {
+            grid-column: 1 / -1;
         }
     }
 
@@ -328,12 +333,6 @@
     &__size-name {
         display: block;
         font-weight: 600;
-    }
-
-    &__size-height {
-        margin-top: 0.125rem;
-        display: block;
-        opacity: 0.6;
     }
 
     &__purchase {

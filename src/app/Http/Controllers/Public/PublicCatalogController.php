@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Public;
 
 use App\Application\Category\GetAllCategories\GetAllCategoriesService;
+use App\Application\Product\GetDetailProduct\GetDetailProductRequestDto;
+use App\Application\Product\GetDetailProduct\GetDetailProductUseCase;
 use App\Application\Product\GetOfferMaxPrice\GetOfferMaxPriceUseCase;
 use App\Application\Product\GetOfferMinPrice\GetOfferMinPriceUseCase;
 use App\Application\Product\SearchProducts\SearchProductsUseCase;
@@ -18,6 +20,7 @@ class PublicCatalogController extends Controller
         private readonly GetOfferMaxPriceUseCase $getOfferMaxPriceUseCase,
         private readonly GetAllCategoriesService $getAllCategoriesService,
         private readonly SearchProductsUseCase   $searchProductsUseCase,
+        private readonly GetDetailProductUseCase $getDetailProductUseCase,
     ) {}
 
     public function index(CatalogSearchRequest $catalogSearchRequest): Response
@@ -33,6 +36,21 @@ class PublicCatalogController extends Controller
                     pageable: $catalogSearchRequest->toPageable(),
                 ),
             ],
+        );
+    }
+
+    public function showProduct(string $alias): Response
+    {
+        return Inertia::render(
+            'catalog/ProductDetail',
+            [
+                'product' => $this->getDetailProductUseCase->execute(
+                    new GetDetailProductRequestDto(
+                        id: null,
+                        alias: $alias,
+                    ),
+                ),
+            ]
         );
     }
 }

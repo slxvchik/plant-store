@@ -183,6 +183,7 @@ class ProductModel
                     uuidIdentityGenerator: $uuidGeneratorInterface,
                     active: $saveOffer->active,
                     sku: $saveOffer->sku,
+                    name: $saveOffer->name,
                     sort: $saveOffer->sort,
                     description: $saveOffer->description,
                     price: $saveOffer->price,
@@ -203,6 +204,7 @@ class ProductModel
             $this->offers[$id]->update(
                 active: $saveOffer->active,
                 sku: $saveOffer->sku,
+                name: $saveOffer->name,
                 sort: $saveOffer->sort,
                 description: $saveOffer->description,
                 price: $saveOffer->price,

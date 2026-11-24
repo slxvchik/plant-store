@@ -21,6 +21,7 @@ readonly class SaveOffer
         public ?string $id,
         public bool $active,
         public string $sku,
+        public ?string $name,
         public int $sort,
         public ?string $description,
         public int $price,

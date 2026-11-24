@@ -76,12 +76,13 @@ class OfferModel
      * @param  SortedItem<string>[]  $imageIds
      * @param  SortedItem<string>[]  $videoIds
      */
-    public function __construct(string $id, bool $active, string $sku, int $sort, ?string $description, int $price, int $stockQuantity, array $imageIds, array $videoIds)
+    public function __construct(string $id, bool $active, string $sku, ?string $name, int $sort, ?string $description, int $price, int $stockQuantity, array $imageIds, array $videoIds)
     {
         $uuid = new Uuid($id);
         $this->id = $uuid;
         $this->active = $active;
         $this->sku = $sku;
+        $this->name = $name;
         $this->sort = $sort;
         $this->description = $description;
         $this->price = $price;
@@ -94,7 +95,7 @@ class OfferModel
      * @param  SortedItem<string>[]  $imageIds
      * @param  SortedItem<string>[]  $videoIds
      */
-    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $sku, int $sort, ?string $description, int $price, int $stockQuantity, array $imageIds, array $videoIds): self
+    public static function createNew(UuidGeneratorInterface $uuidIdentityGenerator, bool $active, string $sku, ?string $name, int $sort, ?string $description, int $price, int $stockQuantity, array $imageIds, array $videoIds): self
     {
         $uuid = $uuidIdentityGenerator->generate();
 
@@ -102,6 +103,7 @@ class OfferModel
             id: $uuid,
             active: $active,
             sku: $sku,
+            name: $name,
             sort: $sort,
             description: $description,
             price: $price,
@@ -118,6 +120,7 @@ class OfferModel
     public function update(
         bool $active,
         string $sku,
+        ?string $name,
         int $sort,
         ?string $description,
         int $price,
@@ -127,6 +130,7 @@ class OfferModel
     ): void {
         $this->active = $active;
         $this->sku = $sku;
+        $this->name = $name;
         $this->sort = $sort;
         $this->description = $description;
         $this->price = $price;

@@ -3,8 +3,8 @@
         <Container class="catalog-index__container">
             <Breadcrumbs
                 :items="[
-                    { url: home.url(), name: 'Главная' },
-                    { url: home.url(), name: 'Каталог' },
+                    { url: HomeIndex.url(), name: 'Главная' },
+                    { url: CatalogIndex.url(), name: 'Каталог' },
                 ]"
             />
             <CatalogHero />
@@ -213,7 +213,8 @@ import SearchInput from '@/components/SearchInput.vue';
 import Select from '@/components/Select.vue';
 import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { home } from '@/routes';
+import { home as HomeIndex } from '@/routes';
+import { index as CatalogIndex } from '@/routes/catalog';
 import type { Category } from '@/types/category.ts';
 import type { Page } from '@/types/pagination.ts';
 import type { Product} from '@/types/product.ts';
