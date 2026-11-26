@@ -64,11 +64,6 @@
         display: grid;
         max-width: 1440px;
         gap: 2rem;
-        padding: 1.5rem 1rem;
-
-        @include for-width(md) {
-            padding: 2.5rem 2rem;
-        }
 
         @include for-width(lg) {
             grid-template-columns: 1.08fr 0.92fr;

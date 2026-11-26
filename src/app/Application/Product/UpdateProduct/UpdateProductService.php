@@ -16,8 +16,10 @@ readonly class UpdateProductService implements UpdateProductUseCase
 {
     public function __construct(
         private UuidGeneratorInterface $uuidGeneratorInterface,
-        private ProductRepository $productRepository,
-    ) {}
+        private ProductRepository      $productRepository,
+    )
+    {
+    }
 
     /**
      * @throws ProductAliasExistsException

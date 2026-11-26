@@ -59,7 +59,7 @@ class MainPageGalleryRepositoryImpl implements MainPageGalleryRepository
     {
         return MainPageGallery::orderBy('sort')
             ->get()
-            ->map(fn (MainPageGallery $slide): MainPageGallery => $slide->toDomain())
+            ->map(fn (MainPageGallery $slide): MainPageGalleryModel => $slide->toDomain())
             ->all();
     }
 

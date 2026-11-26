@@ -19,7 +19,6 @@ use App\Http\Requests\Private\Product\UpdateProductRequest;
 use App\Http\Requests\Public\PaginationRequest;
 use App\Notification\Notification;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,12 +27,14 @@ class PrivateProductController extends Controller
     public function __construct(
         private readonly GetAllCategoriesUseCase $getAllCategoriesUseCase,
         private readonly GetAllWarehousesUseCase $getAllWarehousesUseCase,
-        private readonly GetProductsUseCase $getProductsUseCase,
+        private readonly GetProductsUseCase      $getProductsUseCase,
         private readonly GetDetailProductUseCase $getDetailProductUseCase,
-        private readonly CreateProductUseCase $createProductUseCase,
-        private readonly UpdateProductUseCase $updateProductUseCase,
-        private readonly DeleteProductUseCase $deleteProductUseCase,
-    ) {}
+        private readonly CreateProductUseCase    $createProductUseCase,
+        private readonly UpdateProductUseCase    $updateProductUseCase,
+        private readonly DeleteProductUseCase    $deleteProductUseCase,
+    )
+    {
+    }
 
     public function index(PaginationRequest $request): Response
     {

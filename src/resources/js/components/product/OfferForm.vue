@@ -9,7 +9,7 @@
             label="Артикул"
         />
         <Input
-            id="offer_id"
+            id="offer_name"
             v-model="form.name"
             :disabled="disabled"
             :error="form.errors.name"

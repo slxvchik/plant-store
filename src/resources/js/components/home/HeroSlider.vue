@@ -1,6 +1,6 @@
 <template>
     <section v-if="slides && slides.length > 0" class="hero-slider">
-        <swiper
+        <Swiper
             :autoplay="{ delay: 65000, disableOnInteraction: false }"
             :effect="'fade'"
             :loop="true"
@@ -10,7 +10,7 @@
             class="hero-slider__swiper"
             @slide-change="onSlideChange"
         >
-            <swiper-slide v-for="slide in slides" :key="slide.id">
+            <SwiperSlide v-for="slide in slides" :key="slide.id">
                 <div class="hero-slider__slide">
                     <div class="hero-slider__visual">
                         <img
@@ -57,14 +57,14 @@
                         </div>
                     </div>
                 </div>
-            </swiper-slide>
+            </SwiperSlide>
             <div class="hero-slider__counter">
                 <span>
                     {{ addZeroNumber(activeSlide + 1) }} /
                     {{ addZeroNumber(slides.length) }}
                 </span>
             </div>
-        </swiper>
+        </Swiper>
     </section>
 </template>
 

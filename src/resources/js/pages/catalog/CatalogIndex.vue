@@ -18,7 +18,6 @@
                         <Select
                             v-model="productsSort"
                             :items="sortItems"
-                            variant="dropdown"
                         />
                     </div>
                 </div>

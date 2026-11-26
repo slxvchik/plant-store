@@ -10,9 +10,7 @@
             />
 
             <section class="product-detail__main">
-                <div class="product-detail__gallery-column">
-                    <ProductDetailSlider :slides="gallerySlides" />
-                </div>
+                <ProductDetailSlider :slides="gallerySlides" />
 
                 <div class="product-detail__information">
                     <div class="product-detail__category-row">
@@ -27,7 +25,7 @@
                                 <span
                                     class="product-detail__availability-dot product-detail__availability-dot--available"
                                 />
-                                В наличии
+                                В наличии ({{ selectedOffer.stockQuantity }} шт.)
                             </template>
                             <template v-else>
                                 <span
@@ -39,7 +37,7 @@
                     </div>
                     <fieldset class="product-detail__sizes">
                         <legend class="product-detail__sizes-legend">
-                            Размер растения
+                            Вид
                         </legend>
                         <div class="product-detail__size-list">
                             <Button
@@ -68,11 +66,11 @@
                             </span>
                         </div>
                     </div>
-                </div>
 
-                <p class="product-detail__description">
-                    {{ selectedOffer.description ?? product?.description }}
-                </p>
+                    <p class="product-detail__description">
+                        {{ selectedOffer.description ?? product?.description }}
+                    </p>
+                </div>
             </section>
         </div>
     </Container>
@@ -93,12 +91,18 @@ defineOptions({ layout: AppLayout });
 const { product } = defineProps<{ product: Product }>();
 
 const selectedOffer = ref<Offer>(product.offers[0]);
-const currentPrice = computed(() => 0);
+const currentPrice = computed(() => {
+    return selectedOffer.value.price;
+});
 const selectedOfferAvailable = computed(() => {
     return selectedOffer.value.stockQuantity !== null && selectedOffer.value.stockQuantity > 0;
 });
 
 const gallerySlides = computed(() => {
-    return [...product.images, ...selectedOffer.value.images];
+    if (selectedOffer.value?.images?.length > 0) {
+        return [...product.images, ...selectedOffer.value.images];
+    }
+
+    return product.images;
 });
 </script>

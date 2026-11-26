@@ -7,8 +7,8 @@
         >
             <template #actions>
                 <Link
-                    class="product-unit-statuses__create"
                     href="/admin/product-unit-statuses/create"
+                    style-type="button"
                 >
                     Добавить статус
                 </Link>
@@ -32,7 +32,7 @@
                 <div class="product-unit-statuses__actions">
                     <Link
                         :href="`/admin/product-unit-statuses/${status.id}`"
-                        class="product-unit-statuses__edit"
+                        style-type="button"
                     >
                         Изменить
                     </Link>
@@ -62,7 +62,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { Link, router } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
@@ -70,6 +70,7 @@ import Pagination from '@/components/Pagination.vue';
 import AdminLayout from '@/layouts/AdminLayout.vue';
 import type { ProductUnitStatus } from '@/types/inventory.ts';
 import type { Page } from '@/types/pagination.ts';
+import Link from '@/components/Link.vue';
 
 defineOptions({ layout: AdminLayout });
 defineProps<{ statusesPage: Page<ProductUnitStatus> }>();

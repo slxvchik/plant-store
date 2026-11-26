@@ -22,6 +22,7 @@ class Offer extends Model
         'id',
         'active',
         'sku',
+        'name',
         'sort',
         'description',
         'price',
@@ -40,14 +41,6 @@ class Offer extends Model
      */
     public function toDomain(): DomainOfferModel
     {
-        $stocks = DB::table('offer_stocks')
-            ->get()
-            ->map(fn (stdClass $stock) => new ProductStockModel(
-                warehouseId: $stock->warehouse_id,
-                quantity: $stock->quantity,
-                reserved: $stock->reserved,
-            ))
-            ->toArray();
         $imageIds = DB::table('offer_images')
             ->where('offer_id', $this->id)
             ->orderBy('sort')
@@ -75,7 +68,7 @@ class Offer extends Model
             sort: $this->sort,
             description: $this->description ?? null,
             price: $this->price,
-            stockQuantity: $this->stockQuantity ?? 0,
+            stockQuantity: $this->stock_quantity ?? 0,
             imageIds: $imageIds,
             videoIds: $videoIds,
         );

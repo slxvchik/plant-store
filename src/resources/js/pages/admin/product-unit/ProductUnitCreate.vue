@@ -33,6 +33,7 @@
                         :items="offerOptions"
                         label="Товар / торговое предложение"
                         placeholder="Выберите предложение"
+                        searchable
                         required
                     />
                 </div>

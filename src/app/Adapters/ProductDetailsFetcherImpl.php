@@ -4,7 +4,6 @@ namespace App\Adapters;
 
 use App\Application\Category\Shared\Dto\Response\CategoryResponseDto;
 use App\Application\Media\GetImagesByIds\GetImagesByIdsUseCase;
-use App\Application\Media\Shared\FileStorageInterface;
 use App\Application\Product\Shared\Dto\Response\OfferResponseDto;
 use App\Application\Product\Shared\Dto\Response\ProductResponseDto;
 use App\Application\Product\Shared\Port\ProductDetailsFetcher;
@@ -40,11 +39,24 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
 
             $sortedImageIds = array_column($sortedImageObjects, 'id');
 
+            $offers = $product->getOffers();
+
             return ProductResponseDto::fromDomain(
                 product: $product,
                 offers: array_map(
-                    fn (OfferModel $offer) => OfferResponseDto::fromDomain($offer),
-                    $product->getOffers()
+                    function (OfferModel $offer) use ($imageMap): OfferResponseDto {
+                        $currentOfferImageIds = array_column($offer->imageIds, 'id');
+
+                        $images = array_values(array_filter(
+                            array_map(fn ($id) => $imageMap[$id] ?? null, $currentOfferImageIds)
+                        ));
+
+                        return OfferResponseDto::fromDomain(
+                            offer: $offer,
+                            images: $images,
+                        );
+                    },
+                    $offers
                 ),
                 category: $categoryMap[$product->categoryId] ?? null,
                 tags: array_filter(array_map(fn ($id) => $tagMap[$id] ?? null, $product->tagIds)),
@@ -84,13 +96,27 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
         return $map;
     }
 
+    /**
+     * @param  ProductModel[]  $products
+     */
     private function buildImageMap(array $products): array
     {
-        $ids = array_unique(
-            array_merge(
-                ...array_map(fn ($images) => array_column($images, 'id'), array_column($products, 'imageIds'))
-            )
-        );
+        $imageIdGroups = [];
+
+        foreach ($products as $product) {
+            if (! empty($product->imageIds)) {
+                $imageIdGroups[] = array_column($product->imageIds, 'id');
+            }
+
+            foreach ($product->getOffers() as $offer) {
+                if (! empty($offer->imageIds)) {
+                    $imageIdGroups[] = array_column($offer->imageIds, 'id');
+                }
+            }
+        }
+
+        $ids = array_values(array_unique(array_merge(...$imageIdGroups)));
+
         $images = $this->getImagesByIdsUseCase->execute($ids);
 
         $map = [];

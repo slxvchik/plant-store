@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <HeroSlider :slides="props.mainPageGallery"/>
+        <HeroSlider :slides="props.gallery" />
         <OftenBoughtProducts :products="props.featuredProducts" />
         <FeaturesBento />
         <OurMission />

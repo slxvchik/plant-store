@@ -7,6 +7,7 @@ namespace App\Http\Requests\Private\Product;
 use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
 use App\Domain\Shared\SortedItem\SortedItem;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 abstract class ProductRequest extends FormRequest
 {
@@ -32,6 +33,7 @@ abstract class ProductRequest extends FormRequest
             'offers.*.id' => ['sometimes', 'nullable', 'uuid'],
             'offers.*.active' => ['required', 'boolean'],
             'offers.*.sku' => ['required', 'string', 'max:100'],
+            'offers.*.name' => ['sometimes', 'string', 'max:255'],
             'offers.*.sort' => ['required', 'integer'],
             'offers.*.description' => ['sometimes', 'nullable', 'string'],
             'offers.*.price' => ['required', 'integer', 'min:1'],
@@ -65,6 +67,7 @@ abstract class ProductRequest extends FormRequest
                     id: $offer['id'] ?? null,
                     active: $offer['active'],
                     sku: $offer['sku'],
+                    name: $offer['name'],
                     sort: $offer['sort'],
                     description: $offer['description'] ?? null,
                     price: $offer['price'],
