@@ -26,24 +26,28 @@
                 :items="offerOptions"
                 label="Товар"
                 placeholder="Все товары"
+                searchable
             />
             <Select
                 v-model="filterState.warehouseId"
                 :items="warehouseOptions"
                 label="Склад"
                 placeholder="Все склады"
+                searchable
             />
             <Select
                 v-model="filterState.productUnitStatusId"
                 :items="statusOptions"
                 label="Статус"
                 placeholder="Все статусы"
+                searchable
             />
             <Select
                 v-model="filterState.productSupplyId"
                 :items="supplyOptions"
                 label="Поставка"
                 placeholder="Все поставки"
+                searchable
             />
             <template #actions>
                 <Button auto-width text="Применить" type="submit" />

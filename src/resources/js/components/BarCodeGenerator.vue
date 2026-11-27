@@ -2,17 +2,21 @@
     <div class="barcode">
         <Loader v-if="isLoading" class="barcode__loader" />
         <template v-else>
-            <button type="button" class="barcode__print-btn" @click="printBarcode">
-                Распечатать баркод
-            </button>
-            <div class="barcode__svg" v-html="barcodeSvg" />
+            <p v-if="error" style="color: red;">
+                {{ error }}
+            </p>
+            <template v-else>
+                <button type="button" class="barcode__print-btn" @click="printBarcode">
+                    Распечатать баркод
+                </button>
+                <div class="barcode__svg" v-html="barcodeSvg" />
+            </template>
         </template>
     </div>
 </template>
 
 <script setup lang="ts">
-import type { BitMatrix } from '@zxing/library';
-import { MultiFormatWriter, BarcodeFormat } from '@zxing/library';
+import JsBarcode from 'jsbarcode';
 import { ref, watchEffect } from 'vue';
 import Loader from '@/components/icons/Loader.vue';
 
@@ -24,8 +28,7 @@ const props = defineProps<Props>();
 
 const barcodeSvg = ref('');
 const isLoading = ref(true);
-const multiFormatWriter = new MultiFormatWriter;
-const hints = new Map();
+const error = ref('');
 
 watchEffect(() => {
     if (!props.content) {
@@ -35,40 +38,21 @@ watchEffect(() => {
     isLoading.value = true;
 
     try {
-        const svgNS = 'https://w3.org';
+        const svgNS = 'http://w3.org';
         const svgElement = document.createElementNS(svgNS, 'svg');
 
-        const bitMatrix: BitMatrix = multiFormatWriter.encode(
-            props.content,
-            BarcodeFormat.CODE_128,
-            500,
-            50,
-            hints,
-        );
-        const width = bitMatrix.getWidth();
-        const height = bitMatrix.getHeight();
+        JsBarcode(svgElement, props.content, {
+            format: 'CODE128',
+            displayValue: true,
+            margin: 0,
+        });
 
-        svgElement.setAttribute('width', width.toString());
-        svgElement.setAttribute('height', height.toString());
-        svgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
-
-        for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-                if (bitMatrix.get(x, y)) {
-                    const rect = document.createElementNS(svgNS, 'rect');
-                    rect.setAttribute('x', x.toString());
-                    rect.setAttribute('y', y.toString());
-                    rect.setAttribute('width', '1');
-                    rect.setAttribute('height', '1');
-                    rect.setAttribute('fill', '#000000');
-                    svgElement.appendChild(rect);
-                }
-            }
-        }
+        svgElement.setAttribute('width', '100%');
 
         barcodeSvg.value = svgElement.outerHTML;
-    } catch (error) {
-        console.error('Ошибка генерации штрихкода:', error);
+    } catch (err) {
+        console.error('Ошибка генерации штрихкода:', err);
+        error.value = 'Ошибка генерации штрихкода';
         barcodeSvg.value = '';
     } finally {
         isLoading.value = false;

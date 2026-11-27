@@ -27,7 +27,7 @@
         "prettier": "^3.4.2",
         "sass": "^1.108.2",
         "typescript-eslint": "^8.23.0",
-        "vue-tsc": "^2.2.4"
+        "vue-tsc": "^3.3.14"
     },
     "dependencies": {
         "@inertiajs/vite": "^3.0.0",
@@ -36,6 +36,7 @@
         "@zxing/library": "^0.21.3",
         "clsx": "^2.1.1",
         "concurrently": "^10.0.3",
+        "jsbarcode": "^3.12.3",
         "laravel-vite-plugin": "^3.1",
         "maska": "^3.2.2",
         "pinia": "^4.0.3",

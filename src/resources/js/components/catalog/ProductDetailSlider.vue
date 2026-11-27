@@ -6,6 +6,7 @@
             :effect="'fade'"
             :modules="swiperModules"
             :slides-per-view="1"
+            navigation
             loop
             class="product-detail-slider__slider"
         >
@@ -27,43 +28,17 @@
 </template>
 
 <script setup lang="ts">
-import { EffectFade } from 'swiper/modules';
+import { EffectFade, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import type { Image } from '@/types';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
-import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 interface Props {
     slides: Image[];
 }
 defineProps<Props>();
 
-const swiperModules = [EffectFade];
+const swiperModules = [EffectFade, Navigation];
 </script>
-
-<style lang="scss">
-.product-detail-slider {
-    width: 100%;
-    background-color: #f3f4f6;
-
-    &__slider,
-    &__slide {
-        width: 100%;
-        height: 100%;
-        max-height: 600px;
-        max-width: 600px;
-        aspect-ratio: 1 / 1;
-        border-radius: 12px;
-        overflow: hidden;
-    }
-
-    &__img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-    }
-}
-</style>
