@@ -1,0 +1,15 @@
+@use "../../../helpers" as *;
+
+.create-product {
+    margin-top: 1.5rem;
+
+    &__offers {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    &__offer-action {
+        max-width: 320px;
+    }
+}

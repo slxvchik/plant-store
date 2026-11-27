@@ -1,56 +1,46 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <div class="w-fit">
-            <Link :href="backUrl" text="К списку" secondary />
-        </div>
-        <div class="w-fit">
-            <Button
-                type="button"
-                secondary
-                :class="isEditMode ? '' : 'bg-yellow-400'"
-                :text="
-                    isEditMode
-                        ? 'Выключить редактирование'
-                        : 'Включить редактирование'
-                "
-                @click="isEditMode = !isEditMode"
-            />
-        </div>
-        <div class="flex flex-row gap-10">
-            <h1
-                class="flex items-center gap-3 text-2xl font-bold text-gray-900 sm:text-3xl"
-            >
-                {{ product.name }}
-                <span
-                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-nowrap"
-                    :class="
-                        product.active
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red'
+    <div class="edit-product">
+        <AdminPageHeader
+            :back-url="backUrl"
+            :title="product.name"
+            description="Основные данные, торговые предложения и складские остатки."
+            eyebrow="Карточка товара"
+        >
+            <template #actions>
+                <Badge
+                    :label="product.active ? 'Активен' : 'Не активен'"
+                    :tone="product.active ? 'success' : 'neutral'"
+                />
+                <Button
+                    :text="
+                        isEditMode
+                            ? 'Выключить редактирование'
+                            : 'Включить редактирование'
                     "
-                    >{{ product.active ? 'Активен' : 'Не активен' }}</span
-                >
-            </h1>
-            <div
-                class="flex w-full flex-row justify-between gap-4"
-                v-if="isEditMode"
-            >
-                <Button
-                    type="button"
-                    text="Сохранить"
-                    class="w-fit"
+                    auto-width
                     secondary
-                    :disabled="form.processing"
-                    @click="submit"
-                />
-                <Button
                     type="button"
-                    text="Удалить товар"
-                    class="w-fit bg-red-500 text-nowrap hover:bg-red-700"
-                    @click="deleteProduct"
+                    @click="isEditMode = !isEditMode"
                 />
-            </div>
-        </div>
+                <template v-if="isEditMode">
+                    <Button
+                        :disabled="form.processing"
+                        auto-width
+                        secondary
+                        text="Сохранить"
+                        type="button"
+                        @click="submit"
+                    />
+                    <Button
+                        auto-width
+                        danger
+                        text="Удалить товар"
+                        type="button"
+                        @click="deleteProduct"
+                    />
+                </template>
+            </template>
+        </AdminPageHeader>
 
         <Tabs :items="tabs">
             <template #product>
@@ -61,17 +51,17 @@
                 />
             </template>
             <template #offers>
-                <div class="flex flex-col gap-5">
-                    <div class="max-w-80" v-if="isEditMode">
+                <div class="edit-product__offers">
+                    <div v-if="isEditMode" class="edit-product__offer-action">
                         <Button
+                            secondary
                             text="Добавить ТП"
-                            class="bg-secondary hover:bg-secondary-hover"
                             @click="offerDialog?.openCreate()"
                         />
                     </div>
                     <ProductOfferList
-                        :offers="form.offers"
                         :disabled="!isEditMode"
+                        :offers="form.offers"
                         @edit="offerDialog?.openEdit($event)"
                         @remove="removeOffer"
                     />
@@ -79,25 +69,26 @@
                 <OfferEditorDialog
                     ref="offerDialog"
                     v-model:offers="form.offers"
-                    :warehouses="warehouses"
                     :disabled="!isEditMode"
+                    :warehouses="warehouses"
                 />
             </template>
         </Tabs>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
+import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Link from '@/components/Link.vue';
 import OfferEditorDialog from '@/components/product/OfferEditorDialog.vue';
 import ProductForm from '@/components/product/ProductForm.vue';
 import ProductOfferList from '@/components/product/ProductOfferList.vue';
 import Tabs from '@/components/Tabs.vue';
 import { useProductForm } from '@/composables/useProductForm.ts';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminProduct from '@/routes/admin/products';
 import type { Category, Warehouse } from '@/types';
 import type { Product } from '@/types/product.ts';

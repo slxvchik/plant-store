@@ -1,9 +1,5 @@
-<script setup lang="ts"></script>
-
 <template>
-    <div class="mx-auto max-w-[1440px] px-2.5">
+    <div class="container">
         <slot />
     </div>
 </template>
-
-<style scoped></style>

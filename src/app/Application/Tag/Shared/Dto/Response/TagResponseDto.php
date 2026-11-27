@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Tag\Shared\Dto\Response;
 
-use App\Domain\Tag\Model\Tag;
+use App\Domain\Tag\TagModel;
 use JsonSerializable;
 use Override;
 
@@ -18,7 +18,7 @@ readonly class TagResponseDto implements JsonSerializable
         public bool $active,
     ) {}
 
-    public static function fromDomain(Tag $tag): self
+    public static function fromDomain(TagModel $tag): self
     {
         return new self(
             id: $tag->id->value,

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\MainPageGallery\CreateSlide;
 
-use App\Domain\MainPageGallery\Model\MainPageGallery;
-use App\Domain\MainPageGallery\Repository\MainPageGalleryRepository;
+use App\Domain\MainPageGallery\MainPageGalleryModel;
+use App\Domain\MainPageGallery\MainPageGalleryRepository;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Override;
 
@@ -19,7 +19,7 @@ readonly class CreateSlideService implements CreateSlideUseCase
     #[Override]
     public function execute(CreateSlideRequestDto $createSlideRequestDto): string
     {
-        $slide = MainPageGallery::createNew(
+        $slide = MainPageGalleryModel::createNew(
             uuidGeneratorInterface: $this->uuidGenerator,
             active: $createSlideRequestDto->active,
             sort: $createSlideRequestDto->sort,

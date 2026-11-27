@@ -1,0 +1,11 @@
+.bar-code {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+
+    &__svg {
+        padding: 2rem;
+        background: var(--color-bg-base);
+        border-radius: 1rem;
+    }
+}

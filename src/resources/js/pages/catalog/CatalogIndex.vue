@@ -1,271 +1,354 @@
 <template>
-    <Container class="bg-bg-base dark:bg-bg-night">
-        <Breadcrumbs
-            :items="[
-                { url: home.url(), name: 'Главная' },
-                { url: home.url(), name: 'Каталог' },
-            ]"
-        />
-        <CatalogHero />
-        <div class="py-6 md:py-10">
-            <div
-                class="mb-6 flex flex-col gap-3 md:mb-8 md:flex-row md:items-center"
-            >
-                <SearchInput v-model="searchQuery" id="catalog-search-input" />
-                <div class="w-full max-w-62.5">
-                    <Select v-model="productsSort" :items="sortItems" />
-                </div>
-            </div>
-
-            <div
-                class="lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[264px_minmax(0,1fr)] xl:gap-10"
-            >
-                <aside class="hidden lg:block">
-                    <div
-                        class="sticky top-28 max-h-[calc(100dvh-8rem)] overflow-y-auto pr-2"
-                    >
-                        <div class="mb-6 flex items-center justify-between">
-                            <h2
-                                class="font-serif text-2xl text-text-title dark:text-linen"
-                            >
-                                Фильтры
-                            </h2>
-                            <span
-                                v-if="activeFiltersCount"
-                                class="rounded-full bg-sage-soft px-2.5 py-1 text-xs font-semibold text-primary dark:bg-primary/25 dark:text-secondary"
-                            >
-                                {{ activeFiltersCount }}
-                            </span>
-                        </div>
-                        <CatalogFilters
-                            id-prefix="desktop"
-                            v-model:categories="selectedCategories"
-                            v-model:min-price="minPrice"
-                            v-model:max-price="maxPrice"
-                            v-model:in-stock="onlyInStock"
-                            :min-price-base="0"
-                            :max-price-base="7000"
-                            @reset="resetFilters"
-                        />
-                    </div>
-                </aside>
-                <div>
-                    <div class="mb-5 flex items-center justify-between text-sm">
-                        <p class="text-text-muted dark:text-white/45">
-                            <span
-                                class="font-semibold text-text-title dark:text-white"
-                            >
-                                {{ filteredProducts.length }}
-                            </span>
-                            {{ resultLabel }}
-                        </p>
-                        <p
-                            class="hidden text-text-muted md:block dark:text-white/40"
-                        >
-                            Есть вопросы?
-                            <Link
-                                href="/contacts"
-                                class="text-primary underline decoration-primary/30 underline-offset-4 dark:text-secondary"
-                            >
-                                Поможем выбрать
-                            </Link>
-                        </p>
-                    </div>
-                    <TransitionGroup
-                        v-if="filteredProducts.length"
-                        tag="div"
-                        name="products"
-                        class="lg:grid-cols-auto relative grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4"
-                        @before-leave="beforeRemoveProduct"
-                    >
-                        <div
-                            v-for="product in filteredProducts"
-                            :key="product.id"
-                        >
-                            <ProductCard :product="product" />
-                        </div>
-                    </TransitionGroup>
-                    <div
-                        v-else
-                        class="flex min-h-[420px] flex-col items-center justify-center rounded-[28px] border border-dashed border-text-title/15 px-6 text-center dark:border-white/15"
-                    >
-                        <span
-                            class="flex h-16 w-16 items-center justify-center rounded-full bg-sage-soft text-primary dark:bg-primary/20 dark:text-secondary"
-                        >
-                            <span class="h-7 w-7">
-                                <AppIcon name="search" />
-                            </span>
-                        </span>
-                        <h2
-                            class="mt-5 font-serif text-2xl text-text-title dark:text-linen"
-                        >
-                            Ничего не нашли
-                        </h2>
-                        <p
-                            class="mt-2 max-w-sm text-sm leading-6 text-text-muted dark:text-white/50"
-                        >
-                            Попробуйте изменить запрос или сбросить фильтры — в
-                            коллекции найдётся растение для вас.
-                        </p>
-                        <button
-                            type="button"
-                            class="mt-5 min-h-11 cursor-pointer rounded-full bg-primary px-5 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-hover"
-                            @click="
-                                resetFilters();
-                                searchQuery = '';
-                            "
-                        >
-                            Сбросить фильтры
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div
-            class="fixed inset-x-0 bottom-22 z-30 flex justify-center lg:hidden"
-        >
-            <button
-                type="button"
-                class="flex min-h-12 cursor-pointer items-center gap-2 rounded-full bg-bg-dark px-6 text-sm font-semibold text-white shadow-[0_12px_35px_rgba(30,41,36,0.3)] transition-all duration-300 hover:scale-105 active:scale-95 dark:bg-secondary dark:text-bg-dark"
-                @click="filtersOpen = true"
-            >
-                <span class="h-5 w-5">
-                    <AppIcon name="filter" />
-                </span>
-                Фильтры
-                <span
-                    v-if="activeFiltersCount"
-                    class="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] text-white"
-                >
-                    {{ activeFiltersCount }}
-                </span>
-            </button>
-        </div>
-
-        <Teleport to="body">
-            <Transition
-                enter-active-class="transition-opacity duration-300"
-                enter-from-class="opacity-0"
-                leave-active-class="transition-opacity duration-300"
-                leave-to-class="opacity-0"
-            >
-                <div
-                    v-if="filtersOpen"
-                    class="fixed inset-0 z-[60] bg-bg-dark/45 backdrop-blur-sm lg:hidden"
-                    @click="filtersOpen = false"
-                />
-            </Transition>
-            <Transition
-                enter-active-class="transform-gpu transition-transform duration-500 ease-out"
-                enter-from-class="translate-y-full"
-                enter-to-class="translate-y-0"
-                leave-active-class="transform-gpu transition-transform duration-300 ease-in"
-                leave-to-class="translate-y-full"
-            >
-                <section
-                    v-if="filtersOpen"
-                    class="fixed inset-x-0 bottom-0 z-[70] flex h-[92dvh] flex-col rounded-t-[28px] bg-bg-elevated shadow-2xl lg:hidden dark:bg-bg-night-soft"
-                    role="dialog"
-                    aria-modal="true"
-                    aria-label="Фильтры каталога"
-                >
-                    <div
-                        class="mx-auto mt-2 h-1 w-10 rounded-full bg-text-title/15 dark:bg-white/20"
+    <div class="catalog-index">
+        <Container class="catalog-index__container">
+            <Breadcrumbs
+                :items="[
+                    { url: HomeIndex.url(), name: 'Главная' },
+                    { url: CatalogIndex.url(), name: 'Каталог' },
+                ]"
+            />
+            <CatalogHero />
+            <div class="catalog-index__content">
+                <div class="catalog-index__toolbar">
+                    <SearchInput
+                        id="catalog-search-input"
+                        v-model="searchQuery"
                     />
-                    <div
-                        class="flex items-center justify-between border-b border-text-title/10 px-5 py-4 dark:border-white/10"
-                    >
-                        <div>
-                            <p
-                                class="text-xs tracking-widest text-primary uppercase dark:text-secondary"
-                            >
-                                Настроить коллекцию
-                            </p>
-                            <h2
-                                class="mt-1 font-serif text-3xl text-text-title dark:text-linen"
-                            >
-                                Фильтры
-                            </h2>
-                        </div>
-                        <button
-                            type="button"
-                            class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-bg-surface text-text-title transition-all duration-300 hover:rotate-90 dark:bg-white/5 dark:text-white"
-                            aria-label="Закрыть фильтры"
-                            @click="filtersOpen = false"
-                        >
-                            <span class="h-5 w-5">
-                                <AppIcon name="close" />
-                            </span>
-                        </button>
-                    </div>
-                    <div class="flex-1 overflow-y-auto px-5 py-6">
-                        <CatalogFilters
-                            id-prefix="mobile"
-                            v-model:categories="selectedCategories"
-                            v-model:min-price="minPrice"
-                            v-model:max-price="maxPrice"
-                            v-model:in-stock="onlyInStock"
-                            :min-price-base="0"
-                            :max-price-base="7000"
-                            @reset="resetFilters"
+                    <div class="catalog-index__sort">
+                        <Select
+                            v-model="productsSort"
+                            :items="sortItems"
                         />
                     </div>
-                    <div
-                        class="border-t border-text-title/10 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] dark:border-white/10"
-                    >
-                        <button
-                            type="button"
-                            class="min-h-13 w-full cursor-pointer rounded-full bg-primary font-semibold text-white transition-all duration-300 hover:bg-primary-hover active:scale-[0.98]"
-                            @click="filtersOpen = false"
-                        >
-                            Показать: {{ filteredProducts.length }}
-                        </button>
+                </div>
+
+                <div class="catalog-index__layout">
+                    <aside class="catalog-index__sidebar">
+                        <div class="catalog-index__sidebar-inner">
+                            <div class="catalog-index__filter-heading">
+                                <h2 class="catalog-index__filter-title">
+                                    Фильтры
+                                </h2>
+                                <span
+                                    v-if="activeFiltersCount"
+                                    class="catalog-index__filter-count"
+                                >
+                                    {{ activeFiltersCount }}
+                                </span>
+                            </div>
+                            <CatalogFilters
+                                v-model:in-stock="onlyInStock"
+                                v-model:max-price="maxPrice"
+                                v-model:min-price="minPrice"
+                                v-model:selected-categories="selectedCategories"
+                                :all-categories="allCategories"
+                                :max-price-base="props.maxPrice"
+                                :min-price-base="props.minPrice"
+                                id-prefix="desktop"
+                                @reset="resetFilters"
+                            />
+                        </div>
+                    </aside>
+                    <div class="catalog-index__results">
+                        <div class="catalog-index__results-meta">
+                            <p class="catalog-index__results-count">
+                                <span>{{ filteredProducts.length }}</span>
+                                {{ resultLabel }}
+                            </p>
+                            <p class="catalog-index__help">
+                                Есть вопросы?
+                                <Link
+                                    class="catalog-index__help-link"
+                                    href="/contacts"
+                                >
+                                    Поможем выбрать
+                                </Link>
+                            </p>
+                        </div>
+                        <Transition name="catalog-index-fade" mode="out-in">
+                            <TransitionGroup
+                                v-if="filteredProducts.length"
+                                class="catalog-index__products"
+                                name="catalog-index-products"
+                                tag="div"
+                                @before-leave="beforeRemoveProduct"
+                            >
+                                <div
+                                    v-for="product in filteredProducts"
+                                    :key="product.id"
+                                    class="catalog-index__product"
+                                >
+                                    <ProductCard :product="product" />
+                                </div>
+                            </TransitionGroup>
+                            <div
+                                v-else
+                                class="catalog-index__empty"
+                            >
+                                <span class="catalog-index__empty-icon">
+                                    <Icon name="search" />
+                                </span>
+                                <h2 class="catalog-index__empty-title">
+                                    Ничего не нашли
+                                </h2>
+                                <p class="catalog-index__empty-text">
+                                    Попробуйте изменить запрос или сбросить фильтры
+                                    — в коллекции найдётся растение для вас.
+                                </p>
+                                <Button
+                                    class="catalog-index__empty-reset"
+                                    style-type="unstyled"
+                                    type="button"
+                                    @click="
+                                        resetFilters();
+                                        searchQuery = '';
+                                    "
+                                >
+                                    Сбросить фильтры
+                                </Button>
+                            </div>
+                        </Transition>
                     </div>
-                </section>
-            </Transition>
-        </Teleport>
-    </Container>
+                </div>
+            </div>
+
+            <div class="catalog-index__mobile-trigger-wrap">
+                <Button
+                    class="catalog-index__mobile-trigger"
+                    style-type="link"
+                    type="button"
+                    @click="filtersOpen = true"
+                >
+                    <span class="catalog-index__mobile-trigger-icon">
+                        <Icon name="filter" />
+                    </span>
+                    Фильтры
+                    <span
+                        v-if="activeFiltersCount"
+                        class="catalog-index__mobile-count"
+                    >
+                        {{ activeFiltersCount }}
+                    </span>
+                </Button>
+            </div>
+
+            <Teleport to="body">
+                <Transition name="catalog-index-overlay">
+                    <div
+                        v-if="filtersOpen"
+                        class="catalog-index__overlay"
+                        @click="filtersOpen = false"
+                    />
+                </Transition>
+                <Transition name="catalog-index-drawer">
+                    <section
+                        v-if="filtersOpen"
+                        aria-label="Фильтры каталога"
+                        aria-modal="true"
+                        class="catalog-index__drawer"
+                        role="dialog"
+                    >
+                        <div class="catalog-index__drawer-handle" />
+                        <div class="catalog-index__drawer-header">
+                            <div>
+                                <p class="catalog-index__drawer-eyebrow">
+                                    Настроить коллекцию
+                                </p>
+                                <h2 class="catalog-index__drawer-title">
+                                    Фильтры
+                                </h2>
+                            </div>
+                            <Button
+                                aria-label="Закрыть фильтры"
+                                class="catalog-index__drawer-close"
+                                style-type="unstyled"
+                                type="button"
+                                @click="filtersOpen = false"
+                            >
+                                <Icon name="close" />
+                            </Button>
+                        </div>
+                        <div class="catalog-index__drawer-body">
+                            <CatalogFilters
+                                v-model:in-stock="onlyInStock"
+                                v-model:max-price="maxPrice"
+                                v-model:min-price="minPrice"
+                                v-model:selected-categories="selectedCategories"
+                                :all-categories="allCategories"
+                                :max-price-base="props.maxPrice"
+                                :min-price-base="props.minPrice"
+                                id-prefix="mobile"
+                                @reset="resetFilters"
+                            />
+                        </div>
+                        <div class="catalog-index__drawer-footer">
+                            <Button
+                                class="catalog-index__drawer-submit"
+                                style-type="link"
+                                type="button"
+                                @click="filtersOpen = false"
+                            >
+                                Показать: {{ filteredProducts.length }}
+                            </Button>
+                        </div>
+                    </section>
+                </Transition>
+            </Teleport>
+        </Container>
+    </div>
 </template>
 
-<script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
-import AppIcon from '@/components/AppIcon.vue';
+<script lang="ts" setup>
+import { Link, router } from '@inertiajs/vue3';
+import { computed, ref, watch } from 'vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import Button from '@/components/Button.vue';
 import CatalogFilters from '@/components/catalog/CatalogFilters.vue';
 import CatalogHero from '@/components/catalog/CatalogHero.vue';
 import Container from '@/components/Container.vue';
-import Layout from '@/components/layouts/Layout.vue';
+import Icon from '@/components/icons/Icon.vue';
 import ProductCard from '@/components/product/ProductCard.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import Select from '@/components/Select.vue';
 import { useBodyScrollLock } from '@/composables/useBodyScrollLock';
-import { home } from '@/routes';
-import type { ProductListItem } from '@/types/product.ts';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { home as HomeIndex } from '@/routes';
+import { index as CatalogIndex } from '@/routes/catalog';
+import type { Category } from '@/types/category.ts';
+import type { Page } from '@/types/pagination.ts';
+import type { Product} from '@/types/product.ts';
+import  { ProductSearchSort } from '@/types/product.ts';
 
-defineOptions({ layout: Layout });
+defineOptions({ layout: AppLayout });
+
+interface Props {
+    minPrice: number,
+    maxPrice: number,
+    categories: Category[],
+    productsPage: Page<Product>,
+}
+
+const props = defineProps<Props>();
+
+const getQueryParam = (key: string): string | null => {
+    if (typeof window === 'undefined') {
+
+        return null;
+    }
+
+    return new URLSearchParams(window.location.search).get(key);
+};
+
+const getInitialSearchQuery = (): string => {
+    const param = getQueryParam('name');
+
+    return param ?? '';
+};
+
+const getInitialCategories = (): string[] => {
+    const param = getQueryParam('categories');
+
+    return param ? param.split(',') : [];
+};
+
+const getInitialSort = (): string => {
+    const param = getQueryParam('sort');
+
+    return param && Object.values(ProductSearchSort).includes(param as ProductSearchSort)
+        ? param
+        : ProductSearchSort.SORT;
+};
+
+const getInitialInStock = (): boolean => {
+    return getQueryParam('in_stock') !== '0';
+};
+
+const getInitialNumber = (key: string, defaultValue: number): number => {
+    const param = getQueryParam(key);
+
+    if (param === null || param === '') {
+
+        return defaultValue;
+    }
+
+    const parsed = Number(param);
+
+    return Number.isNaN(parsed) ? defaultValue : parsed;
+};
+
+const allCategories = computed(() => {
+    return props.categories.map((category) => {
+        return {
+            alias: category.alias,
+            name: category.name,
+            active: selectedCategories.value.includes(category.alias),
+        };
+    });
+});
+
+const filteredProducts = computed(() => props.productsPage?.items ?? []);
 
 const sortItems = [
-    { label: 'Сначала популярные', value: 'popularity' },
-    { label: 'Цена: по возрастанию', value: 'price-big' },
-    { label: 'Цена: по убыванию', value: 'price-small' },
+    { label: 'Сначала популярные', value: ProductSearchSort.SORT },
+    { label: 'Цена: по возрастанию', value: ProductSearchSort.PRICE_ASC },
+    { label: 'Цена: по убыванию', value: ProductSearchSort.PRICE_DESC },
 ];
-const productsSort = ref('popularity');
-const searchQuery = ref('');
+const productsSort = ref(getInitialSort());
+const searchQuery = ref(getInitialSearchQuery());
 const filtersOpen = ref(false);
-const selectedCategories = ref<string[]>([]);
-const minPrice = ref(0);
-const maxPrice = ref(7000);
-const onlyInStock = ref(true);
+const selectedCategories = ref<string[]>(getInitialCategories());
+const minPrice = ref(getInitialNumber('price_from', props.minPrice));
+const maxPrice = ref(getInitialNumber('price_to', props.maxPrice));
+const onlyInStock = ref(getInitialInStock());
 
 const activeFiltersCount = computed(
     () =>
         selectedCategories.value.length +
-        (maxPrice.value < 7000 ? 1 : 0) +
-        (onlyInStock.value ? 1 : 0),
+        (minPrice.value > props.minPrice ? 1 : 0) +
+        (maxPrice.value < props.maxPrice ? 1 : 0) +
+        (!onlyInStock.value ? 1 : 0),
 );
-const filteredProducts = ref<ProductListItem[]>([]);
+
+let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+const applyFilters = () => {
+    if (debounceTimer) {
+        clearTimeout(debounceTimer);
+    }
+
+    debounceTimer = setTimeout(() => {
+        router.get(
+            window.location.pathname,
+            {
+                name: searchQuery.value.length > 0
+                    ? searchQuery.value
+                    : undefined,
+                categories: selectedCategories.value.length > 0
+                    ? selectedCategories.value.join(',')
+                    : undefined,
+                in_stock: !onlyInStock.value ? 0 : undefined,
+                sort: productsSort.value !== ProductSearchSort.SORT
+                    ? productsSort.value
+                    : undefined,
+                price_from: minPrice.value > props.minPrice ? minPrice.value : undefined,
+                price_to: maxPrice.value < props.maxPrice ? maxPrice.value : undefined,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+                only: ['productsPage'],
+            }
+        );
+    }, 300);
+};
+
+watch(
+    [searchQuery, selectedCategories, onlyInStock, productsSort, minPrice, maxPrice],
+    applyFilters,
+    { deep: true }
+);
+
 const resultLabel = computed(() => {
     const count = filteredProducts.value.length;
     const lastTwo = count % 100;
@@ -286,9 +369,10 @@ const resultLabel = computed(() => {
 });
 
 const resetFilters = (): void => {
+    searchQuery.value = '';
     selectedCategories.value = [];
-    minPrice.value = 0;
-    maxPrice.value = 7000;
+    minPrice.value = props.minPrice;
+    maxPrice.value = props.maxPrice;
     onlyInStock.value = true;
 };
 
@@ -305,23 +389,56 @@ const beforeRemoveProduct = (el: Element) => {
 useBodyScrollLock(filtersOpen);
 </script>
 
-<style>
-.products-enter-active,
-.products-leave-active,
-.products-move {
+<style lang="scss" scoped>
+.catalog-index-products-enter-active,
+.catalog-index-products-leave-active,
+.catalog-index-products-move {
     transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.products-enter-from {
+.catalog-index-products-enter-from,
+.catalog-index-products-leave-to {
     opacity: 0;
     transform: translateY(6px);
 }
-.products-leave-to {
-    opacity: 0;
-    transform: translateY(6px);
-}
-.products-leave-active {
+
+.catalog-index-products-leave-active {
     pointer-events: none;
     position: absolute;
+}
+
+.catalog-index-fade-enter-active,
+.catalog-index-fade-leave-active {
+    transition:
+        opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.catalog-index-fade-enter-from,
+.catalog-index-fade-leave-to {
+    opacity: 0;
+    transform: translateY(6px);
+}
+
+.catalog-index-overlay-enter-active,
+.catalog-index-overlay-leave-active {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.catalog-index-overlay-enter-from,
+.catalog-index-overlay-leave-to {
+    opacity: 0;
+}
+.catalog-index-drawer-enter-active {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.catalog-index-drawer-leave-active {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.catalog-index-drawer-enter-from,
+.catalog-index-drawer-leave-to {
+    transform: translateY(100%);
+}
+.catalog-index-drawer-enter-to {
+    transform: translateY(0);
 }
 </style>

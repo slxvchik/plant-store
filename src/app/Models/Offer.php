@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Domain\Product\Model\Offer as DomainOfferModel;
-use App\Domain\Product\Model\Stock;
+use App\Domain\Product\Model\OfferModel as DomainOfferModel;
+use App\Domain\ProductUnit\Model\ProductStockModel;
 use App\Domain\Shared\SortedItem\SortedItem;
 use DateMalformedStringException;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -22,37 +22,25 @@ class Offer extends Model
         'id',
         'active',
         'sku',
+        'name',
         'sort',
         'description',
         'price',
-        'form_factor',
-        'size',
-        'age_in_months',
-        'sowing_date',
+        'stock_quantity',
     ];
 
     protected $casts = [
         'active' => 'boolean',
         'sort' => 'integer',
         'price' => 'integer',
-        'age_in_months' => 'integer',
-        'sowing_date' => 'immutable_datetime',
+        'stock_quantity' => 'integer',
     ];
 
     /**
-     * @throws DateMalformedStringException
      * @throws InvalidArgumentException
      */
     public function toDomain(): DomainOfferModel
     {
-        $stocks = DB::table('offer_stocks')
-            ->get()
-            ->map(fn (stdClass $stock) => new Stock(
-                warehouseId: $stock->warehouse_id,
-                quantity: $stock->quantity,
-                reserved: $stock->reserved,
-            ))
-            ->toArray();
         $imageIds = DB::table('offer_images')
             ->where('offer_id', $this->id)
             ->orderBy('sort')
@@ -76,14 +64,11 @@ class Offer extends Model
             id: $this->id,
             active: $this->active,
             sku: $this->sku,
+            name: $this->name,
             sort: $this->sort,
             description: $this->description ?? null,
             price: $this->price,
-            stocks: $stocks,
-            formFactor: $this->form_factor ?? null,
-            size: $this->size ?? null,
-            age: $this->age_in_months ?? null,
-            sowingDate: $this->sowing_date ?? null,
+            stockQuantity: $this->stock_quantity ?? 0,
             imageIds: $imageIds,
             videoIds: $videoIds,
         );

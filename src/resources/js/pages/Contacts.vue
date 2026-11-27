@@ -1,38 +1,26 @@
 <template>
-    <div class="bg-bg-base dark:bg-bg-night">
-        <section class="px-4 py-10 md:px-8 md:py-16">
-            <div class="mx-auto max-w-[1280px]">
-                <nav
-                    class="flex items-center gap-2 text-xs text-text-muted dark:text-white/40"
-                    aria-label="Хлебные крошки"
-                >
-                    <Link href="/" class="transition-colors hover:text-primary">
+    <div class="contacts">
+        <section class="contacts__section">
+            <Container>
+                <nav aria-label="Хлебные крошки" class="contacts__breadcrumbs">
+                    <Link class="contacts__breadcrumb-link" href="/">
                         Главная
                     </Link>
                     <span>/</span>
-                    <span class="text-text-title dark:text-white/65">
-                        Контакты
-                    </span>
+                    <span class="contacts__breadcrumb-current">Контакты</span>
                 </nav>
+
                 <Reveal>
-                    <div class="mt-7 max-w-3xl">
-                        <p
-                            class="text-xs font-semibold tracking-[0.2em] text-accent uppercase"
-                        >
-                            Всегда рады помочь
-                        </p>
-                        <h1
-                            class="mt-3 font-serif text-4xl leading-tight text-text-title md:text-5xl lg:text-6xl dark:text-linen"
-                        >
+                    <div class="contacts__intro">
+                        <p class="contacts__eyebrow">Всегда рады помочь</p>
+                        <h1 class="contacts__title">
                             Давайте вырастим
                             <br />
-                            <em class="text-primary dark:text-secondary">
+                            <em class="contacts__title-accent">
                                 что-то прекрасное
                             </em>
                         </h1>
-                        <p
-                            class="mt-5 max-w-xl text-sm leading-7 text-text-muted md:text-base dark:text-white/50"
-                        >
+                        <p class="contacts__description">
                             Подберём растение, ответим о доставке или поможем
                             разобраться в уходе. Напишите нам — отвечает живой
                             человек, а не бот.
@@ -40,101 +28,71 @@
                     </div>
                 </Reveal>
 
-                <div
-                    class="mt-10 grid gap-6 md:mt-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10"
-                >
+                <div class="contacts__grid">
                     <Reveal direction="right">
-                        <div
-                            class="flex h-full flex-col overflow-hidden rounded-[28px] bg-bg-surface dark:bg-bg-night-soft"
-                        >
-                            <div
-                                class="relative h-64 overflow-hidden md:h-80 lg:h-auto lg:min-h-72 lg:flex-1"
-                            >
+                        <div class="contacts__info-card">
+                            <div class="contacts__image-wrap">
                                 <img
-                                    src="/images/slide_2.avif"
                                     alt="Оранжерея питомника Деулино Сад"
-                                    class="h-full w-full object-cover"
+                                    class="contacts__image"
+                                    src="/images/slide_2.avif"
                                 />
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-bg-dark/65 to-transparent"
-                                />
-                                <div
-                                    class="absolute right-5 bottom-5 left-5 text-white"
-                                >
-                                    <p class="font-serif text-2xl">
+                                <div class="contacts__image-overlay" />
+                                <div class="contacts__image-caption">
+                                    <p class="contacts__image-title">
                                         Приезжайте в гости
                                     </p>
-                                    <p class="mt-1 text-sm text-white/65">
+                                    <p class="contacts__image-text">
                                         Оранжерея открыта для посещения по
                                         записи
                                     </p>
                                 </div>
                             </div>
-                            <div class="space-y-5 p-6 md:p-8">
+                            <div class="contacts__details">
                                 <a
+                                    class="contacts__contact"
                                     href="tel:+74951284567"
-                                    class="group flex min-h-12 items-center gap-4"
                                 >
-                                    <span
-                                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white dark:bg-white/5 dark:text-secondary"
-                                    >
-                                        <span class="h-5 w-5">
-                                            <AppIcon name="phone" />
-                                        </span>
+                                    <span class="contacts__contact-icon">
+                                        <Icon name="phone" />
                                     </span>
                                     <span>
-                                        <span
-                                            class="block text-xs text-text-muted dark:text-white/40"
-                                        >
+                                        <span class="contacts__contact-label">
                                             Позвонить
                                         </span>
-                                        <span
-                                            class="font-semibold text-text-title dark:text-linen"
-                                        >
+                                        <span class="contacts__contact-value">
                                             +7 (495) 128-45-67
                                         </span>
                                     </span>
                                 </a>
                                 <a
+                                    class="contacts__contact"
                                     href="mailto:hello@deulino.garden"
-                                    class="group flex min-h-12 items-center gap-4"
                                 >
-                                    <span
-                                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white dark:bg-white/5 dark:text-secondary"
-                                    >
-                                        <span class="h-5 w-5">
-                                            <AppIcon name="mail" />
-                                        </span>
+                                    <span class="contacts__contact-icon">
+                                        <Icon name="mail" />
                                     </span>
                                     <span>
-                                        <span
-                                            class="block text-xs text-text-muted dark:text-white/40"
-                                        >
+                                        <span class="contacts__contact-label">
                                             Написать
                                         </span>
                                         <span
-                                            class="font-semibold break-all text-text-title dark:text-linen"
+                                            class="contacts__contact-value contacts__contact-value--email"
                                         >
                                             hello@deulino.garden
                                         </span>
                                     </span>
                                 </a>
-                                <div class="flex gap-4">
-                                    <span
-                                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary dark:bg-white/5 dark:text-secondary"
-                                    >
-                                        <span class="h-5 w-5">
-                                            <AppIcon name="pin" />
-                                        </span>
+                                <div class="contacts__contact">
+                                    <span class="contacts__contact-icon">
+                                        <Icon name="pin" />
                                     </span>
                                     <div>
-                                        <p
-                                            class="text-xs text-text-muted dark:text-white/40"
-                                        >
+                                        <p class="contacts__contact-label">
                                             Питомник
                                         </p>
                                         <p
-                                            class="mt-1 text-sm leading-6 font-semibold text-text-title dark:text-linen"
+                                            class="contacts__contact-value contacts__contact-value--address"
                                         >
                                             Московская область, Рузский район,
                                             <br />
@@ -142,23 +100,15 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="flex gap-4">
-                                    <span
-                                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-primary dark:bg-white/5 dark:text-secondary"
-                                    >
-                                        <span class="h-5 w-5">
-                                            <AppIcon name="clock" />
-                                        </span>
+                                <div class="contacts__contact">
+                                    <span class="contacts__contact-icon">
+                                        <Icon name="clock" />
                                     </span>
                                     <div>
-                                        <p
-                                            class="text-xs text-text-muted dark:text-white/40"
-                                        >
+                                        <p class="contacts__contact-label">
                                             Время работы
                                         </p>
-                                        <p
-                                            class="mt-1 text-sm font-semibold text-text-title dark:text-linen"
-                                        >
+                                        <p class="contacts__contact-value">
                                             Ежедневно, 09:00–20:00
                                         </p>
                                     </div>
@@ -167,108 +117,95 @@
                         </div>
                     </Reveal>
 
-                    <Reveal direction="left" :delay="100">
+                    <Reveal :delay="100" direction="left">
                         <form
-                            class="rounded-[28px] border border-text-title/5 bg-bg-elevated p-6 shadow-[0_10px_50px_rgba(32,43,38,0.05)] md:p-8 lg:p-10 dark:border-white/10 dark:bg-bg-night-soft"
+                            class="contacts__form"
                             novalidate
                             @submit.prevent="submitForm"
                         >
-                            <p
-                                class="text-xs font-semibold tracking-[0.18em] text-primary uppercase dark:text-secondary"
-                            >
-                                Форма связи
-                            </p>
-                            <h2
-                                class="mt-3 font-serif text-3xl text-text-title dark:text-linen"
-                            >
+                            <p class="contacts__form-eyebrow">Форма связи</p>
+                            <h2 class="contacts__form-title">
                                 Расскажите, чем помочь
                             </h2>
-                            <p
-                                class="mt-2 text-sm leading-6 text-text-muted dark:text-white/45"
-                            >
+                            <p class="contacts__form-description">
                                 Ответим в течение двух рабочих часов.
                             </p>
-                            <div class="mt-7 space-y-4">
+                            <div class="contacts__fields">
                                 <Input
                                     id="contact-name"
                                     v-model="form.fio"
-                                    label="Ваше имя *"
-                                    autocomplete="name"
                                     :error="clientErrors.fio || form.errors.fio"
+                                    autocomplete="name"
+                                    label="Ваше имя *"
+                                    variant="floating"
                                 />
-                                <div class="grid gap-4 md:grid-cols-2">
+                                <div class="contacts__field-row">
                                     <Input
                                         id="contact-phone"
                                         v-model="form.phone"
-                                        type="tel"
-                                        label="Телефон *"
-                                        autocomplete="tel"
                                         :error="
                                             clientErrors.phone ||
                                             form.errors.phone
                                         "
+                                        autocomplete="tel"
+                                        label="Телефон *"
+                                        type="tel"
+                                        variant="floating"
                                     />
                                     <Input
                                         id="contact-email"
                                         v-model="form.email"
-                                        type="email"
-                                        label="Электронная почта"
-                                        autocomplete="email"
                                         :error="
                                             clientErrors.email ||
                                             form.errors.email
                                         "
+                                        autocomplete="email"
+                                        label="Электронная почта"
+                                        type="email"
+                                        variant="floating"
                                     />
                                 </div>
-                                <Input
+                                <Textarea
                                     id="contact-message"
                                     v-model="form.comment"
-                                    label="Ваш вопрос *"
-                                    multiline
                                     :error="
                                         clientErrors.comment ||
                                         form.errors.comment
                                     "
+                                    label="Ваш вопрос *"
+                                    variant="floating"
                                 />
                             </div>
-                            <button
-                                type="submit"
-                                class="mt-6 flex min-h-13 w-full cursor-pointer items-center justify-center gap-3 rounded-full bg-primary px-6 font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-xl active:scale-[0.98] disabled:cursor-wait disabled:opacity-60"
+                            <Button
                                 :disabled="form.processing"
+                                class="contacts__submit"
+                                type="submit"
                             >
-                                <span
-                                    v-if="form.processing"
-                                    class="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"
-                                />
-                                <span v-else class="h-5 w-5">
-                                    <AppIcon name="arrow" />
-                                </span>
                                 {{
                                     form.processing
                                         ? 'Отправляем…'
                                         : 'Отправить сообщение'
                                 }}
-                            </button>
-                            <p
-                                class="mt-4 text-center text-xs leading-5 text-text-muted dark:text-white/35"
-                            >
+                                <span
+                                    v-if="form.processing"
+                                    class="contacts__spinner"
+                                />
+                                <span v-else class="contacts__submit-icon">
+                                    <Icon name="arrow" />
+                                </span>
+                            </Button>
+                            <p class="contacts__policy">
                                 Нажимая кнопку, вы соглашаетесь с политикой
                                 обработки персональных данных.
                             </p>
-                            <Transition
-                                enter-active-class="transition-all duration-300"
-                                enter-from-class="translate-y-2 opacity-0"
-                                enter-to-class="translate-y-0 opacity-100"
-                                leave-active-class="transition-all duration-200"
-                                leave-to-class="opacity-0"
-                            >
+                            <Transition name="contacts-success">
                                 <div
                                     v-if="submitted"
-                                    class="mt-5 flex items-center gap-3 rounded-2xl bg-sage-soft p-4 text-sm text-primary dark:bg-primary/20 dark:text-secondary"
+                                    class="contacts__success"
                                     role="status"
                                 >
-                                    <span class="h-5 w-5 shrink-0">
-                                        <AppIcon name="check" />
+                                    <span class="contacts__success-icon">
+                                        <Icon name="check" />
                                     </span>
                                     Спасибо! Мы получили сообщение и скоро
                                     свяжемся с вами.
@@ -277,20 +214,23 @@
                         </form>
                     </Reveal>
                 </div>
-            </div>
+            </Container>
         </section>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Link, useForm } from '@inertiajs/vue3';
 import { reactive, ref } from 'vue';
-import AppIcon from '@/components/AppIcon.vue';
-import Layout from '@/components/layouts/Layout.vue';
-import Reveal from '@/components/Reveal.vue';
+import Button from '@/components/Button.vue';
+import Container from '@/components/Container.vue';
+import Icon from '@/components/icons/Icon.vue';
 import Input from '@/components/Input.vue';
+import Reveal from '@/components/Reveal.vue';
+import Textarea from '@/components/Textarea.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 
-defineOptions({ layout: Layout });
+defineOptions({ layout: AppLayout });
 const form = useForm({ fio: '', phone: '', email: '', comment: '' });
 const clientErrors = reactive<Record<string, string>>({});
 const submitted = ref(false);
@@ -334,3 +274,21 @@ const submitForm = (): void => {
     });
 };
 </script>
+
+<style lang="scss" scoped>
+.contacts-success-enter-active {
+    @apply transition-all duration-300;
+}
+.contacts-success-enter-from {
+    @apply translate-y-2 opacity-0;
+}
+.contacts-success-enter-to {
+    @apply translate-y-0 opacity-100;
+}
+.contacts-success-leave-active {
+    @apply transition-all duration-200;
+}
+.contacts-success-leave-to {
+    @apply opacity-0;
+}
+</style>

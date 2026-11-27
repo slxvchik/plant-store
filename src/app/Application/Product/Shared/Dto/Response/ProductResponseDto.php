@@ -8,7 +8,7 @@ use App\Application\Category\Shared\Dto\Response\CategoryResponseDto;
 use App\Application\Media\Shared\Dto\Response\ImageResponseDto;
 use App\Application\Media\Shared\Dto\Response\VideoResponseDto;
 use App\Application\Tag\Shared\Dto\Response\TagResponseDto;
-use App\Domain\Product\Model\Product;
+use App\Domain\Product\Model\ProductModel;
 use JsonSerializable;
 use Override;
 
@@ -16,7 +16,6 @@ readonly class ProductResponseDto implements JsonSerializable
 {
     /**
      * @param  OfferResponseDto[]  $offers
-     * @param  CategoryResponseDto[]  $categories
      * @param  TagResponseDto[]  $tags
      * @param  VideoResponseDto[]  $videos
      * @param  ImageResponseDto[]  $images
@@ -28,8 +27,9 @@ readonly class ProductResponseDto implements JsonSerializable
         public string $name,
         public int $sort,
         public ?string $description,
+        public bool $featured,
         public array $offers,
-        public array $categories,
+        public ?CategoryResponseDto $category,
         public array $tags,
         public array $videos,
         public array $images,
@@ -37,15 +37,14 @@ readonly class ProductResponseDto implements JsonSerializable
 
     /**
      * @param  OfferResponseDto[]  $offers
-     * @param  CategoryResponseDto[]  $categories
      * @param  TagResponseDto[]  $tags
      * @param  VideoResponseDto[]  $videos
      * @param  ImageResponseDto[]  $images
      */
     public static function fromDomain(
-        Product $product,
+        ProductModel $product,
         array $offers,
-        array $categories,
+        ?CategoryResponseDto $category,
         array $tags,
         array $images,
         array $videos,
@@ -57,8 +56,9 @@ readonly class ProductResponseDto implements JsonSerializable
             name: $product->name,
             sort: $product->sort,
             description: $product->description,
+            featured: $product->featured,
             offers: $offers,
-            categories: $categories,
+            category: $category,
             tags: $tags,
             videos: $videos,
             images: $images,
@@ -78,8 +78,9 @@ readonly class ProductResponseDto implements JsonSerializable
             'name' => $this->name,
             'sort' => $this->sort,
             'description' => $this->description,
+            'featured' => $this->featured,
             'offers' => $this->offers,
-            'categories' => $this->categories,
+            'category' => $this->category,
             'tags' => $this->tags,
             'videos' => $this->videos,
             'images' => $this->images,

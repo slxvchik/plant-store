@@ -2,17 +2,18 @@
     <div
         ref="element"
         :class="[
-            visible ? 'translate-x-0 translate-y-0 opacity-100' : hiddenClasses,
+            'reveal',
+            `reveal--${direction}`,
+            { 'reveal--visible': visible },
         ]"
         :style="{ transitionDelay: `${delay}ms` }"
-        class="transform-gpu transition-all duration-700 ease-out will-change-transform"
     >
         <slot />
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const props = withDefaults(
     defineProps<{
@@ -22,21 +23,9 @@ const props = withDefaults(
     }>(),
     { delay: 0, direction: 'up', once: true },
 );
-
 const element = ref<HTMLElement | null>(null);
 const visible = ref(false);
 let observer: IntersectionObserver | null = null;
-
-const hiddenClasses = computed(
-    () =>
-        ({
-            up: 'translate-y-8 opacity-0',
-            left: '-translate-x-8 opacity-0',
-            right: 'translate-x-8 opacity-0',
-            none: 'opacity-0',
-        })[props.direction],
-);
-
 onMounted(() => {
     if (
         !element.value ||
@@ -63,6 +52,5 @@ onMounted(() => {
     );
     observer.observe(element.value);
 });
-
 onUnmounted(() => observer?.disconnect());
 </script>

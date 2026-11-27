@@ -1,0 +1,35 @@
+@use "../../helpers" as *;
+
+.favorite-button {
+    display: flex;
+    height: 2.75rem;
+    width: 2.75rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background-color: rgb(255 255 255 / 0.8);
+    color: var(--color-text-title);
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    .dark & {
+        background-color: color-mix(in srgb, var(--color-bg-night) 70%, transparent);
+        color: #fff;
+    }
+
+    &__icon {
+        height: 1.25rem;
+        width: 1.25rem;
+        color: var(--color-secondary);
+
+        &--active {
+            color: #f87171;
+        }
+    }
+}

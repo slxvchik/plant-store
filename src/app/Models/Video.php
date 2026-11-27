@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\Media\Model\Video as DomainVideoModel;
+use App\Domain\Media\Model\VideoModel as DomainVideoModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 

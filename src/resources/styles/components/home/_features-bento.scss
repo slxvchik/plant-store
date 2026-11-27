@@ -1,0 +1,347 @@
+@use "../../helpers" as *;
+
+.features-bento {
+    background-color: var(--color-bg-surface);
+    padding: 4rem 1rem;
+
+    @include for-width(md) {
+        padding: 6rem 2rem;
+    }
+
+    .dark & {
+        background-color: var(--color-bg-night-soft);
+    }
+
+    &__header {
+        max-width: 42rem;
+    }
+
+    &__eyebrow {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: var(--color-primary);
+        text-transform: uppercase;
+
+        .dark & {
+            color: var(--color-secondary);
+        }
+    }
+
+    &__title {
+        margin-top: 0.75rem;
+        font-family: var(--font-serif);
+        font-size: 1.875rem;
+        line-height: 1.25;
+        color: var(--color-text-title);
+
+        @include for-width(md) {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+
+        @include for-width(lg) {
+            font-size: 3rem;
+            line-height: 1;
+        }
+
+        .dark & {
+            color: var(--color-linen);
+        }
+    }
+
+    &__grid {
+        margin-top: 2.25rem;
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 1rem;
+
+        @include for-width(md) {
+            margin-top: 3rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include for-width(lg) {
+            grid-auto-rows: 250px;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 1.25rem;
+        }
+    }
+
+    &__feature {
+        @include for-width(md) {
+            grid-column: span 2 / span 2;
+        }
+
+        @include for-width(lg) {
+            grid-column: span 7 / span 7;
+            grid-row: span 2 / span 2;
+        }
+    }
+
+    &__feature-card {
+        position: relative;
+        height: 100%;
+        min-height: 420px;
+        overflow: hidden;
+        border-radius: 28px;
+
+        @include for-width(lg) {
+            min-height: 100%;
+        }
+
+        &:hover .features-bento__feature-image {
+            transform: scale(1.05);
+        }
+    }
+
+    &__feature-image {
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 1000ms;
+    }
+
+    &__feature-overlay {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(to top, color-mix(in srgb, var(--color-bg-dark) 90%, transparent), color-mix(in srgb, var(--color-bg-dark) 20%, transparent), transparent);
+    }
+
+    &__feature-copy {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 1.5rem;
+        color: #fff;
+
+        @include for-width(md) {
+            padding: 2rem;
+        }
+
+        @include for-width(lg) {
+            padding: 2.5rem;
+        }
+    }
+
+    &__feature-icon,
+    &__delivery-icon,
+    &__guarantee-icon {
+        display: flex;
+        height: 2.75rem;
+        width: 2.75rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        background-color: rgb(255 255 255 / 0.15);
+        backdrop-filter: blur(8px);
+    }
+
+    &__icon {
+        height: 1.25rem;
+        width: 1.25rem;
+    }
+
+    &__feature-title {
+        margin-top: 1.25rem;
+        font-family: var(--font-serif);
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+
+        @include for-width(md) {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+    }
+
+    &__feature-text {
+        margin-top: 0.75rem;
+        max-width: 28rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: rgb(255 255 255 / 0.7);
+
+        @include for-width(md) {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+    }
+
+    &__delivery {
+        @include for-width(lg) {
+            grid-column: span 5 / span 5;
+        }
+    }
+
+    &__delivery-card {
+        display: flex;
+        height: 100%;
+        min-height: 240px;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 28px;
+        background-color: var(--color-primary);
+        padding: 1.5rem;
+        color: #fff;
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+
+        &:hover {
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        @include for-width(md) {
+            padding: 2rem;
+        }
+
+        .dark & {
+            background-color: color-mix(in srgb, var(--color-primary) 80%, transparent);
+        }
+    }
+
+    &__delivery-copy {
+        margin-top: 2rem;
+    }
+
+    &__delivery-title {
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        line-height: 2rem;
+
+        @include for-width(md) {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+        }
+    }
+
+    &__delivery-text {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: rgb(255 255 255 / 0.65);
+    }
+
+    &__trust {
+        @include for-width(lg) {
+            grid-column: span 2 / span 2;
+        }
+    }
+
+    &__trust-card {
+        display: flex;
+        height: 100%;
+        min-height: 220px;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 28px;
+        border: 1px solid color-mix(in srgb, var(--color-text-title) 5%, transparent);
+        background-color: var(--color-bg-elevated);
+        padding: 1.5rem;
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+
+        &:hover {
+            transform: translateY(-0.25rem);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        .dark & {
+            border-color: rgb(255 255 255 / 0.1);
+            background-color: var(--color-bg-night);
+        }
+    }
+
+    &__trust-label {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: var(--color-accent);
+        text-transform: uppercase;
+    }
+
+    &__trust-value {
+        font-family: var(--font-serif);
+        font-size: 3rem;
+        line-height: 1;
+        color: var(--color-text-title);
+
+        span {
+            color: var(--color-primary);
+
+            .dark & {
+                color: var(--color-secondary);
+            }
+        }
+
+        .dark & {
+            color: var(--color-linen);
+        }
+    }
+
+    &__trust-text {
+        margin-top: 0.25rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: var(--color-text-muted);
+
+        .dark & {
+            color: rgb(255 255 255 / 0.5);
+        }
+    }
+
+    &__guarantee {
+        @include for-width(lg) {
+            grid-column: span 3 / span 3;
+        }
+    }
+
+    &__guarantee-card {
+        display: flex;
+        height: 100%;
+        min-height: 220px;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 28px;
+        background-color: #d9cbbb;
+        padding: 1.5rem;
+        color: var(--color-bg-dark);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+
+        &:hover {
+            transform: translateY(-0.25rem);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        .dark & {
+            background-color: #9b8975;
+        }
+    }
+
+    &__guarantee-icon {
+        background-color: rgb(255 255 255 / 0.35);
+    }
+
+    &__guarantee-title {
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+    &__guarantee-text {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        opacity: 0.7;
+    }
+}

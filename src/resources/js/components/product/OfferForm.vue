@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-5">
+    <div class="offer-form">
         <p v-if="form.id">#{{ form.id }}</p>
         <Input
             id="offer_id"
@@ -8,7 +8,14 @@
             :error="form.errors.sku"
             label="Артикул"
         />
-        <div class="w-fit">
+        <Input
+            id="offer_name"
+            v-model="form.name"
+            :disabled="disabled"
+            :error="form.errors.name"
+            label="Название"
+        />
+        <div class="offer-form__checkbox">
             <Checkbox
                 id="offer_active"
                 v-model="form.active"
@@ -23,12 +30,11 @@
             label="Сортировка"
             type="number"
         />
-        <Input
+        <Textarea
             id="offer_description"
             v-model="form.description"
             :disabled="disabled"
             label="Описание"
-            multiline
         />
         <Input
             id="offer_price"
@@ -39,32 +45,12 @@
             type="number"
         />
         <Input
-            id="offer_form_factor"
-            v-model="form.formFactor"
+            id="offer_available_quantity"
+            v-model.number="form.stockQuantity"
             :disabled="disabled"
-            label="Фактор"
-            type="text"
-        />
-        <Input
-            id="offer_size"
-            v-model="form.size"
-            :disabled="disabled"
-            label="Размер"
-            type="text"
-        />
-        <Input
-            id="offer_age"
-            v-model.number="form.age"
-            :disabled="disabled"
-            label="Возраст"
+            :error="form.errors.stockQuantity"
+            label="Доступное кол-во"
             type="number"
-        />
-        <Input
-            id="offer_sowing_date"
-            v-model="form.sowingDate"
-            :disabled="disabled"
-            label="Дата"
-            type="date"
         />
         <ImageUpload
             id="offer_images"
@@ -74,47 +60,15 @@
             multiple
             type="image"
         />
-        <div v-if="warehouses.length" class="flex flex-col gap-4">
-            <h2 class="text-2xl text-text-title">Наличие на складах</h2>
-            <div
-                v-for="warehouse in warehouses"
-                :key="warehouse.id"
-                class="mb-4 grid grid-cols-3 gap-5"
-            >
-                <div
-                    class="w-full self-center text-sm font-medium text-gray-700"
-                >
-                    {{ warehouse.address }}
-                </div>
-                <template v-for="stock in form.stocks" :key="stock.warehouseId">
-                    <template v-if="stock.warehouseId === warehouse.id">
-                        <Input
-                            :id="`${warehouse.id}-quantity`"
-                            v-model.number="stock.quantity"
-                            :disabled="disabled"
-                            label="Доступное кол-во для покупки"
-                            type="number"
-                        />
-                        <Input
-                            :id="`${warehouse.id}-reserved`"
-                            v-model.number="stock.reserved"
-                            :disabled="disabled"
-                            label="Зарезервированное кол-во товара"
-                            type="number"
-                        />
-                    </template>
-                </template>
-            </div>
-        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import type { InertiaForm } from '@inertiajs/vue3';
-import { watch } from 'vue';
 import Checkbox from '@/components/Checkbox.vue';
 import ImageUpload from '@/components/ImageUpload.vue';
 import Input from '@/components/Input.vue';
+import Textarea from '@/components/Textarea.vue';
 import type { OfferFormState } from '@/types/product.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 
@@ -123,28 +77,8 @@ interface Props {
     disabled?: boolean;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const form = defineModel<InertiaForm<OfferFormState>>('form', {
     required: true,
 });
-
-watch(
-    () => props.warehouses,
-    (warehouses) => {
-        form.value.stocks = warehouses.map((warehouse) => {
-            const existing = form.value.stocks?.find(
-                (stock) => stock.warehouseId === warehouse.id,
-            );
-
-            return (
-                existing ?? {
-                    warehouseId: warehouse.id,
-                    quantity: 0,
-                    reserved: 0,
-                }
-            );
-        });
-    },
-    { immediate: true, deep: true },
-);
 </script>

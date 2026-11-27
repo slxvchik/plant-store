@@ -1,0 +1,83 @@
+@use "../../helpers" as *;
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.5rem;
+    background-color: var(--color-bg-surface);
+    padding: 1rem;
+    color: var(--color-text-title);
+    pointer-events: auto;
+
+    &--success {
+        background-color: color-mix(in srgb, var(--color-secondary) 18%, var(--color-bg-elevated));
+        color: var(--color-primary-hover);
+    }
+
+    &--warning {
+        background-color: color-mix(in srgb, var(--color-accent) 14%, var(--color-bg-elevated));
+        color: var(--color-accent-hover);
+    }
+
+    &--error {
+        background-color: #fef2f2;
+        color: #991b1b;
+    }
+
+    &__content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    &__message {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+    }
+
+    &__close {
+        margin-left: 1rem;
+        cursor: pointer;
+        color: var(--color-text-muted);
+
+        &:hover {
+            color: var(--color-text-title);
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &--success {
+            color: var(--color-secondary);
+
+            &:hover {
+                color: var(--color-primary-hover);
+            }
+        }
+
+        &--warning {
+            color: var(--color-accent);
+
+            &:hover {
+                color: var(--color-accent-hover);
+            }
+        }
+
+        &--error {
+            color: #ef4444;
+
+            &:hover {
+                color: #b91c1c;
+            }
+        }
+    }
+
+    &__icon {
+        display: flex;
+        height: 1rem;
+        width: 1rem;
+    }
+}

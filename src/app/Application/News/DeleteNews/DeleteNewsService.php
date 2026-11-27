@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\News\DeleteNews;
 
 use App\Application\News\Shared\Exception\NewsNotFoundException;
-use App\Domain\News\Repository\NewsRepository;
+use App\Domain\News\NewsRepository;
 use Override;
 
 readonly class DeleteNewsService implements DeleteNewsUseCase

@@ -1,0 +1,62 @@
+@use "../../helpers" as *;
+
+.categories {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .table__table {
+        min-width: 1000px;
+    }
+
+    &__cell--actions {
+        text-align: right;
+    }
+
+    &__id {
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        color: #94a3b8;
+    }
+
+    &__alias {
+        font-weight: 500;
+        color: #475569;
+    }
+
+    &__name {
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    &__muted {
+        color: #64748b;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    &__empty {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        text-align: center;
+        color: #64748b;
+    }
+
+    &__form {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    &__form-footer {
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 1.25rem;
+    }
+}

@@ -1,58 +1,54 @@
 <template>
     <section
-        class="overflow-hidden bg-bg-base px-4 py-16 md:px-8 md:py-24 lg:py-28 dark:bg-bg-night"
+        v-if="products !== null && products !== undefined && products.length > 0"
+        class="often-bought-products"
     >
         <Container>
             <Reveal>
-                <div
-                    class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
-                >
+                <div class="often-bought-products__header">
                     <div>
-                        <p
-                            class="text-xs font-semibold tracking-[0.2em] text-accent uppercase"
-                        >
+                        <p class="often-bought-products__eyebrow">
                             Выбор наших садоводов
                         </p>
-                        <h2
-                            class="mt-3 font-serif text-3xl leading-tight text-text-title md:text-4xl lg:text-5xl dark:text-linen"
-                        >
+                        <h2 class="often-bought-products__title">
                             Растения, которые
-                            <br class="hidden md:block" />
+                            <br class="often-bought-products__break" />
                             легко полюбить
                         </h2>
                     </div>
-                    <div class="max-w-md">
-                        <p
-                            class="text-sm leading-6 text-text-muted md:text-base dark:text-white/50"
-                        >
+                    <div class="often-bought-products__copy">
+                        <p class="often-bought-products__description">
                             Здоровая корневая система, выразительная листва и
                             адаптация к домашним условиям.
                         </p>
                         <Link
-                            class="group mt-4 flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-primary dark:text-secondary"
+                            class="often-bought-products__link"
                             href="/catalog"
                         >
                             Смотреть весь каталог
-                            <span
-                                class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                            >
-                                <AppIcon name="arrow" />
+                            <span class="often-bought-products__link-icon">
+                                <Icon name="arrow" />
                             </span>
                         </Link>
                     </div>
                 </div>
             </Reveal>
         </Container>
-        <Reveal :delay="120" class="mt-8 md:mt-12">
-            <ProductSlider />
+        <Reveal :delay="120" class="often-bought-products__slider">
+            <ProductSlider :items="products" />
         </Reveal>
     </section>
 </template>
-
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
-import AppIcon from '@/components/AppIcon.vue';
 import Container from '@/components/Container.vue';
+import Icon from '@/components/icons/Icon.vue';
 import ProductSlider from '@/components/product/ProductSlider.vue';
 import Reveal from '@/components/Reveal.vue';
+import type { Product } from '@/types/product.ts';
+
+interface Props {
+    products: Product[],
+}
+const { products } = defineProps<Props>();
 </script>

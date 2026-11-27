@@ -1,125 +1,152 @@
 <?php
 
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\AdminImageController;
-use App\Http\Controllers\MainPageGalleryController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\TagController;
-use App\Http\Controllers\UserCartController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserRequestController;
-use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\Private\PrivateAuthController;
+use App\Http\Controllers\Private\PrivateCategoryController;
+use App\Http\Controllers\Private\PrivateImageController;
+use App\Http\Controllers\Private\PrivateMainPageGalleryController;
+use App\Http\Controllers\Private\PrivateNewsController;
+use App\Http\Controllers\Private\PrivateProductController;
+use App\Http\Controllers\Private\PrivateProductSupplyController;
+use App\Http\Controllers\Private\PrivateProductUnitController;
+use App\Http\Controllers\Private\PrivateProductUnitStatusController;
+use App\Http\Controllers\Private\PrivateSupplierController;
+use App\Http\Controllers\Private\PrivateTagController;
+use App\Http\Controllers\Private\PrivateUserController;
+use App\Http\Controllers\Private\PrivateUserRequestController;
+use App\Http\Controllers\Private\PrivateWarehouseController;
+use App\Http\Controllers\Public\PublicCatalogController;
+use App\Http\Controllers\Public\PublicHomeController;
+use App\Http\Controllers\Public\PublicUserRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
 
-Route::inertia('/', 'Home')->name('home');
+Route::get('/', [PublicHomeController::class, 'index'])->name('home');
 Route::inertia('/contacts', 'Contacts')->name('contacts');
 
-Route::post('/callback', [UserRequestController::class, 'store'])->name('callback');
+Route::post('/callback', [PublicUserRequestController::class, 'store'])->name('callback');
 
 Route::prefix('catalog')->name('catalog.')->group(function () {
-//    Route::get('/', )
-    Route::inertia('/', 'catalog/CatalogIndex')->name('catalog');
-    Route::inertia('/{alias}', 'catalog/ProductDetail')->name('catalog.product');
+    Route::get('/', [PublicCatalogController::class, 'index'])->name('index');
+    Route::get('/{alias}', [PublicCatalogController::class, 'showProduct'])->name('showProduct');
 });
 
-Route::prefix('user')->name('user.')->group(function () {
-    Route::prefix('cart')->name('cart.')->group(function () {
-        Route::get('/', [UserCartController::class, 'index'])->name('list');
-        Route::post('/products', [UserCartController::class, 'store'])->name('store');
-    });
+Route::prefix('auth')->group(function () {
+    Route::get('/login', [PrivateAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [PrivateAuthController::class, 'authorize'])->name('login.attempt');
+    Route::post('/logout', [PrivateAuthController::class, 'logout'])->name('logout');
 });
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::inertia('/', 'admin/Home')->name('home');
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['auth'])
+    ->group(function () {
+        Route::inertia('/', 'admin/Home')->name('home');
 
-    Route::prefix('image')->name('image.')->group(function () {
-        Route::post('/', [AdminImageController::class, 'store'])->name('create');
-        Route::put('/{id}', [AdminImageController::class, 'update'])->name('update');
-        Route::delete('/{id}', [AdminImageController::class, 'destroy'])->name('destroy');
-    });
+        Route::prefix('image')->name('image.')->group(function () {
+            Route::post('/', [PrivateImageController::class, 'store'])->name('create');
+            Route::put('/{id}', [PrivateImageController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateImageController::class, 'destroy'])->name('destroy');
+        });
 
-    Route::prefix('products')->name('products.')->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::prefix('products')->name('products.')->group(function () {
+            Route::get('/', [PrivateProductController::class, 'index'])->name('index');
 
-        Route::get('/create', [ProductController::class, 'create'])->name('create');
-        Route::post('/', [ProductController::class, 'store'])->name('store');
+            Route::get('/create', [PrivateProductController::class, 'create'])->name('create');
+            Route::post('/', [PrivateProductController::class, 'store'])->name('store');
 
-        Route::get('/{id}', [ProductController::class, 'show'])->name('show');
-        Route::put('/{id}', [ProductController::class, 'update'])->name('update');
+            Route::get('/{id}', [PrivateProductController::class, 'show'])->name('show');
+            Route::put('/{id}', [PrivateProductController::class, 'update'])->name('update');
 
-        Route::delete('/{id}', [ProductController::class, 'destroy'])->name('destroy');
-    });
+            Route::delete('/{id}', [PrivateProductController::class, 'destroy'])->name('destroy');
+        });
 
-    Route::prefix('requests')->name('requests.')->group(function () {
-        Route::get('/', [UserRequestController::class, 'index'])->name('index');
-        Route::delete('/{id}', [UserRequestController::class, 'destroy'])->name('destroy');
-    });
+        Route::prefix('requests')->name('requests.')->group(function () {
+            Route::get('/', [PrivateUserRequestController::class, 'index'])->name('index');
+            Route::delete('/{id}', [PrivateUserRequestController::class, 'destroy'])->name('destroy');
+        });
 
-    Route::prefix('tags')->name('tags.')->group(function () {
-        Route::get('/', [TagController::class, 'index'])->name('index');
-        Route::post('/', [TagController::class, 'store'])->name('store');
-        Route::put('/{id}', [TagController::class, 'update'])->name('update');
-        Route::delete('/{id}', [TagController::class, 'destroy'])->name('destroy');
-    });
+        Route::prefix('tags')->name('tags.')->group(function () {
+            Route::get('/', [PrivateTagController::class, 'index'])->name('index');
+            Route::post('/', [PrivateTagController::class, 'store'])->name('store');
+            Route::put('/{id}', [PrivateTagController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateTagController::class, 'destroy'])->name('destroy');
+        });
 
-    Route::prefix('categories')->name('categories.')->group(function () {
-        Route::get('/', [CategoryController::class, 'index'])->name('index');
-        Route::post('/', [CategoryController::class, 'store'])->name('store');
-        Route::put('/{id}', [CategoryController::class, 'update'])->name('update');
-        Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
-    });
+        Route::prefix('categories')->name('categories.')->group(function () {
+            Route::get('/', [PrivateCategoryController::class, 'index'])->name('index');
+            Route::post('/', [PrivateCategoryController::class, 'store'])->name('store');
+            Route::put('/{id}', [PrivateCategoryController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateCategoryController::class, 'destroy'])->name('destroy');
+        });
 
-    Route::prefix('warehouses')->name('warehouses.')->group(function () {
-        Route::get('/', [WarehouseController::class, 'index'])->name('list');
-        Route::post('/', [WarehouseController::class, 'store'])->name('store');
-        Route::put('/{id}', [WarehouseController::class, 'update'])->name('update');
-        Route::delete('/{id}', [WarehouseController::class, 'destroy'])->name('destroy');
-    });
+        Route::prefix('warehouses')->name('warehouses.')->group(function () {
+            Route::get('/', [PrivateWarehouseController::class, 'index'])->name('list');
+            Route::post('/', [PrivateWarehouseController::class, 'store'])->name('store');
+            Route::put('/{id}', [PrivateWarehouseController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateWarehouseController::class, 'destroy'])->name('destroy');
+        });
 
-    Route::prefix('carts')->name('carts.')->group(function () {
-        Route::get('/', [CartController::class, 'index'])->name('list');
-        Route::post('/', [CartController::class, 'store'])->name('store');
-        Route::post('/{cartId}/products', [CartController::class, 'saveProduct'])->name('save');
-        Route::delete('/{cartId}/products/{productId}/offers/{offerId}', [CartController::class, 'deleteProduct'])->name('delete');
-    });
+        Route::prefix('suppliers')->name('suppliers.')->group(function () {
+            Route::get('/', [PrivateSupplierController::class, 'index'])->name('index');
+            Route::get('/create', [PrivateSupplierController::class, 'create'])->name('create');
+            Route::post('/', [PrivateSupplierController::class, 'store'])->name('store');
+            Route::get('/{id}', [PrivateSupplierController::class, 'show'])->name('show');
+            Route::put('/{id}', [PrivateSupplierController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateSupplierController::class, 'destroy'])->name('destroy');
+        });
 
-    Route::prefix('main-page')->name('main-page.')->group(function () {
-        Route::prefix('gallery')->name('gallery.')->group(function () {
-            Route::get('/', [MainPageGalleryController::class, 'index'])->name('list');
-            Route::post('/', [MainPageGalleryController::class, 'store'])->name('store');
-            Route::put('/{id}', [MainPageGalleryController::class, 'update'])->name('update');
-            Route::delete('/{id}', [MainPageGalleryController::class, 'destroy'])->name('destroy');
+        Route::prefix('product-units')->name('product-units.')->group(function () {
+            Route::get('/', [PrivateProductUnitController::class, 'index'])->name('index');
+            Route::get('/create', [PrivateProductUnitController::class, 'create'])->name('create');
+            Route::post('/', [PrivateProductUnitController::class, 'store'])->name('store');
+            Route::post('/batch', [PrivateProductUnitController::class, 'storeBatch'])->name('store-batch');
+            Route::get('/{id}', [PrivateProductUnitController::class, 'show'])->name('show');
+            Route::put('/{id}', [PrivateProductUnitController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateProductUnitController::class, 'destroy'])->name('destroy');
+            Route::inertia('/qr-code-finder', 'admin/product-unit/ProductUnitQrCodeFinder')->name('qr-code-finder');
+        });
+
+        Route::prefix('product-unit-statuses')->name('product-unit-statuses.')->group(function () {
+            Route::get('/', [PrivateProductUnitStatusController::class, 'index'])->name('index');
+            Route::get('/create', [PrivateProductUnitStatusController::class, 'create'])->name('create');
+            Route::post('/', [PrivateProductUnitStatusController::class, 'store'])->name('store');
+            Route::get('/{id}', [PrivateProductUnitStatusController::class, 'show'])->name('show');
+            Route::put('/{id}', [PrivateProductUnitStatusController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateProductUnitStatusController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('product-supplies')->name('product-supplies.')->group(function () {
+            Route::get('/', [PrivateProductSupplyController::class, 'index'])->name('index');
+            Route::get('/create', [PrivateProductSupplyController::class, 'create'])->name('create');
+            Route::post('/', [PrivateProductSupplyController::class, 'store'])->name('store');
+            Route::get('/{id}', [PrivateProductSupplyController::class, 'show'])->name('show');
+            Route::put('/{id}', [PrivateProductSupplyController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateProductSupplyController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('main-page')->name('main-page.')->group(function () {
+            Route::prefix('gallery')->name('gallery.')->group(function () {
+                Route::get('/', [PrivateMainPageGalleryController::class, 'index'])->name('list');
+                Route::post('/', [PrivateMainPageGalleryController::class, 'store'])->name('store');
+                Route::put('/{id}', [PrivateMainPageGalleryController::class, 'update'])->name('update');
+                Route::delete('/{id}', [PrivateMainPageGalleryController::class, 'destroy'])->name('destroy');
+            });
+        });
+
+        Route::prefix('news')->name('news.')->group(function () {
+            Route::get('/', [PrivateNewsController::class, 'index'])->name('list');
+            Route::post('/', [PrivateNewsController::class, 'store'])->name('store');
+            Route::get('/{id}', [PrivateNewsController::class, 'show'])->name('show');
+            Route::put('/{id}', [PrivateNewsController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateNewsController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('users')->name('users.')->group(function () {
+            Route::get('/', [PrivateUserController::class, 'index'])->name('list');
+            Route::post('/', [PrivateUserController::class, 'store'])->name('store');
+            Route::get('/{id}', [PrivateUserController::class, 'show'])->name('show');
+            Route::put('/{id}', [PrivateUserController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PrivateUserController::class, 'destroy'])->name('destroy');
         });
     });
-
-    Route::prefix('news')->name('news.')->group(function () {
-        Route::get('/', [NewsController::class, 'index'])->name('list');
-        Route::post('/', [NewsController::class, 'store'])->name('store');
-        Route::get('/{id}', [NewsController::class, 'show'])->name('show');
-        Route::put('/{id}', [NewsController::class, 'update'])->name('update');
-        Route::delete('/{id}', [NewsController::class, 'destroy'])->name('destroy');
-    });
-
-    Route::prefix('users')->name('users.')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('list');
-        Route::post('/', [UserController::class, 'store'])->name('store');
-        Route::get('/{id}', [UserController::class, 'show'])->name('show');
-        Route::put('/{id}', [UserController::class, 'update'])->name('update');
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
-    });
-
-    Route::prefix('orders')->name('orders.')->group(function () {
-        Route::get('/', [OrderController::class, 'index'])->name('list');
-        Route::post('/', [OrderController::class, 'store'])->name('store');
-        Route::get('/{id}', [OrderController::class, 'show'])->name('show');
-        Route::put('/{id}/take', [OrderController::class, 'take'])->name('take');
-        Route::put('/{id}/cancel', [OrderController::class, 'cancel'])->name('cancel');
-        Route::put('/{id}/complete', [OrderController::class, 'complete'])->name('complete');
-        Route::delete('/{id}', [OrderController::class, 'destroy'])->name('destroy');
-    });
-});

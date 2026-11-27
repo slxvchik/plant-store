@@ -1,0 +1,81 @@
+@use "../../helpers" as *;
+
+.catalog-hero {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text-title) 5%, transparent);
+    padding-bottom: 1rem;
+
+    @include for-width(md) {
+        padding-bottom: 2rem;
+    }
+
+    .dark & {
+        border-color: rgb(255 255 255 / 0.1);
+    }
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+
+        @include for-width(md) {
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+    }
+
+    &__eyebrow {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: var(--color-accent);
+        text-transform: uppercase;
+    }
+
+    &__title {
+        margin-top: 0.75rem;
+        font-family: var(--font-serif);
+        font-size: 2.25rem;
+        line-height: 1.25;
+        color: var(--color-text-title);
+
+        @include for-width(md) {
+            font-size: 3rem;
+            line-height: 1;
+        }
+
+        @include for-width(lg) {
+            font-size: 3.75rem;
+            line-height: 1;
+        }
+
+        .dark & {
+            color: var(--color-linen);
+        }
+    }
+
+    &__accent {
+        color: var(--color-primary);
+
+        .dark & {
+            color: var(--color-secondary);
+        }
+    }
+
+    &__description {
+        max-width: 28rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: var(--color-text-muted);
+
+        @include for-width(md) {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+
+        .dark & {
+            color: rgb(255 255 255 / 0.5);
+        }
+    }
+}

@@ -1,0 +1,157 @@
+@use "../../helpers" as *;
+
+.our-mission {
+    scroll-margin-top: 5rem;
+    background-color: var(--color-bg-dark);
+    padding: 4rem 1rem;
+
+    @include for-width(md) {
+        padding: 6rem 2rem;
+    }
+
+    @include for-width(lg) {
+        padding-top: 7rem;
+        padding-bottom: 7rem;
+    }
+
+    &__grid {
+        display: grid;
+        align-items: center;
+        gap: 2.5rem;
+
+        @include for-width(lg) {
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 5rem;
+        }
+    }
+
+    &__visual {
+        position: relative;
+    }
+
+    &__image-wrap {
+        aspect-ratio: 4 / 5;
+        max-height: 640px;
+        overflow: hidden;
+        border-radius: 28px;
+    }
+
+    &__image {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    &__stat {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        border-radius: 1rem;
+        border: 1px solid rgb(255 255 255 / 0.2);
+        background-color: color-mix(in srgb, var(--color-bg-dark) 60%, transparent);
+        padding: 1rem 1.25rem;
+        color: #fff;
+        backdrop-filter: blur(12px);
+
+        @include for-width(md) {
+            right: 2rem;
+            bottom: 2rem;
+        }
+    }
+
+    &__stat-value {
+        font-family: var(--font-serif);
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+        color: var(--color-secondary);
+    }
+
+    &__stat-label {
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        color: rgb(255 255 255 / 0.6);
+    }
+
+    &__eyebrow {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: var(--color-secondary);
+        text-transform: uppercase;
+    }
+
+    &__title {
+        margin-top: 1rem;
+        font-family: var(--font-serif);
+        font-size: 1.875rem;
+        line-height: 1.25;
+        color: var(--color-linen);
+
+        @include for-width(md) {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+
+        @include for-width(lg) {
+            font-size: 3rem;
+            line-height: 1;
+        }
+    }
+
+    &__title-accent {
+        color: var(--color-secondary);
+    }
+
+    &__description {
+        margin-top: 1.25rem;
+        max-width: 32rem;
+        font-size: 0.875rem;
+        line-height: 1.75rem;
+        color: rgb(255 255 255 / 0.55);
+
+        @include for-width(md) {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+    }
+
+    &__principles {
+        margin-top: 2rem;
+
+        > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 1.25rem;
+        }
+    }
+
+    &__principle {
+        display: flex;
+        gap: 1rem;
+    }
+
+    &__principle-number {
+        display: flex;
+        height: 2.5rem;
+        width: 2.5rem;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        background-color: rgb(255 255 255 / 0.05);
+        font-family: var(--font-serif);
+        color: var(--color-secondary);
+    }
+
+    &__principle-title {
+        font-weight: 500;
+        color: #fff;
+    }
+
+    &__principle-text {
+        margin-top: 0.25rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: rgb(255 255 255 / 0.45);
+    }
+}

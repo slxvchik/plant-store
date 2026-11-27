@@ -1,0 +1,142 @@
+@use "../../../helpers" as *;
+
+.product-supplies {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .table__table {
+        min-width: 1000px;
+    }
+
+    &__create {
+        border-radius: 0.75rem;
+        background-color: #059669;
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: white;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            background-color: #047857;
+        }
+    }
+
+    &__stats {
+        display: grid;
+        gap: 1rem;
+
+        @include for-width(sm) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    &__stat {
+        border-radius: 1rem;
+        border: 1px solid #e2e8f0;
+        background-color: white;
+        padding: 1.25rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+        &--accent {
+            border-color: #a7f3d0;
+            background-color: #ecfdf5;
+
+            .product-supplies__stat-label {
+                color: #047857;
+            }
+
+            .product-supplies__stat-value {
+                color: #022c22;
+            }
+        }
+    }
+
+    &__stat-label {
+        font-size: 0.875rem;
+        color: #64748b;
+    }
+
+    &__stat-value {
+        margin-top: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #020617;
+    }
+
+    &__cell--actions {
+        text-align: right;
+    }
+
+    &__id {
+        font-family: var(--font-serif);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #1e293b;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            color: #047857;
+        }
+    }
+
+    &__date,
+    &__quantity-hint {
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: #94a3b8;
+    }
+
+    &__supplier {
+        font-weight: 500;
+        color: #334155;
+    }
+
+    &__offer {
+        max-width: 16rem;
+        color: #475569;
+    }
+
+    &__actual {
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    &__declared,
+    &__dash {
+        color: #94a3b8;
+    }
+
+    &__price {
+        color: #334155;
+    }
+
+    &__open {
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            color: #047857;
+        }
+    }
+
+    &__empty {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        text-align: center;
+        color: #64748b;
+    }
+}

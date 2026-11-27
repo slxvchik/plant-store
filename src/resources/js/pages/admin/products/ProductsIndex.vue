@@ -1,89 +1,98 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <h1 class="text-4xl text-text-title">Товары</h1>
-        <div class="w-fit">
-            <Link
-                :href="AdminProducts.create.url()"
-                text="Создать товар"
-                styleType="button"
-                secondary
-            />
-        </div>
-    </div>
-    <div
-        class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
-    >
-        <div class="grid w-full grid-cols-4">
-            <div class="border-r border-gray-200 p-4">Id</div>
-            <div class="border-r border-gray-200 p-4">Название</div>
-            <div class="border-r border-gray-200 p-4">Активность</div>
-            <div class="p-4">Действие</div>
-        </div>
-        <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
-            <div
-                v-for="product in productsPage.items"
-                :key="product.id"
-                class="grid grid-cols-4 transition-colors hover:bg-gray-50"
-            >
-                <div class="p-4 font-medium text-gray-900">
-                    #{{ product.id }}
-                </div>
-                <div class="p-4 whitespace-nowrap">{{ product.name }}</div>
-                <div class="p-4">{{ product.active }}</div>
-                <div class="flex gap-2 p-4">
-                    <div class="w-fit">
-                        <Link
-                            text="Смотреть"
-                            styleType="button"
-                            secondary
-                            :href="AdminRoutes.products.show.url(product.id)"
+    <div class="products-index">
+        <AdminPageHeader
+            description="Управляйте карточками товаров, предложениями и видимостью в каталоге."
+            eyebrow="Каталог"
+            title="Товары"
+        >
+            <template #actions>
+                <Link
+                    :href="AdminProducts.create.url()"
+                    styleType="button"
+                    secondary
+                >
+                    Создать товар
+                </Link>
+            </template>
+        </AdminPageHeader>
+        <Table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Активность</th>
+                    <th class="products-index__cell--actions">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="product in productsPage.items" :key="product.id">
+                    <td class="products-index__id">
+                        #{{ product.id.slice(0, 8) }}
+                    </td>
+                    <td class="products-index__name">{{ product.name }}</td>
+                    <td>
+                        <Badge
+                            :label="product.active ? 'Активен' : 'Скрыт'"
+                            :tone="product.active ? 'success' : 'neutral'"
                         />
-                    </div>
-                    <div class="w-fit">
-                        <Button
-                            type="button"
-                            text="Удалить"
-                            class="w-fit bg-red-400 hover:bg-red-500"
-                            @click="deleteProduct(product.id)"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mt-10" v-if="pagination.totalPages > 1">
-        <PaginationList :pagination="pagination" />
+                    </td>
+                    <td>
+                        <div class="products-index__actions">
+                            <Link
+                                :href="
+                                    AdminRoutes.products.show.url(product.id)
+                                "
+                                class="products-index__open"
+                            >
+                                Открыть
+                            </Link>
+                            <Button
+                                auto-width
+                                danger
+                                ghost
+                                small
+                                text="Удалить"
+                                type="button"
+                                @click="deleteProduct(product.id)"
+                            />
+                        </div>
+                    </td>
+                </tr>
+                <tr v-if="productsPage.items.length === 0">
+                    <td class="products-index__empty" colspan="4">
+                        Товары ещё не созданы.
+                    </td>
+                </tr>
+            </tbody>
+            <template #pagination>
+                <Pagination :pagination="pagination" />
+            </template>
+        </Table>
     </div>
 </template>
-
-<script setup lang="ts">
+<script lang="ts" setup>
 import { router } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
+import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
 import Link from '@/components/Link.vue';
-import PaginationList from '@/components/PaginationList.vue';
+import Pagination from '@/components/Pagination.vue';
+import Table from '@/components/Table.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminRoutes from '@/routes/admin';
 import AdminProducts from '@/routes/admin/products';
 import type { Product } from '@/types';
 import type { Page } from '@/types/pagination.ts';
 import { getPaginationFromPageResponse } from '@/utils/getPaginationFromPageResponse.ts';
 
-defineOptions({
-    layout: AdminLayout,
-});
-
+defineOptions({ layout: AdminLayout });
 const props = defineProps({
-    productsPage: {
-        type: Object as () => Page<Product>,
-        required: true,
-    },
+    productsPage: { type: Object as () => Page<Product>, required: true },
 });
-
-const pagination = computed(() => {
-    return getPaginationFromPageResponse(props.productsPage);
-});
-
+const pagination = computed(() =>
+    getPaginationFromPageResponse(props.productsPage),
+);
 const deleteProduct = (productId: string) => {
     router.delete(AdminProducts.destroy.url(productId), {});
 };

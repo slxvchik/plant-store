@@ -5,69 +5,68 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Adapters\Pagination\PaginationAdapter;
-use App\Domain\MainPageGallery\Model\MainPageGallery;
-use App\Domain\MainPageGallery\Repository\MainPageGalleryRepository;
+use App\Domain\MainPageGallery\MainPageGalleryModel;
+use App\Domain\MainPageGallery\MainPageGalleryRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Models\MainPageGallery as MainPageGalleryModel;
-use Illuminate\Support\Facades\Log;
+use App\Models\MainPageGallery;
 use Override;
 
 class MainPageGalleryRepositoryImpl implements MainPageGalleryRepository
 {
     #[Override]
-    public function create(MainPageGallery $slide): string
+    public function create(MainPageGalleryModel $slide): string
     {
-        MainPageGalleryModel::create($this->attributes($slide));
+        MainPageGallery::create($this->attributes($slide));
 
         return $slide->id->value;
     }
 
     #[Override]
-    public function update(MainPageGallery $slide): void
+    public function update(MainPageGalleryModel $slide): void
     {
-        MainPageGalleryModel::findOrFail($slide->id->value)->update($this->attributes($slide));
+        MainPageGallery::findOrFail($slide->id->value)->update($this->attributes($slide));
     }
 
     #[Override]
     public function delete(string $id): void
     {
-        MainPageGalleryModel::findOrFail($id)->delete();
+        MainPageGallery::findOrFail($id)->delete();
     }
 
     #[Override]
-    public function findById(string $id): ?MainPageGallery
+    public function findById(string $id): ?MainPageGalleryModel
     {
-        return MainPageGalleryModel::find($id)?->toDomain();
+        return MainPageGallery::find($id)?->toDomain();
     }
 
     #[Override]
     public function findPage(Pageable $pageable): Page
     {
-        $page = MainPageGalleryModel::query()->paginate(
+        $page = MainPageGallery::query()->paginate(
             perPage: $pageable->perPage,
             page: $pageable->page,
         );
 
         return PaginationAdapter::toDomainPage(
             paginator: $page,
-            mapper: fn (MainPageGalleryModel $model) => $model->toDomain(),
+            mapper: fn (MainPageGallery $model) => $model->toDomain(),
         );
     }
 
     #[Override]
     public function search(?bool $active = null): array
     {
-        return MainPageGalleryModel::orderBy('sort')
+        return MainPageGallery::orderBy('sort')
             ->get()
-            ->map(fn (MainPageGalleryModel $slide): MainPageGallery => $slide->toDomain())
+            ->map(fn (MainPageGallery $slide): MainPageGalleryModel => $slide->toDomain())
             ->all();
     }
 
     /**
      * @return array<string, mixed>
      */
-    private function attributes(MainPageGallery $slide): array
+    private function attributes(MainPageGalleryModel $slide): array
     {
         return [
             'id' => $slide->id->value,

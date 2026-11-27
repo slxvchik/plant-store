@@ -10,7 +10,7 @@ use App\Application\Tag\GetTags\GetTagsService;
 use App\Application\Tag\GetTags\GetTagsUseCase;
 use App\Application\Tag\UpdateTag\UpdateTagService;
 use App\Application\Tag\UpdateTag\UpdateTagUseCase;
-use App\Domain\Tag\Repository\TagRepository;
+use App\Domain\Tag\TagRepository;
 use App\Repositories\TagRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
 

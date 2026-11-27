@@ -1,0 +1,132 @@
+@use "../../helpers" as *;
+
+.admin-home {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &__hero {
+        overflow: hidden;
+        border-radius: 1.5rem;
+        background-color: #020617;
+        padding: 2rem 1.5rem;
+        color: white;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+        @include for-width(sm) {
+            padding: 2.5rem 2rem;
+        }
+    }
+
+    &__eyebrow {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: #34d399;
+        text-transform: uppercase;
+    }
+
+    &__title {
+        margin-top: 0.75rem;
+        font-size: 1.875rem;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+    }
+
+    &__description {
+        margin-top: 0.75rem;
+        max-width: 42rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: #cbd5e1;
+    }
+
+    &__grid {
+        display: grid;
+        gap: 1rem;
+
+        @include for-width(sm) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include for-width(xl) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+
+    &__card {
+        position: relative;
+        border-radius: 1rem;
+        border: 1px solid #e2e8f0;
+        background-color: white;
+        padding: 1.5rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            transform: translateY(-0.25rem);
+            border-color: #a7f3d0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    &__card-icon {
+        display: flex;
+        height: 2.75rem;
+        width: 2.75rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.75rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+
+        &--emerald {
+            background-color: #ecfdf5;
+            color: #047857;
+        }
+
+        &--sky {
+            background-color: #f0f9ff;
+            color: #0369a1;
+        }
+
+        &--violet {
+            background-color: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        &--amber {
+            background-color: #fffbeb;
+            color: #b45309;
+        }
+    }
+
+    &__card-title {
+        margin-top: 1.25rem;
+        font-weight: 600;
+        color: #0f172a;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        .group:hover & {
+            color: #047857;
+        }
+    }
+
+    &__card-description {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: #64748b;
+    }
+
+    &__card-link {
+        margin-top: 1.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #047857;
+    }
+}

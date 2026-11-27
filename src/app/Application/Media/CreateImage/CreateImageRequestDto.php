@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Application\Media\CreateImage;
 
 use App\Application\Media\Shared\MediaFolder;
-use App\Domain\Media\Model\Media;
+use App\Domain\Media\Model\MediaData;
 use App\Domain\Shared\AppException\AppException;
 use App\Domain\Shared\AppException\AppExceptionStatus;
 
 readonly class CreateImageRequestDto
 {
-    public Media $media;
+    public MediaData $media;
 
     public int $width;
 
@@ -26,7 +26,7 @@ readonly class CreateImageRequestDto
     /**
      * @throws AppException
      */
-    public function __construct(Media $media, ?string $altText, ?string $titleText, MediaFolder $folder)
+    public function __construct(MediaData $media, ?string $altText, ?string $titleText, MediaFolder $folder)
     {
         $imageSize = getimagesize($media->tmpName);
 

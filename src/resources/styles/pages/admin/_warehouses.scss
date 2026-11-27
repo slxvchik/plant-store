@@ -1,0 +1,110 @@
+@use "../../helpers" as *;
+
+.warehouses {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    &__grid {
+        display: grid;
+        gap: 1rem;
+
+        @include for-width(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include for-width(xl) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    &__card {
+        border-radius: 1rem;
+        border: 1px solid #e2e8f0;
+        background-color: white;
+        padding: 1.5rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            border-color: #a7f3d0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    &__card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    &__icon {
+        display: flex;
+        height: 2.75rem;
+        width: 2.75rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.75rem;
+        background-color: #ecfdf5;
+        color: #047857;
+
+        svg {
+            height: 1.25rem;
+            width: 1.25rem;
+        }
+    }
+
+    &__id {
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        color: #cbd5e1;
+    }
+
+    &__address {
+        margin-top: 1.25rem;
+        line-height: 1.5rem;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    &__phone {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        color: #64748b;
+    }
+
+    &__actions {
+        margin-top: 1.25rem;
+        display: flex;
+        gap: 0.5rem;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 1rem;
+    }
+
+    &__empty {
+        grid-column: 1 / -1;
+        border-radius: 1rem;
+        border: 1px dashed #cbd5e1;
+        background-color: white;
+        padding: 4rem 1.5rem;
+        text-align: center;
+        color: #64748b;
+    }
+
+    &__form {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    &__form-footer {
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 1.25rem;
+    }
+}

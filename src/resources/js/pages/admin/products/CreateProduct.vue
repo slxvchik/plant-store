@@ -1,20 +1,22 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <div class="w-fit">
-            <Link :href="AdminProduct.index.url()" text="Назад" secondary />
-        </div>
-        <div class="flex flex-row gap-10">
-            <h1 class="text-4xl text-text-title">Создание товара</h1>
-            <div class="w-fit">
+    <div class="create-product">
+        <AdminPageHeader
+            :back-url="AdminProduct.index.url()"
+            description="Заполните карточку товара и добавьте торговые предложения."
+            eyebrow="Каталог"
+            title="Создание товара"
+        >
+            <template #actions>
                 <Button
-                    type="button"
-                    text="Создать"
-                    secondary
                     :disabled="form.processing"
+                    auto-width
+                    secondary
+                    text="Создать товар"
+                    type="button"
                     @click="submit"
                 />
-            </div>
-        </div>
+            </template>
+        </AdminPageHeader>
         <Tabs :items="tabs">
             <template #product>
                 <ProductForm
@@ -24,11 +26,11 @@
                 />
             </template>
             <template #offers>
-                <div class="flex flex-col gap-5">
-                    <div class="max-w-80">
+                <div class="create-product__offers">
+                    <div class="create-product__offer-action">
                         <Button
+                            secondary
                             text="Добавить ТП"
-                            class="bg-secondary hover:bg-secondary-hover"
                             @click="offerDialog?.openCreate()"
                         />
                     </div>
@@ -48,16 +50,16 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, ref } from 'vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Button from '@/components/Button.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Link from '@/components/Link.vue';
 import OfferEditorDialog from '@/components/product/OfferEditorDialog.vue';
 import ProductForm from '@/components/product/ProductForm.vue';
 import ProductOfferList from '@/components/product/ProductOfferList.vue';
 import Tabs from '@/components/Tabs.vue';
 import { useProductForm } from '@/composables/useProductForm';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminProduct from '@/routes/admin/products';
 import type { Category } from '@/types/category';
 import type { Warehouse } from '@/types/warehouse';

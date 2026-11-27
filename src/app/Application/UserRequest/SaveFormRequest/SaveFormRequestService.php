@@ -3,8 +3,8 @@
 namespace App\Application\UserRequest\SaveFormRequest;
 
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
-use App\Domain\UserRequest\Model\UserRequest;
-use App\Domain\UserRequest\Repository\UserRequestRepository;
+use App\Domain\UserRequest\UserRequestModel;
+use App\Domain\UserRequest\UserRequestRepository;
 
 readonly class SaveFormRequestService implements SaveFormRequestUseCase
 {
@@ -15,7 +15,7 @@ readonly class SaveFormRequestService implements SaveFormRequestUseCase
 
     public function execute(SaveFormRequestDto $saveFormRequestDto): string
     {
-        $userRequest = UserRequest::createNew(
+        $userRequest = UserRequestModel::createNew(
             uuidGenerator: $this->uuidGenerator,
             formName: $saveFormRequestDto->formName,
             FIO: $saveFormRequestDto->FIO,

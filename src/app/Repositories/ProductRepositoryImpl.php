@@ -6,9 +6,9 @@ namespace App\Repositories;
 
 use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Product\Criteria\ProductSearchCriteria;
-use App\Domain\Product\Model\Offer as DomainOffer;
-use App\Domain\Product\Model\Product as DomainProduct;
-use App\Domain\Product\Model\Stock;
+use App\Domain\Product\Criteria\ProductSort;
+use App\Domain\Product\Model\OfferModel as DomainOffer;
+use App\Domain\Product\Model\ProductModel as DomainProduct;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
@@ -18,7 +18,6 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use Override;
 use Throwable;
@@ -72,6 +71,13 @@ class ProductRepositoryImpl implements ProductRepository
     }
 
     #[Override]
+    public function findAll(): array
+    {
+        return $this->query()->orderBy('sort')->get()
+            ->map(fn (Product $product): DomainProduct => $product->toDomain())->all();
+    }
+
+    #[Override]
     public function findPage(Pageable $pageable): Page
     {
         $paginator = $this->query()
@@ -96,29 +102,44 @@ class ProductRepositoryImpl implements ProductRepository
     #[Override]
     public function search(ProductSearchCriteria $criteria, Pageable $pageable): Page
     {
-        $query = $this->query()->orderBy('sort');
+        $query = $this->getSearchSortQuery($criteria->sort);
 
-        if ($criteria->active !== null) {
-            $query->where('products.active', $criteria->active);
+        if ($criteria->active === true) {
+            $query->where(function ($q) {
+                $q->whereNull('products.category_id')
+                    ->orWhereNotIn('products.category_id', function ($sub) {
+                        $sub->select('id')
+                            ->from('categories')
+                            ->where('active', false);
+                    });
+            });
         }
 
         if ($criteria->name !== null) {
             $query->where('products.name', 'like', "%{$criteria->name}%");
         }
 
-        if ($criteria->categoryId !== null) {
-            $query->whereIn('products.id', function ($subQuery) use ($criteria): void {
-                $subQuery->select('product_id')
-                    ->from('product_categories')
-                    ->where('category_id', $criteria->categoryId);
+        if ($criteria->categoryAliases !== []) {
+            $query->whereIn('products.category_id', function ($q) use ($criteria) {
+                $q->select('id')
+                    ->from('categories')
+                    ->whereIn('alias', $criteria->categoryAliases);
+                if ($criteria->active === true) {
+                    $q->where('active', true);
+                }
             });
         }
 
-        if ($criteria->tagIds !== []) {
+        if ($criteria->tagAliases !== []) {
             $query->whereIn('products.id', function ($subQuery) use ($criteria): void {
-                $subQuery->select('product_id')
+                $subQuery->select('product_tags.product_id')
                     ->from('product_tags')
-                    ->whereIn('tag_id', $criteria->tagIds);
+                    ->join('tags', 'tags.id', '=', 'product_tags.tag_id')
+                    ->whereIn('tags.alias', $criteria->tagAliases);
+
+                if ($criteria->active === true) {
+                    $subQuery->where('tags.active', true);
+                }
             });
         }
 
@@ -132,12 +153,42 @@ class ProductRepositoryImpl implements ProductRepository
             });
         }
 
+        if ($criteria->featured !== null) {
+            $query->where('products.featured', $criteria->featured);
+        }
+
         $paginator = $query->paginate(perPage: $pageable->perPage, page: $pageable->page);
 
         return PaginationAdapter::toDomainPage(
             paginator: $paginator,
             mapper: fn (Product $product): DomainProduct => $product->toDomain(),
         );
+    }
+
+    #[Override]
+    public function getMinOfferPrice(): ?int
+    {
+        $price = $this->query()
+            ->where('active', true)
+            ->whereHas('offers', fn ($q) => $q->where('active', true))
+            ->withMin(['offers' => fn ($q) => $q->where('active', true)], 'price')
+            ->orderBy('offers_min_price')
+            ->value('offers_min_price');
+
+        return $price !== null ? (int) $price : null;
+    }
+
+    #[Override]
+    public function getMaxOfferPrice(): ?int
+    {
+        $price = $this->query()
+            ->where('active', true)
+            ->whereHas('offers', fn ($q) => $q->where('active', true))
+            ->withMax(['offers' => fn ($q) => $q->where('active', true)], 'price')
+            ->orderByDesc('offers_max_price')
+            ->value('offers_max_price');
+
+        return $price !== null ? (int) $price : null;
     }
 
     /**
@@ -160,6 +211,8 @@ class ProductRepositoryImpl implements ProductRepository
             'sort' => $product->sort,
             'name' => $product->name,
             'description' => $product->description,
+            'category_id' => $product->categoryId,
+            'featured' => $product->featured,
         ];
     }
 
@@ -169,13 +222,11 @@ class ProductRepositoryImpl implements ProductRepository
             'id' => $offer->id->value,
             'active' => $offer->active,
             'sku' => $offer->sku,
+            'name' => $offer->name,
             'sort' => $offer->sort,
             'description' => $offer->description,
             'price' => $offer->price,
-            'form_factor' => $offer->formFactor,
-            'size' => $offer->size,
-            'age_in_months' => $offer->age,
-            'sowing_date' => $offer->sowingDate,
+            'stock_quantity' => $offer->stockQuantity,
         ];
     }
 
@@ -206,13 +257,11 @@ class ProductRepositoryImpl implements ProductRepository
             'id',
             'active',
             'sku',
+            'name',
             'sort',
             'description',
             'price',
-            'form_factor',
-            'size',
-            'age_in_months',
-            'sowing_date',
+            'stock_quantity',
             'updated_at',
         ]);
 
@@ -222,13 +271,6 @@ class ProductRepositoryImpl implements ProductRepository
 
             $offerPivotData[] = ['product_id' => $productId, 'offer_id' => $offerId];
 
-            $this->syncRelationships('offer_stocks', 'offer_id', $offerId, $offer->stocks, function (Stock $stock) {
-                return [
-                    'warehouse_id' => $stock->warehouseId,
-                    'quantity' => $stock->quantity,
-                    'reserved' => $stock->reserved,
-                ];
-            });
             $this->syncRelationships('offer_images', 'offer_id', $offerId, $offer->imageIds, function (SortedItem $sortedImage) {
                 return [
                     'image_id' => $sortedImage->id,
@@ -254,11 +296,6 @@ class ProductRepositoryImpl implements ProductRepository
     {
         $productId = $product->id->value;
 
-        $this->syncRelationships('product_categories', 'product_id', $productId, $product->categoryIds, function (string $categoryId) {
-            return [
-                'category_id' => $categoryId,
-            ];
-        });
         $this->syncRelationships('product_tags', 'product_id', $productId, $product->tagIds, function (string $tagId) {
             return [
                 'tag_id' => $tagId,
@@ -314,32 +351,21 @@ class ProductRepositoryImpl implements ProductRepository
 
     private function hasOfferCriteria(ProductSearchCriteria $criteria): bool
     {
-        return $criteria->sku !== null
-            || $criteria->formFactor !== null
-            || $criteria->size !== null
-            || $criteria->age !== null
+        return $criteria->active === true
+            || $criteria->sku !== null
             || $criteria->minPrice !== null
             || $criteria->maxPrice !== null
-            || $criteria->sowingDateFrom !== null
-            || $criteria->sowingDateTo !== null;
+            || $criteria->inStock === true;
     }
 
     private function applyOfferCriteria(QueryBuilder $query, ProductSearchCriteria $criteria): void
     {
+        if ($criteria->active !== null) {
+            $query->where('active', $criteria->active);
+        }
+
         if ($criteria->sku !== null) {
             $query->where('offers.sku', $criteria->sku);
-        }
-
-        if ($criteria->formFactor !== null) {
-            $query->where('offers.form_factor', $criteria->formFactor);
-        }
-
-        if ($criteria->size !== null) {
-            $query->where('offers.size', $criteria->size);
-        }
-
-        if ($criteria->age !== null) {
-            $query->where('offers.age_in_months', $criteria->age);
         }
 
         if ($criteria->minPrice !== null) {
@@ -350,12 +376,21 @@ class ProductRepositoryImpl implements ProductRepository
             $query->where('offers.price', '<=', $criteria->maxPrice);
         }
 
-        if ($criteria->sowingDateFrom !== null) {
-            $query->whereDate('offers.sowing_date', '>=', $criteria->sowingDateFrom->format('Y-m-d'));
+        if ($criteria->inStock === true) {
+            $query->where('offers.stock_quantity', '>', 0);
         }
+    }
 
-        if ($criteria->sowingDateTo !== null) {
-            $query->whereDate('offers.sowing_date', '<=', $criteria->sowingDateTo->format('Y-m-d'));
-        }
+    private function getSearchSortQuery(ProductSort $sort): Builder
+    {
+        return match ($sort) {
+            ProductSort::PRICE_ASC => $this->query()
+                ->withMin('offers', 'price')
+                ->orderBy('offers_min_price'),
+            ProductSort::PRICE_DESC => $this->query()
+                ->withMin('offers', 'price')
+                ->orderByDesc('offers_min_price'),
+            ProductSort::SORT => $this->query()->orderByDesc('sort'),
+        };
     }
 }

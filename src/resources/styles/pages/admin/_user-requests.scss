@@ -1,0 +1,41 @@
+@use "../../helpers" as *;
+
+.user-requests {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .table__table {
+        min-width: 850px;
+    }
+
+    &__cell--actions {
+        text-align: right;
+    }
+
+    &__name {
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    &__phone {
+        white-space: nowrap;
+        color: #475569;
+    }
+
+    &__contact {
+        color: #475569;
+    }
+
+    &__comment {
+        max-width: 20rem;
+        color: #64748b;
+    }
+
+    &__empty {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        text-align: center;
+        color: #64748b;
+    }
+}

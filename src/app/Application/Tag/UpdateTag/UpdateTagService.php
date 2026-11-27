@@ -6,7 +6,7 @@ namespace App\Application\Tag\UpdateTag;
 
 use App\Application\Tag\Shared\Exception\TagAliasExistsException;
 use App\Application\Tag\Shared\Exception\TagNotFoundException;
-use App\Domain\Tag\Repository\TagRepository;
+use App\Domain\Tag\TagRepository;
 use Override;
 
 readonly class UpdateTagService implements UpdateTagUseCase

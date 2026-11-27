@@ -6,7 +6,7 @@ namespace App\Models;
 
 use App\Domain\Shared\Uuid\Uuid;
 use App\Domain\User\Model\Role;
-use App\Domain\User\Model\User as DomainUser;
+use App\Domain\User\Model\UserModel as DomainUser;
 use Database\Factories\UserFactory;
 use DateTimeImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;

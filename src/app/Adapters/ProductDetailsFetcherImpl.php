@@ -4,33 +4,26 @@ namespace App\Adapters;
 
 use App\Application\Category\Shared\Dto\Response\CategoryResponseDto;
 use App\Application\Media\GetImagesByIds\GetImagesByIdsUseCase;
-use App\Application\Media\Shared\FileStorageInterface;
 use App\Application\Product\Shared\Dto\Response\OfferResponseDto;
 use App\Application\Product\Shared\Dto\Response\ProductResponseDto;
-use App\Application\Product\Shared\Dto\Response\StockResponseDto;
 use App\Application\Product\Shared\Port\ProductDetailsFetcher;
 use App\Application\Tag\Shared\Dto\Response\TagResponseDto;
-use App\Application\Warehouse\Shared\Dto\Response\WarehouseResponseDto;
-use App\Domain\Category\Repository\CategoryRepository;
-use App\Domain\Product\Model\Offer;
-use App\Domain\Product\Model\Product;
-use App\Domain\Tag\Repository\TagRepository;
-use App\Domain\Warehouse\Repository\WarehouseRepository;
-use Illuminate\Support\Facades\Log;
+use App\Domain\Category\CategoryRepository;
+use App\Domain\Product\Model\OfferModel;
+use App\Domain\Product\Model\ProductModel;
+use App\Domain\Tag\TagRepository;
 
 readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
 {
     public function __construct(
-        private FileStorageInterface $fileStorage,
         private TagRepository $tagRepository,
         private CategoryRepository $categoryRepository,
         private GetImagesByIdsUseCase $getImagesByIdsUseCase,
-        private WarehouseRepository $warehouseRepository,
         //        private readonly VideoRepository $videoRepository,
     ) {}
 
     /**
-     * @param  Product[]  $products
+     * @param  ProductModel[]  $products
      * @return ProductResponseDto[]
      */
     public function execute(array $products): array
@@ -38,22 +31,34 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
         $tagMap = $this->buildTagMap($products);
         $categoryMap = $this->buildCategoryMap($products);
         $imageMap = $this->buildImageMap($products);
-        $warehouseMap = $this->buildWarehouseMap($products);
 
-        return array_map(function (Product $product) use ($warehouseMap, $categoryMap, $tagMap, $imageMap) {
+        return array_map(function (ProductModel $product) use ($categoryMap, $tagMap, $imageMap) {
             $sortedImageObjects = $product->imageIds;
 
             usort($sortedImageObjects, fn ($a, $b) => $a->sort <=> $b->sort);
 
             $sortedImageIds = array_column($sortedImageObjects, 'id');
 
+            $offers = $product->getOffers();
+
             return ProductResponseDto::fromDomain(
                 product: $product,
                 offers: array_map(
-                    fn (Offer $offer) => $this->buildOfferDto($offer, $warehouseMap),
-                    $product->getOffers()
+                    function (OfferModel $offer) use ($imageMap): OfferResponseDto {
+                        $currentOfferImageIds = array_column($offer->imageIds, 'id');
+
+                        $images = array_values(array_filter(
+                            array_map(fn ($id) => $imageMap[$id] ?? null, $currentOfferImageIds)
+                        ));
+
+                        return OfferResponseDto::fromDomain(
+                            offer: $offer,
+                            images: $images,
+                        );
+                    },
+                    $offers
                 ),
-                categories: array_filter(array_map(fn ($id) => $categoryMap[$id] ?? null, $product->categoryIds)),
+                category: $categoryMap[$product->categoryId] ?? null,
                 tags: array_filter(array_map(fn ($id) => $tagMap[$id] ?? null, $product->tagIds)),
                 images: array_filter(array_map(fn ($id) => $imageMap[$id] ?? null, $sortedImageIds)),
                 videos: [],
@@ -75,7 +80,12 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
 
     private function buildCategoryMap(array $products): array
     {
-        $ids = array_unique(array_merge(...array_column($products, 'categoryIds')));
+        $ids = [];
+        foreach ($products as $product) {
+            if ($product->categoryId !== null) {
+                $ids[] = $product->categoryId;
+            }
+        }
         $categories = $this->categoryRepository->findByIds($ids);
 
         $map = [];
@@ -86,13 +96,27 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
         return $map;
     }
 
+    /**
+     * @param  ProductModel[]  $products
+     */
     private function buildImageMap(array $products): array
     {
-        $ids = array_unique(
-            array_merge(
-                ...array_map(fn ($images) => array_column($images, 'id'), array_column($products, 'imageIds'))
-            )
-        );
+        $imageIdGroups = [];
+
+        foreach ($products as $product) {
+            if (! empty($product->imageIds)) {
+                $imageIdGroups[] = array_column($product->imageIds, 'id');
+            }
+
+            foreach ($product->getOffers() as $offer) {
+                if (! empty($offer->imageIds)) {
+                    $imageIdGroups[] = array_column($offer->imageIds, 'id');
+                }
+            }
+        }
+
+        $ids = array_values(array_unique(array_merge(...$imageIdGroups)));
+
         $images = $this->getImagesByIdsUseCase->execute($ids);
 
         $map = [];
@@ -101,38 +125,5 @@ readonly class ProductDetailsFetcherImpl implements ProductDetailsFetcher
         }
 
         return $map;
-    }
-
-    private function buildWarehouseMap(array $products): array
-    {
-        $warehouseIds = [];
-        foreach ($products as $product) {
-            foreach ($product->getOffers() as $offer) {
-                foreach ($offer->stocks as $stock) {
-                    $warehouseIds[] = $stock->warehouseId;
-                }
-            }
-        }
-
-        $warehouses = $this->warehouseRepository->findByIds(array_unique($warehouseIds));
-        $map = [];
-        foreach ($warehouses as $warehouse) {
-            $map[$warehouse->id->value] = WarehouseResponseDto::fromDomain($warehouse);
-        }
-
-        return $map;
-    }
-
-    private function buildOfferDto(Offer $offer, array $warehouseMap): OfferResponseDto
-    {
-        $stockDtos = [];
-        foreach ($offer->stocks as $stock) {
-            $warehouseId = $stock->warehouseId;
-            if (isset($warehouseMap[$warehouseId])) {
-                $stockDtos[] = StockResponseDto::fromDomain($stock, $warehouseMap[$warehouseId]);
-            }
-        }
-
-        return OfferResponseDto::fromDomain($offer, $stockDtos);
     }
 }

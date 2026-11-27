@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User\Shared\Dto\Response;
 
-use App\Domain\User\Model\User;
+use App\Domain\User\Model\UserModel;
 use JsonSerializable;
 use Override;
 
@@ -26,7 +26,7 @@ readonly class UserResponseDto implements JsonSerializable
         public string $updatedAt,
     ) {}
 
-    public static function fromDomain(User $user): self
+    public static function fromDomain(UserModel $user): self
     {
         $roles = [];
         foreach ($user->roles as $role) {

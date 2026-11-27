@@ -6,7 +6,7 @@ namespace App\Application\Product\Shared\Mapper;
 
 use App\Application\Product\Shared\Dto\Request\SaveOfferRequestDto;
 use App\Domain\Product\Model\SaveOffer;
-use App\Domain\Product\Model\Stock;
+use App\Domain\ProductUnit\Model\ProductStockModel;
 
 final class SaveOfferMapper
 {
@@ -25,21 +25,11 @@ final class SaveOfferMapper
             id: $offer->id,
             active: $offer->active,
             sku: $offer->sku,
+            name: $offer->name,
             sort: $offer->sort,
             description: $offer->description,
             price: $offer->price,
-            stocks: array_map(
-                fn ($stock): Stock => new Stock(
-                    warehouseId: $stock->warehouseId,
-                    quantity: $stock->quantity,
-                    reserved: $stock->reserved,
-                ),
-                $offer->stocks,
-            ),
-            formFactor: $offer->formFactor,
-            size: $offer->size,
-            age: $offer->age,
-            sowingDate: $offer->sowingDate,
+            stockQuantity: $offer->stockQuantity,
             imageIds: $offer->imageIds,
             videoIds: $offer->videoIds,
         );

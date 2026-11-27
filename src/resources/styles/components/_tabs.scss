@@ -1,0 +1,51 @@
+@use "../helpers" as *;
+
+.tabs {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    &__list {
+        display: flex;
+        border-radius: 0.5rem;
+        box-shadow: 0 0 25px var(--color-secondary);
+    }
+
+    &__button {
+        padding: 0.5rem;
+
+        &--active {
+            font-weight: 700;
+            color: var(--color-secondary);
+        }
+    }
+
+    &__panel {
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
+        transition-property: all;
+        transition-duration: 300ms;
+        transition-timing-function: ease-in-out;
+
+        &--open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+        }
+    }
+
+    &__panel-inner {
+        overflow: hidden;
+
+        &--open {
+            overflow: visible;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        padding-top: 1.25rem;
+        padding-bottom: 0.5rem;
+    }
+}

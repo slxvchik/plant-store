@@ -22,7 +22,8 @@ export function useProductForm(formMode: FormMode, product?: Product) {
         alias: product?.alias ?? '',
         sort: product?.sort ?? 500,
         description: product?.description ?? '',
-        categories: product?.categories.map((category) => category.id) ?? [],
+        category: product?.category?.id ?? null,
+        featured: product?.featured ?? false,
         tags: product?.tags.map((tag) => tag.id) ?? [],
         images: [],
         offers:
@@ -31,18 +32,11 @@ export function useProductForm(formMode: FormMode, product?: Product) {
                 id: offer.id,
                 active: offer.active,
                 sku: offer.sku,
+                name: offer.name,
                 sort: offer.sort,
                 description: offer.description ?? '',
                 price: offer.price,
-                stocks: offer?.stocks.map((stock) => ({
-                    warehouseId: stock.warehouse.id,
-                    quantity: stock.quantity,
-                    reserved: stock.reserved,
-                })),
-                formFactor: offer.formFactor ?? '',
-                size: offer.size ?? '',
-                age: offer.age,
-                sowingDate: offer.sowingDate ?? '',
+                stockQuantity: offer.stockQuantity ?? 0,
                 images: [],
             })) ?? [],
     });
@@ -51,15 +45,38 @@ export function useProductForm(formMode: FormMode, product?: Product) {
     const isInitializing = ref(false);
 
     onMounted(async () => {
-        if (product?.images && product.images.length > 0) {
+        const hasProductImages = (product?.images?.length ?? 0) > 0;
+        const hasOfferImages = product?.offers?.some((offer) => (offer.images?.length ?? 0) > 0) ?? false;
+
+        if (hasProductImages || hasOfferImages) {
             isInitializing.value = true;
 
             try {
-                form.images = await Promise.all(
-                    product.images.map((image) =>
-                        toImageFormState(image),
-                    ),
-                );
+                if (hasProductImages && product?.images) {
+                    form.images = await Promise.all(
+                        product.images.map((image) => toImageFormState(image)),
+                    );
+                }
+
+                if (hasOfferImages && product?.offers) {
+                    await Promise.all(
+                        product.offers.map(async (sourceOffer) => {
+                            if (!sourceOffer.images?.length) {
+                                return;
+                            }
+
+                            const targetOffer = form.offers.find(
+                                (formOffer) => formOffer.id === sourceOffer.id,
+                            );
+
+                            if (targetOffer) {
+                                targetOffer.images = await Promise.all(
+                                    sourceOffer.images.map((image) => toImageFormState(image)),
+                                );
+                            }
+                        }),
+                    );
+                }
             } catch (error) {
                 notifications.add(
                     'Не удалось загрузить существующие изображения',
@@ -134,7 +151,8 @@ function serializeProduct(
         alias: form.alias,
         sort: form.sort,
         description: form.description,
-        categories: form.categories,
+        category: form.category,
+        featured: form.featured,
         tags: form.tags,
         images: getSortedItems(images),
         videos: [],

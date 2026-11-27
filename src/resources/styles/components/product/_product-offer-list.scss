@@ -1,0 +1,76 @@
+@use "../../helpers" as *;
+
+.product-offer-list {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-bg-surface);
+    background-color: #fff;
+
+    &__header,
+    &__row {
+        display: grid;
+        grid-template-columns: 200px 120px 1fr 350px 200px;
+    }
+
+    &__header {
+        border-bottom: 1px solid var(--color-bg-surface);
+        background-color: var(--color-bg-base);
+        font-weight: 500;
+        color: var(--color-text-title);
+    }
+
+    &__header > div,
+    &__row > div {
+        border-right: 1px solid var(--color-bg-surface);
+        padding: 0.75rem;
+    }
+
+    &__header > div:last-child,
+    &__row > div:last-child {
+        border-right-width: 0;
+    }
+
+    &__actions-heading {
+        text-align: center;
+    }
+
+    &__body {
+        > :not([hidden]) ~ :not([hidden]) {
+            border-top: 1px solid var(--color-bg-surface);
+        }
+    }
+
+    &__row {
+        align-items: center;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: var(--color-text-title);
+
+        &:hover {
+            background-color: var(--color-bg-base);
+        }
+    }
+
+    &__id {
+        color: var(--color-text-muted);
+    }
+
+    &__active {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    &__empty {
+        background-color: var(--color-bg-base);
+        padding: 2rem;
+        text-align: center;
+        color: var(--color-text-muted);
+    }
+}

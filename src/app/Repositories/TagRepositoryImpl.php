@@ -7,8 +7,8 @@ namespace App\Repositories;
 use App\Adapters\Pagination\PaginationAdapter;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Domain\Tag\Model\Tag as DomainTag;
-use App\Domain\Tag\Repository\TagRepository;
+use App\Domain\Tag\TagModel as DomainTag;
+use App\Domain\Tag\TagRepository;
 use App\Models\Tag;
 use Override;
 

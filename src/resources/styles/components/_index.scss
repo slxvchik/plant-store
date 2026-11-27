@@ -1,0 +1,63 @@
+// INFO: Base components START
+@forward "accordion-item";
+@forward "badge";
+@forward "breadcrumbs";
+@forward "button";
+@forward "card";
+@forward "checkbox";
+@forward "container";
+@forward "image-upload";
+@forward "input";
+@forward "link";
+@forward "modal";
+@forward "pagination";
+@forward "reveal";
+@forward "search-input";
+@forward "select";
+@forward "table";
+@forward "tabs";
+@forward "textarea";
+@forward "bar-code";
+// INFO: Base components END
+
+@forward "admin/admin-page-header";
+@forward "admin/admin-filter-bar";
+@forward "admin/admin-sidebar";
+
+@forward "blog/blog";
+@forward "blog/blog-card";
+
+@forward "catalog/catalog-filters";
+@forward "catalog/catalog-hero";
+@forward "catalog/product-detail-slider";
+
+@forward "home/faq";
+@forward "home/features-bento";
+@forward "home/hero-slider";
+@forward "home/our-mission";
+
+@forward "icons/icon";
+@forward "icons/logo-icon";
+
+@forward "notification/notification-item";
+@forward "notification/notification-list";
+
+@forward "product/favorite-button";
+@forward "product/offer-editor-dialog";
+@forward "product/offer-form";
+@forward "product/often-bought-products";
+@forward "product/product-card";
+@forward "product/product-form";
+@forward "product/product-offer-list";
+@forward "product/product-slider";
+@forward "product/product-unit-form";
+@forward "product/product-unit-status-form";
+
+@forward "public/callback";
+@forward "public/mobile-navigation";
+@forward "public/public-footer";
+@forward "public/public-header";
+
+@forward "supplier/supplier-form";
+
+@forward "user/user-form-fields";

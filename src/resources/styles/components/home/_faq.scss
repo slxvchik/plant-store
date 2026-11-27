@@ -1,0 +1,91 @@
+@use "../../helpers" as *;
+
+.faq {
+    background-color: var(--color-bg-base);
+    padding: 4rem 1rem;
+
+    @include for-width(md) {
+        padding: 6rem 2rem;
+    }
+
+    .dark & {
+        background-color: var(--color-bg-night);
+    }
+
+    &__grid {
+        display: grid;
+        scroll-margin-top: 7rem;
+        gap: 2rem;
+
+        @include for-width(lg) {
+            grid-template-columns: 0.75fr 1.25fr;
+            gap: 5rem;
+        }
+    }
+
+    &__eyebrow {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: var(--color-accent);
+        text-transform: uppercase;
+    }
+
+    &__title {
+        margin-top: 0.75rem;
+        font-family: var(--font-serif);
+        font-size: 1.875rem;
+        line-height: 1.25;
+        color: var(--color-text-title);
+
+        @include for-width(md) {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+
+        .dark & {
+            color: var(--color-linen);
+        }
+    }
+
+    &__description {
+        margin-top: 1rem;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        color: var(--color-text-muted);
+
+        .dark & {
+            color: rgb(255 255 255 / 0.5);
+        }
+    }
+
+    &__link {
+        margin-top: 1.25rem;
+        display: flex;
+        min-height: 2.75rem;
+        width: fit-content;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 600;
+        color: var(--color-primary);
+
+        .dark & {
+            color: var(--color-secondary);
+        }
+
+        &:hover .faq__link-icon {
+            transform: translateX(0.25rem);
+        }
+    }
+
+    &__link-icon {
+        height: 1rem;
+        width: 1rem;
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+}

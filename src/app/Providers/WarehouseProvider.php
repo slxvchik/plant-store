@@ -10,7 +10,7 @@ use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesService;
 use App\Application\Warehouse\GetAllWarehouses\GetAllWarehousesUseCase;
 use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseService;
 use App\Application\Warehouse\UpdateWarehouse\UpdateWarehouseUseCase;
-use App\Domain\Warehouse\Repository\WarehouseRepository;
+use App\Domain\Warehouse\WarehouseRepository;
 use App\Repositories\WarehouseRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
 

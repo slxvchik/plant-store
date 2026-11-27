@@ -1,192 +1,326 @@
 <template>
     <div
-        class="relative h-full w-full"
-        v-click-outside="() => (isOpen = false)"
+        :class="[
+            'select',
+            { 'select--error': error },
+            { 'select--disabled': disabled },
+        ]"
+        v-click-outside="() => closePopup(false)"
     >
-        <span
+        <p
             v-if="label"
-            :class="
-                !error ? 'text-text-muted dark:text-white/40' : 'text-red-400'
-            "
-            class="mb-1.5 select-none"
+            class="select__label"
+            @click="activatePopup"
         >
             {{ label }}
-        </span>
-        <div
-            :class="[
-                isOpen
-                    ? 'rounded-t-2xl !border-primary border-b-transparent ring-4 ring-primary/10'
-                    : 'rounded-2xl',
-                !error
-                    ? 'border-text-title/15 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-white/15'
-                    : 'border-red-500 focus:ring-4 focus:ring-red-500/10',
-            ]"
-            class="flex h-12 cursor-pointer items-center justify-between border bg-bg-elevated px-4 py-3.5 focus:outline-none dark:bg-bg-night-soft"
-            @click.prevent="toggleDropdown"
-            tabindex="0"
-            @keydown.space.prevent="toggleDropdown"
-            @keydown.enter.prevent="toggleDropdown"
-            @keydown.esc="isOpen = false"
-        >
-            <p
-                class="relative top-px truncate font-sans text-text-title dark:text-white"
-            >
-                {{ displayValue }}
-            </p>
-            <span
-                :class="isOpen ? 'rotate-270' : 'rotate-90'"
-                class="flex h-5 w-5 cursor-pointer items-center justify-between transition-transform duration-300"
-            >
-                <AppIcon name="chevron" />
-            </span>
-        </div>
-        <p v-if="error" class="text-red-400">
-            {{ error }}
+            <span v-if="required" class="select__required">*</span>
         </p>
         <div
-            :class="[isOpen ? 'block' : 'hidden']"
-            class="absolute top-[calc(100%+5px)] left-0 z-50 w-full overflow-hidden rounded-b-2xl shadow-lg"
+            class="select__field"
+            :class="{'select__field--open': showPopup}"
+            :aria-describedby="messageId"
+            :aria-invalid="Boolean(error)"
+            :tabindex="disabled ? -1 : 0"
+            ref="selectRef"
+            @click="activatePopup"
+            @keydown="keydown"
+            @focusout="onFocusOut"
         >
-            <ul class="flex max-h-60 flex-1 flex-col overflow-y-auto">
+            <div
+                v-show="!showPopup || !searchable"
+                class="select__text"
+            >
+                {{ displayValue }}
+            </div>
+            <input
+                v-if="searchable"
+                v-show="showPopup"
+                :id="queryId"
+                ref="searchRef"
+                v-model="searchInput"
+                placeholder="Поиск"
+                class="select__search"
+                @click.stop
+            >
+            <ul
+                class="select__options"
+                v-show="showPopup"
+                ref="optionsListRef"
+                @mousedown.prevent
+                @click.stop
+            >
+                <template v-if="displayItems.length > 0">
+                    <li
+                        v-for="(item, index) in displayItems"
+                        :key="item.value"
+                        class="select__option"
+                        :class="[
+                            { 'select__option--active': isSelected(item) },
+                            { 'select__option--hover': index === hoverIndex },
+                        ]"
+                        @mouseenter="hoverIndex = index"
+                        @click.stop="itemToggle(item)"
+                    >
+                        {{ item.label }}
+                    </li>
+                </template>
                 <li
-                    v-for="(item, index) in items"
-                    :key="item.value"
-                    ref="itemRefs"
-                    :class="
-                        isSelected(item.value)
-                            ? 'bg-slate-200 dark:text-secondary'
-                            : 'bg-bg-elevated dark:bg-bg-night-soft dark:text-white'
-                    "
-                    class="cursor-pointer px-4 py-2 text-sm font-semibold text-text-title transition-colors outline-none hover:bg-slate-100 focus:bg-slate-300 dark:focus:text-secondary"
-                    @click="selectItem(item)"
-                    tabindex="-1"
-                    @keydown.space.prevent="selectItem(item)"
-                    @keydown.enter.prevent="selectItem(item)"
-                    @keydown.esc="isOpen = false"
-                    @keydown.down.prevent="moveFocus(index, 1)"
-                    @keydown.up.prevent="moveFocus(index, -1)"
+                    v-else
+                    class="select__option-empty"
                 >
-                    {{ item.label }}
-                </li>
-                <li
-                    v-if="items.length === 0"
-                    class="cursor-pointer px-4 py-3 text-center text-slate-400"
-                >
-                    Список пуст
+                    Ничего не найдено
                 </li>
             </ul>
         </div>
+        <span v-if="error" :id="messageId" class="select__error">
+            {{ error }}
+        </span>
+        <span v-else-if="hint" :id="messageId" class="select__hint">
+            {{ hint }}
+        </span>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref } from 'vue';
-import AppIcon from '@/components/AppIcon.vue';
+import { computed, nextTick, ref, useId, watch } from 'vue';
 import { clickOutside as vClickOutside } from '@/directives/clickOutside';
-import type { SelectItem } from '@/types/select-item.ts';
+import type { SelectItem } from '@/types/select-item';
 
 type SelectValue = SelectItem['value'];
-type SelectModel = SelectValue | SelectValue[] | null;
-
-interface Props {
-    multiple?: boolean;
-    items: SelectItem[];
-    placeholder?: string;
-    label?: string;
-    nullable?: boolean;
-    error?: string;
-    disabled?: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-    multiple: false,
-    placeholder: 'Выберите значение',
-    nullable: false,
+const props = withDefaults(
+    defineProps<{
+        id?: string;
+        multiple?: boolean;
+        items: SelectItem[];
+        placeholder?: string;
+        label?: string;
+        nullable?: boolean;
+        error?: string;
+        disabled?: boolean;
+        required?: boolean;
+        hint?: string;
+        variant?: 'standard';
+        searchable?: boolean;
+    }>(),
+    { placeholder: 'Выберите значение', variant: 'standard', searchable: false },
+);
+const modelValue = defineModel<SelectValue | SelectValue[] | null>({
+    default: null,
 });
 
-const modelValue = defineModel<SelectModel>({ default: null });
-const itemRefs = ref<HTMLLIElement[]>([]);
-const isOpen = ref(false);
-
-const selectedValues = computed<SelectValue[]>(() =>
-    Array.isArray(modelValue.value) ? modelValue.value : [],
+const searchInput = ref('');
+const generatedId = useId();
+const inputId = computed(() => props.id ?? `select-${generatedId}`);
+const messageId = computed(() =>
+    props.error || props.hint ? `${inputId.value}-message` : undefined,
 );
+const queryId = computed(() => `${inputId.value}-query`);
 
-const moveFocus = (currentIndex: number, step: number) => {
-    const count = props.items.length;
+const showPopup = ref(false);
+const hoverIndex = ref(-1);
 
-    if (!count) {
-        return;
+const selectRef = ref<HTMLDivElement | null>(null);
+const searchRef = ref<HTMLInputElement | null>(null);
+const optionsListRef = ref<HTMLUListElement | null>(null);
+
+const displayItems = computed(() => {
+    const query = searchInput.value.trim().toLowerCase();
+
+    if (!query) {
+        return props.items;
     }
 
-    const nextIndex = (currentIndex + step + count) % count;
-    const nextElement = itemRefs.value[nextIndex];
+    return props.items.filter((item) =>
+        String(item.label ?? '').toLowerCase().includes(query)
+    );
+});
 
-    if (nextElement) {
-        nextElement.focus();
-        nextElement.scrollIntoView({ block: 'nearest' });
-    }
+watch(displayItems, (items) => {
+    hoverIndex.value = items.length > 0 ? 0 : -1;
+});
+
+const scrollToHovered = () => {
+    nextTick(() => {
+        const list = optionsListRef.value;
+        const activeEl = list?.children[hoverIndex.value] as HTMLElement | undefined;
+
+        if (list && activeEl) {
+            activeEl.scrollIntoView({ block: 'nearest' });
+        }
+    });
 };
 
-const toggleDropdown = async () => {
+const activatePopup = async () => {
     if (props.disabled) {
         return;
     }
 
-    isOpen.value = !isOpen.value;
+    showPopup.value = true;
+
+    const selectedIdx = displayItems.value.findIndex((item) => isSelected(item));
+    hoverIndex.value = selectedIdx >= 0 ? selectedIdx : (displayItems.value.length > 0 ? 0 : -1);
+
     await nextTick();
 
-    if (isOpen.value) {
-        const selectedIndex = props.items.findIndex((item) =>
-            props.multiple
-                ? selectedValues.value.includes(item.value)
-                : modelValue.value === item.value,
-        );
-
-        const targetIndex = selectedIndex >= 0 ? selectedIndex : 0;
-        itemRefs.value[targetIndex]?.focus();
+    if (props.searchable) {
+        searchRef.value?.focus();
+    } else {
+        selectRef.value?.focus();
     }
+
+    scrollToHovered();
 };
 
-const isSelected = (value: SelectValue): boolean => {
-    if (props.multiple) {
-        return selectedValues.value.some((selected) => selected === value);
+const closePopup = (returnFocus = false) => {
+    showPopup.value = false;
+    searchInput.value = '';
+    hoverIndex.value = -1;
+
+    if (returnFocus) {
+        selectRef.value?.focus();
     }
-
-    return modelValue.value === value;
-};
-
-const selectItem = (item: SelectItem): void => {
-    if (props.disabled) {
-        return;
-    }
-
-    if (props.multiple) {
-        modelValue.value = isSelected(item.value)
-            ? selectedValues.value.filter((value) => value !== item.value)
-            : [...selectedValues.value, item.value];
-
-        return;
-    }
-
-    modelValue.value =
-        props.nullable && modelValue.value === item.value ? null : item.value;
-    isOpen.value = false;
 };
 
 const displayValue = computed(() => {
-    if (props.multiple) {
-        return (
-            props.items
-                .filter((item) => isSelected(item.value))
-                .map((item) => item.label)
-                .join(', ') || props.placeholder
-        );
+    const val = modelValue.value;
+    const defaultPlaceholder = props.placeholder ?? (props.multiple ? 'Выберите значения' : 'Выберите значение');
+
+    if (val == null || (typeof val === 'string' && val.trim() === '')) {
+        return defaultPlaceholder;
     }
 
-    return (
-        props.items.find((item) => item.value === modelValue.value)?.label ??
-        props.placeholder
-    );
+    if (Array.isArray(val)) {
+        if (val.length === 0) {
+            return defaultPlaceholder;
+        }
+
+        const labels = val.map((v) => props.items.find((si) => si.value === v)?.label ?? v);
+
+        if (labels.length <= 3) {
+            return labels.join(', ');
+        }
+
+        const visibleItems = labels.slice(0, 3).join(', ');
+        const remainingCount = labels.length - 3;
+
+        return `${visibleItems} +${remainingCount}`;
+    }
+
+    return props.items.find((si) => si.value === val)?.label;
 });
+
+const itemToggle = (selectItem: SelectItem) => {
+    const targetValue = selectItem.value;
+
+    if (props.multiple) {
+        const currentValues = Array.isArray(modelValue.value) ? modelValue.value : [];
+        const alreadySelected = currentValues.includes(targetValue);
+
+        modelValue.value = alreadySelected
+            ? currentValues.filter((val) => val !== targetValue)
+            : [...currentValues, targetValue];
+
+        if (props.searchable) {
+            searchRef.value?.focus();
+        } else {
+            selectRef.value?.focus();
+        }
+
+        return;
+    }
+
+    if (modelValue.value === targetValue) {
+        modelValue.value = props.nullable ? null : targetValue;
+    } else {
+        modelValue.value = targetValue;
+    }
+
+    closePopup(true);
+};
+
+const isSelected = (item: SelectItem): boolean => {
+    const val = modelValue.value;
+
+    if (val == null) {
+        return false;
+    }
+
+    return Array.isArray(val)
+        ? val.includes(item.value)
+        : val === item.value;
+};
+
+const keydown = (e: KeyboardEvent) => {
+    if (props.disabled) {
+        return;
+    }
+
+    const isSearchFocused = document.activeElement === searchRef.value;
+
+    if (!showPopup.value) {
+        if (['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(e.key)) {
+            e.preventDefault();
+            activatePopup();
+        }
+
+        return;
+    }
+
+    if (isSearchFocused && e.key === ' ') {
+        return;
+    }
+
+    const itemsCount = displayItems.value.length;
+
+    switch (e.key) {
+        case 'ArrowDown':
+            e.preventDefault();
+
+            if (itemsCount > 0) {
+                hoverIndex.value = (hoverIndex.value + 1) % itemsCount;
+                scrollToHovered();
+            }
+
+            break;
+
+        case 'ArrowUp':
+            e.preventDefault();
+
+            if (itemsCount > 0) {
+                hoverIndex.value = (hoverIndex.value - 1 + itemsCount) % itemsCount;
+                scrollToHovered();
+            }
+
+            break;
+
+        case 'Enter':
+        case ' ':
+            e.preventDefault();
+
+            if (hoverIndex.value >= 0 && displayItems.value[hoverIndex.value]) {
+                itemToggle(displayItems.value[hoverIndex.value]);
+            }
+
+            break;
+
+        case 'Escape':
+            e.preventDefault();
+            closePopup(true);
+            break;
+
+        case 'Tab':
+            closePopup(false);
+            break;
+    }
+};
+const onFocusOut = (e: FocusEvent) => {
+    const field = e.currentTarget as HTMLElement | null;
+    const nextFocused = e.relatedTarget as Node | null;
+
+    if (field && nextFocused && field.contains(nextFocused)) {
+        return;
+    }
+
+    closePopup(false);
+};
 </script>

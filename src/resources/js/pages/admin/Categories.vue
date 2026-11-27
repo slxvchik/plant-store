@@ -1,120 +1,150 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <h1 class="text-4xl text-text-title">Категории</h1>
-        <div class="max-w-80">
-            <Button text="Создать" secondary @click="openCreateModal" />
-        </div>
-    </div>
-    <div
-        class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
-    >
-        <div
-            class="grid grid-cols-7 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
+    <div class="categories">
+        <AdminPageHeader
+            description="Иерархия каталога и порядок отображения разделов."
+            eyebrow="Каталог"
+            title="Категории"
         >
-            <div class="p-4">Id</div>
-            <div class="p-4">Родительская категория</div>
-            <div class="p-4">Алиас</div>
-            <div class="p-4">Название</div>
-            <div class="p-4">Сортировка</div>
-            <div class="p-4">Активность</div>
-            <div class="p-4">Действие</div>
-        </div>
-        <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
-            <div
-                v-for="category in categoriesPage.items"
-                :key="category.id"
-                class="grid grid-cols-7 transition-colors hover:bg-gray-50"
-            >
-                <div class="p-4 font-medium text-gray-900">
-                    #{{ category.id }}
-                </div>
-                <div class="p-4 whitespace-nowrap">
-                    {{ category.parent?.name ?? '-' }}
-                </div>
-                <div class="truncate p-4">{{ category.alias }}</div>
-                <div class="p-4 whitespace-nowrap">{{ category.name }}</div>
-                <div class="p-4">{{ category.sort }}</div>
-                <div class="p-4">{{ category.active }}</div>
-                <div class="flex flex-wrap gap-2 p-4">
+            <template #actions>
+                <Button
+                    auto-width
+                    secondary
+                    text="Добавить категорию"
+                    @click="openCreateModal"
+                />
+            </template>
+        </AdminPageHeader>
+        <Table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Родитель</th>
+                    <th>Алиас</th>
+                    <th>Название</th>
+                    <th>Сортировка</th>
+                    <th>Активность</th>
+                    <th class="categories__cell--actions">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="category in categoriesPage.items" :key="category.id">
+                    <td class="categories__id">
+                        #{{ category.id.slice(0, 8) }}
+                    </td>
+                    <td class="categories__muted">
+                        {{ category.parent?.name ?? 'Корневая' }}
+                    </td>
+                    <td class="categories__alias">{{ category.alias }}</td>
+                    <td class="categories__name">{{ category.name }}</td>
+                    <td class="categories__muted">{{ category.sort }}</td>
+                    <td>
+                        <Badge
+                            :label="category.active ? 'Активна' : 'Скрыта'"
+                            :tone="category.active ? 'success' : 'neutral'"
+                        />
+                    </td>
+                    <td>
+                        <div class="categories__actions">
+                            <Button
+                                auto-width
+                                outline
+                                small
+                                text="Изменить"
+                                type="button"
+                                @click="openEditModal(category)"
+                            />
+                            <Button
+                                auto-width
+                                danger
+                                ghost
+                                small
+                                text="Удалить"
+                                type="button"
+                                @click="destroy(category.id)"
+                            />
+                        </div>
+                    </td>
+                </tr>
+                <tr v-if="categoriesPage.items.length === 0">
+                    <td class="categories__empty" colspan="7">
+                        Категории ещё не созданы.
+                    </td>
+                </tr>
+            </tbody>
+        </Table>
+        <Modal
+            v-model:open="isFormPopupOpen"
+            :title="
+                isEditMode ? 'Редактировать категорию' : 'Создать категорию'
+            "
+        >
+            <form class="categories__form" @submit.prevent="submit">
+                <Select
+                    v-model="form.parentId"
+                    :items="categoriesSelect"
+                    label="Родительская категория"
+                    nullable
+                />
+                <Input
+                    id="alias"
+                    v-model="form.alias"
+                    :error="form.errors.alias"
+                    label="Алиас"
+                    @update:modelValue="
+                        validateField && validateField('alias', form.alias)
+                    "
+                />
+                <Input
+                    id="name"
+                    v-model="form.name"
+                    :error="form.errors.name"
+                    label="Название"
+                    @update:modelValue="
+                        validateField && validateField('name', form.name)
+                    "
+                />
+                <Input
+                    id="sort"
+                    v-model.number="form.sort"
+                    :error="form.errors.sort"
+                    label="Сортировка"
+                    type="number"
+                    @update:modelValue="
+                        validateField && validateField('sort', form.sort)
+                    "
+                />
+                <Checkbox
+                    id="active"
+                    v-model="form.active"
+                    :error="form.errors.active"
+                    text="Активность"
+                />
+                <div class="categories__form-footer">
                     <Button
-                        text="Редактировать"
-                        class="bg-yellow-400 break-all hover:bg-yellow-500"
-                        @click="openEditModal(category)"
-                    />
-                    <Button
-                        text="Удалить"
-                        class="bg-red-400 hover:bg-red-500"
-                        @click="destroy(category.id)"
+                        :disabled="form.processing"
+                        :text="isEditMode ? 'Сохранить' : 'Создать'"
+                        auto-width
+                        secondary
+                        type="submit"
                     />
                 </div>
-            </div>
-        </div>
+            </form>
+        </Modal>
     </div>
-    <Popup
-        v-model:open="isFormPopupOpen"
-        :title="isEditMode ? 'Редактировать категорию' : 'Создать категорию'"
-    >
-        <form class="flex w-full flex-col gap-5" @submit.prevent="submit">
-            <Select
-                v-model="form.parentId"
-                :items="categoriesSelect"
-                label="Родительская категория"
-                nullable
-            />
-            <Input
-                id="alias"
-                v-model="form.alias"
-                label="Алиас"
-                @update:modelValue="
-                    validateField && validateField('alias', form.alias)
-                "
-                :error="form.errors.alias"
-            />
-            <Input
-                id="name"
-                v-model="form.name"
-                label="Название"
-                @update:modelValue="
-                    validateField && validateField('name', form.name)
-                "
-                :error="form.errors.name"
-            />
-            <Input
-                id="sort"
-                v-model.number="form.sort"
-                label="Сортировка"
-                type="number"
-                @update:modelValue="
-                    validateField && validateField('sort', form.sort)
-                "
-                :error="form.errors.sort"
-            />
-            <Checkbox
-                id="active"
-                text="Активность"
-                v-model="form.active"
-                :error="form.errors.active"
-            />
-            <Button
-                type="submit"
-                secondary
-                :disabled="form.processing"
-                :text="isEditMode ? 'Сохранить' : 'Создать'"
-                class="relative left-[50%] max-w-80 translate-x-[-50%]"
-            />
-        </form>
-    </Popup>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue';
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
+import Badge from '@/components/Badge.vue';
 import Button from '@/components/Button.vue';
 import Checkbox from '@/components/Checkbox.vue';
 import Input from '@/components/Input.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Popup from '@/components/Popup.vue';
+import Modal from '@/components/Modal.vue';
 import Select from '@/components/Select.vue';
+import Table from '@/components/Table.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm.ts';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminCategories from '@/routes/admin/categories';
 import type { Category } from '@/types/category.ts';
 import type { Page } from '@/types/pagination.ts';

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\Category\Model\Category as DomainCategoryModel;
+use App\Domain\Category\CategoryModel as DomainCategoryModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 

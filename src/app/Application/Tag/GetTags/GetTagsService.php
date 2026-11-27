@@ -7,7 +7,7 @@ namespace App\Application\Tag\GetTags;
 use App\Application\Tag\Shared\Dto\Response\TagResponseDto;
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Domain\Tag\Repository\TagRepository;
+use App\Domain\Tag\TagRepository;
 use Override;
 
 readonly class GetTagsService implements GetTagsUseCase

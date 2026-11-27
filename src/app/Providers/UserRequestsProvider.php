@@ -8,7 +8,7 @@ use App\Application\UserRequest\GetUserRequests\GetUserRequestsService;
 use App\Application\UserRequest\GetUserRequests\GetUserRequestsUseCase;
 use App\Application\UserRequest\SaveFormRequest\SaveFormRequestService;
 use App\Application\UserRequest\SaveFormRequest\SaveFormRequestUseCase;
-use App\Domain\UserRequest\Repository\UserRequestRepository;
+use App\Domain\UserRequest\UserRequestRepository;
 use App\Repositories\UserRequestRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
 

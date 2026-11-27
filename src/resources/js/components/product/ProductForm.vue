@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-5">
+    <div class="product-form">
         <p v-if="form.id">#{{ form.id }}</p>
         <Input
             id="name"
@@ -8,7 +8,7 @@
             :error="errors?.name"
             label="Название"
         />
-        <div class="w-fit">
+        <div class="product-form__checkbox">
             <Checkbox
                 id="active"
                 v-model="form.active"
@@ -32,16 +32,15 @@
             label="Сортировка"
             type="number"
         />
-        <Input
+        <Textarea
             id="description"
             v-model="form.description"
             :disabled="disabled"
             :error="errors?.description"
             label="Описание"
-            multiline
         />
         <Select
-            v-model="form.categories"
+            v-model="form.category"
             :disabled="disabled"
             :items="allCategories"
             label="Категории"
@@ -54,6 +53,15 @@
             multiple
             type="image"
         />
+        <div class="product-form__checkbox">
+            <Checkbox
+                id="featured"
+                v-model="form.featured"
+                :disabled="disabled"
+                :error="errors?.featured"
+                text="Выводить на главной"
+            />
+        </div>
     </div>
 </template>
 
@@ -62,6 +70,7 @@ import Checkbox from '@/components/Checkbox.vue';
 import ImageUpload from '@/components/ImageUpload.vue';
 import Input from '@/components/Input.vue';
 import Select from '@/components/Select.vue';
+import Textarea from '@/components/Textarea.vue';
 import type { ProductFormState } from '@/types/product.ts';
 import type { SelectItem } from '@/types/select-item.ts';
 

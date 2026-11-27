@@ -25,23 +25,22 @@
         "eslint-plugin-import": "^2.32.0",
         "eslint-plugin-vue": "^9.33.0",
         "prettier": "^3.4.2",
-        "prettier-plugin-tailwindcss": "^0.6.11",
+        "sass": "^1.108.2",
         "typescript-eslint": "^8.23.0",
-        "vue-tsc": "^2.2.4"
+        "vue-tsc": "^3.3.14"
     },
     "dependencies": {
         "@inertiajs/vite": "^3.0.0",
         "@inertiajs/vue3": "^3.0.0",
-        "@tailwindcss/vite": "^4.1.11",
         "@vitejs/plugin-vue": "^6.0.0",
+        "@zxing/library": "^0.21.3",
         "clsx": "^2.1.1",
         "concurrently": "^10.0.3",
+        "jsbarcode": "^3.12.3",
         "laravel-vite-plugin": "^3.1",
         "maska": "^3.2.2",
         "pinia": "^4.0.3",
         "swiper": "^14.1.0",
-        "tailwind-merge": "^3.7.0",
-        "tailwindcss": "^4.1.1",
         "typescript": "^5.2.2",
         "vite": "^8.0.0",
         "vue": "^3.5.13"
@@ -49,7 +48,6 @@
     "optionalDependencies": {
         "@laravel/multiplex": "^0.4.1",
         "@rollup/rollup-linux-x64-gnu": "4.9.5",
-        "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
         "lightningcss-linux-x64-gnu": "^1.29.1"
     }
 }

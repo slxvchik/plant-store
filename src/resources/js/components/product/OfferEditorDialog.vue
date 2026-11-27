@@ -1,35 +1,37 @@
 <template>
-    <Popup
+    <Modal
         v-model:open="isOpen"
         :title="!disabled && isEditMode ? 'Редактирование ТП' : 'Создание ТП'"
     >
-        <OfferForm
-            v-model:form="offerForm"
-            :disabled="disabled"
-            :warehouses="warehouses"
-        />
-        <Button
-            v-if="!disabled"
-            :text="isEditMode ? 'Сохранить' : 'Создать'"
-            secondary
-            type="button"
-            @click="save"
-        />
-    </Popup>
+        <div class="offer-editor-dialog">
+            <OfferForm
+                v-model:form="offerForm"
+                :disabled="disabled"
+                :warehouses="warehouses"
+            />
+            <Button
+                v-if="!disabled"
+                :text="isEditMode ? 'Сохранить' : 'Создать'"
+                secondary
+                type="button"
+                @click="save"
+            />
+        </div>
+    </Modal>
 </template>
 
 <script lang="ts" setup>
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Button from '@/components/Button.vue';
-import Popup from '@/components/Popup.vue';
+import Modal from '@/components/Modal.vue';
 import OfferForm from '@/components/product/OfferForm.vue';
 import { useFormValidator } from '@/composables/useFormValidator.ts';
 import type { OfferFormState } from '@/types/product.ts';
 import type { Warehouse } from '@/types/warehouse.ts';
 import { validate } from '@/utils/validator.ts';
 
-const props = defineProps<{
+defineProps<{
     warehouses: Warehouse[];
     disabled?: boolean;
 }>();
@@ -43,18 +45,11 @@ function createEmptyOffer(): OfferFormState {
         clientKey: crypto.randomUUID(),
         active: false,
         sku: '',
+        name: '',
         sort: 500,
         description: '',
         price: 0,
-        stocks: props.warehouses.map((warehouse) => ({
-            warehouseId: warehouse.id,
-            quantity: 0,
-            reserved: 0,
-        })),
-        formFactor: '',
-        size: '',
-        age: null,
-        sowingDate: '',
+        stockQuantity: 0,
         images: [],
     };
 }
@@ -62,11 +57,6 @@ function createEmptyOffer(): OfferFormState {
 function copyOffer(offer: OfferFormState): OfferFormState {
     return {
         ...offer,
-        stocks: offer.stocks.map((stock) => ({
-            warehouseId: stock.warehouseId,
-            quantity: stock.quantity,
-            reserved: stock.reserved,
-        })),
         images: offer.images.map((image) => ({ ...image })),
     };
 }

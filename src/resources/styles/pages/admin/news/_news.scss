@@ -1,0 +1,77 @@
+@use "../../../helpers" as *;
+
+.news {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .table__table {
+        min-width: 900px;
+    }
+
+    &__cell--actions {
+        text-align: right;
+    }
+
+    &__id {
+        font-family: var(--font-serif);
+        font-size: 0.75rem;
+        color: #94a3b8;
+    }
+
+    &__alias {
+        color: #475569;
+    }
+
+    &__name {
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    &__sort {
+        color: #64748b;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    &__open {
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            color: #047857;
+        }
+    }
+
+    &__empty {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        text-align: center;
+        color: #64748b;
+    }
+
+    &__form {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    &__form-footer {
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 1.25rem;
+    }
+}

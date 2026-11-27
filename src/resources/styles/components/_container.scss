@@ -1,0 +1,10 @@
+.container {
+    margin-inline: auto;
+    max-width: 1440px;
+    padding-inline: 0.625rem;
+    width: 100%;
+
+    &--relative {
+        position: relative;
+    }
+}

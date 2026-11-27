@@ -6,7 +6,7 @@ namespace App\Application\Media\CreateImage;
 
 use App\Application\Media\Shared\FileStorageInterface;
 use App\Domain\Media\Exception\InvalidMimeTypeException;
-use App\Domain\Media\Model\Image;
+use App\Domain\Media\Model\ImageModel;
 use App\Domain\Media\Repository\ImageRepository;
 use App\Domain\Shared\Exception\InternalException;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
@@ -35,7 +35,7 @@ readonly class CreateImageService implements CreateImageUseCase
             throw new InternalException('Не удалось загрузить файл.');
         }
 
-        $image = Image::createNew(
+        $image = ImageModel::createNew(
             uuidGeneratorInterface: $this->uuidGeneratorInterface,
             mimeType: $createImageRequestDto->media->mimeType,
             sizeInBytes: $createImageRequestDto->media->size,

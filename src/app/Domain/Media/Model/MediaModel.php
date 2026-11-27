@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Media\Model;
+
+use App\Application\Media\Shared\MediaFolder;
+use App\Domain\Shared\Uuid\Uuid;
+use DateTimeImmutable;
+
+abstract class MediaModel
+{
+    public readonly DateTimeImmutable $createdAt;
+
+    public function __construct(
+        public readonly Uuid $id,
+        public readonly string $mimeType,
+        public readonly int $sizeInBytes,
+        public readonly MediaFolder $folder,
+    ) {
+        $this->createdAt = new DateTimeImmutable;
+    }
+}

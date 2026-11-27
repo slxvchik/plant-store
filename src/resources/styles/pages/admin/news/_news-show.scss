@@ -1,0 +1,77 @@
+@use "../../../helpers" as *;
+
+.news-show {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    &__card {
+        @include for-width(sm) {
+            padding: 2rem;
+        }
+    }
+
+    &__details {
+        display: grid;
+        gap: 1.25rem;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 1.5rem;
+        font-size: 0.875rem;
+
+        @include for-width(sm) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        dt {
+            margin-bottom: 0.25rem;
+            color: #94a3b8;
+        }
+
+        dd {
+            font-weight: 500;
+            color: #1e293b;
+        }
+    }
+
+    &__id {
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        color: #334155;
+    }
+
+    &__description {
+        padding-top: 1.5rem;
+
+        h2 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        p {
+            margin-top: 0.75rem;
+            max-width: 56rem;
+            line-height: 1.75rem;
+            white-space: pre-wrap;
+            color: #475569;
+        }
+    }
+
+    &__empty {
+        color: #94a3b8;
+    }
+
+    &__form {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    &__form-footer {
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 1.25rem;
+    }
+}

@@ -6,7 +6,7 @@ namespace App\Application\UserRequest\GetUserRequests;
 
 use App\Domain\Shared\Pagination\Page;
 use App\Domain\Shared\Pagination\Pageable;
-use App\Domain\UserRequest\Repository\UserRequestRepository;
+use App\Domain\UserRequest\UserRequestRepository;
 use Override;
 
 readonly class GetUserRequestsService implements GetUserRequestsUseCase

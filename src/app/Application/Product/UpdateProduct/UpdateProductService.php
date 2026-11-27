@@ -7,6 +7,7 @@ namespace App\Application\Product\UpdateProduct;
 use App\Application\Product\Shared\Exception\ProductAliasExistsException;
 use App\Application\Product\Shared\Exception\ProductNotFoundException;
 use App\Application\Product\Shared\Mapper\SaveOfferMapper;
+use App\Domain\Product\Exception\OfferNotFoundException;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use Override;
@@ -15,12 +16,14 @@ readonly class UpdateProductService implements UpdateProductUseCase
 {
     public function __construct(
         private UuidGeneratorInterface $uuidGeneratorInterface,
-        private ProductRepository $productRepository,
-    ) {}
+        private ProductRepository      $productRepository,
+    )
+    {
+    }
 
     /**
      * @throws ProductAliasExistsException
-     * @throws ProductNotFoundException
+     * @throws ProductNotFoundException|OfferNotFoundException
      */
     #[Override]
     public function execute(UpdateProductRequestDto $updateProductRequestDto): void
@@ -37,10 +40,11 @@ readonly class UpdateProductService implements UpdateProductUseCase
             name: $updateProductRequestDto->name,
             active: $updateProductRequestDto->active,
             description: $updateProductRequestDto->description,
-            categoryIds: $updateProductRequestDto->categoryIds,
+            categoryId: $updateProductRequestDto->categoryId,
             tagIds: $updateProductRequestDto->tagIds,
             videoIds: $updateProductRequestDto->videoIds,
             imageIds: $updateProductRequestDto->imageIds,
+            featured: $updateProductRequestDto->featured,
         );
 
         $existingProduct = $this->productRepository->findByAlias($product->alias);

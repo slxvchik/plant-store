@@ -10,7 +10,6 @@ use DateTimeImmutable;
 readonly class SaveOfferRequestDto
 {
     /**
-     * @param  SaveStockRequestDto[]  $stocks
      * @param  SortedItem<string>[]  $imageIds
      * @param  SortedItem<string>[]  $videoIds
      */
@@ -18,14 +17,11 @@ readonly class SaveOfferRequestDto
         public ?string $id,
         public bool $active,
         public string $sku,
+        public ?string $name,
         public int $sort,
         public ?string $description,
         public int $price,
-        public array $stocks,
-        public ?string $formFactor,
-        public ?string $size,
-        public ?int $age,
-        public ?DateTimeImmutable $sowingDate,
+        public int $stockQuantity,
         public array $imageIds,
         public array $videoIds
     ) {}

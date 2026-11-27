@@ -2,7 +2,6 @@ import type { Category } from '@/types/category';
 import type { Image, ImageFormState } from '@/types/image';
 import type { Tag } from '@/types/tag';
 import type { Video } from '@/types/video';
-import type { Warehouse } from '@/types/warehouse';
 
 // Response
 export type Product = {
@@ -12,8 +11,10 @@ export type Product = {
     name: string;
     sort: number;
     description: string | null;
+    featured: boolean;
+    minPrice: number;
     offers: Offer[];
-    category: Category;
+    category: Category | null;
     tags: Tag[];
     videos: Video[];
     images: Image[];
@@ -23,34 +24,12 @@ export type Offer = {
     id: string;
     active: boolean;
     sku: string;
+    name: string | null;
     sort: number;
     description: string | null;
     price: number;
-    stocks: Stock[];
-    formFactor: string | null;
-    size: string | null;
-    age: number | null;
-    sowingDate: string | null;
-};
-
-export type Stock = {
-    warehouse: Warehouse;
-    quantity: number;
-    reserved: number;
-};
-
-export type ProductListItem = {
-    id: string;
-    active: boolean;
-    alias: string;
-    name: string;
-    sort: number;
-    oldPrice?: number;
-    minPrice: number;
-    inStock: boolean;
-    category: Category;
-    tags: Tag[];
-    image: Image;
+    stockQuantity: number | null;
+    images: Image[];
 };
 
 // Form state
@@ -61,7 +40,8 @@ export type ProductFormState = {
     alias: string;
     sort: number;
     description: string;
-    categories: string[];
+    category: string | null;
+    featured: boolean;
     tags: string[];
     images: ImageFormState[];
     offers: OfferFormState[];
@@ -72,21 +52,12 @@ export type OfferFormState = {
     id?: string;
     active: boolean;
     sku: string;
+    name: string | null;
     sort: number;
     description: string;
     price: number;
-    stocks: StockFormState[];
-    formFactor: string;
-    size: string;
-    age: number | null;
-    sowingDate: string;
+    stockQuantity: number;
     images: ImageFormState[];
-};
-
-export type StockFormState = {
-    warehouseId: string;
-    quantity: number;
-    reserved: number;
 };
 
 // Requests
@@ -111,3 +82,10 @@ export type OfferPayload = Omit<
     images: MediaSortedItemPayload[];
     videos: MediaSortedItemPayload[];
 };
+
+// Product search sort
+export enum ProductSearchSort {
+    SORT = 'sort',
+    PRICE_ASC = 'price_asc',
+    PRICE_DESC = 'price_desc',
+}

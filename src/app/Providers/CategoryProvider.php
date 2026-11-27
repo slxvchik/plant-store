@@ -12,7 +12,7 @@ use App\Application\Category\GetCategoriesPage\GetCategoriesPageService;
 use App\Application\Category\GetCategoriesPage\GetCategoriesPageUseCase;
 use App\Application\Category\UpdateCategory\UpdateCategoryService;
 use App\Application\Category\UpdateCategory\UpdateCategoryUseCase;
-use App\Domain\Category\Repository\CategoryRepository;
+use App\Domain\Category\CategoryRepository;
 use App\Repositories\CategoryRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
 

@@ -1,88 +1,118 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <h1 class="text-4xl text-text-title">Склады</h1>
-        <div class="max-w-80">
-            <Button text="Создать" secondary @click="openCreateModal" />
-        </div>
-    </div>
-    <div
-        class="mt-5 w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm"
-    >
-        <div
-            class="grid grid-cols-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase"
+    <div class="warehouses">
+        <AdminPageHeader
+            description="Адреса и контакты мест хранения товарных единиц."
+            eyebrow="Складской учёт"
+            title="Склады"
         >
-            <div class="p-4">Id</div>
-            <div class="p-4">Адрес</div>
-            <div class="p-4">Телефон</div>
-            <div class="p-4">Действие</div>
-        </div>
-        <div class="divide-y divide-gray-200 bg-white text-sm text-gray-700">
-            <div
+            <template #actions>
+                <Button
+                    auto-width
+                    secondary
+                    text="Добавить склад"
+                    @click="openCreateModal"
+                />
+            </template>
+        </AdminPageHeader>
+        <div class="warehouses__grid">
+            <article
                 v-for="warehouse in warehouses"
                 :key="warehouse.id"
-                class="grid grid-cols-4 transition-colors hover:bg-gray-50"
+                class="warehouses__card"
             >
-                <div class="p-4 font-medium text-gray-900">
-                    #{{ warehouse.id }}
+                <div class="warehouses__card-top">
+                    <span class="warehouses__icon">
+                        <svg fill="none" viewBox="0 0 20 20">
+                            <path
+                                d="m3 8 7-4 7 4v8H3V8Z"
+                                stroke="currentColor"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                            />
+                            <path
+                                d="M7 16v-5h6v5"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                            />
+                        </svg>
+                    </span>
+                    <span class="warehouses__id">
+                        #{{ warehouse.id.slice(0, 6) }}
+                    </span>
                 </div>
-                <div class="truncate p-4">{{ warehouse.address }}</div>
-                <div class="p-4 whitespace-nowrap">{{ warehouse.phone }}</div>
-                <div class="flex gap-2 p-4">
+                <h2 class="warehouses__address">{{ warehouse.address }}</h2>
+                <p class="warehouses__phone">
+                    {{ warehouse.phone || 'Телефон не указан' }}
+                </p>
+                <div class="warehouses__actions">
                     <Button
-                        text="Редактировать"
-                        class="w-fit bg-yellow-400 hover:bg-yellow-500"
+                        auto-width
+                        outline
+                        small
+                        text="Изменить"
+                        type="button"
                         @click="openEditModal(warehouse)"
                     />
                     <Button
+                        auto-width
+                        danger
+                        ghost
+                        small
                         text="Удалить"
-                        class="w-fit bg-red-400 hover:bg-red-500"
+                        type="button"
                         @click="destroy(warehouse.id)"
                     />
                 </div>
+            </article>
+            <div v-if="warehouses.length === 0" class="warehouses__empty">
+                Склады ещё не добавлены.
             </div>
         </div>
+        <Modal
+            v-model:open="isFormPopupOpen"
+            :title="isEditMode ? 'Редактировать склад' : 'Создать склад'"
+        >
+            <form class="warehouses__form" @submit.prevent="submit">
+                <Input
+                    id="address"
+                    v-model="form.address"
+                    :error="form.errors.address"
+                    label="Адрес"
+                    @update:modelValue="
+                        validateField && validateField('address', form.address)
+                    "
+                />
+                <Input
+                    id="phone"
+                    v-model="form.phone"
+                    :error="form.errors.phone"
+                    label="Номер телефона"
+                    type="tel"
+                    @update:modelValue="
+                        validateField && validateField('phone', form.phone)
+                    "
+                />
+                <div class="warehouses__form-footer">
+                    <Button
+                        :disabled="form.processing"
+                        :text="isEditMode ? 'Сохранить' : 'Создать'"
+                        auto-width
+                        secondary
+                        type="submit"
+                    />
+                </div>
+            </form>
+        </Modal>
     </div>
-    <Popup
-        v-model:open="isFormPopupOpen"
-        :title="isEditMode ? 'Редактировать склад' : 'Создать склад'"
-    >
-        <form class="flex w-full flex-col gap-5" @submit.prevent="submit">
-            <Input
-                id="address"
-                v-model="form.address"
-                label="Адрес"
-                :error="form.errors.address"
-                @update:modelValue="
-                    validateField && validateField('address', form.address)
-                "
-            />
-            <Input
-                id="phone"
-                v-model="form.phone"
-                type="tel"
-                label="Номер телефона"
-                :error="form.errors.phone"
-                @update:modelValue="
-                    validateField && validateField('phone', form.phone)
-                "
-            />
-            <Button
-                type="submit"
-                secondary
-                :disabled="form.processing"
-                :text="isEditMode ? 'Сохранить' : 'Создать'"
-                class="relative left-[50%] max-w-80 translate-x-[-50%]"
-            />
-        </form>
-    </Popup>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import AdminPageHeader from '@/components/admin/AdminPageHeader.vue';
 import Button from '@/components/Button.vue';
 import Input from '@/components/Input.vue';
-import AdminLayout from '@/components/layouts/AdminLayout.vue';
-import Popup from '@/components/Popup.vue';
+import Modal from '@/components/Modal.vue';
 import { useAdminCrudForm } from '@/composables/useAdminCrudForm';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AdminWarehouses from '@/routes/admin/warehouses';
 import type { Warehouse } from '@/types/warehouse';
 import { validate } from '@/utils/validator.ts';

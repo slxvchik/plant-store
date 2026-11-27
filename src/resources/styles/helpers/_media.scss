@@ -1,0 +1,14 @@
+@use 'sass:map';
+@use '../base/config' as *;
+
+@mixin for-width($breakpoint) {
+    $value: map.get($site-breakpoints, $breakpoint);
+
+    @if $value {
+        @media (min-width: $value) {
+            @content;
+        }
+    } @else {
+        @warn "Brakepoint `#{$breakpoint}` not found in $site-breakpoints.";
+    }
+}

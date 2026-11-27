@@ -1,0 +1,103 @@
+@use "../helpers" as *;
+
+.pagination {
+    &--admin {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border-top: 1px solid #f1f5f9;
+        padding: 1rem 1.25rem;
+
+        @include for-width(sm) {
+            flex-direction: row;
+        }
+    }
+
+    &--numbered {
+        display: flex;
+        height: 2rem;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    &__summary {
+        font-size: 0.875rem;
+        color: #64748b;
+    }
+
+    &__current {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    &__button {
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+        background-color: white;
+        padding: 0.5rem 0.875rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #475569;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+
+        &:hover {
+            border-color: #a7f3d0;
+            color: #047857;
+        }
+
+        &--disabled {
+            cursor: not-allowed;
+            border-color: #f1f5f9;
+            background-color: #f8fafc;
+            color: #cbd5e1;
+
+            &:hover {
+                border-color: #f1f5f9;
+                color: #cbd5e1;
+            }
+        }
+    }
+
+    &__number {
+        display: flex;
+        height: 2rem;
+        width: 2rem;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        background-color: var(--color-primary);
+        color: white;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+        user-select: none;
+
+        &:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        &--active {
+            cursor: default;
+            background-color: var(--color-secondary);
+        }
+    }
+
+    &__ellipsis {
+        color: var(--color-primary);
+        user-select: none;
+    }
+}

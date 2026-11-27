@@ -1,0 +1,21 @@
+.notifications {
+    position: fixed;
+    top: 1rem;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    pointer-events: none;
+
+    &__items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 384px;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+}

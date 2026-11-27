@@ -8,7 +8,7 @@ use App\Application\User\Shared\Exception\UserEmailAlreadyExistsException;
 use App\Application\User\Shared\Exception\UserPhoneAlreadyExistsException;
 use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use App\Domain\User\Model\Role;
-use App\Domain\User\Model\User;
+use App\Domain\User\Model\UserModel;
 use App\Domain\User\Repository\UserRepository;
 use Override;
 
@@ -34,7 +34,7 @@ readonly class CreateUserService implements CreateUserUseCase
             throw new UserPhoneAlreadyExistsException;
         }
 
-        $user = User::createNew(
+        $user = UserModel::createNew(
             uuidGenerator: $this->uuidGenerator,
             password: $createUserRequestDto->password,
             firstName: $createUserRequestDto->firstName,
