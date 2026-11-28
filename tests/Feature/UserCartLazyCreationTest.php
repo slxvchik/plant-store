@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace tests\Feature;
 
 use App\Application\Cart\CreateCart\CreateCartUseCase;
 use App\Domain\Product\Criteria\ProductSearchCriteria;
@@ -15,7 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Inertia\Testing\AssertableInertia as Assert;
 use LogicException;
-use Tests\TestCase;
+use tests\TestCase;
 
 class UserCartLazyCreationTest extends TestCase
 {

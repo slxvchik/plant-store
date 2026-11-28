@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+namespace tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Inertia\Testing\AssertableInertia as Assert;
-use Tests\TestCase;
+use tests\TestCase;
 
 class AdminOrdersTest extends TestCase
 {

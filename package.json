@@ -8,8 +8,8 @@
         "dev": "vite",
         "format": "prettier --write resources/",
         "format:check": "prettier --check resources/",
-        "lint": "eslint . --fix",
-        "lint:check": "eslint .",
+        "lint": "eslint src --fix",
+        "lint:check": "eslint src",
         "types:check": "vue-tsc --noEmit"
     },
     "devDependencies": {
