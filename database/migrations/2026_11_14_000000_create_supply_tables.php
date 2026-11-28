@@ -35,7 +35,7 @@ return new class extends Migration
             $table->unsignedInteger('actual_quantity');
             $table->unsignedInteger('unit_purchase_price_in_kopecks')->nullable();
             $table->unsignedInteger('total_purchase_price_in_kopecks')->nullable();
-            $table->text('comment')->default('');
+            $table->text('comment')->nullable();
             $table->boolean('mis_graded')->default(false);
             $table->timestamps();
         });
